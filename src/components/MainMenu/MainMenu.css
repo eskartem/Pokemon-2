@@ -1,13 +1,17 @@
 body {
-    background-color: rgb(255, 255, 255);
+    background-color: rgb(59, 65, 92);
+}
+
+main {
+    position: relative;
+    bottom: 400px;
 }
 
 footer {
     position: relative;
-    top: 863px;
 }
 
-.blockleft{
+.blockleft {
     position: relative;
     right: 500px;
     box-sizing: border-box;
@@ -16,7 +20,7 @@ footer {
     font-size: 40px;
 }
 
-.blocmid{
+.blocmid {
     position: relative;
     box-sizing: border-box;
     background-color: rgb(223, 175, 175);
@@ -24,7 +28,7 @@ footer {
     font-size: 40px;
 }
 
-.blocright{
+.blocright {
     position: relative;
     left: 500px;
     box-sizing: border-box;
@@ -32,3 +36,35 @@ footer {
     height: 65px;
     font-size: 40px;
 }
+
+.Rynok {
+    position: relative;
+    box-sizing: border-box;
+    top: 75px;
+    left: 1800px;
+    background-color: rgb(223, 175, 175);
+    height: 65px;
+    font-size: 40px;
+}
+
+.Market {
+    position: relative;
+    top: 180px;
+    left: 1800px;
+    box-sizing: border-box;
+    background-color: rgb(223, 175, 175);
+    height: 65px;
+    font-size: 40px;
+}
+
+aside {
+    word-wrap: break-word;
+    width: 1px;
+ }
+
+ .picka {
+    width: 388px;
+    position: relative;
+    left: 400px;
+    top: 75px;
+ }

@@ -10,13 +10,16 @@ const MainMenu: React.FC = () => {
             <span className="blocright">ЭНЕРГИЯ</span>
         </header>
         <aside>
-            <nav></nav>
+            <a href="" className="Rynok">РЫНОК</a>
+            <a href="" className="Market">МАРКЕТ</a>
         </aside>
-        <main></main>
+        <main>
+            <img src="https://i.pinimg.com/originals/60/8e/30/608e3068f873c58776f5f5fce86d9c70.png" alt="pikachu" className="picka"/>
+        </main>
         <footer>
-            <span className="blockleft">ГЕРОЙ</span>
-            <span className="blocmid">МОНЕТКИ</span>
-            <span className="blocright">ЭНЕРГИЯ</span>
+            <a href="" className="blockleft">КАРТА</a>
+            <a href="" className="blocmid">ПОКЕМОНЫ</a>
+            <a href="" className="blocright">НАСТРОЙКИ</a>
         </footer>
     </body>
 );
