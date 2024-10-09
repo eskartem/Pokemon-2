@@ -5,15 +5,18 @@ const MainMenu: React.FC = () => {
     return (
     <body className="Menu">
         <header>
-            POKEMON 2
-            <nav></nav>
+            <span className="blockleft">ГЕРОЙ</span>
+            <span className="blocmid">МОНЕТКИ</span>
+            <span className="blocright">ЭНЕРГИЯ</span>
         </header>
         <aside>
             <nav></nav>
         </aside>
         <main></main>
         <footer>
-            <nav></nav>
+            <span className="blockleft">ГЕРОЙ</span>
+            <span className="blocmid">МОНЕТКИ</span>
+            <span className="blocright">ЭНЕРГИЯ</span>
         </footer>
     </body>
 );
