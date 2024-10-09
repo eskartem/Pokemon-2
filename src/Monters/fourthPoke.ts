@@ -1,14 +1,15 @@
 import Monster from "./Monster";
+import image from '../img/bulbasaur.png'
 
-class ThirdBunny extends Monster  {
-    name = 'thirdBunny';
+class FourthBunny extends Monster  {
+    name = 'Bulbasaur';
     Attack: number = 100;
     HealPoint: number = 150;
     Defense: number = 100;
-    Speed: number = 80;
+    Speed: number = 70;
     ElementType: string | undefined;
     Level: number = 1;
-    src: string = 'https://pixijs.io/pixi-react/img/bunny.png'
+    src: string = image;
 }
 
-export default ThirdBunny;
+export default FourthBunny;

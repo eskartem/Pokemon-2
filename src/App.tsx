@@ -1,5 +1,5 @@
 import React from 'react';
-import Pvp from './Pvp';
+import Pvp from './components/Pvp'
 
 const App: React.FC = () => {
   return (<div>

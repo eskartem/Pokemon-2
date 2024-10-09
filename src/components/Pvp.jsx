@@ -2,12 +2,12 @@ import {useEffect, useState, useCallback} from 'react';
 import {Stage, Sprite, Graphics} from '@pixi/react';
 import './pvp.css';
 
-import FirstBunny from './Monters/firstBunny';
-import SecondBunny from './Monters/secondBunny';
-import ThirdBunny from './Monters/thirdBunny';
-import FourthBunny from './Monters/fourthBunny';
-import FivethBunny from './Monters/fivethBunny';
-import SixthBunny from './Monters/sixthBunny';
+import FirstPoke from '../Monters/firstPoke';
+import SecondPoke from '../Monters/secondPoke';
+import ThirdPoke from '../Monters/thirdPoke';
+import FourthPoke from '../Monters/fourthPoke';
+import FivethPoke from '../Monters/fivethPoke';
+import SixthPoke from '../Monters/sixthPoke';
 
 const Pvp = () => {
   
@@ -15,20 +15,20 @@ const Pvp = () => {
   const [width, setWidth] = useState(window.innerWidth);
   const [height, setHeight] = useState(window.innerHeight);
 
-  const firstBunny = new FirstBunny();
-  const secondBunny = new SecondBunny();
-  const thirdBunny = new ThirdBunny();
-  const fourthBunny = new FourthBunny();
-  const fivethBunny = new FivethBunny();
-  const sixthBunny = new SixthBunny();
+  const firstPoke = new FirstPoke();
+  const secondPoke = new SecondPoke();
+  const thirdPoke = new ThirdPoke();
+  const fourthPoke = new FourthPoke();
+  const fivethPoke = new FivethPoke();
+  const sixthPoke = new SixthPoke();
 
   //HealPoint 
-  const [hpBarFirstPoke, sethpBarFirstPoke] = useState(firstBunny.HealPoint);
-  const [hpBarSecondPoke, sethpBarSecondPoke] = useState(secondBunny.HealPoint);
-  const [hpBarThirdPoke, sethpBarThirdPoke] = useState(thirdBunny.HealPoint);
-  const [hpBarFourthPoke, sethpBarFourthPoke] = useState(fourthBunny.HealPoint);
-  const [hpBarFivethPoke, sethpBarFivethPoke] = useState(fivethBunny.HealPoint);
-  const [hpBarSixthPoke, sethpBarSixthPoke] = useState(sixthBunny.HealPoint);
+  const [hpBarFirstPoke, sethpBarFirstPoke] = useState(firstPoke.HealPoint);
+  const [hpBarSecondPoke, sethpBarSecondPoke] = useState(secondPoke.HealPoint);
+  const [hpBarThirdPoke, sethpBarThirdPoke] = useState(thirdPoke.HealPoint);
+  const [hpBarFourthPoke, sethpBarFourthPoke] = useState(fourthPoke.HealPoint);
+  const [hpBarFivethPoke, sethpBarFivethPoke] = useState(fivethPoke.HealPoint);
+  const [hpBarSixthPoke, sethpBarSixthPoke] = useState(sixthPoke.HealPoint);
 
   const stageProps = {
     width: width * 0.7,
@@ -38,26 +38,7 @@ const Pvp = () => {
     }
   };
 
-  let queue = [
-    firstBunny.name,
-    fourthBunny.name,
-    secondBunny.name,
-    fivethBunny.name,
-    thirdBunny.name,
-    sixthBunny.name
-  ];
-
-  /*
-  const changeQueue = (queue) => {
-    if (queue.length > 0) {
-      let firstElement = queue.shift();
-      queue.push(firstElement);
-      return queue;
-    } else {
-      return queue;
-    }
-  }
-  */
+  let inventory = [];
 
  const hideOrShowButonns = (props) => {
     const id = document.getElementById(props);
@@ -68,10 +49,6 @@ const Pvp = () => {
       id.classList.remove('hideButton')
       id.classList.add('showButton')
     }
- }
-
- const leaveForBattle = () => {
-  
  }
 
   const handleResize = () => {
@@ -106,7 +83,7 @@ const Pvp = () => {
     g.beginFill(0x00ff00);
     g.drawRect(stageProps.width * 0.01 + 5, stageProps.height * 0.18 + 5, hpBarThirdPoke, 20);
     g.endFill();
-  }, [hpBarFirstPoke, hpBarSecondPoke, hpBarThirdPoke]);
+  }, [hpBarFirstPoke, hpBarSecondPoke, hpBarThirdPoke, stageProps.height, stageProps.width]);
 
   const hpBarSecondPlayer = useCallback((g) => {
     g.clear();
@@ -135,35 +112,33 @@ const Pvp = () => {
     g.beginFill(0x00ff00);
     g.drawRect(stageProps.width * 0.84 + 5, stageProps.height * 0.18 + 5, hpBarSixthPoke, 20);
     g.endFill();
-  }, [hpBarFourthPoke, hpBarFivethPoke, hpBarSixthPoke]);
+  }, [hpBarFourthPoke, hpBarFivethPoke, hpBarSixthPoke, stageProps.height, stageProps.width]);
   
   useEffect(() => {
     window.addEventListener('resize', handleResize);
     return () => {
       window.removeEventListener('resize', handleResize);
     };
-
-
-
   }, []);
   
   return (<>
     <Stage {...stageProps} className='pvpArea'>
-      <Sprite image={firstBunny.src} x={stageProps.width * 0.05} y={stageProps.height * 0.4} tint={'red'}></Sprite>
-      <Sprite image={secondBunny.src} x={stageProps.width * 0.05} y={stageProps.height * 0.6} tint={'yellow'}></Sprite>
-      <Sprite image={thirdBunny.src} x={stageProps.width * 0.05} y={stageProps.height * 0.8} tint={'green'}></Sprite>
-      <Sprite image={fourthBunny.src} x={stageProps.width * 0.93} y={stageProps.height * 0.4} tint={'blue'}></Sprite>
-      <Sprite image={fivethBunny.src} x={stageProps.width * 0.93} y={stageProps.height * 0.6} tint={'purple'}></Sprite>
-      <Sprite image={sixthBunny.src} x={stageProps.width * 0.93} y={stageProps.height * 0.8} tint={'orange'}></Sprite>
+      <Sprite image={firstPoke.src} x={stageProps.width * 0.10} y={stageProps.height * 0.3} scale={[-1, 1]}></Sprite>
+      <Sprite image={secondPoke.src} x={stageProps.width * 0.10} y={stageProps.height * 0.5}scale={[-1, 1]}></Sprite>
+      <Sprite image={thirdPoke.src} x={stageProps.width * 0.10} y={stageProps.height * 0.7} scale={[-1, 1]}></Sprite>
+      <Sprite image={fourthPoke.src} x={stageProps.width * 0.90} y={stageProps.height * 0.3}></Sprite>
+      <Sprite image={fivethPoke.src} x={stageProps.width * 0.90} y={stageProps.height * 0.5}></Sprite>
+      <Sprite image={sixthPoke.src} x={stageProps.width * 0.90} y={stageProps.height * 0.7} ></Sprite>
       <Graphics draw={hpBarFirstPlayer}></Graphics>
       <Graphics draw={hpBarSecondPlayer}></Graphics>
     </Stage>
+
     <div className='buttonMenu'>
       <div id='firstPlayerButton' className='showButton'>
         <button onClick={() => {
           hideOrShowButonns('firstPlayerButton');
           hideOrShowButonns('firstCombatMenuButton')
-        }}>Атака</button>
+        }}>Скилы</button>
         <button onClick={() => {
           hideOrShowButonns('firstPlayerButton');
         }}>Предметы</button>
@@ -175,7 +150,7 @@ const Pvp = () => {
         <button onClick={() => {
           hideOrShowButonns('firstCombatMenuButton');
           hideOrShowButonns('yourChoose');
-        }}>Удар</button>
+        }}>Толчок</button>
         <button onClick={() => {
           hideOrShowButonns('firstCombatMenuButton');
           hideOrShowButonns('firstPlayerButton');
@@ -187,24 +162,24 @@ const Pvp = () => {
           sethpBarFourthPoke(hpBarFourthPoke - 25)
           hideOrShowButonns('yourChoose');
           hideOrShowButonns('secondPlayerButton');
-        }}>Ударить 1 врага</button>
+        }}>Ударить {fourthPoke.name}</button>
         <button onClick={() => {
           sethpBarFivethPoke(hpBarFivethPoke - 25)
           hideOrShowButonns('yourChoose');
           hideOrShowButonns('secondPlayerButton');
-        }}>Ударить 2 врага</button>
+        }}>Ударить {fivethPoke.name}</button>
         <button onClick={() => {
           sethpBarSixthPoke(hpBarSixthPoke - 25)
           hideOrShowButonns('yourChoose');
           hideOrShowButonns('secondPlayerButton');
-        }}>Ударить 3 врага</button>
+        }}>Ударить {sixthPoke.name}</button>
       </div>
 
       <div id='secondPlayerButton' className='hideButton'>
         <button onClick={() => {
           hideOrShowButonns('secondPlayerButton');
           hideOrShowButonns('secondCombatMenuButton')
-        }}>Атака</button>
+        }}>Скилы</button>
         <button onClick={() => {
           hideOrShowButonns('secondPlayerButton');
         }}>Предметы</button>
@@ -216,7 +191,7 @@ const Pvp = () => {
         <button onClick={() => {
           hideOrShowButonns('secondCombatMenuButton');
           hideOrShowButonns('enemyChoose');
-        }}>Удар</button>
+        }}>Толчок</button>
         <button onClick={() => {
           hideOrShowButonns('secondCombatMenuButton');
           hideOrShowButonns('secondPlayerButton');
@@ -228,17 +203,17 @@ const Pvp = () => {
           sethpBarFirstPoke(hpBarFirstPoke - 25)
           hideOrShowButonns('enemyChoose');
           hideOrShowButonns('firstPlayerButton');
-        }}>Ударить 1 врага</button>
+        }}>Ударить {firstPoke.name}</button>
         <button onClick={() => {
           sethpBarSecondPoke(hpBarSecondPoke - 25)
           hideOrShowButonns('enemyChoose');
           hideOrShowButonns('firstPlayerButton');
-        }}>Ударить 2 врага</button>
+        }}>Ударить {secondPoke.name}</button>
         <button onClick={() => {
           sethpBarThirdPoke(hpBarThirdPoke - 25)
           hideOrShowButonns('enemyChoose');
           hideOrShowButonns('firstPlayerButton');
-        }}>Ударить 3 врага</button>
+        }}>Ударить {thirdPoke.name}</button>
       </div>
     </div>
   </>)
