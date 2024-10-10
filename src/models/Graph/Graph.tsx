@@ -100,7 +100,8 @@ class Graph {
 
     line(x1: number, y1: number,
          x2: number, y2: number,
-         color='black', width=0.5, isDash=false): void {
+         color='black', width=0.5, isDash=false
+        ): void {
         this.ctxV.beginPath();
         this.ctxV.strokeStyle = color;
         this.ctxV.lineWidth = width || 3;
@@ -161,6 +162,23 @@ class Graph {
             }
             this.ctxV.lineTo(this.xs(points[0].x), this.ys(points[0].y));
         }
+        this.ctxV.closePath();
+        this.ctxV.fill();
+        this.ctxV.stroke();
+    }
+
+    square (x: number, y: number, a = 1, color: string = 'magenta') {
+        this.ctxV.beginPath();
+        this.ctxV.strokeStyle = color;
+        this.ctxV.fillStyle = color;
+        this.ctxV.lineWidth = 1;
+
+        this.ctxV.moveTo(this.xs(x), this.ys(y));
+        this.ctxV.lineTo(this.xs(x + a), this.ys(y));
+        this.ctxV.lineTo(this.xs(x + a), this.ys(y + a));
+        this.ctxV.lineTo(this.xs(x), this.ys(y + a));
+        this.ctxV.lineTo(this.xs(x), this.ys(y));
+
         this.ctxV.closePath();
         this.ctxV.fill();
         this.ctxV.stroke();
