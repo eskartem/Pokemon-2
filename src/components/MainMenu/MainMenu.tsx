@@ -18,7 +18,7 @@ const MainMenu: React.FC = () => {
         </main>
         <footer>
             <a href="" className="blockleft">КАРТА</a>
-            <a href="" className="blocmid">ПОКЕМОНЫ</a>
+            <a href="" className="blocmid">ПОКЕМОН's</a>
             <a href="" className="blocright">НАСТРОЙКИ</a>
         </footer>
     </body>
