@@ -1,6 +1,0 @@
-let jopa = 'jopa'
-let jopa1 = 'jopa'
-let jopa2 = 'jopa'
-let jopa3 = 'jopa'
-let jopa4 = 'jopa'
-let jopa5 = 'jopa'
