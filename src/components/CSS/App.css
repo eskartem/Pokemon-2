@@ -19,12 +19,6 @@
   width: 50px;
 }
 
-.pikachu-image {
-  cursor: pointer;
-  width: 100px; /* Уменьшили размер Пикачу */
-  height: auto;
-}
-
 .purchased-pokemons {
   margin-top: 20px;
 }
@@ -36,4 +30,47 @@
 
 .purchased-pokemons li {
   margin-bottom: 5px;
+}
+
+.pokemon-icons {
+  display: flex;
+  flex-direction: column; /* Расположение по вертикали */
+  align-items: flex-start; /* Выровнено по левому краю */
+  margin-top: 20px;
+}
+
+.pokemon-icon {
+  width: 50px; /* Уменьшено до 50x50 */
+  height: 50px; /* Уменьшено до 50x50 */
+  margin: 10px 0; /* Отступы между иконками */
+  cursor: pointer;
+}
+
+.pokemon-info {
+  margin-top: 20px;
+  border: 1px solid #ccc;
+  padding: 10px;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+}
+
+.buy-button {
+  padding: 5px 10px;
+  background-color: #4CAF50; /* Зеленый цвет */
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.buy-button:hover {
+  background-color: #45a049; /* Цвет кнопки при наведении */
+}
+
+.app-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 20px;
+  padding: 20px;
 }

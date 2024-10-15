@@ -1,11 +1,15 @@
 import React, { Component } from 'react';
-import { Market } from './components/Market/Market';
-import { RandomMarket } from './components/Market/randomMarket';
+import { MarketVisibility } from './components/Enums/MarketVisibility';
+import { pokemonDescriptions } from './components/Pokemon/pokemonDescriptions';
+import PikachuBuy from './components/assets/PikachuBuy.jpg';
+import CharmanderBuy from './components/assets/CharmanderBuy.jpg';
+import BulbasaurBuy from './components/assets/BulbasaurBuy.jpg';
+import SquirtleBuy from './components/assets/SquirtleBuy.jpg';
 import storeImage from './components/assets/Store.jpg';
 import randomMarketImage from './components/assets/randomMarket.png';
-import pikachuImage from './components/assets/Pikachu.png';
 import backArrow from './components/assets/strelka.png';
-import { MarketVisibility } from './components/Enums/MarketVisibility';
+import { Market } from './components/Market/Market';
+import { RandomMarket } from './components/Market/randomMarket';
 import './components/CSS/App.css';
 
 interface AppState {
@@ -13,7 +17,7 @@ interface AppState {
   purchasedPokemons: { [key: string]: number };
   coins: number;
   inflationRates: { [key: string]: number };
-  showPokemonList: boolean;
+  selectedPokemon: 'Pikachu' | 'Charmander' | 'Bulbasaur' | 'Squirtle' | null;
 }
 
 class App extends Component<{}, AppState> {
@@ -29,7 +33,7 @@ class App extends Component<{}, AppState> {
         Bulbasaur: 1.0,
         Squirtle: 1.0,
       },
-      showPokemonList: false,
+      selectedPokemon: null,
     };
   }
 
@@ -49,26 +53,49 @@ class App extends Component<{}, AppState> {
     this.setState({ currentMarket: MarketVisibility.None });
   };
 
-  togglePokemonList = () => {
-    this.setState(prevState => ({ showPokemonList: !prevState.showPokemonList }));
+  handlePokemonPurchase = (pokemonName: string, price: number) => {
+    // Дополнительная проверка на случай, если цена будет выше доступных монет
+    if (this.state.coins >= price) {
+      this.setState(prevState => ({
+        purchasedPokemons: {
+          ...prevState.purchasedPokemons,
+          [pokemonName]: (prevState.purchasedPokemons[pokemonName] || 0) + 1,
+        },
+        coins: prevState.coins - price,
+        inflationRates: {
+          ...prevState.inflationRates,
+          [pokemonName]: prevState.inflationRates[pokemonName] + 0.1,
+        },
+      }));
+    } else {
+      alert("Недостаточно монет!");
+    }
   };
 
-  handlePokemonPurchase = (pokemonName: string, price: number) => {
-    this.setState(prevState => ({
-      purchasedPokemons: {
-        ...prevState.purchasedPokemons,
-        [pokemonName]: (prevState.purchasedPokemons[pokemonName] || 0) + 1,
-      },
-      coins: prevState.coins - price,
-      inflationRates: {
-        ...prevState.inflationRates,
-        [pokemonName]: prevState.inflationRates[pokemonName] + 0.1,
-      },
-    }));
+  handleIconClick = (pokemon: 'Pikachu' | 'Charmander' | 'Bulbasaur' | 'Squirtle') => {
+    this.setState({ selectedPokemon: pokemon });
+  };
+
+  renderPokemonInfo = () => {
+    const { selectedPokemon } = this.state;
+    if (!selectedPokemon) return null;
+
+    return (
+      <div className="pokemon-info">
+        <h2>{selectedPokemon}</h2>
+        <p>{pokemonDescriptions[selectedPokemon]}</p>
+        <button
+          className="buy-button"
+          onClick={() => this.handlePokemonPurchase(selectedPokemon, Math.round(10 * this.state.inflationRates[selectedPokemon]))}
+        >
+          Купить за {Math.round(10 * this.state.inflationRates[selectedPokemon])} монет
+        </button>
+      </div>
+    );
   };
 
   render() {
-    const { currentMarket, coins, inflationRates, purchasedPokemons, showPokemonList } = this.state;
+    const { currentMarket, coins, inflationRates, purchasedPokemons } = this.state;
 
     return (
       <div>
@@ -96,19 +123,40 @@ class App extends Component<{}, AppState> {
               onClick={this.closeMarket}
               className="back-arrow"
             />
-            <img
-              src={pikachuImage}
-              alt="Pikachu"
-              className="pikachu-image"
-              onClick={this.togglePokemonList} // По клику показываем или скрываем список
-            />
-            {showPokemonList && ( // Если showPokemonList === true, показываем Market
-              <Market
-                coins={coins}
-                inflationRates={inflationRates}
-                onPokemonPurchase={this.handlePokemonPurchase}
+            <div className="coins-display">
+              <h3>Монеты: {coins}</h3>
+            </div>
+            <div className="pokemon-icons" style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
+              <img
+                src={PikachuBuy}
+                alt="Pikachu"
+                className="pokemon-icon"
+                style={{ width: '50px', height: '50px', marginBottom: '10px' }}
+                onClick={() => this.handleIconClick('Pikachu')}
               />
-            )}
+              <img
+                src={CharmanderBuy}
+                alt="Charmander"
+                className="pokemon-icon"
+                style={{ width: '50px', height: '50px', marginBottom: '10px' }}
+                onClick={() => this.handleIconClick('Charmander')}
+              />
+              <img
+                src={BulbasaurBuy}
+                alt="Bulbasaur"
+                className="pokemon-icon"
+                style={{ width: '50px', height: '50px', marginBottom: '10px' }}
+                onClick={() => this.handleIconClick('Bulbasaur')}
+              />
+              <img
+                src={SquirtleBuy}
+                alt="Squirtle"
+                className="pokemon-icon"
+                style={{ width: '50px', height: '50px', marginBottom: '10px' }}
+                onClick={() => this.handleIconClick('Squirtle')}
+              />
+            </div>
+            {this.renderPokemonInfo()}
             <div className="purchased-pokemons">
               <h3>Купленные покемоны:</h3>
               <ul>
