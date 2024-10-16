@@ -1,0 +1,39 @@
+.market-buttons {
+  display: flex;
+  justify-content: space-between;
+  width: 320px;
+}
+
+.market-buttons img {
+  cursor: pointer;
+  width: 150px;
+}
+
+.market-container,
+.random-market-container {
+  margin-top: 20px;
+}
+
+.back-arrow {
+  cursor: pointer;
+  width: 50px;
+}
+
+.pikachu-image {
+  cursor: pointer;
+  width: 100px; /* Уменьшили размер Пикачу */
+  height: auto;
+}
+
+.purchased-pokemons {
+  margin-top: 20px;
+}
+
+.purchased-pokemons ul {
+  list-style: none;
+  padding: 0;
+}
+
+.purchased-pokemons li {
+  margin-bottom: 5px;
+}
