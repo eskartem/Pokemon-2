@@ -1,12 +1,14 @@
+@import '../../scss/variables.scss';
+
 .login {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    height: 100vh;
+    height: 70vh;
     background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
-    font-family: 'Arial', sans-serif;
-    color: #333;
+    font-family: $text-style;
+    //color: #333;
 
     h1 {
         margin-bottom: 24px;
@@ -34,22 +36,28 @@
                 font-size: 1rem;
                 transition: border 0.3s;
 
+                &::placeholder {
+                    color: lightgray; // Светло-серый цвет
+                    opacity: 1; // Убедитесь, что цвет отображается
+                }
+
                 &:focus {
                     border-color: #4A90E2;
                     outline: none;
                 }
             }
-        }
+        } 
+    }
 
-        .login-buttons {
-            margin-top: 20px;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-
-            Button {
-                width: 100%;
-            }
+    .register-link {
+        color: #007bff; // Цвет ссылки
+        cursor: pointer; // Указатель при наведении, чтобы показать, что это кликабельно
+        text-decoration: underline; // Чтобы текст выглядел как ссылка
+        margin-top: 10px; // Учет отступа от кнопки
+        font-size: 12px;
+        &:hover {
+            color: #0056b3; // Более темный цвет при наведении
         }
     }
+    
 }

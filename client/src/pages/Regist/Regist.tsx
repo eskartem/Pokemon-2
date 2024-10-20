@@ -35,9 +35,10 @@ const Regist: React.FC<IBasePage> = (props: IBasePage) => {
             </div>
             <div className='regist-buttons'>
                 <Button onClick={registClickHandler} text='Зарегистрироваться' />
-                <Button onClick={authorizClickHandler} text='у меня уже есть аккаунт'/>
-                
             </div>
+            <span className='register-link' onClick={authorizClickHandler}>
+                у меня уже есть аккаунт
+            </span>
         </div>
     </div>)
 }

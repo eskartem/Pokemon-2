@@ -1,13 +1,13 @@
 <?php
-require_once ('db/DB.php');
-require_once ('user/User.php');
+require_once ('../application/db/DB.php');
+require_once ('../application/user/User.php');
 //require_once ('chat/Chat.php');
 
 class Application {
     function __construct() {
         $db = new DB();
         $this->user = new User($db);
-        //$this->chat = new Chat($db);
+       // $this->chat = new Chat($db);
     }
 
     public function login($params) {

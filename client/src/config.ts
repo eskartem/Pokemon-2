@@ -18,7 +18,7 @@ export type TWINDOW = {
 }
 
 const CONFIG = {
-    HOST: 'http://nopainnogame.local/api',
+    HOST: 'http://aythprototype/api',
 
     CHAT_TIMESTAMP: 200, //ms
 

@@ -36,6 +36,12 @@ class User {
     }
 
     public function registration($login, $password, $name) {
+
+        // Проверка пароля
+        if (!$this->isValidPassword($password)) {
+            return ['error' => 1006]; // Ошибка: пароль не соответствует требованиям
+        }
+
         $user = $this->db->getUserByLogin($login, $password);
         if ($user) {
             return ['error' => 1001];
@@ -53,4 +59,9 @@ class User {
         }
         return ['error' => 1004];
     }
+    private function isValidPassword($password) {
+        // Проверка условий для пароля
+        return preg_match('/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!"№;%:?*()_+=\-\`{}"?><.])(?=.*\S).{8,}$/', $password);
+    }
+
 }

@@ -5,6 +5,12 @@ $font-size: 30px; // 1920x1080
 @import './scss/variables';
 
 body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background: linear-gradient(-135deg, #c850c0, #4158d0);
+
     overflow: hidden;
     background-color: $main-theme;
     color: $text-color;

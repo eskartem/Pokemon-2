@@ -24,4 +24,5 @@ class Chat{
             'hash' => $currentHash->chat_hash
         ];
     }
-}*/
+}
+*/

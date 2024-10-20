@@ -51,11 +51,11 @@ class DB {
 
     public function getUserByLogin($login) {
         $user = new stdClass();
-        $user -> id = 123;
-        $user-> login = $login;
+        $user -> id = '123';
+        $user-> login = 'login';
         $user ->pass = md5($login.'111');
         $user ->name = "имя";
-         return $user;
+        return $user;
         //return $this->query("SELECT * FROM users WHERE login=?", [$login]);
     }
 
