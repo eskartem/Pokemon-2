@@ -25,3 +25,8 @@
 .showButton {
     display: block;
 }
+
+.buttons {
+    border-radius: 5px;
+    margin-left: 30%;
+}

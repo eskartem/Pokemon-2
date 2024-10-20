@@ -1,10 +1,10 @@
 import React from 'react';
-import Pvp from './components/Pvp'
+import Pvp from './components/Pvp/Pvp'
 
 const App: React.FC = () => {
-  return (<div>
+  return (<>
     <Pvp />
-  </div>)
+  </>)
 }
 
 export default App;
