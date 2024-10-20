@@ -1,0 +1,20 @@
+.pokemon-icon {
+    width: 50px;
+    height: 50px;
+    margin-bottom: 10px;
+    cursor: pointer;
+  }
+
+
+.buy-button {
+    padding: 5px 10px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+  
+.buy-button:hover {
+    background-color: #45a049;
+}

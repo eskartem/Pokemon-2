@@ -1,17 +1,89 @@
-.market {
-    padding: 10px;
-  
-    .pokemon-list {
-      display: flex;
-      flex-direction: column;
-    }
-  
-    p {
-      font-size: 16px;
-      font-weight: bold;
-    }
-  
-    h2 {
-      margin-bottom: 10px;
-    }
-  }
+.purchased-pokemons {
+  margin-top: 20px;
+}
+
+.purchased-pokemons ul {
+  list-style: none;
+  padding: 0;
+}
+
+.purchased-pokemons li {
+  margin-bottom: 5px;
+}
+
+
+.buy-button {
+  padding: 5px 10px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.buy-button:hover {
+  background-color: #45a049;
+}
+
+.random-market-container {
+  margin-top: 20px;
+}
+
+.pokemon-icon {
+  width: 50px;
+  height: 50px;
+  margin: 10px 0;
+  cursor: pointer;
+}
+
+.pokemon-info {
+  margin-left: 20px;
+  border: 1px solid #ccc;
+  padding: 10px;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+}
+
+.market-buttons {
+  display: flex;
+  justify-content: space-between;
+  width: 320px;
+}
+
+.market-buttons img {
+  cursor: pointer;
+  width: 150px;
+}
+
+.market-container {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+}
+
+
+.coins-display {
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.pokemon-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.pokemon-icons {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-top: 20px;
+}
+
+.back-arrow {
+  cursor: pointer;
+  width: 30px;
+  height: 30px;
+  margin: 10px;
+}
+

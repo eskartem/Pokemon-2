@@ -1,57 +1,123 @@
-import React from 'react';
-import { Pokemon } from '../Pokemon/Pokemon';
+import React, { Component } from 'react';
+import PikachuBuy from '../assets/PikachuBuy.jpg';
+import CharmanderBuy from '../assets/CharmanderBuy.jpg';
+import BulbasaurBuy from '../assets/BulbasaurBuy.jpg';
+import SquirtleBuy from '../assets/SquirtleBuy.jpg';
+import { pokemonDescriptions } from '../Pokemon/pokemonDescriptions';
 import '../CSS/Market.css';
 
 interface MarketProps {
   coins: number;
+  updateCoins: (newCoins: number) => void;
+}
+
+interface MarketState {
   inflationRates: { [key: string]: number };
-  onPokemonPurchase: (pokemonName: string, price: number) => void;
+  purchasedPokemons: { [key: string]: number };
+  selectedPokemon: 'Pikachu' | 'Charmander' | 'Bulbasaur' | 'Squirtle' | null;
 }
 
-interface PokemonType {
-  id: number;
-  name: string;
-  basePrice: number;
-}
+export class Market extends Component<MarketProps, MarketState> {
+  constructor(props: MarketProps) {
+    super(props);
+    this.state = {
+      inflationRates: {
+        Pikachu: 10.0,
+        Charmander: 30.0,
+        Bulbasaur: 50.0,
+        Squirtle: 100.0,
+      },
+      purchasedPokemons: {},
+      selectedPokemon: null,
+    };
+  }
 
-const initialPokemons: PokemonType[] = [
-  { id: 1, name: "Pikachu", basePrice: 10 },
-  { id: 2, name: "Charmander", basePrice: 15 },
-  { id: 3, name: "Bulbasaur", basePrice: 12 },
-  { id: 4, name: "Squirtle", basePrice: 8 },
-];
-
-export const Market: React.FC<MarketProps> = ({ coins, inflationRates, onPokemonPurchase }) => {
-  const [pokemons] = React.useState<PokemonType[]>(initialPokemons);
-
-  const buyPokemon = (id: number, price: number, name: string) => {
-    const inflationRate = inflationRates[name] || 1.0;
-    const adjustedPrice = Math.round(price * inflationRate);
-    const finalPrice = Math.round(adjustedPrice * 1.1);  // Комиссия 10%
-
-    if (coins >= finalPrice) {
-      onPokemonPurchase(name, finalPrice);
-      alert(`Вы купили ${name} за ${finalPrice} монет (включая комиссию 10%)!`);
+  handlePokemonPurchase = (pokemonName: string, price: number) => {
+    if (this.props.coins >= price) {
+      this.setState((prevState) => ({
+        purchasedPokemons: {
+          ...prevState.purchasedPokemons,
+          [pokemonName]: (prevState.purchasedPokemons[pokemonName] || 0) + 1,
+        },
+        inflationRates: {
+          ...prevState.inflationRates,
+          [pokemonName]: prevState.inflationRates[pokemonName] + 0.1,
+        },
+      }));
+      this.props.updateCoins(this.props.coins - price);
     } else {
-      alert("Недостаточно монет!");
+      alert('Недостаточно монет!');
     }
   };
 
-  return (
-    <div className="market">
-      <p>Монеты: {coins}</p>
-      <h2>Доступные покемоны</h2>
-      <div className="pokemon-list">
-        {pokemons.map(pokemon => (
-          <Pokemon
-            key={pokemon.id}
-            pokemon={pokemon}
-            inflationRate={inflationRates[pokemon.name]}
-            onBuy={() => buyPokemon(pokemon.id, pokemon.basePrice, pokemon.name)}
-            canBuy={coins >= Math.round(pokemon.basePrice * inflationRates[pokemon.name] * 1.1)} // Цена с учетом комиссии
-          />
-        ))}
+  selectPokemon = (pokemon: 'Pikachu' | 'Charmander' | 'Bulbasaur' | 'Squirtle') => {
+    this.setState({ selectedPokemon: pokemon });
+  };
+
+  renderPokemonInfo = () => {
+    const { selectedPokemon } = this.state;
+    if (!selectedPokemon) return null;
+
+    return (
+      <div className="pokemon-info">
+        <h2>{selectedPokemon}</h2>
+        <p>{pokemonDescriptions[selectedPokemon]}</p>
+        <button
+          className="buy-button"
+          onClick={() =>
+            this.handlePokemonPurchase(
+              selectedPokemon,
+              Math.round(10 * this.state.inflationRates[selectedPokemon])
+            )
+          }
+        >
+          Купить за {Math.round(10 * this.state.inflationRates[selectedPokemon])} монет
+        </button>
       </div>
-    </div>
-  );
-};
+    );
+  };
+
+  render() {
+    return (
+      <div className="market-content">
+        <div className="pokemon-icons">
+          <img
+            src={PikachuBuy}
+            alt="Pikachu"
+            className="pokemon-icon"
+            onClick={() => this.selectPokemon('Pikachu')}
+          />
+          <img
+            src={CharmanderBuy}
+            alt="Charmander"
+            className="pokemon-icon"
+            onClick={() => this.selectPokemon('Charmander')}
+          />
+          <img
+            src={BulbasaurBuy}
+            alt="Bulbasaur"
+            className="pokemon-icon"
+            onClick={() => this.selectPokemon('Bulbasaur')}
+          />
+          <img
+            src={SquirtleBuy}
+            alt="Squirtle"
+            className="pokemon-icon"
+            onClick={() => this.selectPokemon('Squirtle')}
+          />
+        </div>
+        {this.renderPokemonInfo()}
+        <div className="purchased-pokemons">
+          <h3>Купленные покемоны:</h3>
+          <ul>
+            {Object.keys(this.state.purchasedPokemons).map((pokemon) => (
+              <li key={pokemon}>
+                {pokemon}: {this.state.purchasedPokemons[pokemon]}
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    );
+  }
+}

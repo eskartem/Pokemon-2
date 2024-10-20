@@ -1,23 +1,20 @@
 import React, { Component } from 'react';
 import { MarketVisibility } from './components/Enums/MarketVisibility';
-import { pokemonDescriptions } from './components/Pokemon/pokemonDescriptions';
-import PikachuBuy from './components/assets/PikachuBuy.jpg';
-import CharmanderBuy from './components/assets/CharmanderBuy.jpg';
-import BulbasaurBuy from './components/assets/BulbasaurBuy.jpg';
-import SquirtleBuy from './components/assets/SquirtleBuy.jpg';
 import storeImage from './components/assets/Store.jpg';
 import randomMarketImage from './components/assets/randomMarket.png';
+import userMarketImage from './components/assets/MarketUser.jpg';
+import exchangerImage from './components/assets/Exchanger.jpg';
 import backArrow from './components/assets/strelka.png';
 import { Market } from './components/Market/Market';
 import { RandomMarket } from './components/Market/randomMarket';
+import { UsersMarket } from './components/Market/UsersMarket';
+import Exchanger from './components/Exchanger/Exchanger';
 import './components/CSS/App.css';
 
 interface AppState {
   currentMarket: MarketVisibility;
-  purchasedPokemons: { [key: string]: number };
   coins: number;
-  inflationRates: { [key: string]: number };
-  selectedPokemon: 'Pikachu' | 'Charmander' | 'Bulbasaur' | 'Squirtle' | null;
+  eggs: number;
 }
 
 class App extends Component<{}, AppState> {
@@ -25,162 +22,83 @@ class App extends Component<{}, AppState> {
     super(props);
     this.state = {
       currentMarket: MarketVisibility.None,
-      purchasedPokemons: {},
-      coins: 100,
-      inflationRates: {
-        Pikachu: 1.0,
-        Charmander: 1.0,
-        Bulbasaur: 1.0,
-        Squirtle: 1.0,
-      },
-      selectedPokemon: null,
+      coins: 10000,
+      eggs: 0,
     };
   }
-
+  
   openMarket = () => {
     this.setState({ currentMarket: MarketVisibility.Market });
-  };
-
-  closeMarket = () => {
-    this.setState({ currentMarket: MarketVisibility.None });
   };
 
   openRandomMarket = () => {
     this.setState({ currentMarket: MarketVisibility.RandomMarket });
   };
 
-  closeRandomMarket = () => {
+  openUsersMarket = () => {
+    this.setState({ currentMarket: MarketVisibility.UsersMarket });
+  };
+
+  openExchanger = () => {
+    this.setState({ currentMarket: MarketVisibility.Exchanger });
+  };
+
+  closeMarket = () => {
     this.setState({ currentMarket: MarketVisibility.None });
   };
 
+  updateCoins = (newCoins: number) => {
+    this.setState({ coins: newCoins });
+  };
+
+  addEgg = () => {
+    this.setState((prevState) => ({
+      eggs: prevState.eggs + 1,
+    }));
+  };
+
   handlePokemonPurchase = (pokemonName: string, price: number) => {
-    // Дополнительная проверка на случай, если цена будет выше доступных монет
     if (this.state.coins >= price) {
-      this.setState(prevState => ({
-        purchasedPokemons: {
-          ...prevState.purchasedPokemons,
-          [pokemonName]: (prevState.purchasedPokemons[pokemonName] || 0) + 1,
-        },
+      this.setState((prevState) => ({
         coins: prevState.coins - price,
-        inflationRates: {
-          ...prevState.inflationRates,
-          [pokemonName]: prevState.inflationRates[pokemonName] + 0.1,
-        },
       }));
     } else {
-      alert("Недостаточно монет!");
+      alert('Недостаточно монет!');
     }
   };
 
-  handleIconClick = (pokemon: 'Pikachu' | 'Charmander' | 'Bulbasaur' | 'Squirtle') => {
-    this.setState({ selectedPokemon: pokemon });
-  };
-
-  renderPokemonInfo = () => {
-    const { selectedPokemon } = this.state;
-    if (!selectedPokemon) return null;
-
-    return (
-      <div className="pokemon-info">
-        <h2>{selectedPokemon}</h2>
-        <p>{pokemonDescriptions[selectedPokemon]}</p>
-        <button
-          className="buy-button"
-          onClick={() => this.handlePokemonPurchase(selectedPokemon, Math.round(10 * this.state.inflationRates[selectedPokemon]))}
-        >
-          Купить за {Math.round(10 * this.state.inflationRates[selectedPokemon])} монет
-        </button>
-      </div>
-    );
-  };
-
   render() {
-    const { currentMarket, coins, inflationRates, purchasedPokemons } = this.state;
+    const { currentMarket, coins, eggs } = this.state;
 
     return (
       <div>
         {currentMarket === MarketVisibility.None && (
           <div className="market-buttons">
-            <img
-              src={storeImage}
-              alt="Store"
-              className="store-image"
-              onClick={this.openMarket}
-            />
-            <img
-              src={randomMarketImage}
-              alt="Random Market"
-              className="random-market-image"
-              onClick={this.openRandomMarket}
-            />
+            <img src={storeImage} alt="Store" className="store-image" onClick={this.openMarket} />
+            <img src={randomMarketImage} alt="Random Market" className="random-market-image" onClick={this.openRandomMarket} />
+            <img src={userMarketImage} alt="User Market" className="user-market-image" onClick={this.openUsersMarket} />
+            <img src={exchangerImage} alt="Exchanger" className="exchanger-image" onClick={this.openExchanger} />
           </div>
         )}
-        {currentMarket === MarketVisibility.Market && (
-          <div className="market-container">
-            <img
-              src={backArrow}
-              alt="Back to Store"
-              onClick={this.closeMarket}
-              className="back-arrow"
-            />
+        {(currentMarket === MarketVisibility.Market || currentMarket === MarketVisibility.RandomMarket || currentMarket === MarketVisibility.UsersMarket || currentMarket === MarketVisibility.Exchanger) && (
+          <div>
+            <img src={backArrow} alt="Back to Store" onClick={this.closeMarket} className="back-arrow" />
             <div className="coins-display">
               <h3>Монеты: {coins}</h3>
+              <h4>Яйца: {eggs}</h4>
             </div>
-            <div className="pokemon-icons" style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
-              <img
-                src={PikachuBuy}
-                alt="Pikachu"
-                className="pokemon-icon"
-                style={{ width: '50px', height: '50px', marginBottom: '10px' }}
-                onClick={() => this.handleIconClick('Pikachu')}
-              />
-              <img
-                src={CharmanderBuy}
-                alt="Charmander"
-                className="pokemon-icon"
-                style={{ width: '50px', height: '50px', marginBottom: '10px' }}
-                onClick={() => this.handleIconClick('Charmander')}
-              />
-              <img
-                src={BulbasaurBuy}
-                alt="Bulbasaur"
-                className="pokemon-icon"
-                style={{ width: '50px', height: '50px', marginBottom: '10px' }}
-                onClick={() => this.handleIconClick('Bulbasaur')}
-              />
-              <img
-                src={SquirtleBuy}
-                alt="Squirtle"
-                className="pokemon-icon"
-                style={{ width: '50px', height: '50px', marginBottom: '10px' }}
-                onClick={() => this.handleIconClick('Squirtle')}
-              />
-            </div>
-            {this.renderPokemonInfo()}
-            <div className="purchased-pokemons">
-              <h3>Купленные покемоны:</h3>
-              <ul>
-                {Object.keys(purchasedPokemons).map(pokemon => (
-                  <li key={pokemon}>
-                    {pokemon}: {purchasedPokemons[pokemon]}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
-        )}
-        {currentMarket === MarketVisibility.RandomMarket && (
-          <div className="random-market-container">
-            <img
-              src={backArrow}
-              alt="Back to Store"
-              onClick={this.closeRandomMarket}
-              className="back-arrow"
-            />
-            <RandomMarket
-              coins={coins}
-              onPokemonPurchase={this.handlePokemonPurchase}
-            />
+            {currentMarket === MarketVisibility.Market && (
+              <Market coins={coins} updateCoins={this.updateCoins} />
+            )}
+            {currentMarket === MarketVisibility.RandomMarket && (
+              <RandomMarket coins={coins} onPokemonPurchase={this.handlePokemonPurchase} />
+            )}
+            {currentMarket === MarketVisibility.UsersMarket && (
+              <UsersMarket coins={coins} onPokemonPurchase={this.handlePokemonPurchase} />
+            )}
+            {currentMarket === MarketVisibility.Exchanger && (
+              <Exchanger coins={coins} updateCoins={this.updateCoins} addEgg={this.addEgg} />
+            )}
           </div>
         )}
       </div>
