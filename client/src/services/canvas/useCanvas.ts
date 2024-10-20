@@ -1,14 +1,14 @@
 import Canvas, { TCanvas } from './Canvas';
 
-declare global {
-    interface Window {
-        requestAnimFrame(callback: FrameRequestCallback): number;
-        webkitRequestAnimationFrame(callback: FrameRequestCallback): number;
-        mozRequestAnimationFrame(callback: FrameRequestCallback): number;
-        oRequestAnimationFrame(callback: FrameRequestCallback): number;
-        msRequestAnimationFrame(callback: FrameRequestCallback): number;
-    }
-}
+// declare global {
+//     interface Window {
+//         requestAnimFrame(callback: FrameRequestCallback): number;
+//         webkitRequestAnimationFrame(callback: FrameRequestCallback): number;
+//         mozRequestAnimationFrame(callback: FrameRequestCallback): number;
+//         oRequestAnimationFrame(callback: FrameRequestCallback): number;
+//         msRequestAnimationFrame(callback: FrameRequestCallback): number;
+//     }
+// }
 
 export default function useCanvas(render = (fps: number) => { }) {
     window.requestAnimFrame = (() => {

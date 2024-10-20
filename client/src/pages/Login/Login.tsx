@@ -17,10 +17,12 @@ const Login: React.FC<IBasePage> = (props: IBasePage) => {
             const password = passwordRef.current.value;
             if (1) { // тестовое условие, чтобы логин всегда был успешный и работал без бекенда
             //if (login && password && await server.login(login, password)) {
-                setPage(PAGES.CHAT);
+                setPage(PAGES.MAINMENU);
             }
         }
     }
+
+    const registerClickHandler = () => setPage(PAGES.REGIST);
     const backClickHandler = () => setPage(PAGES.PRELOADER);
 
     return (<div className='login'>
@@ -32,6 +34,7 @@ const Login: React.FC<IBasePage> = (props: IBasePage) => {
             </div>
             <div className='login-buttons'>
                 <Button onClick={loginClickHandler} text='Авторизоваться' />
+                <Button onClick={registerClickHandler} text='у меня нет аккаунта'/>
                 <Button onClick={backClickHandler} text='Назад' />
             </div>
         </div>
