@@ -24,6 +24,7 @@ class Answer {
         '1001' => 'params login or password not set',
         '1005' => 'Other user is playing wright now. If you doesn`t, please change the password',
         '1006' => 'user with this email is already registered',
+        '1007' => 'Ошибка: пароль не соответствует требованиям',
         '9000' => 'unknown error'
     );
 

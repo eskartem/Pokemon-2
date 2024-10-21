@@ -13,11 +13,12 @@ const Regist: React.FC<IBasePage> = (props: IBasePage) => {
     const passwordRef = useRef<HTMLInputElement>(null);
 
     const registClickHandler = async () => {
-        if (loginRef.current && passwordRef.current) {
+        if (nameRef.current && loginRef.current && passwordRef.current) {
+            const name = nameRef.current.value;
             const login = loginRef.current.value;
             const password = passwordRef.current.value;
             //if (1) { // тестовое условие, чтобы логин всегда был успешный и работал без бекенда
-            if (login && password && await server.login(login, password)) {
+            if (login && password && name && await server.registration(login, password)) {
                 setPage(PAGES.HOMEPAGE);
             }
         }

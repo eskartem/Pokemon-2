@@ -39,7 +39,7 @@ class User {
 
         // Проверка пароля
         if (!$this->isValidPassword($password)) {
-            return ['error' => 1006]; // Ошибка: пароль не соответствует требованиям
+            return ['error' => 1007]; 
         }
 
         $user = $this->db->getUserByLogin($login, $password);

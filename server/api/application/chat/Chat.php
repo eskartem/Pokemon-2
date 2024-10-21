@@ -1,5 +1,5 @@
 <?php   
-/*
+
 class Chat{
     function __construct($db) {
         $this->db = $db;
@@ -25,4 +25,3 @@ class Chat{
         ];
     }
 }
-*/

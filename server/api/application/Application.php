@@ -1,7 +1,7 @@
 <?php
 require_once ('../application/db/DB.php');
 require_once ('../application/user/User.php');
-//require_once ('chat/Chat.php');
+require_once ('../application/chat/Chat.php');
 
 class Application {
     function __construct() {
