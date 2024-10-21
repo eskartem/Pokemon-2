@@ -18,7 +18,7 @@ const Regist: React.FC<IBasePage> = (props: IBasePage) => {
             const login = loginRef.current.value;
             const password = passwordRef.current.value;
             //if (1) { // тестовое условие, чтобы логин всегда был успешный и работал без бекенда
-            if (login && password && name && await server.registration(login, password)) {
+            if (login && password && name && await server.registration(login, password, name)) {
                 setPage(PAGES.HOMEPAGE);
             }
         }
