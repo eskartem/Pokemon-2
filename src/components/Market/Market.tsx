@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react'; 
 import PikachuBuy from '../assets/PikachuBuy.jpg';
 import CharmanderBuy from '../assets/CharmanderBuy.jpg';
 import BulbasaurBuy from '../assets/BulbasaurBuy.jpg';
@@ -17,7 +17,7 @@ interface MarketState {
   selectedPokemon: 'Pikachu' | 'Charmander' | 'Bulbasaur' | 'Squirtle' | null;
 }
 
-export class Market extends Component<MarketProps, MarketState> {
+class Market extends React.Component<MarketProps, MarketState> {
   constructor(props: MarketProps) {
     super(props);
     this.state = {
@@ -32,8 +32,13 @@ export class Market extends Component<MarketProps, MarketState> {
     };
   }
 
-  handlePokemonPurchase = (pokemonName: string, price: number) => {
-    if (this.props.coins >= price) {
+  calculatePriceWithCommission = (basePrice: number) => {
+    return Math.round(basePrice * 1.1);
+  };
+
+  handlePokemonPurchase = (pokemonName: string, basePrice: number) => {
+    const priceWithCommission = this.calculatePriceWithCommission(basePrice);
+    if (this.props.coins >= priceWithCommission) {
       this.setState((prevState) => ({
         purchasedPokemons: {
           ...prevState.purchasedPokemons,
@@ -44,7 +49,7 @@ export class Market extends Component<MarketProps, MarketState> {
           [pokemonName]: prevState.inflationRates[pokemonName] + 0.1,
         },
       }));
-      this.props.updateCoins(this.props.coins - price);
+      this.props.updateCoins(this.props.coins - priceWithCommission);
     } else {
       alert('Недостаточно монет!');
     }
@@ -58,20 +63,18 @@ export class Market extends Component<MarketProps, MarketState> {
     const { selectedPokemon } = this.state;
     if (!selectedPokemon) return null;
 
+    const basePrice = 10 * this.state.inflationRates[selectedPokemon];
+    const priceWithCommission = this.calculatePriceWithCommission(basePrice);
+
     return (
       <div className="pokemon-info">
         <h2>{selectedPokemon}</h2>
         <p>{pokemonDescriptions[selectedPokemon]}</p>
         <button
           className="buy-button"
-          onClick={() =>
-            this.handlePokemonPurchase(
-              selectedPokemon,
-              Math.round(10 * this.state.inflationRates[selectedPokemon])
-            )
-          }
+          onClick={() => this.handlePokemonPurchase(selectedPokemon, basePrice)}
         >
-          Купить за {Math.round(10 * this.state.inflationRates[selectedPokemon])} монет
+          Купить за {priceWithCommission} монет
         </button>
       </div>
     );
@@ -121,3 +124,5 @@ export class Market extends Component<MarketProps, MarketState> {
     );
   }
 }
+
+export default Market;

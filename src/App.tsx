@@ -1,109 +1,116 @@
-import React, { Component } from 'react';
+import React, { useReducer, useCallback } from 'react';
 import { MarketVisibility } from './components/Enums/MarketVisibility';
 import storeImage from './components/assets/Store.jpg';
 import randomMarketImage from './components/assets/randomMarket.png';
 import userMarketImage from './components/assets/MarketUser.jpg';
 import exchangerImage from './components/assets/Exchanger.jpg';
 import backArrow from './components/assets/strelka.png';
-import { Market } from './components/Market/Market';
+import Market from './components/Market/Market';
 import { RandomMarket } from './components/Market/randomMarket';
 import { UsersMarket } from './components/Market/UsersMarket';
 import Exchanger from './components/Exchanger/Exchanger';
 import './components/CSS/App.css';
 
-interface AppState {
-  currentMarket: MarketVisibility;
-  coins: number;
-  eggs: number;
-}
+// Тип для редюсера
+type Action =
+  | { type: 'SET_MARKET'; market: MarketVisibility }
+  | { type: 'UPDATE_COINS'; coins: number }
+  | { type: 'ADD_EGG' };
 
-class App extends Component<{}, AppState> {
-  constructor(props: {}) {
-    super(props);
-    this.state = {
-      currentMarket: MarketVisibility.None,
-      coins: 10000,
-      eggs: 0,
-    };
+const initialState = {
+  currentMarket: MarketVisibility.None,
+  coins: 10000,
+  eggs: 0,
+};
+
+// Редюсер для управления состоянием
+const reducer = (state: typeof initialState, action: Action) => {
+  switch (action.type) {
+    case 'SET_MARKET':
+      return { ...state, currentMarket: action.market };
+    case 'UPDATE_COINS':
+      return { ...state, coins: action.coins };
+    case 'ADD_EGG':
+      return { ...state, eggs: state.eggs + 1 };
+    default:
+      return state;
   }
-  
-  openMarket = () => {
-    this.setState({ currentMarket: MarketVisibility.Market });
-  };
+};
 
-  openRandomMarket = () => {
-    this.setState({ currentMarket: MarketVisibility.RandomMarket });
-  };
+const App: React.FC = () => {
+  const [state, dispatch] = useReducer(reducer, initialState);
 
-  openUsersMarket = () => {
-    this.setState({ currentMarket: MarketVisibility.UsersMarket });
-  };
+  const openMarket = useCallback(() => {
+    dispatch({ type: 'SET_MARKET', market: MarketVisibility.Market });
+  }, []);
 
-  openExchanger = () => {
-    this.setState({ currentMarket: MarketVisibility.Exchanger });
-  };
+  const openRandomMarket = useCallback(() => {
+    dispatch({ type: 'SET_MARKET', market: MarketVisibility.RandomMarket });
+  }, []);
 
-  closeMarket = () => {
-    this.setState({ currentMarket: MarketVisibility.None });
-  };
+  const openUsersMarket = useCallback(() => {
+    dispatch({ type: 'SET_MARKET', market: MarketVisibility.UsersMarket });
+  }, []);
 
-  updateCoins = (newCoins: number) => {
-    this.setState({ coins: newCoins });
-  };
+  const openExchanger = useCallback(() => {
+    dispatch({ type: 'SET_MARKET', market: MarketVisibility.Exchanger });
+  }, []);
 
-  addEgg = () => {
-    this.setState((prevState) => ({
-      eggs: prevState.eggs + 1,
-    }));
-  };
+  const closeMarket = useCallback(() => {
+    dispatch({ type: 'SET_MARKET', market: MarketVisibility.None });
+  }, []);
 
-  handlePokemonPurchase = (pokemonName: string, price: number) => {
-    if (this.state.coins >= price) {
-      this.setState((prevState) => ({
-        coins: prevState.coins - price,
-      }));
+  const updateCoins = useCallback((newCoins: number) => {
+    dispatch({ type: 'UPDATE_COINS', coins: newCoins });
+  }, []);
+
+  const addEgg = useCallback(() => {
+    dispatch({ type: 'ADD_EGG' });
+  }, []);
+
+  const handlePokemonPurchase = useCallback((pokemonName: string, price: number) => {
+    if (state.coins >= price) {
+      dispatch({ type: 'UPDATE_COINS', coins: state.coins - price });
     } else {
       alert('Недостаточно монет!');
     }
-  };
+  }, [state.coins]);
 
-  render() {
-    const { currentMarket, coins, eggs } = this.state;
+  const { currentMarket, coins, eggs } = state;
 
-    return (
-      <div>
-        {currentMarket === MarketVisibility.None && (
-          <div className="market-buttons">
-            <img src={storeImage} alt="Store" className="store-image" onClick={this.openMarket} />
-            <img src={randomMarketImage} alt="Random Market" className="random-market-image" onClick={this.openRandomMarket} />
-            <img src={userMarketImage} alt="User Market" className="user-market-image" onClick={this.openUsersMarket} />
-            <img src={exchangerImage} alt="Exchanger" className="exchanger-image" onClick={this.openExchanger} />
+  return (
+    <div>
+      {currentMarket === MarketVisibility.None && (
+        <div className="market-buttons">
+          <img src={storeImage} alt="Store" className="store-image" onClick={openMarket} />
+          <img src={randomMarketImage} alt="Random Market" className="random-market-image" onClick={openRandomMarket} />
+          <img src={userMarketImage} alt="User Market" className="user-market-image" onClick={openUsersMarket} />
+          <img src={exchangerImage} alt="Exchanger" className="exchanger-image" onClick={openExchanger} />
+        </div>
+      )}
+      {(currentMarket === MarketVisibility.Market || currentMarket === MarketVisibility.RandomMarket || currentMarket === MarketVisibility.UsersMarket || currentMarket === MarketVisibility.Exchanger) && (
+        <div>
+          <img src={backArrow} alt="Back to Store" onClick={closeMarket} className="back-arrow" />
+          <div className="coins-display">
+            <h3>Монеты: {coins}</h3>
+            <h4>Яйца: {eggs}</h4>
           </div>
-        )}
-        {(currentMarket === MarketVisibility.Market || currentMarket === MarketVisibility.RandomMarket || currentMarket === MarketVisibility.UsersMarket || currentMarket === MarketVisibility.Exchanger) && (
-          <div>
-            <img src={backArrow} alt="Back to Store" onClick={this.closeMarket} className="back-arrow" />
-            <div className="coins-display">
-              <h3>Монеты: {coins}</h3>
-              <h4>Яйца: {eggs}</h4>
-            </div>
-            {currentMarket === MarketVisibility.Market && (
-              <Market coins={coins} updateCoins={this.updateCoins} />
-            )}
-            {currentMarket === MarketVisibility.RandomMarket && (
-              <RandomMarket coins={coins} onPokemonPurchase={this.handlePokemonPurchase} />
-            )}
-            {currentMarket === MarketVisibility.UsersMarket && (
-              <UsersMarket coins={coins} onPokemonPurchase={this.handlePokemonPurchase} />
-            )}
-            {currentMarket === MarketVisibility.Exchanger && (
-              <Exchanger coins={coins} updateCoins={this.updateCoins} addEgg={this.addEgg} />
-            )}
-          </div>
-        )}
-      </div>
-    );
-  }
-}
+          {currentMarket === MarketVisibility.Market && (
+            <Market coins={coins} updateCoins={updateCoins} />
+          )}
+          {currentMarket === MarketVisibility.RandomMarket && (
+            <RandomMarket coins={coins} onPokemonPurchase={handlePokemonPurchase} />
+          )}
+          {currentMarket === MarketVisibility.UsersMarket && (
+            <UsersMarket coins={coins} onPokemonPurchase={handlePokemonPurchase} />
+          )}
+          {currentMarket === MarketVisibility.Exchanger && (
+            <Exchanger coins={coins} updateCoins={updateCoins} addEgg={addEgg} />
+          )}
+        </div>
+      )}
+    </div>
+  );
+};
 
 export default App;
