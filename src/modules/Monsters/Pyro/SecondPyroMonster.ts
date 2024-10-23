@@ -3,10 +3,11 @@ import Monster from "../Monster";
 class SecondPyroMonster extends Monster {
     name: string = 'Charmander';
     attack: number = 100;
-    healthPoint: number = 150;
+    healthPoint: number = 200;
     defense: number = 100;
     elementType: string = 'Pyro';
     level: number = 1;
+    isAlive: boolean = true;
     skill = {
         name: 'phoenixSpark',
         baseMultiplier: 1.1

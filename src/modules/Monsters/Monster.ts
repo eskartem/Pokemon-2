@@ -7,6 +7,7 @@ export type Monsters = {
     elementType:string,
     level: number,
     skill: object,
+    isAlive: boolean
 }
 
 
@@ -18,6 +19,7 @@ class Monster {
     elementType: string = '';
     level: number = 1;
     skill: object = {};
+    isAlive: boolean = true;
 }
 
 export default Monster;

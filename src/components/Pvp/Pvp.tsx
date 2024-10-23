@@ -8,35 +8,39 @@ import {FirstAnemoMonster, SecondAnemoMonster, ThirdAnemoMonster, FourthAnemoMon
 import Buttons from '../Buttons/Buttons';
 import HpBars from '../Graphics/hpBars/hpBars';
 import Sprites from '../Graphics/sprite/Sprite';
+import Texts from '../Graphics/text'
+
+import { Monsters } from '../../modules/Monsters/Monster'
 
 import './pvp.css';
 import MathPvp from '../../modules/MathPvp/MathPvp';
 
 const Pvp = () => {
-  let firstSelectedMonster = new FourthPyroMonster();
-  let secondSelectedMonster = new FirstGeoMonster();
-  let thirdSelectedMonster = new FirstHydroMonster();
-  let firstSelectedEnemyMonster = new SecondPyroMonster();
-  let secondSelectedEnemyMonster = new FourthAnemoMonster();
-  let thirdSelectedEnemyMonster = new FourthHydroMonster();
+  let firstSelectedMonster: Monsters = new FourthPyroMonster();
+  let secondSelectedMonster: Monsters = new FirstGeoMonster();
+  let thirdSelectedMonster: Monsters = new FirstHydroMonster();
+  let firstSelectedEnemyMonster: Monsters = new SecondPyroMonster();
+  let secondSelectedEnemyMonster: Monsters = new FourthAnemoMonster();
+  let thirdSelectedEnemyMonster: Monsters = new FourthHydroMonster();
 
   const mathPvp = new MathPvp();
 
-  let [sQueue, setSQueue] = useState(mathPvp.sortQueuesByLevel(firstSelectedMonster,
+  let [sQueue, setSQueue] = useState(mathPvp.sortQueuesByLevel(
+    firstSelectedMonster,
     secondSelectedMonster,
     thirdSelectedMonster,
     firstSelectedEnemyMonster,
     secondSelectedEnemyMonster,
     thirdSelectedEnemyMonster))
 
-  let [activeMonster, setActiveMonster] = useState(sQueue[0]);
+  let [activeMonster, setActiveMonster] = useState<Monsters>(sQueue[0]);
 
-  const [hpBarFirstMonster, setHpBarFirstMonster] = useState(firstSelectedMonster.healthPoint);
-  const [hpBarSecondMonster, setHpBarSecondMonster] = useState(secondSelectedMonster.healthPoint)
-  const [hpBarThirdMonster, setHpBarThirdMonster] = useState(thirdSelectedMonster.healthPoint);
-  const [hpBarFirstEnemyMonster, setHpBarFirstEnemyMonster] = useState(firstSelectedEnemyMonster.healthPoint);
-  const [hpBarSecondEnemyMonster, setHpBarSecondEnemyMonster] = useState(secondSelectedEnemyMonster.healthPoint);
-  const [hpBarThirdEnemyMonster, setHpBarThirdEnemyMonster] = useState(thirdSelectedEnemyMonster.healthPoint);
+  const [hpBarFirstMonster, setHpBarFirstMonster] = useState<number>(firstSelectedMonster.healthPoint);
+  const [hpBarSecondMonster, setHpBarSecondMonster] = useState<number>(secondSelectedMonster.healthPoint)
+  const [hpBarThirdMonster, setHpBarThirdMonster] = useState<number>(thirdSelectedMonster.healthPoint);
+  const [hpBarFirstEnemyMonster, setHpBarFirstEnemyMonster] = useState<number>(firstSelectedEnemyMonster.healthPoint);
+  const [hpBarSecondEnemyMonster, setHpBarSecondEnemyMonster] = useState<number>(secondSelectedEnemyMonster.healthPoint);
+  const [hpBarThirdEnemyMonster, setHpBarThirdEnemyMonster] = useState<number>(thirdSelectedEnemyMonster.healthPoint);
 
   //window Size
   const [width, setWidth] = useState(window.innerWidth);
@@ -59,8 +63,7 @@ const Pvp = () => {
     window.addEventListener('resize', handleResize);
     return () => {
       window.removeEventListener('resize', handleResize);
-    };
-  }, []);
+    };})
   
   return (<>
     <Stage {...stageProps} className='pvpArea'>
@@ -80,14 +83,23 @@ const Pvp = () => {
         hpBarSecondEnemyMonster={hpBarSecondEnemyMonster}
         hpBarThirdEnemyMonster={hpBarThirdEnemyMonster}
       />
-      <Text
-        text={`${activeMonster.name}`}
-        anchor={0.5}
-        x={550}
-        y={20}
+      <Texts activeMonster={activeMonster}
+        stageProps={stageProps}
+        firstSelectedMonster={firstSelectedMonster}
+        secondSelectedMonster={secondSelectedMonster}
+        thirdSelectedMonster={thirdSelectedMonster}
+        firstSelectedEnemyMonster={firstSelectedEnemyMonster}
+        secondSelectedEnemyMonster={secondSelectedEnemyMonster}
+        thirdSelectedEnemyMonster={thirdSelectedEnemyMonster}
+        hpBarFirstMonster={hpBarFirstMonster}
+        hpBarSecondMonster={hpBarSecondMonster}
+        hpBarThirdMonster={hpBarThirdMonster}
+        hpBarFirstEnemyMonster={hpBarFirstEnemyMonster}
+        hpBarSecondEnemyMonster={hpBarSecondEnemyMonster}
+        hpBarThirdEnemyMonster={hpBarThirdEnemyMonster}
       />
     </Stage>
-    <Buttons setActiveMonster={setActiveMonster}
+    <Buttons sQueue={sQueue}
       activeMonster={activeMonster}
       firstSelectedMonster={firstSelectedMonster}
       secondSelectedMonster={secondSelectedMonster}
@@ -95,14 +107,14 @@ const Pvp = () => {
       firstSelectedEnemyMonster={firstSelectedEnemyMonster}
       secondSelectedEnemyMonster={secondSelectedEnemyMonster} 
       thirdSelectedEnemyMonster={thirdSelectedEnemyMonster}
-      setSQueue={setSQueue}
-      sQueue={sQueue}
       hpBarFirstMonster={hpBarFirstMonster}
       hpBarSecondMonster={hpBarSecondMonster}
       hpBarThirdMonster={hpBarThirdMonster}
       hpBarFirstEnemyMonster={hpBarFirstEnemyMonster}
       hpBarSecondEnemyMonster={hpBarSecondEnemyMonster}
       hpBarThirdEnemyMonster={hpBarThirdEnemyMonster}
+      setSQueue={setSQueue}
+      setActiveMonster={setActiveMonster}
       setHpBarFirstEnemyMonster={setHpBarFirstEnemyMonster}
       setHpBarFirstMonster={setHpBarFirstMonster}
       setHpBarSecondEnemyMonster={setHpBarSecondEnemyMonster}

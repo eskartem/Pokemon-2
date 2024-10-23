@@ -3,7 +3,34 @@ import  {useRef} from "react"
 import './Buttons.css'
 import MathPvp from "../../modules/MathPvp/MathPvp";
 
-const Buttons: React.FC = (props: any) => {
+import { Monsters } from "../../modules/Monsters/Monster";
+
+interface buttonsProps {
+        activeMonster: Monsters, 
+        firstSelectedMonster: Monsters,
+        secondSelectedMonster: Monsters,
+        thirdSelectedMonster: Monsters,
+        firstSelectedEnemyMonster: Monsters,
+        secondSelectedEnemyMonster: Monsters,
+        thirdSelectedEnemyMonster: Monsters,
+        setSQueue: (sQueue: Monsters[]) => void,
+        sQueue: Monsters[],
+        setActiveMonster: (activeMonster: Monsters) => void,
+        hpBarFirstMonster: number,
+        hpBarSecondMonster: number,
+        hpBarThirdMonster: number,
+        hpBarFirstEnemyMonster: number,
+        hpBarSecondEnemyMonster: number,
+        hpBarThirdEnemyMonster: number,
+        setHpBarFirstEnemyMonster: (nhpBarFirstMonsterumber: number) => void,
+        setHpBarFirstMonster: (hpBarSecondMonster: number) => void,
+        setHpBarSecondEnemyMonster: (hpBarThirdMonster: number) => void,
+        setHpBarSecondMonster: (hpBarFirstEnemyMonster: number) => void,
+        setHpBarThirdEnemyMonster: (hpBarSecondEnemyMonster: number) => void,
+        setHpBarThirdMonster: (hpBarThirdEnemyMonster: number) => void
+}
+
+const Buttons: React.FC<buttonsProps> = (props: any) => {
 
     const mathPvp = new MathPvp();
     let {activeMonster, 
@@ -50,7 +77,7 @@ const Buttons: React.FC = (props: any) => {
      }
 
     const ActiveButtonMenu = () => {
-        if(activeMonster.name == firstSelectedMonster.name || activeMonster.name == secondSelectedMonster.name || activeMonster.name == thirdSelectedMonster.name) {
+        if(activeMonster.name === firstSelectedMonster.name || activeMonster.name === secondSelectedMonster.name || activeMonster.name === thirdSelectedMonster.name) {
             return (<>
                 <div ref={firstPlayerButton} className='showButton buttons'>
                 <button onClick={() => {
@@ -106,7 +133,7 @@ const Buttons: React.FC = (props: any) => {
                 }}>Назад </button>
             </div>
             </>)
-        } else if(activeMonster.name == firstSelectedEnemyMonster.name || activeMonster.name == secondSelectedEnemyMonster.name || activeMonster.name == thirdSelectedEnemyMonster.name){
+        } else if(activeMonster.name === firstSelectedEnemyMonster.name || activeMonster.name === secondSelectedEnemyMonster.name || activeMonster.name === thirdSelectedEnemyMonster.name){
             return (<>
             <div ref={secondPlayerButton} className='showButton buttons'>
                 <button onClick={() => {
@@ -165,7 +192,7 @@ const Buttons: React.FC = (props: any) => {
             </div>
             </>)
         } else {
-            return(<><button>Проеб</button></>)
+            return(<></>)
         }
     }
     

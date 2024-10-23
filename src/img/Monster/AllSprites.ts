@@ -17,9 +17,10 @@ import firstPyroMonster from './firstPyroMonster.png'
 import secondPyroMonster from './secondPyroMonster.png'
 import thirdPyroMonster from './thirdPyroMonster.png'
 import fourthPyroMonster from './fourthPyroMonster.png'
+import empty from './empty.png'
 
 export {firstAnemoMoster, secondAnemoMonster, thirdAnemoMonster, fourthAnemoMonster,
     firstGeoMonster, secondGeoMonster, thirdGeoMonster, fourthGeoMonster,
     firstHydroMonster, secondHydroMonster, thirdHydroMonster, fourthHydroMonster,
-    firstPyroMonster, secondPyroMonster, thirdPyroMonster, fourthPyroMonster
+    firstPyroMonster, secondPyroMonster, thirdPyroMonster, fourthPyroMonster, empty
 }
