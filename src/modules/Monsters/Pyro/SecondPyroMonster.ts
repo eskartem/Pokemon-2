@@ -6,7 +6,7 @@ class SecondPyroMonster extends Monster {
     healthPoint: number = 200;
     defense: number = 100;
     elementType: string = 'Pyro';
-    level: number = 1;
+    level: number = 4;
     isAlive: boolean = true;
     skill = {
         name: 'phoenixSpark',

@@ -24,7 +24,7 @@ const Pvp = () => {
   let thirdSelectedEnemyMonster: Monsters = new FourthHydroMonster();
 
   const mathPvp = new MathPvp();
-//1
+
   let [sQueue, setSQueue] = useState(mathPvp.sortQueuesByLevel(
     firstSelectedMonster,
     secondSelectedMonster,
@@ -32,6 +32,7 @@ const Pvp = () => {
     firstSelectedEnemyMonster,
     secondSelectedEnemyMonster,
     thirdSelectedEnemyMonster))
+  console.log(sQueue)
 
   let [activeMonster, setActiveMonster] = useState<Monsters>(sQueue[0]);
 

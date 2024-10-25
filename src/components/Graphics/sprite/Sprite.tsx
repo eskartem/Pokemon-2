@@ -160,7 +160,7 @@ const Sprites: React.FC<spritesProps> = (props: spritesProps) => {
             isOpenFirstEnemyMonster={isOpenFirstEnemyMonster}
             isOpenSecondEnemyMonster={isOpenSecondEnemyMonster}
             isOpenThirdEnemyMonster={isOpenThirdEnemyMonster}
-            firstSelectedMonster={firstSelectedEnemyMonster}
+            firstSelectedMonster={firstSelectedMonster}
             secondSelectedMonster={secondSelectedMonster}
             thirdSelectedMonster={thirdSelectedMonster}
             firstSelectedEnemyMonster={firstSelectedEnemyMonster}
