@@ -1,0 +1,28 @@
+
+
+
+
+.user-resources {
+    display: inline-flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: space-evenly;
+}
+
+.market-button {
+    border-left: 3px gray solid;
+    border-right: 3px gray solid;
+    background-color: white;
+    padding: 5px;
+
+    &:hover {
+        background-color: rgb(185, 185, 185);
+    }
+}
+
+.resourses-text {
+    display: inline;
+    border: 3px solid rgb(76, 84, 227);
+    border-radius: 5px; 
+    background-color: rgb(135, 103, 58);
+}
