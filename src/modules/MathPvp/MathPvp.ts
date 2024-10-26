@@ -2,24 +2,27 @@ import { Monsters } from "../Monsters/Monster";
 
 class MathPvp {
 
-    dealingDamage = (healthPoint: number, attacking: Monsters, type: string)  => {
+    dealingDamage = (healthPoint: number, attacking: Monsters, type: string, attacked: Monsters): number  => {
         if(type === 'baseAttack') {
-            const damage = Math.round(attacking.attack * Math.random() * (0.8 - 0.1) + 0.1);
+            const damage = attacking.attack + 10 - (attacked.defense * 0.8);
             return healthPoint = healthPoint - damage;
         } else if (type === 'skill') {
-            const damage = Math.round(attacking.attack * Math.random() * (0.8 - 0.1) + 0.1);
+            const damage = attacking.attack + 10 - (attacked.defense * 0.8);
             return healthPoint = healthPoint - damage;
-        } 
+        } else {
+            return 0
+        }
     }
 
-    nextMove = (arr: Monsters[]) => {
-        if(arr.length === 6) {
+    nextMove = (arr: Monsters[], attacked: Monsters, healthPoint: number) => {
+        if(healthPoint <= 0) {
+            arr = arr.filter((item) => item.name != attacked.name)
+            console.log(arr)
+        }
         const removedElement = arr.shift();
         if (removedElement) {
             arr.push(removedElement);
-        }
-        return arr;
-    }
+        } return arr;
     }
 
     sortQueuesByLevel = (a: Monsters, b: Monsters, c: Monsters, d: Monsters, e: Monsters, f: Monsters) => {
@@ -33,8 +36,10 @@ class MathPvp {
         return objects;
     }
 
-    isDead = (monster: Monsters, arr: Monsters[]) => {
-        return arr.filter(item => item !== monster)
+    isDead = (healthPoint: number) => {
+        if(healthPoint <= 0) {
+            return healthPoint = 0;
+        } return healthPoint
     }
     
 

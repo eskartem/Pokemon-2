@@ -9,6 +9,7 @@ import Buttons from '../Buttons/Buttons';
 import HpBars from '../Graphics/hpBars/hpBars';
 import Sprites from '../Graphics/sprite/Sprite';
 import Texts from '../Graphics/text'
+import FinalScreen from '../finalScreen/finalScreen';
 
 import { Monsters } from '../../modules/Monsters/Monster'
 
@@ -32,7 +33,6 @@ const Pvp = () => {
     firstSelectedEnemyMonster,
     secondSelectedEnemyMonster,
     thirdSelectedEnemyMonster))
-  console.log(sQueue)
 
   let [activeMonster, setActiveMonster] = useState<Monsters>(sQueue[0]);
 
@@ -75,6 +75,12 @@ const Pvp = () => {
         firstSelectedEnemyMonster={firstSelectedEnemyMonster}
         secondSelectedEnemyMonster={secondSelectedEnemyMonster}      
         thirdSelectedEnemyMonster={thirdSelectedEnemyMonster}
+        hpBarFirstMonster={hpBarFirstMonster}
+        hpBarSecondMonster={hpBarSecondMonster}
+        hpBarThirdMonster={hpBarThirdMonster}
+        hpBarFirstEnemyMonster={hpBarFirstEnemyMonster}
+        hpBarSecondEnemyMonster={hpBarSecondEnemyMonster}
+        hpBarThirdEnemyMonster={hpBarThirdEnemyMonster}
         />
       <HpBars stageProps={stageProps} 
         hpBarFirstMonster={hpBarFirstMonster}
@@ -122,6 +128,14 @@ const Pvp = () => {
       setHpBarSecondMonster={setHpBarSecondMonster}
       setHpBarThirdEnemyMonster={setHpBarThirdEnemyMonster}
       setHpBarThirdMonster={setHpBarThirdMonster}
+    />
+    <FinalScreen 
+      hpBarFirstMonster={hpBarFirstMonster}
+      hpBarSecondMonster={hpBarSecondMonster}
+      hpBarThirdMonster={hpBarThirdMonster}
+      hpBarFirstEnemyMonster={hpBarFirstEnemyMonster}
+      hpBarSecondEnemyMonster={hpBarSecondEnemyMonster}
+      hpBarThirdEnemyMonster={hpBarThirdEnemyMonster}
     />
   </>)
 };

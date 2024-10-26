@@ -4,7 +4,7 @@ class SecondPyroMonster extends Monster {
     name: string = 'Charmander';
     attack: number = 100;
     healthPoint: number = 200;
-    defense: number = 100;
+    defense: number = 0;
     elementType: string = 'Pyro';
     level: number = 4;
     isAlive: boolean = true;

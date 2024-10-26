@@ -4,7 +4,7 @@ class FourthPyroMonster extends Monster {
     name: string = 'Growlithe';
     attack: number = 100;
     healthPoint: number = 200;
-    defense: number = 100;
+    defense: number = 70;
     elementType: string = 'Pyro';
     level: number = 2;
     isAlive: boolean = true;

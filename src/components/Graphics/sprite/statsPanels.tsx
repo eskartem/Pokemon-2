@@ -19,6 +19,12 @@ interface StatsPanelProps {
     firstSelectedEnemyMonster: Monsters
     secondSelectedEnemyMonster: Monsters
     thirdSelectedEnemyMonster: Monsters
+    hpBarFirstMonster: number
+    hpBarSecondMonster: number
+    hpBarThirdMonster: number
+    hpBarFirstEnemyMonster: number
+    hpBarSecondEnemyMonster: number
+    hpBarThirdEnemyMonster: number
 }
 
 const StatsPanel: React.FC<StatsPanelProps> = (props: StatsPanelProps) => {
@@ -36,11 +42,17 @@ const StatsPanel: React.FC<StatsPanelProps> = (props: StatsPanelProps) => {
         thirdSelectedMonster,
         firstSelectedEnemyMonster,
         secondSelectedEnemyMonster,
-        thirdSelectedEnemyMonster
+        thirdSelectedEnemyMonster,
+        hpBarFirstMonster,
+        hpBarSecondMonster,
+        hpBarThirdMonster,
+        hpBarFirstEnemyMonster,
+        hpBarSecondEnemyMonster,
+        hpBarThirdEnemyMonster
     } = props
 
     return (<>
-    {isOpenFirstMonster && (<Container x={stageProps.width * 0.15 } y={stageProps.height * 0.3 + 35}>
+    {(isOpenFirstMonster && hpBarFirstMonster > 0) && (<Container x={stageProps.width * 0.15 } y={stageProps.height * 0.3 + 35}>
             <Text
             text={`hp: ${firstSelectedMonster.healthPoint}`}
             scale={0.5}
@@ -63,7 +75,7 @@ const StatsPanel: React.FC<StatsPanelProps> = (props: StatsPanelProps) => {
             />
         </Container>
         )}
-    {isOpenSecondMonster && (<Container x={stageProps.width * 0.15 } y={stageProps.height * 0.5 + 35}>
+    {(isOpenSecondMonster && hpBarSecondMonster > 0) && (<Container x={stageProps.width * 0.15 } y={stageProps.height * 0.5 + 35}>
             <Text
             text={`hp: ${secondSelectedMonster.healthPoint}`}
             scale={0.5}
@@ -86,7 +98,7 @@ const StatsPanel: React.FC<StatsPanelProps> = (props: StatsPanelProps) => {
             />
         </Container>
         )}
-    {isOpenThirdMonster && (<Container x={stageProps.width * 0.15 } y={stageProps.height * 0.7 + 35}>
+    {(isOpenThirdMonster && hpBarThirdMonster > 0) && (<Container x={stageProps.width * 0.15 } y={stageProps.height * 0.7 + 35}>
             <Text
             text={`hp: ${thirdSelectedMonster.healthPoint}`}
             scale={0.5}
@@ -109,7 +121,7 @@ const StatsPanel: React.FC<StatsPanelProps> = (props: StatsPanelProps) => {
             />
         </Container>
         )}
-    {isOpenFirstEnemyMonster && (<Container x={stageProps.width * 0.85 - 30 } y={stageProps.height * 0.3 + 35}>
+    {(isOpenFirstEnemyMonster && hpBarFirstEnemyMonster > 0) && (<Container x={stageProps.width * 0.85 - 30 } y={stageProps.height * 0.3 + 35}>
             <Text
             text={`hp: ${firstSelectedEnemyMonster.healthPoint}`}
             scale={0.5}
@@ -132,7 +144,7 @@ const StatsPanel: React.FC<StatsPanelProps> = (props: StatsPanelProps) => {
             />
         </Container>
         )}
-    {isOpenSecondEnemyMonster && (<Container x={stageProps.width * 0.85 - 30 } y={stageProps.height * 0.5 + 35}>
+    {(isOpenSecondEnemyMonster && hpBarSecondEnemyMonster > 0) && (<Container x={stageProps.width * 0.85 - 30 } y={stageProps.height * 0.5 + 35}>
             <Text
             text={`hp: ${secondSelectedEnemyMonster.healthPoint}`}
             scale={0.5}
@@ -155,7 +167,7 @@ const StatsPanel: React.FC<StatsPanelProps> = (props: StatsPanelProps) => {
             />
         </Container>
         )}
-    {isOpenThirdEnemyMonster && (<Container x={stageProps.width * 0.85 - 30 } y={stageProps.height * 0.7 + 35}>
+    {(isOpenThirdEnemyMonster && hpBarThirdEnemyMonster > 0) && (<Container x={stageProps.width * 0.85 - 30 } y={stageProps.height * 0.7 + 35}>
             <Text
             text={`hp: ${thirdSelectedEnemyMonster.healthPoint}`}
             scale={0.5}

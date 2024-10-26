@@ -52,7 +52,7 @@ const Texts: React.FC<textProps> = (props: textProps) => {
     return(<>
     <Text
         text={`${activeMonster.name}`}
-        x={550}
+        x={stageProps.width * 0.5 - 50}
         y={20}
       />
     <Text
@@ -97,36 +97,48 @@ const Texts: React.FC<textProps> = (props: textProps) => {
         scale={0.7}
         style={textStyle}
       />
-      <Text 
-            text={`${firstSelectedMonster.name}`}
-            x={stageProps.width * 0.15 - 120}
-            y={stageProps.height * 0.3}
+      {hpBarFirstMonster > 0 && (
+        <Text 
+              text={`${firstSelectedMonster.name}`}
+              x={stageProps.width * 0.15 - 120}
+              y={stageProps.height * 0.3}
         />
+      )}
+      {hpBarSecondMonster > 0 && (
         <Text 
             text={`${secondSelectedMonster.name}`}
             x={stageProps.width * 0.15 - 120}
             y={stageProps.height * 0.5}
         />
+      )}
+      {hpBarThirdMonster > 0 && (
         <Text 
             text={`${thirdSelectedMonster.name}`}
             x={stageProps.width * 0.15 - 120}
             y={stageProps.height * 0.7}
         />
+      )}
+      {hpBarFirstEnemyMonster > 0 && (
         <Text 
             text={`${firstSelectedEnemyMonster.name}`}
             x={stageProps.width * 0.85}
             y={stageProps.height * 0.3}
         />
+      )}
+      {hpBarSecondEnemyMonster > 0 && (
         <Text 
             text={`${secondSelectedEnemyMonster.name}`}
             x={stageProps.width * 0.85}
             y={stageProps.height * 0.5}
         />
+      )}
+      {hpBarThirdEnemyMonster > 0 && (
         <Text 
             text={`${thirdSelectedEnemyMonster.name}`}
             x={stageProps.width * 0.85}
             y={stageProps.height * 0.7}
         />
+      )}
     </>)
 }
 

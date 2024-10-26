@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { Sprite } from "@pixi/react"
+import { Sprite, Text} from "@pixi/react"
 import {firstAnemoMoster, secondAnemoMonster, thirdAnemoMonster, fourthAnemoMonster,
     firstGeoMonster, secondGeoMonster, thirdGeoMonster, fourthGeoMonster,
     firstHydroMonster, secondHydroMonster, thirdHydroMonster, fourthHydroMonster,
@@ -20,7 +20,13 @@ interface spritesProps {
     thirdSelectedMonster: Monsters,
     firstSelectedEnemyMonster: Monsters,
     secondSelectedEnemyMonster: Monsters,
-    thirdSelectedEnemyMonster: Monsters
+    thirdSelectedEnemyMonster: Monsters,
+    hpBarFirstMonster: number,
+    hpBarSecondMonster: number,
+    hpBarThirdMonster: number,
+    hpBarFirstEnemyMonster: number,
+    hpBarSecondEnemyMonster: number,
+    hpBarThirdEnemyMonster: number,
 }
 
 const Sprites: React.FC<spritesProps> = (props: spritesProps) => {
@@ -31,7 +37,13 @@ const Sprites: React.FC<spritesProps> = (props: spritesProps) => {
         thirdSelectedMonster,
         firstSelectedEnemyMonster,
         secondSelectedEnemyMonster,
-        thirdSelectedEnemyMonster
+        thirdSelectedEnemyMonster,
+        hpBarFirstMonster,
+        hpBarSecondMonster,
+        hpBarThirdMonster,
+        hpBarFirstEnemyMonster,
+        hpBarSecondEnemyMonster,
+        hpBarThirdEnemyMonster
     } = props
 
     let [firstSelectedSprite, setFirstSelectedSprite] = useState('');
@@ -117,41 +129,59 @@ const Sprites: React.FC<spritesProps> = (props: spritesProps) => {
         secondSelectedEnemySprite, thirdSelectedEnemyMonster, thirdSelectedEnemySprite])
 
     return(<>
-        <Sprite image={firstSelectedMonster.isAlive ? firstSelectedSprite || empty : empty} 
-            x={stageProps.width * 0.15} 
-            y={stageProps.height * 0.3} scale={[-1.5, 1.5]} 
-            interactive
-            onclick={() => {setIsOpenFirstMonster(isOpenFirstMonster === false ? true : false)}} />
-        <Sprite image={secondSelectedMonster.isAlive ? secondSelectedSprite || empty : empty} 
-            x={stageProps.width * 0.15} 
-            y={stageProps.height * 0.5} 
-            scale={[-1.5, 1.5]} 
-            interactive
-            onclick={() => {setIsOpenSecondMonster(isOpenSecondMonster === false ? true : false)}}/>
-        <Sprite image={thirdSelectedMonster.isAlive ? thirdSelectedSprite || empty : empty} 
-            x={stageProps.width * 0.15} 
-            y={stageProps.height * 0.7} 
-            scale={[-1.5, 1.5]} 
-            interactive
-            onclick={() => {setIsOpenThirdMonster(isOpenThirdMonster === false ? true : false)}}/>
-        <Sprite image={firstSelectedEnemyMonster.isAlive ? firstSelectedEnemySprite || empty : empty} 
-            x={stageProps.width * 0.85} 
-            y={stageProps.height * 0.3} 
-            scale={[1.5, 1.5]} 
-            interactive
-            onclick={() => {setIsOpenFirstEnemyMonster(isOpenFirstEnemyMonster === false ? true : false)}}/>
-        <Sprite image={secondSelectedEnemyMonster.isAlive ? secondSelectedEnemySprite || empty : empty} 
-            x={stageProps.width * 0.85} 
-            y={stageProps.height * 0.5} 
-            scale={[1.5, 1.5]} 
-            interactive
-            onclick={() => {setIsOpenSecondEnemyMonster(isOpenSecondEnemyMonster === false ? true : false)}}/>
-        <Sprite image={thirdSelectedEnemyMonster.isAlive ? thirdSelectedEnemySprite || empty : empty} 
-            x={stageProps.width * 0.85} 
-            y={stageProps.height * 0.7} 
-            scale={[1.5, 1.5]} 
-            interactive
-            onclick={() => {setIsOpenThirdEnemyMonster(isOpenThirdEnemyMonster === false ? true : false)}}/>
+        {hpBarFirstMonster > 0 && (
+            <Sprite image={firstSelectedMonster.isAlive ? firstSelectedSprite || empty : empty} 
+                x={stageProps.width * 0.15} 
+                y={stageProps.height * 0.3} scale={[-1.5, 1.5]} 
+                interactive
+                onclick={() => {setIsOpenFirstMonster(isOpenFirstMonster === false ? true : false)}} 
+            />
+        )}
+        {hpBarSecondMonster > 0 && (
+            <Sprite image={secondSelectedMonster.isAlive ? secondSelectedSprite || empty : empty} 
+                x={stageProps.width * 0.15} 
+                y={stageProps.height * 0.5} 
+                scale={[-1.5, 1.5]} 
+                interactive
+                onclick={() => {setIsOpenSecondMonster(isOpenSecondMonster === false ? true : false)}}
+            />
+        )}
+        {hpBarThirdMonster > 0 && (
+            <Sprite image={thirdSelectedMonster.isAlive ? thirdSelectedSprite || empty : empty} 
+                x={stageProps.width * 0.15} 
+                y={stageProps.height * 0.7} 
+                scale={[-1.5, 1.5]} 
+                interactive
+                onclick={() => {setIsOpenThirdMonster(isOpenThirdMonster === false ? true : false)}}
+            />
+        )}
+        {hpBarFirstEnemyMonster > 0 && (
+            <Sprite image={firstSelectedEnemyMonster.isAlive ? firstSelectedEnemySprite || empty : empty} 
+                x={stageProps.width * 0.85} 
+                y={stageProps.height * 0.3} 
+                scale={[1.5, 1.5]} 
+                interactive
+                onclick={() => {setIsOpenFirstEnemyMonster(isOpenFirstEnemyMonster === false ? true : false)}}
+            />
+        )}
+        {hpBarSecondEnemyMonster > 0 && (
+            <Sprite image={secondSelectedEnemyMonster.isAlive ? secondSelectedEnemySprite || empty : empty} 
+                x={stageProps.width * 0.85} 
+                y={stageProps.height * 0.5} 
+                scale={[1.5, 1.5]} 
+                interactive
+                onclick={() => {setIsOpenSecondEnemyMonster(isOpenSecondEnemyMonster === false ? true : false)}}
+            />
+        )}
+        {hpBarThirdEnemyMonster > 0 && (
+            <Sprite image={thirdSelectedEnemyMonster.isAlive ? thirdSelectedEnemySprite || empty : empty} 
+                x={stageProps.width * 0.85} 
+                y={stageProps.height * 0.7} 
+                scale={[1.5, 1.5]} 
+                interactive
+                onclick={() => {setIsOpenThirdEnemyMonster(isOpenThirdEnemyMonster === false ? true : false)}}
+            />
+        )}
         <StatsPanel 
             stageProps={stageProps}
             isOpenFirstMonster={isOpenFirstMonster}
@@ -166,6 +196,12 @@ const Sprites: React.FC<spritesProps> = (props: spritesProps) => {
             firstSelectedEnemyMonster={firstSelectedEnemyMonster}
             secondSelectedEnemyMonster={secondSelectedEnemyMonster}
             thirdSelectedEnemyMonster={thirdSelectedEnemyMonster}
+            hpBarFirstMonster={hpBarFirstMonster}
+            hpBarSecondMonster={hpBarSecondMonster}
+            hpBarThirdMonster={hpBarThirdMonster}
+            hpBarFirstEnemyMonster={hpBarFirstEnemyMonster}
+            hpBarSecondEnemyMonster={hpBarSecondEnemyMonster}
+            hpBarThirdEnemyMonster={hpBarThirdEnemyMonster}
         />
     </>)
 }
