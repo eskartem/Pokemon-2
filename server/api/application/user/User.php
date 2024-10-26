@@ -1,6 +1,7 @@
 <?php
 
 class User {
+    private $db;
     function __construct($db) {
         $this->db = $db;
     }
@@ -52,5 +53,9 @@ class User {
             ];
         }
         return ['error' => 1004];
+    }
+
+    public function getResources($token) {
+        return $this->db->getResources($token);
     }
 }

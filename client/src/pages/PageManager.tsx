@@ -2,9 +2,10 @@ import React, { useState } from 'react';
 
 import Preloader from './Preloader/Preloader';
 import Login from './Login/Login';
-import Regist from './Regist/Regist';
+import Registration from './Registration/Registration';
 import MainMenu from './MainMenu/MainMenu';
 import Settings from './Settings/Settings';
+import Inventory from './Inventory/Inventory';
 import Map from './Map/Map';
 import Market from './Market/Market';
 import Battle from './Battle/Battle';
@@ -15,8 +16,9 @@ import NotFound from './NotFound/NotFound';
 export enum PAGES {
     PRELOADER,
     LOGIN,
-    REGIST,
+    REGISTRATION,
     MAINMENU,
+    INVENTORY,
     SETTINGS,
     MAP,
     MARKET,
@@ -37,8 +39,9 @@ const PageManager: React.FC = () => {
         <>
             {page === PAGES.PRELOADER && <Preloader setPage={setPage} />}
             {page === PAGES.LOGIN && <Login setPage={setPage} />}
-            {page === PAGES.REGIST && <Regist setPage={setPage} />}
+            {page === PAGES.REGISTRATION && <Registration setPage={setPage} />}
             {page === PAGES.MAINMENU && <MainMenu setPage={setPage} />}
+            {page === PAGES.INVENTORY && <Inventory setPage={setPage} />}
             {page === PAGES.SETTINGS && <Settings setPage={setPage} />}
             {page === PAGES.MAP && <Map setPage={setPage} />}
             {page === PAGES.MARKET && <Market setPage={setPage} />}

@@ -3,7 +3,7 @@
 error_reporting(1);
 
 header('Content-Type: application/json; charset=utf-8');
-header('Access-Control-Allow-Origin: *');
+// header('Access-Control-Allow-Origin: *');
 
 require_once('application/Answer.php');
 require_once('application/Application.php');
@@ -17,9 +17,30 @@ function result($params) {
             case 'login': return $app->login($params);
             case 'logout': return $app->logout($params);
             case 'registration': return $app->registration($params);
+            case 'getResources': return $app->getResources($params);
             // chat
-            case 'sendMessage': return $app->sendMessage($params);
-            case 'getMessages': return $app->getMessages($params);
+            case 'sendMessage': return $app->sendMessage($params);//loop
+            case 'getMessages': return $app->getMessages($params);//loop
+            //gamer info
+            // case 'userInfo': return $app-> userInfo($params);
+            // case 'pokemonUpgrade': return $app-> pokemonUpgrade($params);
+            //inventory
+
+            //battle
+            // case 'updateBattle': return $app-> updateBattle($params); // loop //получаю данные по всем игрокам
+            // case 'endBattle': return $app-> endBattle($params);
+            // case 'actionUser': return $app-> actionUser($params); //действие игрока в бою во время ход
+            //map
+            // case 'startGame': return $app-> startGame($params);
+            // case 'endGame': return $app-> endGame($params);
+            // case 'getMap': return $app-> getMap($params);
+            // case 'sceneUpgrade': return $app-> sceneUpgrade($params); //loop
+            // case 'moveUser': return $app-> moveUser($params);//надо уметь бросать энд гейм
+            //market
+            case 'getCatalog': return $app-> getCatalog($params);
+            // case 'buy': return $app-> buy($params);
+            // case 'sale': return $app-> sale($params);
+
             default: return ['error' => 102];
         }
     }

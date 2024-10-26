@@ -1,7 +1,7 @@
 import md5 from 'md5';
 import CONFIG from "../../config";
 import Store from "../store/Store";
-import { TAnswer, TError, TMessagesResponse, TUser } from "./types";
+import { TAnswer, TError, TMessagesResponse, TUser, TUserResources, TMarketCatalog } from "./types";
 
 const { CHAT_TIMESTAMP, HOST } = CONFIG;
 
@@ -104,6 +104,23 @@ class Server {
             this.store.clearMessages();
         }
     }
+
+    async getUserResources(): Promise<TUserResources | null> {
+        const resources = await this.request<TUserResources>('getResources');
+        if (resources) {
+            return resources;
+        }
+        return null;
+    }
+
+    async getCatalog():Promise<TMarketCatalog | null> {
+        const catalog = await this.request<TMarketCatalog>('getCatalog');
+        if (catalog) {
+            return catalog;
+        }
+        return null;
+    }
+
 }
 
 export default Server;

@@ -30,7 +30,7 @@ const Popup: React.FC = () => {
                 title: `Ошибка №${code}`,
                 text,
             });
-            setTimeout(() => setData(null), 3000);
+            setTimeout(() => setData(null), 2000);
         }
     
         server.showError(showErrorHandler);

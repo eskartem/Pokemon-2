@@ -3,17 +3,28 @@ import { ServerContext } from '../../App';
 import Button from '../../components/Button/Button';
 import { IBasePage, PAGES } from '../PageManager';
 
-import './Regist.scss';
+import './Registration.scss';
 
-const Regist: React.FC<IBasePage> = (props: IBasePage) => {
+const Registration: React.FC<IBasePage> = (props: IBasePage) => {
     const { setPage } = props;
     const server = useContext(ServerContext);
     const nameRef = useRef<HTMLInputElement>(null);
     const loginRef = useRef<HTMLInputElement>(null);
     const passwordRef = useRef<HTMLInputElement>(null);
 
-    const registClickHandler =  () => {}
-    const authorizClickHandler = () => setPage(PAGES.LOGIN);
+    const registClickHandler  = async (): Promise<void> => {
+        const login = loginRef.current?.value;
+        const password = passwordRef.current?.value;
+        const name = nameRef.current?.value;
+        
+        if (login && password && name && await server.registration(login, password, name) ) {
+            if (await server.login(login, password)) {
+                setPage(PAGES.MAINMENU);
+            }
+        }
+     }
+
+    const backClickHandler = () => setPage(PAGES.LOGIN);
 
     return (<div className='regist'>
         <div>Регистрация</div>
@@ -25,11 +36,12 @@ const Regist: React.FC<IBasePage> = (props: IBasePage) => {
             </div>
             <div className='regist-buttons'>
                 <Button onClick={registClickHandler} text='Зарегистрироваться' />
-                <Button onClick={authorizClickHandler} text='у меня уже есть аккаунт'/>
-                
+                <span onClick={backClickHandler}>
+                У меня есть аккаунт
+                </span>
             </div>
         </div>
     </div>)
 }
 
-export default Regist;
+export default Registration;
