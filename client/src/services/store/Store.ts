@@ -1,4 +1,4 @@
-import { TMessages, TUser } from "../server/types";
+import { TMessages, TUser, TUserResources } from "../server/types";
 
 const TOKEN = 'token';
 
@@ -31,9 +31,6 @@ class Store {
     }
 
     addMessages(messages: TMessages): void {
-        // TODO сделать, чтобы работало вот так
-        //this.messages.concat(messages);
-        // а вот это - плохой код!
         if (messages?.length) {
             this.messages = messages;
         }
@@ -53,6 +50,24 @@ class Store {
 
     setChatHash(hash: string): void {
         this.chatHash = hash;
+    }
+
+    setUserResources(resources: TUserResources): void {
+        if (this.user) {
+            this.user.resources = resources;
+        }
+    }
+
+    getUserResources(): TUserResources | null {
+        return this.user ? this.user.resources : null;
+    }
+
+    addEggToInventory(): void {
+        if (this.user) {
+            if (this.user.resources) {
+                this.user.resources.eggFragments += 1; // Увеличиваем количество яиц
+            }
+        }
     }
 }
 
