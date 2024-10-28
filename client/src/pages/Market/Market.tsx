@@ -72,7 +72,7 @@ const Market: React.FC<IBasePage> = (props: IBasePage) => {
                 {tab === TABS.TRADER && <TraderTab />}
                 {tab === TABS.EXCHANGER && 
                     <ExchangerTab 
-                        requiredCoins={50} // Укажите нужное количество монет
+                        requiredCoins={50} 
                         updateCoins={updateCoins}
                         addEgg={addEgg}
                         coins={resources.coins}

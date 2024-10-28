@@ -4,6 +4,7 @@ class DB {
     private $pdo;
     private $user;
     private $catalog;
+    private $traderCatalog;
 
     function __construct() {
         // MySQL
@@ -39,8 +40,8 @@ class DB {
         $p1->lvl = 3;
         $p1->stats = [
             'hp' => 10,
-            'ad'=> 15,
-            'df'=> 16,
+            'ad' => 15,
+            'df' => 16,
         ];
         $p1->cost = 25;
 
@@ -49,27 +50,28 @@ class DB {
         $p2->name = "Kock";
         $p2->element = 'water';
         $p2->rarity = 'legendary';
-        $p2->cost = 310;
         $p2->lvl = 5;
         $p2->stats = [
             'hp' => 20,
-            'ad'=> 10,
-            'df'=> 15,
+            'ad' => 10,
+            'df' => 15,
         ];
+        $p2->cost = 310;
 
         $p3 = new stdClass(); 
         $p3->id = 3;
         $p3->name = "Pock";
         $p3->element = 'air';
         $p3->rarity = 'rare';
-        $p3->cost = 304;
         $p3->lvl = 10;
         $p3->stats = [
             'hp' => 14,
-            'ad'=> 19,
-            'df'=> 10,
+            'ad' => 19,
+            'df' => 10,
         ];
+        $p3->cost = 304;
 
+        // Инициализация ресурсов для обычного каталога
         $res1 = new stdClass();
         $res1->id = 10;
         $res1->name = "кристаллы улучшения";
@@ -83,12 +85,12 @@ class DB {
         $res2->cost = 50;
 
         $res3 = new stdClass();
-        $res3->id = 10;
+        $res3->id = 12;
         $res3->name = "Кусок яйца";
         $res3->number = 5;
         $res3->cost = 350;
 
-
+        // Инициализация пользователя
         $this->user = new stdClass();
         $this->user->id = 1;
         $this->user->login = 'admin';
@@ -102,11 +104,83 @@ class DB {
         $this->user->creatures = [$p1, $p2, $p3];
         $this->user->team = [];
 
+        
         $this->catalog = [
             'creatures' => [$p1, $p2, $p3],
             'resources' => [$res1, $res2, $res3],
         ];
+
+        // Инициализация каталога торговца
+        $t1 = new stdClass();
+        $t1->id = 1;
+        $t1->name = "Duck";
+        $t1->element = 'fire';
+        $t1->rarity = 'common';
+        $t1->lvl = 3;
+        $t1->stats = [
+            'hp' => 10,
+            'ad' => 15,
+            'df' => 16,
+        ];
+        $t1->cost = 25;
+
+        $t2 = new stdClass(); 
+        $t2->id = 2;
+        $t2->name = "Kock";
+        $t2->element = 'water';
+        $t2->rarity = 'legendary';
+        $t2->lvl = 5;
+        $t2->stats = [
+            'hp' => 20,
+            'ad' => 10,
+            'df' => 15,
+        ];
+        $t2->cost = 310;
+
+        $t3 = new stdClass(); 
+        $t3->id = 3;
+        $t3->name = "Pock";
+        $t3->element = 'air';
+        $t3->rarity = 'rare';
+        $t3->lvl = 10;
+        $t3->stats = [
+            'hp' => 14,
+            'ad' => 19,
+            'df' => 10,
+        ];
+        $t3->cost = 304;
+
+
+
+
+        // Инициализация ресурсов для каталога торговца
+        $resur1 = new stdClass();
+        $resur1->id = 10;
+        $resur1->name = "кристаллы улучшения";
+        $resur1->number = 5;
+        $resur1->cost = 10;
+        
+        $resur2 = new stdClass();
+        $resur2->id = 11;
+        $resur2->name = "кусок яйца";
+        $resur2->number = 2;
+        $resur2->cost = 50;
+
+        $resur3 = new stdClass();
+        $resur3->id = 12;
+        $resur3->name = "Кусок яйца";
+        $resur3->number = 5;
+        $resur3->cost = 350;
+
+
+
+        // Инициализация каталога торговца
+        $this->traderCatalog = [
+            'creatures' => [$t1, $t2, $t3],
+            'resources' => [$resur1, $resur2, $resur3],
+        ];
     }
+
 
     public function __destruct() {
         // $this->pdo = null;
