@@ -18,7 +18,7 @@ export type TWINDOW = {
 }
 
 const CONFIG = {
-    HOST: 'http://aythprototype/api',
+    HOST: 'http://localhost:3000/',
 
     CHAT_TIMESTAMP: 200, //ms
 

@@ -17,10 +17,10 @@ class DB {
 
         // Postgres
         $host = 'localhost';
-        $port = '5432';
+        $port = '3000';
         $user = 'postgres';
         $pass = '---';
-        $db = 'nopainnogame';
+        $db = 'monstaris';
         $connect = "pgsql:host=$host;port=$port;dbname=$db;";
         //$this->pdo = new PDO($connect, $user, $pass, [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]);
     }
