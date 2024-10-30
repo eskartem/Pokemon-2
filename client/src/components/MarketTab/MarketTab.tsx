@@ -23,6 +23,7 @@ const MarketTab: React.FC = () => {
             </div>
         )
     }
+    console.log(catalog);
 
     return (
     <div className='market-tab'>

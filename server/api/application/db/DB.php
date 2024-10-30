@@ -5,6 +5,8 @@ class DB {
     private $user;
     private $catalog;
 
+    private $map;
+
     function __construct() {
         // MySQL
         /*
@@ -27,8 +29,9 @@ class DB {
         // $connect = "pgsql:host=$host;port=$port;dbname=$db;";
         // $this->pdo = new PDO($connect, $user, $pass, [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]);
 
-        //не могу разобраться, как подключить в новых версиях ospanel дазы банных, поэтому жестко колбасим статику
+        //не могу разобраться, как подключить в новых версиях ospanel дазы банных, поэтому жестко юзаем статику
         // если что, то очевидно, что регисрация и логаут не будут работать по очевидным причинам
+
 
         
         $p1 = new stdClass();
@@ -94,13 +97,23 @@ class DB {
         $this->user->login = 'admin';
         $this->user->password = md5('admin'.'111');
         $this->user->name = 'admin';
-        $this->user->resources = [
-            'coins' => 100,
-            'crystals' => 15,
-            'eggFragments' => 3
-        ];
         $this->user->creatures = [$p1, $p2, $p3];
-        $this->user->team = [];
+        $this->user->team = [$p1, $p2, $p3];
+        $this->user->coins = 100;
+        $this->user->crystals = 15;
+        $this->user->eggFragments = 3;
+
+        $mapUser = new stdClass();
+        
+        $mapUser->id = 1;
+        $mapUser->user_id = $this->user->id;
+        $mapUser->position = [0, 0];
+        $mapUser->isPvp = false;
+        $mapUser->isSafe = true;
+
+        $this->map = [
+            "$mapUser->user_id" => $mapUser,
+        ];
 
         $this->catalog = [
             'creatures' => [$p1, $p2, $p3],
@@ -174,8 +187,17 @@ class DB {
         return $this->catalog;
     }
 
-    public function getResources($token) {
-        // как нить получить ресы пользователя по токену и вернуть, только на sql, а пока статика-_-
-        return $this->user->resources;
+    public function isUserInSafe($user) {
+        // нужно сделать запрос в таблицу map, найти там пользователя по id и найти его position,
+        //сравнить их с позициями безопасных зон и вывести результат
+        $user_id = $user->id;
+        return $this->map[$user_id]->isSafe;
     }
+
+    public function startGame($user) {
+        // добавить пользователя в таблицу map и получить его позицию
+        $user_id = $user->id;
+        return $this->map[$user_id]->position;
+    }
+
 }

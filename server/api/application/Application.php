@@ -73,21 +73,34 @@ class Application {
         if ($params['token']) {
             $user = $this->user->getUser($params['token']);
             if ($user) {
-                return $this->market->getCatalog($this->map->isUserInTown($user));
+                return $this->market->getCatalog($this->map->isUserInSafe($user));
             }
             return ['error' => 705];
         }
         return ['error' => 242];
     }
 
-    public function getResources($params) {
+    public function isUserInSafe($params) {
         if ($params['token']) {
             $user = $this->user->getUser($params['token']);
             if ($user) {
-                return $this->user->getResources($params['token']);
+                return $this->map->isUserInSafe($user);
             }
             return ['error' => 705];
         }
         return ['error' => 242];
     }
+
+
+    public function startGame($params) {
+        if ($params['token']) {
+            $user = $this->user->getUser($params['token']);
+            if ($user) {
+                return $this->map->startGame($user);
+            }
+            return ['error' => 705];
+        }
+        return ['error' => 242];
+    }
+
 }

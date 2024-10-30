@@ -19,7 +19,12 @@ class User {
                 return [
                     'id' => $user->id,
                     'name' => $user->name,
-                    'token' => $token
+                    'token' => $token,
+                    'coins' => $user->coins,
+                    'crystals' => $user->crystals,
+                    'eggFragments' => $user->eggFragments,
+                    'inventory' => $user->inventory,
+                    'team' => $user->team
                 ];
             }
             return ['error' => 1002];
@@ -55,7 +60,4 @@ class User {
         return ['error' => 1004];
     }
 
-    public function getResources($token) {
-        return $this->db->getResources($token);
-    }
 }

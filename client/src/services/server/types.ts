@@ -1,3 +1,6 @@
+import { NumberLiteralType } from "typescript";
+import Inventory from "../../pages/Inventory/Inventory";
+
 export type TError = {
     code: number;
     text: string;
@@ -12,6 +15,11 @@ export type TAnswer<T> = {
 export type TUser = {
     token: string;
     name: string;
+    coins: number;
+    crystals: number;
+    eggFragments: number;
+    inventory: TCreature[];
+    team: TCreature[];
 }
 
 export type TMessage = {

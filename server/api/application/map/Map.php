@@ -7,8 +7,12 @@ class Map {
         $this->db = $db;
     }
 
-    public function isUserInTown($user) {
-        return true; // просто заглушка
+    public function startGame($user) {
+        $this-> db->startGame($user);
+    }
+
+    public function isUserInSafe($user) {
+        $this-> db->isUserInSafe($user);
     }
 
 }
