@@ -27,10 +27,7 @@ const MainMenu: React.FC<IBasePage> = (props: IBasePage) => {
     const mapClickHandler = () => setPage(PAGES.MAP); 
     const marketClickHandler = () => setPage(PAGES.MARKET);
     const battleClickHandler = () => setPage(PAGES.BATTLE);
-    const logoutClickHandler = async () => {
-        await server.logout();
-        setPage(PAGES.LOGIN);
-    }
+
     
     return (
     <div className='main-menu'>
@@ -43,12 +40,11 @@ const MainMenu: React.FC<IBasePage> = (props: IBasePage) => {
         </div>  
         </div>
         <div id='button-panel'>
-            <Button onClick={settingsClickHandler} text='Настройки' />
             <Button onClick={inventoryClickHandler} text='Инвентарь' />
             <Button onClick={mapClickHandler} text='Карта'/>
             <Button onClick={marketClickHandler} text='Рынок' />
             <Button onClick={battleClickHandler} text='Битва' />
-            <Button onClick={logoutClickHandler} text='Выйти' />
+            <Button onClick={settingsClickHandler} text='Настройки' />
         </div>
     </div>)
 }
