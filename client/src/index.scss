@@ -9,11 +9,27 @@ body {
     align-items: center;
     justify-content: center;
     min-height: 100vh;
+
     //фон
-    background: linear-gradient(-135deg, #c850c0, #4158d0);
+    background-image: url('assets/img/background/nightcity.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    
+    @keyframes changeBackground {
+        20% {
+            background-image: url('assets/img/background/nightcity.jpg');
+        }
+        50% {
+            background-image: url('assets/img/background/insidenightsity.png');
+        }
+        90% {
+            background-image: url('assets/img/background/insidenightsity.png');
+        }
+    }
+    animation: changeBackground 10s infinite;
 
     overflow: hidden;
-    background-color: $main-theme;
     color: $text-color;
     margin: 0;
     padding: 0;

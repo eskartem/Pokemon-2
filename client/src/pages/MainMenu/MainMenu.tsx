@@ -1,5 +1,6 @@
 import React, {useContext, useState, useEffect} from 'react';
 import Button from '../../components/Button/Button';
+import ButtonSettings from '../../components/Button/ButtonSettings';
 import { ServerContext, StoreContext } from '../../App';
 import { IBasePage, PAGES } from '../PageManager';
 import { TUserResources } from '../../services/server/types';
