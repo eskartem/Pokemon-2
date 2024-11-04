@@ -1,6 +1,7 @@
 .chat {
     display: flex;
     flex-direction: column;
+    border: 5px solid black;
 
     &-inputs {
         display: flex;
@@ -19,4 +20,10 @@
         justify-content: space-between;
         max-width: 500px;
     }
+}
+
+.chat-messages {
+    border: 5px solid black;
+    text-align: left;
+    padding: 5px;
 }

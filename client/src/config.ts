@@ -18,8 +18,11 @@ export type TWINDOW = {
 }
 
 const CONFIG = {
-    HOST: 'http://monstaris.local/api/',
-    // HOST: 'http://server/api/',
+    
+    // udsu
+    // HOST: 'http://monstaris:80/api/',
+    // dev
+    HOST: 'http://server:80/api/',
 
 
     CHAT_TIMESTAMP: 200, //ms
