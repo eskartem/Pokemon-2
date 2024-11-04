@@ -27,7 +27,6 @@ class DB {
         // $connect = "pgsql:host=$host;port=$port;dbname=$db;";
         // $this->pdo = new PDO($connect, $user, $pass, [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]);
 
-        
         $p1 = new stdClass();
         $p1->id = 1;
         $p1->name = "Duck";
@@ -90,6 +89,7 @@ class DB {
             'creatures' => [$p1, $p2, $p3],
             'resources' => [$res1, $res2, $res3],
         ];
+
     }
 
     public function __destruct() {
@@ -148,12 +148,12 @@ class DB {
 
     public function getMessages() {
         return $this->queryAll(
-            "SELECT 
-                    u.name AS author, 
+            "SELECT
+                    u.name AS author,
                     m.message AS message,
-                    m.created AS created 
-            FROM messages as m 
-            LEFT JOIN users as u on u.id = m.user_id 
+                    m.created AS created
+            FROM messages as m
+            LEFT JOIN users as u on u.id = m.user_id
             ORDER BY m.created DESC"
         );
     }
