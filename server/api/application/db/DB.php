@@ -20,7 +20,7 @@ class DB {
         $port = '3000';
         $user = 'postgres';
         $pass = '---';
-        $db = 'authPrototype';
+        $db = 'monstaris';
         $connect = "pgsql:host=$host;port=$port;dbname=$db;";
         //$this->pdo = new PDO($connect, $user, $pass, [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]);
     }
@@ -96,7 +96,9 @@ class DB {
     public function updateUserLocation($userId, $position) {
         return $this->execute("UPDATE map SET position=? WHERE id=?", [$position, $userId]);
     }
-    
-
+    //пример 
+    public function clearUserInventory($user){
+        return $this-> execute('DELETE FROM inventory WHERE user_id = ?', [$user->id]);
+    }
     
 }

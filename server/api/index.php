@@ -33,7 +33,7 @@ function result($params) {
             //map
             case 'startGame': return $app-> startGame($params);
 
-            //case 'endGame': return $app-> endGame($params);
+            case 'endGame': return $app-> endGame($params);
 
             /*
             case 'getMap': return $app-> getMap($params);

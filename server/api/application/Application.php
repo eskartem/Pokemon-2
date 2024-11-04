@@ -2,12 +2,14 @@
 require_once ('db/DB.php');
 require_once ('user/User.php');
 require_once ('chat/Chat.php');
+require_once('map/Map.php');
 
 class Application {
     function __construct() {
         $db = new DB();
         $this->user = new User($db);
         $this->chat = new Chat($db);
+        $this->map = new Map($db);
     }
 
     public function login($params) {
@@ -57,11 +59,19 @@ class Application {
         return ['error' => 242];
     }
 
-    //ошибку переписать
+    //ошибки переписать
     public function startGame($params){
         if($params['token']){
-            return $this->user-> startGame($params['token']);
+            return $this->map->startGame($params['token']);
         }
         return ['error' => 1000];
     }
+
+    public function endGame($params){
+        if($params['token']){
+            return $this->map->endGame($params['token']);
+        }
+        return ['error' => 1000];
+    }
+
 }

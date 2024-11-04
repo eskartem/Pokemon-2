@@ -11,8 +11,8 @@ class Map {
         return true; // просто заглушка
     }
 
+    
     public function startGame($token) {
-        // Получаем пользователя по токену
         $user = $this->db->getUserByToken($token);
         if (!$user) {
             return ['error' => 404]; 
@@ -22,7 +22,7 @@ class Map {
             return ['message' => 'Вы уже находитесь в городе.']; 
         }
 
-        // Логика спавна - игрок появляется в городе
+        // Логика спавна - игрок появляется в городе, не знаю как правильно это расписать
         $user->position = 'town'; 
         $this->db->updateUserPosition($user); // Обновляем местоположение в базе данных
 
@@ -32,4 +32,20 @@ class Map {
         ];
     }
 
+    public function endGame($token) {
+        $user = $this->db->getUserByToken($token);
+        if (!$user) {
+            return ['error' => 404]; 
+        }
+
+        // Проверяем, находится ли игрок в городе
+        if (!$this->isUserInTown($user)) {
+            // Игрок выходил из карты не в городе - теряет весь инвентарь
+            $this->db->clearUserInventory($user); 
+            return ['message' => 'Вы вышли из карты не в городе и потеряли весь инвентарь.'];
+        }
+
+        // Если игрок в городе, он ничего не теряет
+        return ['message' => 'Вы успешно вышли из игры. Ваш инвентарь сохранен.'];
+    }
 }
