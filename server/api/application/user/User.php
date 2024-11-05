@@ -19,7 +19,10 @@ class User {
                 return [
                     'id' => $user->id,
                     'name' => $user->name,
-                    'token' => $token
+                    'token' => $token,
+                    'coins' => $user->coins,
+                    'crystals' => $user->crystals,
+                    'eggFragments' => $user->egg_fragments,
                 ];
             }
             return ['error' => 1002];
@@ -55,7 +58,10 @@ class User {
             return [
                 'id' => $user->id,
                 'name' => $user->name,
-                'token' => $token
+                'token' => $token,
+                'coins' => $user->coins,
+                'crystals' => $user->crystals,
+                'eggFragments' => $user->egg_fragments,
             ];
         }
         return ['error' => 1004];
