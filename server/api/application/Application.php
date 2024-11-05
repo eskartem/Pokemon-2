@@ -1,13 +1,25 @@
 <?php
-require_once ('../application/db/DB.php');
-require_once ('../application/user/User.php');
-require_once ('../application/chat/Chat.php');
+require_once ('db/DB.php');
+require_once ('user/User.php');
+require_once ('chat/Chat.php');
+require_once ('market/Market.php');
+require_once ('map/Map.php');
+require_once ('battle/Battle.php');
 
 class Application {
+    private $user;
+    private $chat;
+    private $market;
+    private $map;
+    private $battle;
+    
     function __construct() {
         $db = new DB();
         $this->user = new User($db);
-       // $this->chat = new Chat($db);
+        $this->chat = new Chat($db);
+        $this->market = new Market($db);
+        $this->map = new Map($db);
+        $this->battle = new Battle($db);
     }
 
     public function login($params) {
@@ -51,6 +63,28 @@ class Application {
             $user = $this->user->getUser($params['token']);
             if ($user) {
                 return $this->chat->getMessages($params['hash']);
+            }
+            return ['error' => 705];
+        }
+        return ['error' => 242];
+    }
+
+    public function getCatalog($params) {
+        if ($params['token']) {
+            $user = $this->user->getUser($params['token']);
+            if ($user) {
+                return $this->market->getCatalog($this->map->isUserInTown($user));
+            }
+            return ['error' => 705];
+        }
+        return ['error' => 242];
+    }
+
+    public function getResources($params) {
+        if ($params['token']) {
+            $user = $this->user->getUser($params['token']);
+            if ($user) {
+                return $this->user->getResources($params['token']);
             }
             return ['error' => 705];
         }
