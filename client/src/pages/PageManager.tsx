@@ -9,7 +9,6 @@ import Inventory from './Inventory/Inventory';
 import Map from './Map/Map';
 import Market from './Market/Market';
 import Battle from './Battle/Battle';
-import Chat from './Chat/Chat';
 // import GamePage from './Game/Game';
 import NotFound from './NotFound/NotFound';
 
@@ -23,7 +22,6 @@ export enum PAGES {
     MAP,
     MARKET,
     BATTLE,
-    CHAT,
     GAME,
     NOT_FOUND,
 }
@@ -46,7 +44,6 @@ const PageManager: React.FC = () => {
             {page === PAGES.MAP && <Map setPage={setPage} />}
             {page === PAGES.MARKET && <Market setPage={setPage} />}
             {page === PAGES.BATTLE && <Battle setPage={setPage} />}
-            {page === PAGES.CHAT && <Chat setPage={setPage} />}
             {/* {page === PAGES.GAME && <GamePage setPage={setPage} />} */}
             {page === PAGES.NOT_FOUND && <NotFound setPage={setPage} />}
         </>
