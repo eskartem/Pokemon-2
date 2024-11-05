@@ -32,7 +32,7 @@ const Registration: React.FC<IBasePage> = (props: IBasePage) => {
             return;
         }
 
-        if (await server.registration(login, password, name)) {
+        if (login && password && name && await server.registration(login, password, name) ) {
             if (await server.login(login, password)) {
                 setPage(PAGES.MAINMENU);
             }
