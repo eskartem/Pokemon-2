@@ -22,6 +22,25 @@
         padding: 40px;
         width: 300px;
         text-align: center;
+        
+        .register-link {
+            color: #9fbef4; // Цвет ссылки
+            cursor: pointer; // Указатель при наведении, чтобы показать, что это кликабельно
+            text-decoration: underline; // Чтобы текст выглядел как ссылка
+            margin-top: 50px; // Учет отступа от кнопки
+            font-size: 15px;
+            &:hover {
+                color: #6a99ce; // Более темный цвет при наведении
+            }
+        }
+
+        .loginClick {
+            margin-top: 30px;
+            cursor: pointer;
+            &:hover {
+                color: #d101b5; // Более темный цвет при наведении
+            }
+        }
 
         .login-inputs {
             display: flex;
@@ -41,21 +60,10 @@
                 }
 
                 &:focus {
-                    border-color: #4A90E2;
+                    border-color: #4ab7e2;
                     outline: none;
                 }
             }
-        } 
-    }
-
-    .register-link {
-        color: #007bff; // Цвет ссылки
-        cursor: pointer; // Указатель при наведении, чтобы показать, что это кликабельно
-        text-decoration: underline; // Чтобы текст выглядел как ссылка
-        margin-top: 10px; // Учет отступа от кнопки
-        font-size: 12px;
-        &:hover {
-            color: #0056b3; // Более темный цвет при наведении
         }
     }
     

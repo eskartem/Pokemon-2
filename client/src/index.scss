@@ -11,20 +11,20 @@ body {
     min-height: 100vh;
 
     //фон
-    background-image: url('assets/img/background/nightcity.jpg');
+    background-image: url('assets/img/background/multbackgrount.jpg');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
     
     @keyframes changeBackground {
         20% {
-            background-image: url('assets/img/background/nightcity.jpg');
+            background-image: url('assets/img/background/multbackgrount.jpg');
         }
         50% {
-            background-image: url('assets/img/background/insidenightsity.png');
+            background-image: url('assets/img/background/multbackground2.jpg');
         }
-        90% {
-            background-image: url('assets/img/background/insidenightsity.png');
+        70% {
+            background-image: url('assets/img/background/multbackground2.jpg');
         }
     }
     animation: changeBackground 10s infinite;

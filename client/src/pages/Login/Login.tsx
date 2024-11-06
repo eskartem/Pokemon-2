@@ -31,6 +31,21 @@ const Login: React.FC<IBasePage> = (props: IBasePage) => {
                 <input ref={passwordRef} placeholder='пароль' type='password' />
             </div>
             <div className='login-buttons'>
+                <img className='loginClick' src='https://psv4.userapi.com/s/v1/d/pkYYW0Mmjvx90G7-WFCwG1PkZEEvsnE2Suo5GIjBq_vt9xZPumSBs3OU3TKtd5ZnFmtOy7QSvUjuzHB9_Im6jBoEQJq0OGP7Jfwfwzd9b_Cvx0km_4Jgbw/knopka_voyti.png' alt='' onClick={loginClickHandler}></img>
+            </div>
+            <span className='register-link' onClick={registerClickHandler}>
+                У меня нет аккаунта
+            </span>
+        </div>
+    </div>)
+
+    /*return (<div className='login'>
+        <div className='login-wrapper'>
+            <div className='login-inputs'>
+                <input ref={loginRef} placeholder='логин' />
+                <input ref={passwordRef} placeholder='пароль' type='password' />
+            </div>
+            <div className='login-buttons'>
                 <Button onClick={loginClickHandler} text='Авторизоваться' />
                 <Button onClick={backClickHandler} text='Назад' />
             </div>
@@ -38,7 +53,7 @@ const Login: React.FC<IBasePage> = (props: IBasePage) => {
                 У меня нет аккаунта
             </span>
         </div>
-    </div>)
+    </div>)*/
 }
 
 export default Login;
