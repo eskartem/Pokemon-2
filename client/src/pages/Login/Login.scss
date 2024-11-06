@@ -37,9 +37,7 @@
         .loginClick {
             margin-top: 30px;
             cursor: pointer;
-            &:hover {
-                color: #d101b5; // Более темный цвет при наведении
-            }
+            -webkit-user-drag: none;
         }
 
         .login-inputs {
