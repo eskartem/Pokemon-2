@@ -40,6 +40,8 @@ class User {
     }
 
     public function registration($login, $password, $name) {
+
+
         $user = $this->db->getUserByLogin($login, $password);
         if ($user) {
             return ['error' => 1001];
@@ -60,4 +62,5 @@ class User {
         }
         return ['error' => 1004];
     }
+
 }
