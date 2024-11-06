@@ -11,7 +11,6 @@ class Map {
         return true; // просто заглушка
     }
 
-    
     public function startGame($token) {
         $user = $this->db->getUserByToken($token);
         if (!$user) {
@@ -23,12 +22,11 @@ class Map {
         }
 
         // Логика спавна - игрок появляется в городе, не знаю как правильно это расписать
-        $user->position = 'town'; 
+        // $user->db-> ...= 'town'; 
         $this->db->updateUserPosition($user); // Обновляем местоположение в базе данных
 
         return [
             'message' => 'Вы успешно зашли в игру и появились в городе.',
-            'position' => $user->position
         ];
     }
 
