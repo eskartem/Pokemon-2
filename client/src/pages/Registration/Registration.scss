@@ -57,7 +57,7 @@
 
                 &::placeholder {
                     color: lightgray; // Светло-серый цвет
-                    opacity: 1; // Убедитесь, что цвет отображается
+                    opacity: 1;
                 }
 
                 &:focus {
@@ -77,5 +77,16 @@
                 width: 100%;
             }
         }
+        .register-link {
+            color: #007bff; // Цвет ссылки
+            cursor: pointer; // Указатель при наведении, чтобы показать, что это кликабельно
+            text-decoration: underline; // Чтобы текст выглядел как ссылка
+            margin-top: 10px; // Учет отступа от кнопки
+            font-size: 12px;
+            &:hover {
+                color: #0056b3; // Более темный цвет при наведении
+            }
+        }
+        
     }
 }

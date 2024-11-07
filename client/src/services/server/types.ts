@@ -12,6 +12,9 @@ export type TAnswer<T> = {
 export type TUser = {
     token: string;
     name: string;
+    coins: number;
+    crystals: number;
+    eggFragments: number;
 }
 
 export type TMessage = {
