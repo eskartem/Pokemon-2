@@ -18,8 +18,8 @@ const Settings: React.FC<IBasePage> = (props: IBasePage) => {
 
     return (
     <div className='Settings'>
-        <Button onClick={logoutClickHandler} text='Разлогиниться' />
-        <Button onClick={backClickHandler} text='назад' />
+        <Button onClick={logoutClickHandler} text='Выйти из аккаунта' />
+        <Button onClick={backClickHandler} text='Назад' />
     </div>)
 }
 

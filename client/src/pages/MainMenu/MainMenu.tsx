@@ -1,5 +1,6 @@
 import React, {useContext} from 'react';
 import Button from '../../components/Button/Button';
+import ButtonSettings from '../../components/Button/ButtonSettings';
 import { ServerContext, StoreContext } from '../../App';
 import Chat from '../../components/Chat/Chat';
 import { IBasePage, PAGES } from '../PageManager';
