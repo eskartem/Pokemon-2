@@ -2,7 +2,7 @@ import React, { useContext, useRef } from 'react';
 import { ServerContext } from '../../App';
 import Button from '../../components/Button/Button';
 import { IBasePage, PAGES } from '../PageManager';
-
+import LoginImg from '../../assets/img/login/login.png';
 import './Login.scss';
 
 const Login: React.FC<IBasePage> = (props: IBasePage) => {
@@ -31,7 +31,7 @@ const Login: React.FC<IBasePage> = (props: IBasePage) => {
                 <input ref={passwordRef} placeholder='пароль' type='password' />
             </div>
             <div className='login-buttons'>
-                <img className='loginClick' src='https://psv4.userapi.com/s/v1/d/pkYYW0Mmjvx90G7-WFCwG1PkZEEvsnE2Suo5GIjBq_vt9xZPumSBs3OU3TKtd5ZnFmtOy7QSvUjuzHB9_Im6jBoEQJq0OGP7Jfwfwzd9b_Cvx0km_4Jgbw/knopka_voyti.png' alt='' onClick={loginClickHandler}></img>
+                <img className='loginClick' src={LoginImg} alt='' onClick={loginClickHandler}></img>
             </div>
             <span className='register-link' onClick={registerClickHandler}>
                 У меня нет аккаунта
