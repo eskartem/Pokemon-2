@@ -17,6 +17,7 @@ const App: React.FC = () => {
         <StoreContext.Provider value={store}>
             <ServerContext.Provider value={server}>
                 <div className='app'>
+                    <Popup />
                     <PageManager />
                 </div>
             </ServerContext.Provider>
