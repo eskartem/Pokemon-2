@@ -1,17 +1,9 @@
-.pvpArea {
-    border: 1px solid black;
-}
-
 .button {
     align-items: center;
 }
 
 .buttonMenu {
     display: flex;
-}
-
-.hpBar {
-    border-radius: 5px;
 }
 
 .secondPlayerButtonn {
