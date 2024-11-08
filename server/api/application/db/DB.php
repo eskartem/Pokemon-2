@@ -2,21 +2,21 @@
 
 class DB {
     private $pdo;
-    private $user;
     private $catalog;
     private $traderCatalog;
 
     function __construct() {
+
         // MySQL
-        /*
+
         $host = '127.0.0.1';
         $port = '3306';
         $user = 'root';
-        $pass = '---';
-        $db = 'nopainnogame';
+        $pass = '';
+        $db = 'monstaris';
         $connect = "mysql:host=$host;port=$port;dbname=$db;charset=utf8";
         $this->pdo = new PDO($connect, $user, $pass);
-        */
+        
 
         // Postgres
         
@@ -28,10 +28,6 @@ class DB {
         // $connect = "pgsql:host=$host;port=$port;dbname=$db;";
         // $this->pdo = new PDO($connect, $user, $pass, [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]);
 
-        //не могу разобраться, как подключить в новых версиях ospanel дазы банных, поэтому жестко колбасим статику
-        // если что, то очевидно, что регисрация и логаут не будут работать по очевидным причинам
-
-        
         $p1 = new stdClass();
         $p1->id = 1;
         $p1->name = "Duck";
@@ -40,8 +36,8 @@ class DB {
         $p1->lvl = 3;
         $p1->stats = [
             'hp' => 10,
-            'ad' => 15,
-            'df' => 16,
+            'ad'=> 15,
+            'df'=> 16,
         ];
         $p1->cost = 25;
 
@@ -50,28 +46,27 @@ class DB {
         $p2->name = "Kock";
         $p2->element = 'water';
         $p2->rarity = 'legendary';
+        $p2->cost = 310;
         $p2->lvl = 5;
         $p2->stats = [
             'hp' => 20,
-            'ad' => 10,
-            'df' => 15,
+            'ad'=> 10,
+            'df'=> 15,
         ];
-        $p2->cost = 310;
 
         $p3 = new stdClass(); 
         $p3->id = 3;
         $p3->name = "Pock";
         $p3->element = 'air';
         $p3->rarity = 'rare';
+        $p3->cost = 304;
         $p3->lvl = 10;
         $p3->stats = [
             'hp' => 14,
-            'ad' => 19,
-            'df' => 10,
+            'ad'=> 19,
+            'df'=> 10,
         ];
-        $p3->cost = 304;
 
-        // Инициализация ресурсов для обычного каталога
         $res1 = new stdClass();
         $res1->id = 10;
         $res1->name = "кристаллы улучшения";
@@ -85,26 +80,12 @@ class DB {
         $res2->cost = 50;
 
         $res3 = new stdClass();
-        $res3->id = 12;
+        $res3->id = 10;
         $res3->name = "Кусок яйца";
         $res3->number = 5;
         $res3->cost = 350;
 
-        // Инициализация пользователя
-        $this->user = new stdClass();
-        $this->user->id = 1;
-        $this->user->login = 'admin';
-        $this->user->password = md5('admin'.'111');
-        $this->user->name = 'admin';
-        $this->user->resources = [
-            'coins' => 100,
-            'crystals' => 15,
-            'eggFragments' => 3
-        ];
-        $this->user->creatures = [$p1, $p2, $p3];
-        $this->user->team = [];
 
-        
         $this->catalog = [
             'creatures' => [$p1, $p2, $p3],
             'resources' => [$res1, $res2, $res3],
@@ -123,7 +104,6 @@ class DB {
             'df' => 16,
         ];
         $t1->cost = 25;
-
         $t2 = new stdClass(); 
         $t2->id = 2;
         $t2->name = "Kock";
@@ -136,7 +116,6 @@ class DB {
             'df' => 15,
         ];
         $t2->cost = 310;
-
         $t3 = new stdClass(); 
         $t3->id = 3;
         $t3->name = "Pock";
@@ -149,10 +128,6 @@ class DB {
             'df' => 10,
         ];
         $t3->cost = 304;
-
-
-
-
         // Инициализация ресурсов для каталога торговца
         $resur1 = new stdClass();
         $resur1->id = 10;
@@ -165,31 +140,27 @@ class DB {
         $resur2->name = "кусок яйца";
         $resur2->number = 2;
         $resur2->cost = 50;
-
         $resur3 = new stdClass();
         $resur3->id = 12;
         $resur3->name = "Кусок яйца";
         $resur3->number = 5;
         $resur3->cost = 350;
-
-
-
         // Инициализация каталога торговца
         $this->traderCatalog = [
             'creatures' => [$t1, $t2, $t3],
             'resources' => [$resur1, $resur2, $resur3],
         ];
+
     }
 
-
     public function __destruct() {
-        // $this->pdo = null;
+        $this->pdo = null;
     }
 
     // выполнить запрос без возвращения данных
     private function execute($sql, $params = []) {
-        // $sth = $this->pdo->prepare($sql);
-        // return $sth->execute($params);
+        $sth = $this->pdo->prepare($sql);
+        return $sth->execute($params);
     }
 
     // получение ОДНОЙ записи
@@ -207,49 +178,48 @@ class DB {
     }
 
     public function getUserByLogin($login) {
-        // return $this->query("SELECT * FROM users WHERE login=?", [$login]);
-        return $this->user;
+        return $this->query("SELECT * FROM users WHERE login=?", [$login]);
+        // return $this->user;
     }
 
     public function getUserByToken($token) {
-        // return $this->query("SELECT * FROM users WHERE token=?", [$token]);
-        return $this->user;
+        return $this->query("SELECT * FROM users WHERE token=?", [$token]);
+        // return $this->user;
     }
 
     public function updateToken($userId, $token) {
-        // $this->execute("UPDATE users SET token=? WHERE id=?", [$token, $userId]);
+        $this->execute("UPDATE users SET token=? WHERE id=?", [$token, $userId]);
     }
 
     public function registration($login, $hash, $name) {
-        // $this->execute("INSERT INTO users (login,password,name) VALUES (?, ?, ?)",[$login, $hash, $name]);
+        $this->execute("INSERT INTO users (login,password,name, team_id, inventory_id) VALUES (?, ?, ?, ?, ?)",[$login, $hash, $name, '1', '1']);
     }
 
     public function getChatHash() {
-        // return $this->query("SELECT * FROM hashes WHERE id=1");
+        return $this->query("SELECT * FROM hashes WHERE id=1");
     }
 
     public function updateChatHash($hash) {
-        // $this->execute("UPDATE hashes SET chat_hash=? WHERE id=1", [$hash]);
+        $this->execute("UPDATE hashes SET chat_hash=? WHERE id=1", [$hash]);
     }
 
     public function addMessage($userId, $message) {
-        // $this->execute('INSERT INTO messages (user_id, message, created) VALUES (?,?, now())', [$userId, $message]);
+        $this->execute('INSERT INTO messages (user_id, message, created) VALUES (?,?, now())', [$userId, $message]);
     }
 
     public function getMessages() {
-        // return $this->queryAll("SELECT u.name AS author, m.message AS message,
-        //                         to_char(m.created, 'yyyy-mm-dd hh24:mi:ss') AS created FROM messages as m 
-        //                         LEFT JOIN users as u on u.id = m.user_id 
-        //                         ORDER BY m.created DESC"
-        // );
+        return $this->queryAll(
+            "SELECT
+                    u.name AS author,
+                    m.message AS message,
+                    m.created AS created
+            FROM messages as m
+            LEFT JOIN users as u on u.id = m.user_id
+            ORDER BY m.created DESC"
+        );
     }
 
     public function getCatalog() {
         return $this->catalog;
-    }
-
-    public function getResources($token) {
-        // как нить получить ресы пользователя по токену и вернуть, только на sql, а пока статика-_-
-        return $this->user->resources;
     }
 }

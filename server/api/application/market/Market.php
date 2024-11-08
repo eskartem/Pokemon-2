@@ -7,7 +7,6 @@ class Market {
         $this->db = $db;
     }
 
-
     public function getCatalog($isInTown) {
         if ($isInTown) {
             return $this->db->getCatalog();

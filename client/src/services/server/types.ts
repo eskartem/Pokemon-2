@@ -9,6 +9,14 @@ export type TAnswer<T> = {
     error?: TError;
 }
 
+export type TUser = {
+    token: string;
+    name: string;
+    coins: number;
+    crystals: number;
+    eggFragments: number;
+    resources: TUserResources;
+}
 
 export type TMessage = {
     message: string;
@@ -55,18 +63,12 @@ export type TCreature = {
     stats: TStats,
 }
 
+// ресы пользователя
 export type TUserResources = {
-    coins: number;
-    crystals: number;
-    eggFragments: number;
-};
-
-export type TUser = {
-    id: string; 
-    name: string;
-    token: string;
-    resources: TUserResources; // Добавлено свойство resources
-};
+    coins: number,
+    crystals: number,
+    eggFragments: number,
+}
 
 //существо на рынке
 export type TMarketCreature = TCreature & {
@@ -90,7 +92,12 @@ export type TMarketCatalog = {
     resources: TMarketItem[]
 }
 
-// Типы ресурсов для обменника
+
+
+
+
+
+
 export type TExchangerResources = {
     coins: number;  
     eggs: number;  
@@ -103,4 +110,3 @@ export type TExchanger = {
     addEgg: () => void; // Функция для добавления яйца
     coins: number; // Количество текущих монет
 };
-

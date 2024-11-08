@@ -6,10 +6,8 @@ import { TExchanger } from '../../services/server/types';
 import './ExchangerTab.scss';
 
 interface ExchangerProps extends TExchanger {}
-
 const ExchangerTab: React.FC<ExchangerProps> = ({ requiredCoins, updateCoins, addEgg, coins }) => {
 const serverContext = useContext(ServerContext); // Контекст сервера, если нужен для работы обменника
-
   const exchangeForEgg = () => {
     if (coins >= requiredCoins) {
       updateCoins(coins - requiredCoins);
@@ -18,7 +16,6 @@ const serverContext = useContext(ServerContext); // Контекст серве�
       alert('Недостаточно монет для обмена на яйцо!');
     }
   };
-
   return (
     <div className="exchanger-container">
       <img src={ExchangerImage} alt="Exchanger" className="exchanger-image" />
@@ -31,5 +28,4 @@ const serverContext = useContext(ServerContext); // Контекст серве�
     </div>
   );
 };
-
 export default ExchangerTab;

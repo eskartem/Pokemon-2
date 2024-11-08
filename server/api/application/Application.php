@@ -41,8 +41,8 @@ class Application {
     }
 
     public function registration($params) {
-        if ($params['login'] && $params['password'] && $params['name']) {
-            return $this->user->registration($params['login'], $params['password'], $params['name']);
+        if ($params['login'] && $params['hash'] && $params['name']) {
+            return $this->user->registration($params['login'], $params['hash'], $params['name']);
         }
         return ['error' => 242];
     }
@@ -74,17 +74,6 @@ class Application {
             $user = $this->user->getUser($params['token']);
             if ($user) {
                 return $this->market->getCatalog($this->map->isUserInTown($user));
-            }
-            return ['error' => 705];
-        }
-        return ['error' => 242];
-    }
-
-    public function getResources($params) {
-        if ($params['token']) {
-            $user = $this->user->getUser($params['token']);
-            if ($user) {
-                return $this->user->getResources($params['token']);
             }
             return ['error' => 705];
         }

@@ -17,7 +17,6 @@ function result($params) {
             case 'login': return $app->login($params);
             case 'logout': return $app->logout($params);
             case 'registration': return $app->registration($params);
-            case 'getResources': return $app->getResources($params);
             // chat
             case 'sendMessage': return $app->sendMessage($params);//loop
             case 'getMessages': return $app->getMessages($params);//loop
@@ -38,12 +37,11 @@ function result($params) {
             // case 'moveUser': return $app-> moveUser($params);//надо уметь бросать энд гейм
             //market
             case 'getCatalog': return $app-> getCatalog($params);
-            // case 'buy': return $app-> buy($params);
-            // case 'sale': return $app-> sale($params);
-
             //Новые кейсы
             case 'getTraderCatalog': return $app->getTraderCatalog($params);
             case 'buy': return $app->buyItem($params);
+            // case 'buy': return $app-> buy($params);
+            // case 'sale': return $app-> sale($params);
 
             default: return ['error' => 102];
         }

@@ -94,6 +94,7 @@ class Server {
                 cb(hash);
             }
         }, CHAT_TIMESTAMP);
+
     }
 
     stopChatMessages(): void {
@@ -112,7 +113,7 @@ class Server {
         return null;
     }
 
-    async getCatalog(): Promise<TMarketCatalog | null> {
+    async getCatalog():Promise<TMarketCatalog | null> {
         const catalog = await this.request<TMarketCatalog>('getCatalog');
         if (catalog) {
             return catalog;
@@ -137,6 +138,7 @@ class Server {
         const result = await this.request<boolean>('buy', { id });
         return result;
     }
+
 }
 
 export default Server;
