@@ -33,7 +33,7 @@ const Market: React.FC<IBasePage> = (props: IBasePage) => {
 
     const backClickHandler = () => setPage(PAGES.MAINMENU);
 
-    if (!user || !resources) {
+    if (!user) {
         return (
             <div>
                 <div>ошибка</div>
