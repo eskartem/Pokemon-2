@@ -7,20 +7,15 @@ class DB {
 
     function __construct() {
 
-
         // MySQL
-
 
         $host = '127.0.0.1';
         $port = '3306';
         $user = 'root';
         $pass = '';
         $db = 'monstaris';
-        $pass = '';
-        $db = 'monstaris';
         $connect = "mysql:host=$host;port=$port;dbname=$db;charset=utf8";
         $this->pdo = new PDO($connect, $user, $pass);
-        
         
 
         // Postgres
@@ -32,9 +27,8 @@ class DB {
         // $db = 'nopainnogame';
         // $connect = "pgsql:host=$host;port=$port;dbname=$db;";
         // $this->pdo = new PDO($connect, $user, $pass, [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]);
-        //не могу разобраться, как подключить в новых версиях ospanel дазы банных, поэтому жестко колбасим статику
 
-
+        $p1 = new stdClass();
         $p1->id = 1;
         $p1->name = "Duck";
         $p1->element = 'fire';
@@ -92,7 +86,7 @@ class DB {
         $res3->cost = 350;
 
 
-        $this->user = new stdClass();
+        $this->catalog = [
             'creatures' => [$p1, $p2, $p3],
             'resources' => [$res1, $res2, $res3],
         ];
@@ -160,17 +154,14 @@ class DB {
     }
 
     public function __destruct() {
-        // $this->pdo = null;
         $this->pdo = null;
-        $this->pdo = null;
+    }
 
     // выполнить запрос без возвращения данных
     private function execute($sql, $params = []) {
-        // $sth = $this->pdo->prepare($sql);
         $sth = $this->pdo->prepare($sql);
         return $sth->execute($params);
-        $sth = $this->pdo->prepare($sql);
-        return $sth->execute($params);
+    }
 
     // получение ОДНОЙ записи
     private function query($sql, $params = []) {
@@ -187,46 +178,36 @@ class DB {
     }
 
     public function getUserByLogin($login) {
-        // return $this->query("SELECT * FROM users WHERE login=?", [$login]);
         return $this->query("SELECT * FROM users WHERE login=?", [$login]);
         // return $this->user;
-        return $this->query("SELECT * FROM users WHERE login=?", [$login]);
-        // return $this->user;
+    }
 
     public function getUserByToken($token) {
-        // return $this->query("SELECT * FROM users WHERE token=?", [$token]);
         return $this->query("SELECT * FROM users WHERE token=?", [$token]);
         // return $this->user;
-        return $this->query("SELECT * FROM users WHERE token=?", [$token]);
-        // return $this->user;
+    }
 
     public function updateToken($userId, $token) {
-        // $this->execute("UPDATE users SET token=? WHERE id=?", [$token, $userId]);
         $this->execute("UPDATE users SET token=? WHERE id=?", [$token, $userId]);
-        $this->execute("UPDATE users SET token=? WHERE id=?", [$token, $userId]);
+    }
 
     public function registration($login, $hash, $name) {
-        // $this->execute("INSERT INTO users (login,password,name) VALUES (?, ?, ?)",[$login, $hash, $name]);
         $this->execute("INSERT INTO users (login,password,name, team_id, inventory_id) VALUES (?, ?, ?, ?, ?)",[$login, $hash, $name, '1', '1']);
-        $this->execute("INSERT INTO users (login,password,name, team_id, inventory_id) VALUES (?, ?, ?, ?, ?)",[$login, $hash, $name, '1', '1']);
+    }
 
     public function getChatHash() {
-        // return $this->query("SELECT * FROM hashes WHERE id=1");
         return $this->query("SELECT * FROM hashes WHERE id=1");
-        return $this->query("SELECT * FROM hashes WHERE id=1");
+    }
 
     public function updateChatHash($hash) {
-        // $this->execute("UPDATE hashes SET chat_hash=? WHERE id=1", [$hash]);
         $this->execute("UPDATE hashes SET chat_hash=? WHERE id=1", [$hash]);
-        $this->execute("UPDATE hashes SET chat_hash=? WHERE id=1", [$hash]);
+    }
 
     public function addMessage($userId, $message) {
-        // $this->execute('INSERT INTO messages (user_id, message, created) VALUES (?,?, now())', [$userId, $message]);
         $this->execute('INSERT INTO messages (user_id, message, created) VALUES (?,?, now())', [$userId, $message]);
-        $this->execute('INSERT INTO messages (user_id, message, created) VALUES (?,?, now())', [$userId, $message]);
+    }
 
     public function getMessages() {
-        // return $this->queryAll("SELECT u.name AS author, m.message AS message,
         return $this->queryAll(
             "SELECT
                     u.name AS author,
@@ -236,16 +217,9 @@ class DB {
             LEFT JOIN users as u on u.id = m.user_id
             ORDER BY m.created DESC"
         );
-        return $this->queryAll(
-            "SELECT
-                    u.name AS author,
-                    m.message AS message,
-                    m.created AS created
-            FROM messages as m
-            LEFT JOIN users as u on u.id = m.user_id
-            ORDER BY m.created DESC"
-        );
+    }
 
     public function getCatalog() {
         return $this->catalog;
     }
+}
