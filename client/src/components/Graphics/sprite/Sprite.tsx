@@ -135,6 +135,7 @@ const Sprites: React.FC<spritesProps> = (props: spritesProps) => {
                 y={stageProps.height * 0.3} scale={[-1.5, 1.5]} 
                 interactive
                 onclick={() => {setIsOpenFirstMonster(isOpenFirstMonster === false ? true : false)}} 
+                name={"test-battle-pixi-yourFirstSprite"}
             />
         )}
         {hpBarSecondMonster > 0 && (
@@ -144,6 +145,7 @@ const Sprites: React.FC<spritesProps> = (props: spritesProps) => {
                 scale={[-1.5, 1.5]} 
                 interactive
                 onclick={() => {setIsOpenSecondMonster(isOpenSecondMonster === false ? true : false)}}
+                name={"test-battle-pixi-yourSecondSprite"}
             />
         )}
         {hpBarThirdMonster > 0 && (
@@ -153,6 +155,7 @@ const Sprites: React.FC<spritesProps> = (props: spritesProps) => {
                 scale={[-1.5, 1.5]} 
                 interactive
                 onclick={() => {setIsOpenThirdMonster(isOpenThirdMonster === false ? true : false)}}
+                name={"test-battle-pixi-yourThirdSprite"}
             />
         )}
         {hpBarFirstEnemyMonster > 0 && (
@@ -162,6 +165,7 @@ const Sprites: React.FC<spritesProps> = (props: spritesProps) => {
                 scale={[1.5, 1.5]} 
                 interactive
                 onclick={() => {setIsOpenFirstEnemyMonster(isOpenFirstEnemyMonster === false ? true : false)}}
+                name={"test-battle-pixi-enemyFirstSprite"}
             />
         )}
         {hpBarSecondEnemyMonster > 0 && (
@@ -171,6 +175,7 @@ const Sprites: React.FC<spritesProps> = (props: spritesProps) => {
                 scale={[1.5, 1.5]} 
                 interactive
                 onclick={() => {setIsOpenSecondEnemyMonster(isOpenSecondEnemyMonster === false ? true : false)}}
+                name={"test-battle-pixi-enemySecondSprite"}
             />
         )}
         {hpBarThirdEnemyMonster > 0 && (
@@ -180,6 +185,7 @@ const Sprites: React.FC<spritesProps> = (props: spritesProps) => {
                 scale={[1.5, 1.5]} 
                 interactive
                 onclick={() => {setIsOpenThirdEnemyMonster(isOpenThirdEnemyMonster === false ? true : false)}}
+                name={"test-battle-pixi-enemyThirdSprite"}
             />
         )}
         <StatsPanel 

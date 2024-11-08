@@ -52,143 +52,149 @@ const StatsPanel: React.FC<StatsPanelProps> = (props: StatsPanelProps) => {
     } = props
 
     return (<>
-    {(isOpenFirstMonster && hpBarFirstMonster > 0) && (<Container x={stageProps.width * 0.15 } y={stageProps.height * 0.3 + 35}>
-            <Text
-            text={`hp: ${firstSelectedMonster.healthPoint}`}
-            scale={0.5}
-            y={12}
-            />
-            <Text
-            text={`atk: ${firstSelectedMonster.attack}`}
-            scale={0.5}
-            y={24}
-            />
-            <Text
-            text={`def: ${firstSelectedMonster.defense}`}
-            scale={0.5}
-            y={36}
-            />
-            <Text
-            text={`lvl: ${firstSelectedMonster.level}`}
-            scale={0.5}
-            y={48}
-            />
-        </Container>
+        {(isOpenFirstMonster && hpBarFirstMonster > 0) && 
+            (<Container x={stageProps.width * 0.15 } y={stageProps.height * 0.3 + 35} name={"test-battle-pixi-yourFirstSprite"}>
+                <Text
+                    text={`hp: ${firstSelectedMonster.healthPoint}`}
+                    scale={0.5}
+                    y={12}
+                />
+                <Text
+                    text={`atk: ${firstSelectedMonster.attack}`}
+                    scale={0.5}
+                    y={24}
+                />
+                <Text
+                    text={`def: ${firstSelectedMonster.defense}`}
+                    scale={0.5}
+                    y={36}
+                />
+                <Text
+                    text={`lvl: ${firstSelectedMonster.level}`}
+                    scale={0.5}
+                    y={48}
+                />
+            </Container>
         )}
-    {(isOpenSecondMonster && hpBarSecondMonster > 0) && (<Container x={stageProps.width * 0.15 } y={stageProps.height * 0.5 + 35}>
-            <Text
-            text={`hp: ${secondSelectedMonster.healthPoint}`}
-            scale={0.5}
-            y={12}
-            />
-            <Text
-            text={`atk: ${secondSelectedMonster.attack}`}
-            scale={0.5}
-            y={24}
-            />
-            <Text
-            text={`def: ${secondSelectedMonster.defense}`}
-            scale={0.5}
-            y={36}
-            />
-            <Text
-            text={`lvl: ${secondSelectedMonster.level}`}
-            scale={0.5}
-            y={48}
-            />
-        </Container>
+        {(isOpenSecondMonster && hpBarSecondMonster > 0) && 
+            (<Container x={stageProps.width * 0.15 } y={stageProps.height * 0.5 + 35} name={"test-battle-pixi-yourSecondSprite"}>
+                <Text
+                    text={`hp: ${secondSelectedMonster.healthPoint}`}
+                    scale={0.5}
+                    y={12}
+                />
+                <Text
+                    text={`atk: ${secondSelectedMonster.attack}`}
+                    scale={0.5}
+                    y={24}
+                />
+                <Text
+                    text={`def: ${secondSelectedMonster.defense}`}
+                    scale={0.5}
+                    y={36}
+                />
+                <Text
+                    text={`lvl: ${secondSelectedMonster.level}`}
+                    scale={0.5}
+                    y={48}
+                />
+            </Container>
         )}
-    {(isOpenThirdMonster && hpBarThirdMonster > 0) && (<Container x={stageProps.width * 0.15 } y={stageProps.height * 0.7 + 35}>
-            <Text
-            text={`hp: ${thirdSelectedMonster.healthPoint}`}
-            scale={0.5}
-            y={12}
-            />
-            <Text
-            text={`atk: ${thirdSelectedMonster.attack}`}
-            scale={0.5}
-            y={24}
-            />
-            <Text
-            text={`def: ${thirdSelectedMonster.defense}`}
-            scale={0.5}
-            y={36}
-            />
-            <Text
-            text={`lvl: ${thirdSelectedMonster.level}`}
-            scale={0.5}
-            y={48}
-            />
-        </Container>
+        {(isOpenThirdMonster && hpBarThirdMonster > 0) && 
+            (<Container x={stageProps.width * 0.15 } y={stageProps.height * 0.7 + 35} name={"test-battle-pixi-yourThirdprite"}>
+                <Text
+                    text={`hp: ${thirdSelectedMonster.healthPoint}`}
+                    scale={0.5}
+                    y={12}
+                />
+                <Text
+                    text={`atk: ${thirdSelectedMonster.attack}`}
+                    scale={0.5}
+                    y={24}
+                />
+                <Text
+                    text={`def: ${thirdSelectedMonster.defense}`}
+                    scale={0.5}
+                    y={36}
+                />
+                <Text
+                    text={`lvl: ${thirdSelectedMonster.level}`}
+                    scale={0.5}
+                    y={48}
+                />
+            </Container>
         )}
-    {(isOpenFirstEnemyMonster && hpBarFirstEnemyMonster > 0) && (<Container x={stageProps.width * 0.85 - 30 } y={stageProps.height * 0.3 + 35}>
-            <Text
-            text={`hp: ${firstSelectedEnemyMonster.healthPoint}`}
-            scale={0.5}
-            y={12}
-            />
-            <Text
-            text={`atk: ${firstSelectedEnemyMonster.attack}`}
-            scale={0.5}
-            y={24}
-            />
-            <Text
-            text={`def: ${firstSelectedEnemyMonster.defense}`}
-            scale={0.5}
-            y={36}
-            />
-            <Text
-            text={`lvl: ${firstSelectedEnemyMonster.level}`}
-            scale={0.5}
-            y={48}
-            />
-        </Container>
+        {(isOpenFirstEnemyMonster && hpBarFirstEnemyMonster > 0) && 
+            (<Container x={stageProps.width * 0.85 - 30 } y={stageProps.height * 0.3 + 35} name={"test-battle-pixi-enemyFirstSprite"}>
+                <Text
+                    text={`hp: ${firstSelectedEnemyMonster.healthPoint}`}
+                    scale={0.5}
+                    y={12}
+                />
+                <Text
+                    text={`atk: ${firstSelectedEnemyMonster.attack}`}
+                    scale={0.5}
+                    y={24}
+                />
+                <Text
+                    text={`def: ${firstSelectedEnemyMonster.defense}`}
+                    scale={0.5}
+                    y={36}
+                />
+                <Text
+                    text={`lvl: ${firstSelectedEnemyMonster.level}`}
+                    scale={0.5}
+                    y={48}
+                />
+            </Container>
         )}
-    {(isOpenSecondEnemyMonster && hpBarSecondEnemyMonster > 0) && (<Container x={stageProps.width * 0.85 - 30 } y={stageProps.height * 0.5 + 35}>
-            <Text
-            text={`hp: ${secondSelectedEnemyMonster.healthPoint}`}
-            scale={0.5}
-            y={12}
-            />
-            <Text
-            text={`atk: ${secondSelectedEnemyMonster.attack}`}
-            scale={0.5}
-            y={24}
-            />
-            <Text
-            text={`def: ${secondSelectedEnemyMonster.defense}`}
-            scale={0.5}
-            y={36}
-            />
-            <Text
-            text={`lvl: ${secondSelectedEnemyMonster.level}`}
-            scale={0.5}
-            y={48}
-            />
-        </Container>
+        {(isOpenSecondEnemyMonster && hpBarSecondEnemyMonster > 0) && 
+            (<Container x={stageProps.width * 0.85 - 30 } y={stageProps.height * 0.5 + 35} name={"test-battle-pixi-enemySecondSprite"}>
+                <Text
+                    text={`hp: ${secondSelectedEnemyMonster.healthPoint}`}
+                    scale={0.5}
+                    y={12}
+                />
+                <Text
+                    text={`atk: ${secondSelectedEnemyMonster.attack}`}
+                    scale={0.5}
+                    y={24}
+                />
+                <Text
+                    text={`def: ${secondSelectedEnemyMonster.defense}`}
+                    scale={0.5}
+                    y={36}
+                />
+                <Text
+                    text={`lvl: ${secondSelectedEnemyMonster.level}`}
+                    scale={0.5}
+                    y={48}
+                />
+            </Container>
         )}
-    {(isOpenThirdEnemyMonster && hpBarThirdEnemyMonster > 0) && (<Container x={stageProps.width * 0.85 - 30 } y={stageProps.height * 0.7 + 35}>
-            <Text
-            text={`hp: ${thirdSelectedEnemyMonster.healthPoint}`}
-            scale={0.5}
-            y={12}
-            />
-            <Text
-            text={`atk: ${thirdSelectedEnemyMonster.attack}`}
-            scale={0.5}
-            y={24}
-            />
-            <Text
-            text={`def: ${thirdSelectedEnemyMonster.defense}`}
-            scale={0.5}
-            y={36}
-            />
-            <Text
-            text={`lvl: ${thirdSelectedEnemyMonster.level}`}
-            scale={0.5}
-            y={48}
-            />
-        </Container>
+        {(isOpenThirdEnemyMonster && hpBarThirdEnemyMonster > 0) && 
+            (<Container x={stageProps.width * 0.85 - 30 } y={stageProps.height * 0.7 + 35} name={"test-battle-pixi-enemyThirdSprite"}>
+                <Text
+                    text={`hp: ${thirdSelectedEnemyMonster.healthPoint}`}
+                    scale={0.5}
+                    y={12}
+                />
+                <Text
+                    text={`atk: ${thirdSelectedEnemyMonster.attack}`}
+                    scale={0.5}
+                    y={24}
+                />
+                <Text
+                    text={`def: ${thirdSelectedEnemyMonster.defense}`}
+                    scale={0.5}
+                    y={36}
+                />
+                <Text
+                    text={`lvl: ${thirdSelectedEnemyMonster.level}`}
+                    scale={0.5}
+                    y={48}
+                />
+            </Container>
         )}
     </>)
 }
