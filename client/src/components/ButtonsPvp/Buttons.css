@@ -22,3 +22,8 @@
     border-radius: 5px;
     margin-left: 30%;
 }
+
+.buttonsBorder {
+    border-color: '#000000';
+    border: 2px;
+}

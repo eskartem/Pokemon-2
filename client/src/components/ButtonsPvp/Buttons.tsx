@@ -27,7 +27,7 @@ interface buttonsProps {
         setHpBarSecondEnemyMonster: (hpBarThirdMonster: number) => void,
         setHpBarSecondMonster: (hpBarFirstEnemyMonster: number) => void,
         setHpBarThirdEnemyMonster: (hpBarSecondEnemyMonster: number) => void,
-        setHpBarThirdMonster: (hpBarThirdEnemyMonster: number) => void
+        setHpBarThirdMonster: (hpBarThirdEnemyMonster: number) => void,
 }
 
 const Buttons: React.FC<buttonsProps> = (props: buttonsProps) => {
@@ -54,7 +54,7 @@ const Buttons: React.FC<buttonsProps> = (props: buttonsProps) => {
         setHpBarSecondEnemyMonster,
         setHpBarSecondMonster,
         setHpBarThirdEnemyMonster,
-        setHpBarThirdMonster
+        setHpBarThirdMonster,
     } = props;
 
     let action: string = ''
@@ -77,7 +77,7 @@ const Buttons: React.FC<buttonsProps> = (props: buttonsProps) => {
     }
 
     const setNewSQueue = (attacked: Monsters, healPoint: number) => {
-        setSQueue(mathPvp.nextMove(sQueue, attacked, healPoint))
+        setSQueue(sQueue = mathPvp.nextMove(sQueue, attacked, healPoint, activeMonster, action))
         setActiveMonster(sQueue[0])
     }
 
@@ -88,7 +88,7 @@ const Buttons: React.FC<buttonsProps> = (props: buttonsProps) => {
         {
             return (<>
                 <div ref={firstPlayerButton} className='showButton buttons'>
-                <button id="test-battle-button-yourSkill's" onClick={() => {
+                <button id="test-battle-button-yourSkill's" className="buttonsBorder" onClick={() => {
                     hideOrShowButonns(firstPlayerButton)
                     hideOrShowButonns(firstCombatMenuButton)
                 }}>Скилы</button>
@@ -99,12 +99,12 @@ const Buttons: React.FC<buttonsProps> = (props: buttonsProps) => {
                     action = 'baseAttack'
                     hideOrShowButonns(firstCombatMenuButton)
                     hideOrShowButonns(yourChoose)
-                }}>Толчок</button>
+                }}>Атака</button>
                 <button id="test-battle-button-yourSkill" onClick={() => {
                     action = 'skill'
                     hideOrShowButonns(firstCombatMenuButton)
                     hideOrShowButonns(yourChoose)
-                }}>Скилл</button>
+                }}>{activeMonster.skill.name}</button>
                 <button id="test-battle-button-backToYourMainMenu" onClick={() => {
                     hideOrShowButonns(firstCombatMenuButton)
                     hideOrShowButonns(firstPlayerButton)
@@ -113,7 +113,23 @@ const Buttons: React.FC<buttonsProps> = (props: buttonsProps) => {
             <div ref={yourChoose} className='hideButton buttons'>
             {hpBarFirstEnemyMonster > 0 && (
                 <button id="test-battle-button-attackFirstEnemyMonster" onClick={() => {
-                    setHpBarFirstEnemyMonster(hpBarFirstEnemyMonster = mathPvp.dealingDamage(hpBarFirstEnemyMonster, activeMonster, action, firstSelectedEnemyMonster))
+                    const healthPoint = mathPvp.dealingDamage(
+                        setHpBarFirstEnemyMonster,
+                        setHpBarSecondEnemyMonster, 
+                        setHpBarThirdEnemyMonster,
+                        hpBarFirstEnemyMonster, 
+                        hpBarSecondEnemyMonster,
+                        hpBarThirdEnemyMonster,
+                        firstSelectedEnemyMonster,
+                        secondSelectedEnemyMonster,
+                        thirdSelectedEnemyMonster,
+                        activeMonster, 
+                        action,
+                        firstSelectedEnemyMonster
+                    )
+                    setHpBarFirstEnemyMonster(hpBarFirstEnemyMonster = healthPoint[0])
+                    setHpBarSecondEnemyMonster(hpBarSecondEnemyMonster = healthPoint[1])
+                    setHpBarThirdEnemyMonster(hpBarThirdEnemyMonster = healthPoint[2])
                     setNewSQueue(firstSelectedEnemyMonster, hpBarFirstEnemyMonster)
                     hideOrShowButonns(yourChoose)
                     ActiveButtonMenu()
@@ -121,7 +137,23 @@ const Buttons: React.FC<buttonsProps> = (props: buttonsProps) => {
             )}
             {hpBarSecondEnemyMonster > 0 && (
                 <button id="test-battle-button-attackSecondEnemyMonster" onClick={() => {
-                    setHpBarSecondEnemyMonster(hpBarSecondEnemyMonster = mathPvp.dealingDamage(hpBarSecondEnemyMonster, activeMonster, action, secondSelectedEnemyMonster))
+                    const healthPoint = mathPvp.dealingDamage(
+                        setHpBarFirstEnemyMonster,
+                        setHpBarSecondEnemyMonster, 
+                        setHpBarThirdEnemyMonster,
+                        hpBarFirstEnemyMonster, 
+                        hpBarSecondEnemyMonster,
+                        hpBarThirdEnemyMonster,
+                        firstSelectedEnemyMonster,
+                        secondSelectedEnemyMonster,
+                        thirdSelectedEnemyMonster,
+                        activeMonster, 
+                        action,
+                        secondSelectedEnemyMonster
+                    )
+                    setHpBarFirstEnemyMonster(hpBarFirstEnemyMonster = healthPoint[0])
+                    setHpBarSecondEnemyMonster(hpBarSecondEnemyMonster = healthPoint[1])
+                    setHpBarThirdEnemyMonster(hpBarThirdEnemyMonster = healthPoint[2])
                     setNewSQueue(secondSelectedEnemyMonster, hpBarSecondEnemyMonster)
                     hideOrShowButonns(yourChoose)
                     ActiveButtonMenu()
@@ -129,7 +161,23 @@ const Buttons: React.FC<buttonsProps> = (props: buttonsProps) => {
             )}
             {hpBarThirdEnemyMonster > 0 &&(
                 <button id="test-battle-button-attackThirdEnemyMonster" onClick={() => {
-                    setHpBarThirdEnemyMonster(hpBarThirdEnemyMonster = mathPvp.dealingDamage(hpBarThirdEnemyMonster, activeMonster, action, thirdSelectedEnemyMonster))
+                    const healthPoint = mathPvp.dealingDamage(
+                        setHpBarFirstEnemyMonster,
+                        setHpBarSecondEnemyMonster, 
+                        setHpBarThirdEnemyMonster,
+                        hpBarFirstEnemyMonster, 
+                        hpBarSecondEnemyMonster,
+                        hpBarThirdEnemyMonster,
+                        firstSelectedEnemyMonster,
+                        secondSelectedEnemyMonster,
+                        thirdSelectedEnemyMonster,
+                        activeMonster, 
+                        action,
+                        thirdSelectedEnemyMonster
+                    )
+                    setHpBarFirstEnemyMonster(hpBarFirstEnemyMonster = healthPoint[0])
+                    setHpBarSecondEnemyMonster(hpBarSecondEnemyMonster = healthPoint[1])
+                    setHpBarThirdEnemyMonster(hpBarThirdEnemyMonster = healthPoint[2])
                     setNewSQueue(thirdSelectedEnemyMonster, hpBarThirdEnemyMonster)
                     hideOrShowButonns(yourChoose)
                     ActiveButtonMenu()
@@ -141,9 +189,10 @@ const Buttons: React.FC<buttonsProps> = (props: buttonsProps) => {
                 }}>Назад </button>
             </div>
             </>)
-        } else if(activeMonster.name === firstSelectedEnemyMonster.name || 
-            activeMonster.name === secondSelectedEnemyMonster.name || 
-            activeMonster.name === thirdSelectedEnemyMonster.name) 
+                } else if(activeMonster.name === firstSelectedEnemyMonster.name || 
+                    activeMonster.name === secondSelectedEnemyMonster.name || 
+                    activeMonster.name === thirdSelectedEnemyMonster.name) 
+        
         {
             return (<>
             <div ref={secondPlayerButton} className='showButton buttons'>
@@ -159,12 +208,12 @@ const Buttons: React.FC<buttonsProps> = (props: buttonsProps) => {
                     action = 'baseAttack'
                     hideOrShowButonns(secondCombatMenuButton)
                     hideOrShowButonns(enemyChoose)
-                }}>Толчок</button>
+                }}>Атака</button>
                 <button id="test-battle-button-enemySkill" onClick={() => {
                     action = 'skill'
                     hideOrShowButonns(secondCombatMenuButton)
                     hideOrShowButonns(enemyChoose)
-                }}>Скилл</button>
+                }}>{activeMonster.skill.name}</button>
                 <button id="test-battle-button-backToEnemyMainMenu" onClick={() => {
                     hideOrShowButonns(secondCombatMenuButton)
                     hideOrShowButonns(secondPlayerButton)
@@ -174,7 +223,24 @@ const Buttons: React.FC<buttonsProps> = (props: buttonsProps) => {
             <div ref={enemyChoose} className='hideButton buttons'>
             {hpBarFirstMonster > 0 && (
                 <button id="test-battle-button-attackFirstMonster" onClick={() => {
-                    setHpBarFirstMonster(hpBarFirstMonster = mathPvp.dealingDamage(hpBarFirstMonster, activeMonster, action, firstSelectedMonster))
+                    const healthPoint = mathPvp.dealingDamage(
+                        setHpBarFirstMonster,
+                        setHpBarSecondMonster, 
+                        setHpBarThirdMonster,
+                        hpBarFirstMonster, 
+                        hpBarSecondMonster,
+                        hpBarThirdMonster,
+                        firstSelectedMonster,
+                        secondSelectedMonster,
+                        thirdSelectedMonster,
+                        activeMonster, 
+                        action,
+                        firstSelectedMonster
+                    )
+                    setHpBarFirstMonster(hpBarFirstMonster = healthPoint[0])
+                    setHpBarSecondMonster(hpBarSecondMonster = healthPoint[1])
+                    setHpBarThirdMonster(hpBarThirdMonster = healthPoint[2])
+                    setHpBarFirstMonster(hpBarFirstMonster)
                     setNewSQueue(firstSelectedMonster, hpBarFirstMonster)
                     hideOrShowButonns(enemyChoose)
                     ActiveButtonMenu()
@@ -182,7 +248,23 @@ const Buttons: React.FC<buttonsProps> = (props: buttonsProps) => {
             )}
             {hpBarSecondMonster > 0 && (
                 <button id="test-battle-button-attackSecondMonster" onClick={() => {
-                    setHpBarSecondMonster(hpBarSecondMonster = mathPvp.dealingDamage(hpBarSecondMonster, activeMonster, action, secondSelectedMonster))
+                    const healthPoint = mathPvp.dealingDamage(
+                        setHpBarFirstMonster,
+                        setHpBarSecondMonster, 
+                        setHpBarThirdMonster,
+                        hpBarFirstMonster, 
+                        hpBarSecondMonster,
+                        hpBarThirdMonster,
+                        firstSelectedMonster,
+                        secondSelectedMonster,
+                        thirdSelectedMonster,
+                        activeMonster, 
+                        action,
+                        secondSelectedMonster
+                    )
+                    setHpBarFirstMonster(hpBarFirstMonster = healthPoint[0])
+                    setHpBarSecondMonster(hpBarSecondMonster = healthPoint[1])
+                    setHpBarThirdMonster(hpBarThirdMonster = healthPoint[2])
                     setNewSQueue(secondSelectedMonster, hpBarSecondMonster)
                     hideOrShowButonns(enemyChoose)
                     ActiveButtonMenu()
@@ -190,7 +272,23 @@ const Buttons: React.FC<buttonsProps> = (props: buttonsProps) => {
             )}
             {hpBarThirdMonster > 0 && (
                 <button id="test-battle-button-attackThirdMonster" onClick={() => {
-                    setHpBarThirdMonster(hpBarThirdMonster = mathPvp.dealingDamage(hpBarThirdMonster, activeMonster, action, thirdSelectedMonster))
+                    const healthPoint = mathPvp.dealingDamage(
+                        setHpBarFirstMonster,
+                        setHpBarSecondMonster, 
+                        setHpBarThirdMonster,
+                        hpBarFirstMonster, 
+                        hpBarSecondMonster,
+                        hpBarThirdMonster,
+                        firstSelectedMonster,
+                        secondSelectedMonster,
+                        thirdSelectedMonster,
+                        activeMonster, 
+                        action,
+                        thirdSelectedMonster
+                    )
+                    setHpBarFirstMonster(hpBarFirstMonster = healthPoint[0])
+                    setHpBarSecondMonster(hpBarSecondMonster = healthPoint[1])
+                    setHpBarThirdMonster(hpBarThirdMonster = healthPoint[2])
                     setNewSQueue(thirdSelectedMonster, hpBarThirdMonster)
                     hideOrShowButonns(enemyChoose)
                     ActiveButtonMenu()
