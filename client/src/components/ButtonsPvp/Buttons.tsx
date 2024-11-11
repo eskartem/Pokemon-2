@@ -88,31 +88,34 @@ const Buttons: React.FC<buttonsProps> = (props: buttonsProps) => {
         {
             return (<>
                 <div ref={firstPlayerButton} className='showButton buttons'>
-                <button id="test-battle-button-yourSkill's" onClick={() => {
+                <button onClick={() => {
                     hideOrShowButonns(firstPlayerButton)
                     hideOrShowButonns(firstCombatMenuButton)
                 }}>Скилы</button>
-                <button id="test-battle-button-yourRetreat">Отступить</button>
+                <button>Отступить</button>
             </div>
             <div ref={firstCombatMenuButton} className='hideButton buttons'>
-                <button id="test-battle-button-yourBaseAttack" onClick={() => {
+                <button onClick={() => {
                     action = 'baseAttack'
                     hideOrShowButonns(firstCombatMenuButton)
                     hideOrShowButonns(yourChoose)
                 }}>Толчок</button>
-                <button id="test-battle-button-yourSkill" onClick={() => {
+                <button onClick={() => {
                     action = 'skill'
                     hideOrShowButonns(firstCombatMenuButton)
                     hideOrShowButonns(yourChoose)
                 }}>Скилл</button>
-                <button id="test-battle-button-backToYourMainMenu" onClick={() => {
+                <button onClick={() => {
+                    action = 'block'
+                }}>Блок</button>
+                <button onClick={() => {
                     hideOrShowButonns(firstCombatMenuButton)
                     hideOrShowButonns(firstPlayerButton)
                 }}>Назад</button>
             </div>
             <div ref={yourChoose} className='hideButton buttons'>
             {hpBarFirstEnemyMonster > 0 && (
-                <button id="test-battle-button-attackFirstEnemyMonster" onClick={() => {
+                <button onClick={() => {
                     setHpBarFirstEnemyMonster(hpBarFirstEnemyMonster = mathPvp.dealingDamage(hpBarFirstEnemyMonster, activeMonster, action, firstSelectedEnemyMonster))
                     setNewSQueue(firstSelectedEnemyMonster, hpBarFirstEnemyMonster)
                     hideOrShowButonns(yourChoose)
@@ -120,7 +123,7 @@ const Buttons: React.FC<buttonsProps> = (props: buttonsProps) => {
                 }}>Ударить {firstSelectedEnemyMonster.name}</button>
             )}
             {hpBarSecondEnemyMonster > 0 && (
-                <button id="test-battle-button-attackSecondEnemyMonster" onClick={() => {
+                <button onClick={() => {
                     setHpBarSecondEnemyMonster(hpBarSecondEnemyMonster = mathPvp.dealingDamage(hpBarSecondEnemyMonster, activeMonster, action, secondSelectedEnemyMonster))
                     setNewSQueue(secondSelectedEnemyMonster, hpBarSecondEnemyMonster)
                     hideOrShowButonns(yourChoose)
@@ -128,14 +131,14 @@ const Buttons: React.FC<buttonsProps> = (props: buttonsProps) => {
                 }}>Ударить {secondSelectedEnemyMonster.name}</button>
             )}
             {hpBarThirdEnemyMonster > 0 &&(
-                <button id="test-battle-button-attackThirdEnemyMonster" onClick={() => {
+                <button onClick={() => {
                     setHpBarThirdEnemyMonster(hpBarThirdEnemyMonster = mathPvp.dealingDamage(hpBarThirdEnemyMonster, activeMonster, action, thirdSelectedEnemyMonster))
                     setNewSQueue(thirdSelectedEnemyMonster, hpBarThirdEnemyMonster)
                     hideOrShowButonns(yourChoose)
                     ActiveButtonMenu()
                 }}>Ударить {thirdSelectedEnemyMonster.name}</button>
             )}
-                <button id="test-battle-button-backToFirstCombatMenu" onClick={() => {
+                <button onClick={() => {
                     hideOrShowButonns(yourChoose)
                     hideOrShowButonns(firstCombatMenuButton)
                 }}>Назад </button>
@@ -147,25 +150,28 @@ const Buttons: React.FC<buttonsProps> = (props: buttonsProps) => {
         {
             return (<>
             <div ref={secondPlayerButton} className='showButton buttons'>
-                <button id="test-battle-button-enemySkill's" onClick={() => {
+                <button onClick={() => {
                     hideOrShowButonns(secondPlayerButton)
                     hideOrShowButonns(secondCombatMenuButton)
                 }}>Скилы</button>
-                <button id="test-battle-button-enemyRetreat">Отступить</button>
+                <button>Отступить</button>
             </div>
 
             <div ref={secondCombatMenuButton} className='hideButton buttons'>
-                <button id="test-battle-button-enemyBaseAttack" onClick={() => {
+            <button onClick={() => {
                     action = 'baseAttack'
                     hideOrShowButonns(secondCombatMenuButton)
                     hideOrShowButonns(enemyChoose)
                 }}>Толчок</button>
-                <button id="test-battle-button-enemySkill" onClick={() => {
+                <button onClick={() => {
                     action = 'skill'
                     hideOrShowButonns(secondCombatMenuButton)
                     hideOrShowButonns(enemyChoose)
                 }}>Скилл</button>
-                <button id="test-battle-button-backToEnemyMainMenu" onClick={() => {
+                <button onClick={() => {
+                    action = 'block'
+                }}>Блок</button>
+                <button onClick={() => {
                     hideOrShowButonns(secondCombatMenuButton)
                     hideOrShowButonns(secondPlayerButton)
                 }}>Назад</button>
@@ -173,7 +179,7 @@ const Buttons: React.FC<buttonsProps> = (props: buttonsProps) => {
 
             <div ref={enemyChoose} className='hideButton buttons'>
             {hpBarFirstMonster > 0 && (
-                <button id="test-battle-button-attackFirstMonster" onClick={() => {
+                <button onClick={() => {
                     setHpBarFirstMonster(hpBarFirstMonster = mathPvp.dealingDamage(hpBarFirstMonster, activeMonster, action, firstSelectedMonster))
                     setNewSQueue(firstSelectedMonster, hpBarFirstMonster)
                     hideOrShowButonns(enemyChoose)
@@ -181,7 +187,7 @@ const Buttons: React.FC<buttonsProps> = (props: buttonsProps) => {
                 }}>Ударить {firstSelectedMonster.name}</button>
             )}
             {hpBarSecondMonster > 0 && (
-                <button id="test-battle-button-attackSecondMonster" onClick={() => {
+                <button onClick={() => {
                     setHpBarSecondMonster(hpBarSecondMonster = mathPvp.dealingDamage(hpBarSecondMonster, activeMonster, action, secondSelectedMonster))
                     setNewSQueue(secondSelectedMonster, hpBarSecondMonster)
                     hideOrShowButonns(enemyChoose)
@@ -189,14 +195,14 @@ const Buttons: React.FC<buttonsProps> = (props: buttonsProps) => {
                 }}>Ударить {secondSelectedMonster.name}</button>
             )}
             {hpBarThirdMonster > 0 && (
-                <button id="test-battle-button-attackThirdMonster" onClick={() => {
+                <button onClick={() => {
                     setHpBarThirdMonster(hpBarThirdMonster = mathPvp.dealingDamage(hpBarThirdMonster, activeMonster, action, thirdSelectedMonster))
                     setNewSQueue(thirdSelectedMonster, hpBarThirdMonster)
                     hideOrShowButonns(enemyChoose)
                     ActiveButtonMenu()
                 }}>Ударить {thirdSelectedMonster.name}</button>
             )}
-                <button id="test-battle-button-backToEnemyCombatMenu"onClick={() => {
+                <button onClick={() => {
                     hideOrShowButonns(enemyChoose)
                     hideOrShowButonns(secondCombatMenuButton)
                 }}>Назад </button>

@@ -86,8 +86,8 @@ const HpBars: React.FC<hpBarsProps> = (props: hpBarsProps) => {
     }, [hpBarFirstEnemyMonster, hpBarSecondEnemyMonster, hpBarThirdEnemyMonster, stageProps.height, stageProps.width]);
  
     return (<>
-      <Graphics draw={hpBarFirstPlayer} name={"test-battle-pixi-yourHealthPoint"}></Graphics>
-      <Graphics draw={hpBarSecondPlayer} name={"test-battle-pixi-enemyHealthPoint"}></Graphics>
+      <Graphics draw={hpBarFirstPlayer}></Graphics>
+      <Graphics draw={hpBarSecondPlayer}></Graphics>
     </>)
 }
 
