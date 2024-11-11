@@ -9,27 +9,11 @@ body {
     align-items: center;
     justify-content: center;
     min-height: 100vh;
-
     //фон
-    background-image: url('assets/img/background/multbackgrount.jpg');
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    
-    @keyframes changeBackground {
-        20% {
-            background-image: url('assets/img/background/multbackgrount.jpg');
-        }
-        50% {
-            background-image: url('assets/img/background/multbackground2.jpg');
-        }
-        70% {
-            background-image: url('assets/img/background/multbackground2.jpg');
-        }
-    }
-    animation: changeBackground 10s infinite;
+    background: linear-gradient(-135deg, #c850c0, #4158d0);
 
     overflow: hidden;
+    background-color: $main-theme;
     color: $text-color;
     margin: 0;
     padding: 0;
