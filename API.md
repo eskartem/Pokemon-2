@@ -20,9 +20,9 @@
     * 4.4. sendMessage
     * 4.5. getMessages
     * 4.6. userInfo
-    * 4.7. pocemonUpgrade
+    * 4.7. pokemonUpdate
     * 4.8. startGame
-    * 4.9 endtGame
+    * 4.9. endGame
 
 
 ## 1. Общее
@@ -91,9 +91,9 @@ Message: {
 | sendMessage | Отправить сообщение в чат |
 | getMessages | Получить сообщения в чате |
 | userInfo | Получить информацию о пользователе и его наборе покемонов|
-| pocemonUpgrade | Улучшение покемонов|
+| pokemonUpdate | Обновление информации о покемоне пользователя|
 | startGame | Начало игры |
-| endtGame | Конец игры на карте |
+| endGame | Конец игры на карте |
 
 ### 3.1. Общие ошибки
 * `101` - если не передан параметр `method`

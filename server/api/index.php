@@ -22,7 +22,7 @@ function result($params) {
             case 'getMessages': return $app->getMessages($params);//loop
             //gamer info
             // case 'userInfo': return $app-> userInfo($params);
-            // case 'pokemonUpgrade': return $app-> pokemonUpgrade($params);
+            // case 'pokemonUpdate': return $app-> pokemonUpdate($params);
             //inventory
 
             //battle

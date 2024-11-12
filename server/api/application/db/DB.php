@@ -166,8 +166,8 @@ class DB {
         //return $this->execute("UPDATE map SET position=? WHERE id=?", [$position, $userId]);
     }
     //примерно
-    public function clearUserInventory($user){
-        //return $this-> execute('DELETE FROM inventory WHERE user_id = ?', [$user->id]);
+    public function clearUserResource($user){
+        //return $this-> execute('DELETE FROM resource WHERE user_id = ?', [$user->id]);
     }
     
 }
