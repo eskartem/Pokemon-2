@@ -1,5 +1,4 @@
-import { useState } from "react";
-import { Text, Container } from "@pixi/react";
+import { Text } from "@pixi/react";
 import { TextStyle } from "pixi.js";
 
 import { Monsters } from "../../assets/Monsters/Monster";
@@ -21,7 +20,8 @@ interface textProps {
     hpBarThirdMonster: number, 
     hpBarFirstEnemyMonster: number, 
     hpBarSecondEnemyMonster: number, 
-    hpBarThirdEnemyMonster: number
+    hpBarThirdEnemyMonster: number 
+    
 }
 
 const Texts: React.FC<textProps> = (props: textProps) => {
@@ -50,11 +50,11 @@ const Texts: React.FC<textProps> = (props: textProps) => {
 
 
     return(<>
-    <Container x={stageProps.width * 0.5 - 50} y={20}>
-      <Text
+    <Text
         text={`${activeMonster.name}`}
+        x={stageProps.width * 0.5 - 50}
+        y={20}
       />
-    </Container>
     <Text
         text={`${hpBarFirstMonster}`}
         x={stageProps.width * 0.01 + 7}

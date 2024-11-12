@@ -1,7 +1,7 @@
 import {useCallback} from "react";
 import { Graphics, Text } from "@pixi/react";
 
-import { Monsters } from "../../../assets/Monsters/Monster";
+import { TextStyle } from "pixi.js";
 
 interface hpBarsProps {
   stageProps: {
@@ -13,13 +13,7 @@ interface hpBarsProps {
   hpBarThirdMonster: number, 
   hpBarFirstEnemyMonster: number, 
   hpBarSecondEnemyMonster: number, 
-  hpBarThirdEnemyMonster: number ,
-  firstSelectedMonster: Monsters,
-  secondSelectedMonster: Monsters,
-  thirdSelectedMonster: Monsters,
-  firstSelectedEnemyMonster: Monsters,
-  secondSelectedEnemyMonster: Monsters,
-  thirdSelectedEnemyMonster: Monsters,
+  hpBarThirdEnemyMonster: number 
 }
 
 const HpBars: React.FC<hpBarsProps> = (props: hpBarsProps) => {
@@ -30,19 +24,8 @@ const HpBars: React.FC<hpBarsProps> = (props: hpBarsProps) => {
         hpBarThirdMonster, 
         hpBarFirstEnemyMonster, 
         hpBarSecondEnemyMonster, 
-        hpBarThirdEnemyMonster,
-        firstSelectedMonster,
-        secondSelectedMonster,
-        thirdSelectedMonster,
-        firstSelectedEnemyMonster,
-        secondSelectedEnemyMonster,
-        thirdSelectedEnemyMonster 
+        hpBarThirdEnemyMonster  
       }  = props;
-
-      const hpBarLength = (healthPoint: number, maxHealthPoint: number) => {
-        let healthPercentage = (healthPoint / maxHealthPoint) * 100
-        return (healthPercentage / 100) * 200 
-      }
       
       const hpBarFirstPlayer = useCallback((g: any) => {
       g.clear();
@@ -52,7 +35,7 @@ const HpBars: React.FC<hpBarsProps> = (props: hpBarsProps) => {
       g.endFill();
       
       g.beginFill(0x00ff00);
-      g.drawRect(stageProps.width * 0.01 + 5, stageProps.height * 0.02 + 5, hpBarLength(hpBarFirstMonster, firstSelectedMonster.healthPoint), 20);
+      g.drawRect(stageProps.width * 0.01 + 5, stageProps.height * 0.02 + 5, hpBarFirstMonster, 20);
       g.endFill();
 
       //SecondPoke
@@ -61,7 +44,7 @@ const HpBars: React.FC<hpBarsProps> = (props: hpBarsProps) => {
       g.endFill();
 
       g.beginFill(0x00ff00);
-      g.drawRect(stageProps.width * 0.01 + 5, stageProps.height * 0.1 + 5, hpBarLength(hpBarSecondMonster, secondSelectedMonster.healthPoint), 20);
+      g.drawRect(stageProps.width * 0.01 + 5, stageProps.height * 0.1 + 5, hpBarSecondMonster, 20);
       g.endFill();
       //ThirdPoke
       g.beginFill(0x000000);
@@ -69,7 +52,7 @@ const HpBars: React.FC<hpBarsProps> = (props: hpBarsProps) => {
       g.endFill();
 
       g.beginFill(0x00ff00);
-      g.drawRect(stageProps.width * 0.01 + 5, stageProps.height * 0.18 + 5, hpBarLength(hpBarThirdMonster, thirdSelectedMonster.healthPoint), 20);
+      g.drawRect(stageProps.width * 0.01 + 5, stageProps.height * 0.18 + 5, hpBarThirdMonster, 20);
       g.endFill();
     }, [hpBarFirstMonster, hpBarSecondMonster, hpBarThirdMonster, stageProps.height, stageProps.width])
 
@@ -81,7 +64,7 @@ const HpBars: React.FC<hpBarsProps> = (props: hpBarsProps) => {
       g.endFill();
       
       g.beginFill(0x00ff00);
-      g.drawRect(stageProps.width * 0.80 + 5, stageProps.height * 0.02 + 5, hpBarLength(hpBarFirstEnemyMonster, firstSelectedEnemyMonster.healthPoint), 20);
+      g.drawRect(stageProps.width * 0.80 + 5, stageProps.height * 0.02 + 5, hpBarFirstEnemyMonster, 20);
       g.endFill();
 
       //fivethPoke
@@ -90,7 +73,7 @@ const HpBars: React.FC<hpBarsProps> = (props: hpBarsProps) => {
       g.endFill();
 
       g.beginFill(0x00ff00);
-      g.drawRect(stageProps.width * 0.80 + 5, stageProps.height * 0.1 + 5, hpBarLength(hpBarSecondEnemyMonster, secondSelectedEnemyMonster.healthPoint), 20);
+      g.drawRect(stageProps.width * 0.80 + 5, stageProps.height * 0.1 + 5, hpBarSecondEnemyMonster, 20);
       g.endFill();
       //sixthPoke
       g.beginFill(0x000000);
@@ -98,7 +81,7 @@ const HpBars: React.FC<hpBarsProps> = (props: hpBarsProps) => {
       g.endFill();
 
       g.beginFill(0x00ff00);
-      g.drawRect(stageProps.width * 0.80 + 5, stageProps.height * 0.18 + 5, hpBarLength(hpBarThirdEnemyMonster, thirdSelectedEnemyMonster.healthPoint), 20);
+      g.drawRect(stageProps.width * 0.80 + 5, stageProps.height * 0.18 + 5, hpBarThirdEnemyMonster, 20);
       g.endFill();
     }, [hpBarFirstEnemyMonster, hpBarSecondEnemyMonster, hpBarThirdEnemyMonster, stageProps.height, stageProps.width]);
  

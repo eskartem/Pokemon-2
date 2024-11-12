@@ -1,22 +1,16 @@
 import Monster from "../Monster";
 
 class FourthGeoMonster extends Monster {
-    constructor(side: string, level: number) {
-        super()
-        this.side = side
-        this.level = level
-    }
-    side: string = this.side;
     name: string = 'Dugtrio';
-    attack: number = 70;
-    healthPoint: number = 520;
-    defense: number = 55;
-    element: string = 'Earth';
-    level: number = this.level;
+    attack: number = 100;
+    healthPoint: number = 200;
+    defense: number = 100;
+    elementType: string = 'Geo';
+    level: number = 1;
     isAlive: boolean = true;
     skill = {
-        name: 'Гравитационная волна',
-        scale: 0.25
+        name: 'gravitationalWave',
+        baseMultiplier: 0.25
     }   
 }
 

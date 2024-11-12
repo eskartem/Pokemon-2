@@ -12,7 +12,6 @@ import Sprites from '../../components/Graphics/sprite/Sprite';
 import Texts from '../../components/Graphics/text'
 import FinalScreen from '../../components/finalScreen/finalScreen';
 import Button from '../../components/Button/Button';
-import BattleTimer from '../../components/Graphics/battleTimer/battleTimer';
 
 import { Monsters } from "../../assets/Monsters/Monster"
 
@@ -20,18 +19,18 @@ import './Battle.scss';
 import MathPvp from '../../services/MathPvp/MathPvp';
 
 const Pvp = (props: any) => {
-  let firstSelectedMonster: Monsters = new FourthPyroMonster("yourSide", 6);
-  let secondSelectedMonster: Monsters = new FirstGeoMonster("yourSide", 1);
-  let thirdSelectedMonster: Monsters = new FirstHydroMonster("yourSide", 1);
-  let firstSelectedEnemyMonster: Monsters = new SecondPyroMonster("enemySide", 1);
-  let secondSelectedEnemyMonster: Monsters = new FourthAnemoMonster("enemySide", 1);
-  let thirdSelectedEnemyMonster: Monsters = new FourthHydroMonster("enemySide", 1);
+  let firstSelectedMonster: Monsters = new FourthPyroMonster();
+  let secondSelectedMonster: Monsters = new FirstGeoMonster();
+  let thirdSelectedMonster: Monsters = new FirstHydroMonster();
+  let firstSelectedEnemyMonster: Monsters = new SecondPyroMonster();
+  let secondSelectedEnemyMonster: Monsters = new FourthAnemoMonster();
+  let thirdSelectedEnemyMonster: Monsters = new FourthHydroMonster();
 
   const mathPvp = new MathPvp();
 
   const { setPage } = props; 
 
-  let [sQueue, setSQueue] = useState<Monsters[]>(mathPvp.sortQueuesByLevel(
+  let [sQueue, setSQueue] = useState(mathPvp.sortQueuesByLevel(
     firstSelectedMonster,
     secondSelectedMonster,
     thirdSelectedMonster,
@@ -39,7 +38,7 @@ const Pvp = (props: any) => {
     secondSelectedEnemyMonster,
     thirdSelectedEnemyMonster))
 
-  let [activeMonster, setActiveMonster] = useState<Monsters>(sQueue[0]); 
+  let [activeMonster, setActiveMonster] = useState<Monsters>(sQueue[0]);
 
   const [hpBarFirstMonster, setHpBarFirstMonster] = useState<number>(firstSelectedMonster.healthPoint);
   const [hpBarSecondMonster, setHpBarSecondMonster] = useState<number>(secondSelectedMonster.healthPoint)
@@ -69,10 +68,9 @@ const Pvp = (props: any) => {
     window.addEventListener('resize', handleResize);
     return () => {
       window.removeEventListener('resize', handleResize);
-    };
-  })
+    };})
 
-  const backClickHandler = () => setPage(PAGES.MAINMENU);
+    const backClickHandler = () => setPage(PAGES.MAINMENU);
   
   return (<>
     <Stage {...stageProps} className='pvpArea'>
@@ -97,12 +95,6 @@ const Pvp = (props: any) => {
         hpBarFirstEnemyMonster={hpBarFirstEnemyMonster}
         hpBarSecondEnemyMonster={hpBarSecondEnemyMonster}
         hpBarThirdEnemyMonster={hpBarThirdEnemyMonster}
-        firstSelectedMonster={firstSelectedMonster}
-        secondSelectedMonster={secondSelectedMonster}
-        thirdSelectedMonster={thirdSelectedMonster}
-        firstSelectedEnemyMonster={firstSelectedEnemyMonster}
-        secondSelectedEnemyMonster={secondSelectedEnemyMonster} 
-        thirdSelectedEnemyMonster={thirdSelectedEnemyMonster}
       />
       <Texts activeMonster={activeMonster}
         stageProps={stageProps}
@@ -118,12 +110,6 @@ const Pvp = (props: any) => {
         hpBarFirstEnemyMonster={hpBarFirstEnemyMonster}
         hpBarSecondEnemyMonster={hpBarSecondEnemyMonster}
         hpBarThirdEnemyMonster={hpBarThirdEnemyMonster}
-        />
-      <BattleTimer stageProps={stageProps}
-        sQueue={sQueue}
-        setSQueue={setSQueue}
-        setActiveMonster={setActiveMonster}
-        activeMonster={activeMonster}
       />
     </Stage>
     <Buttons sQueue={sQueue}
@@ -149,8 +135,8 @@ const Pvp = (props: any) => {
       setHpBarThirdEnemyMonster={setHpBarThirdEnemyMonster}
       setHpBarThirdMonster={setHpBarThirdMonster}
     />
-
-    <FinalScreen hpBarFirstMonster={hpBarFirstMonster}
+    <FinalScreen 
+      hpBarFirstMonster={hpBarFirstMonster}
       hpBarSecondMonster={hpBarSecondMonster}
       hpBarThirdMonster={hpBarThirdMonster}
       hpBarFirstEnemyMonster={hpBarFirstEnemyMonster}
