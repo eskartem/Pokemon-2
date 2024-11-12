@@ -19,7 +19,7 @@ function result($params) {
             case 'registration': return $app->registration($params);
             // chat
             case 'sendMessage': return $app->sendMessage($params);//loop
-            case 'getMessages': return $app->getMessages($params);//loop
+            case 'getMessages': return $app->getMessages($params);
             //gamer info
             // case 'userInfo': return $app-> userInfo($params);
             // case 'pokemonUpgrade': return $app-> pokemonUpgrade($params);
