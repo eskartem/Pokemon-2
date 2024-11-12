@@ -1,22 +1,16 @@
 import Monster from "../Monster";
 
 class SecondPyroMonster extends Monster {
-    constructor(side: string, level: number) {
-        super()
-        this.side = side
-        this.level = level
-    }
-    side: string = this.side;
     name: string = 'Charmander';
-    attack: number = 110;
-    healthPoint: number = 480;
-    defense: number = 50;
-    element: string = 'Fire';
-    level: number = this.level;
+    attack: number = 100;
+    healthPoint: number = 200;
+    defense: number = 0;
+    elementType: string = 'Pyro';
+    level: number = 4;
     isAlive: boolean = true;
     skill = {
-        name: 'Фениксова искра',
-        scale: 1.1
+        name: 'phoenixSpark',
+        baseMultiplier: 1.1
     }   
 }
 

@@ -1,32 +1,24 @@
-interface skill {
-    name: string,
-    scale: number
-}
 
 export type Monsters = {
     name: string,
     attack: number,
     healthPoint: number,
     defense: number,
-    element:string,
+    elementType:string,
     level: number,
-    skill: skill,
+    skill: object,
     isAlive: boolean
-    side: string
 }
+
 
 class Monster {
     name: string = '';
     attack: number = 100;
     healthPoint: number = 150;
     defense: number = 100;
-    element: string = '';
+    elementType: string = '';
     level: number = 1;
-    side = '';
-    skill: skill = {
-        name: "",
-        scale: 1
-    }
+    skill: object = {};
     isAlive: boolean = true;
 }
 

@@ -1,22 +1,17 @@
 import Monster from "../Monster";
 
 class ThirdHydroMonster extends Monster {
-    constructor(side: string, level: number) {
-        super()
-        this.side = side
-        this.level = level
-    }
-    side: string = this.side;
     name: string = 'Poliwhirl';
-    attack: number = 120;
-    healthPoint: number = 500;
-    defense: number = 55;
-    element: string = 'Water';
-    level: number = this.level;
+    attack: number = 100;
+    healthPoint: number = 200;
+    defense: number = 100;
+    elementType: string = 'Hydro';
+    level: number = 1;
     isAlive: boolean = true;
     skill = {
-        name: 'Волна разрушения',
-        scale: 1.2
+        name: 'waveOfDestruction',
+        baseMultiplier: 1.2,
+        baseMultiplierOnTheSides: 0.5
     }    
 }
 
