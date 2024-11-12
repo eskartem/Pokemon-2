@@ -15,6 +15,7 @@ export type TUser = {
     coins: number;
     crystals: number;
     eggFragments: number;
+    resources: TUserResources;
 }
 
 export type TMessage = {
@@ -39,13 +40,6 @@ export enum EElement {
     nonElement  // для нейтральных элементов карты (не знаю, есть ли смысл делать отедльный ETileElement, чтобы такого не было)
 }
 
-// редкость существ
-export enum ERarity {
-    common,
-    rare,
-    legendary
-}
-
 // статы существа
 export type TStats = {
     hp: number, // health point
@@ -58,7 +52,6 @@ export type TCreature = {
     name: string;
     lvl: number;
     element: EElement,
-    rarity: ERarity,
     stats: TStats,
 }
 
@@ -90,3 +83,5 @@ export type TMarketCatalog = {
     creatures: TMarketCreature[],
     resources: TMarketItem[]
 }
+
+export type TTraderCatalog = TMarketCatalog;
