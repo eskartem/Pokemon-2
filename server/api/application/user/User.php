@@ -77,7 +77,7 @@ class User {
         return ['error' => 404]; 
     }
     
-    public function pokemonUpdate($token, $pokemonId) {
+    public function pokemonUpgrade($token, $pokemonId) {
         // Получаем пользователя по токену
         $user = $this->db->getUserByToken($token);
         if (!$user) {
@@ -89,17 +89,8 @@ class User {
         if (!$pokemon) {
             return ['error' => 2009]; // Покемон не найден
         }
-    
-        // Обновляем информацию о покемоне
-        $updateSuccess = $this->db->updatePokemon($pokemonId);
-        if ($updateSuccess) {
-            return [
-                'pokemonId' => $pokemonId,
-                
-            ];
-        } else {
-            return ['error' => 2008]; 
-        }
+        
+        //доделать
     }
     
 }

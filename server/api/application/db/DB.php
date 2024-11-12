@@ -208,10 +208,14 @@ class DB {
     }
 
     public function getMessages() {
-        return $this->queryAll("SELECT u.name AS author, m.message AS message,
-                                to_char(m.created, 'yyyy-mm-dd hh24:mi:ss') AS created FROM messages as m 
-                                LEFT JOIN users as u on u.id = m.user_id 
-                                ORDER BY m.created DESC"
+        return $this->queryAll(
+            "SELECT
+                    u.name AS author,
+                    m.message AS message,
+                    m.created AS created
+            FROM messages as m
+            LEFT JOIN users as u on u.id = m.user_id
+            ORDER BY m.created DESC"
         );
     }
 
