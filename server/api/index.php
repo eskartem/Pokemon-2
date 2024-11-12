@@ -1,5 +1,5 @@
 <?php
-
+//hi
 error_reporting(1);
 
 header('Content-Type: application/json; charset=utf-8');
@@ -23,7 +23,7 @@ function result($params) {
             case 'getMessages': return $app->getMessages($params);
             //gamer info
             // case 'userInfo': return $app-> userInfo($params);
-            // case 'pokemonUpgrade': return $app-> pokemonUpgrade($params);
+            // case 'pokemonUpdate': return $app-> pokemonUpdate($params);
             //inventory
 
             //battle
@@ -31,9 +31,10 @@ function result($params) {
             // case 'endBattle': return $app-> endBattle($params);
             // case 'actionUser': return $app-> actionUser($params); //действие игрока в бою во время ход
             //map
-            // case 'startGame': return $app-> startGame($params);
-            // case 'endGame': return $app-> endGame($params);
             case 'getMap': return $app-> getMap($params);
+             case 'startGame': return $app-> startGame($params);
+             case 'endGame': return $app-> endGame($params);
+
             // case 'sceneUpgrade': return $app-> sceneUpgrade($params); //loop
             // case 'moveUser': return $app-> moveUser($params);//надо уметь бросать энд гейм
             //market

@@ -162,6 +162,7 @@ class DB {
         return $this->catalog;
     }
 
+
     public function getResources($token) {
         // как нить получить ресы пользователя по токену и вернуть, только на sql, а пока статика-_-
         return $this->user->resources;
@@ -175,5 +176,15 @@ class DB {
         //мб токен вообще не используется и удалить его нах
     }
         
+
+
+    public function updateUserLocation($userId, $position) {
+        //return $this->execute("UPDATE map SET position=? WHERE id=?", [$position, $userId]);
+    }
+    //примерно
+    public function clearUserResource($user){
+        //return $this-> execute('DELETE FROM resource WHERE user_id = ?', [$user->id]);
+    }
+    
 
 }

@@ -79,7 +79,7 @@ class Application {
         }
         return ['error' => 242];
     }
-    
+
     public function getResources($params) {
         if ($params['token']) {
             $user = $this->user->getUser($params['token']);
@@ -87,9 +87,16 @@ class Application {
                 return $this->user->getResources($params['token']);
             }
             return ['error' => 705];
+
+
+    public function startGame($params){
+        if($params['token']){
+            return $this->map->startGame($params['token']);
+
         }
         return ['error' => 242];
     }
+
 
     public function getMap($params) {
         if ($params['token']) {
@@ -97,4 +104,12 @@ class Application {
         }
         return ['error' => 242];
     }
+
+    public function endGame($params){
+        if($params['token']){
+            return $this->map->endGame($params['token']);
+        }
+        return ['error' => 242];
+    }
+
 }
