@@ -40,13 +40,6 @@ export enum EElement {
     nonElement  // для нейтральных элементов карты (не знаю, есть ли смысл делать отедльный ETileElement, чтобы такого не было)
 }
 
-// редкость существ
-export enum ERarity {
-    common,
-    rare,
-    legendary
-}
-
 // статы существа
 export type TStats = {
     hp: number, // health point
@@ -59,7 +52,6 @@ export type TCreature = {
     name: string;
     lvl: number;
     element: EElement,
-    rarity: ERarity,
     stats: TStats,
 }
 
@@ -92,21 +84,4 @@ export type TMarketCatalog = {
     resources: TMarketItem[]
 }
 
-
-
-
-
-
-
-export type TExchangerResources = {
-    coins: number;  
-    eggs: number;  
-}
-
-// Типы для параметров обменника
-export type TExchanger = {
-    requiredCoins: number; // Количество монет, необходимых для обмена
-    updateCoins: (newCoins: number) => void; // Функция для обновления монет
-    addEgg: () => void; // Функция для добавления яйца
-    coins: number; // Количество текущих монет
-};
+export type TTraderCatalog = TMarketCatalog;
