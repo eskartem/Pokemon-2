@@ -15,9 +15,9 @@ const Login: React.FC<IBasePage> = (props: IBasePage) => {
         if (!loginRef.current || !passwordRef.current) {return;}
         const login = loginRef.current.value;
         const password = passwordRef.current.value;
-        // if (1) { // тестовое условие, чтобы логин всегда был успешный и работал без бекенда
-        if (login && password && await server.login(login, password)) { // login: admin, пароль: 111
-            setPage(PAGES.MAINMENU); //PAGES.MAINMENU
+        if (1) { // тестовое условие, чтобы логин всегда был успешный и работал без бекенда
+        // if (login && password && await server.login(login, password)) { // login: admin, пароль: 111
+            setPage(PAGES.MAP);
         }
     }
 
