@@ -3,6 +3,7 @@
 class DB {
     private $pdo;
     private $catalog;
+    private $traderCatalog;
 
     function __construct() {
 
@@ -90,6 +91,66 @@ class DB {
             'resources' => [$res1, $res2, $res3],
         ];
 
+        // Инициализация каталога торговца
+        $t1 = new stdClass();
+        $t1->id = 1;
+        $t1->name = "Duck";
+        $t1->element = 'fire';
+        $t1->rarity = 'common';
+        $t1->lvl = 3;
+        $t1->stats = [
+            'hp' => 10,
+            'ad' => 15,
+            'df' => 16,
+        ];
+        $t1->cost = 25;
+        $t2 = new stdClass(); 
+        $t2->id = 2;
+        $t2->name = "Kock";
+        $t2->element = 'water';
+        $t2->rarity = 'legendary';
+        $t2->lvl = 5;
+        $t2->stats = [
+            'hp' => 20,
+            'ad' => 10,
+            'df' => 15,
+        ];
+        $t2->cost = 310;
+        $t3 = new stdClass(); 
+        $t3->id = 3;
+        $t3->name = "Pock";
+        $t3->element = 'air';
+        $t3->rarity = 'rare';
+        $t3->lvl = 10;
+        $t3->stats = [
+            'hp' => 14,
+            'ad' => 19,
+            'df' => 10,
+        ];
+        $t3->cost = 304;
+        // Инициализация ресурсов для каталога торговца
+        $resur1 = new stdClass();
+        $resur1->id = 10;
+        $resur1->name = "кристаллы улучшения";
+        $resur1->number = 5;
+        $resur1->cost = 10;
+        
+        $resur2 = new stdClass();
+        $resur2->id = 11;
+        $resur2->name = "кусок яйца";
+        $resur2->number = 2;
+        $resur2->cost = 50;
+        $resur3 = new stdClass();
+        $resur3->id = 12;
+        $resur3->name = "Кусок яйца";
+        $resur3->number = 5;
+        $resur3->cost = 350;
+        // Инициализация каталога торговца
+        $this->traderCatalog = [
+            'creatures' => [$t1, $t2, $t3],
+            'resources' => [$resur1, $resur2, $resur3],
+        ];
+
     }
 
     public function __destruct() {
@@ -161,4 +222,13 @@ class DB {
     public function getCatalog() {
         return $this->catalog;
     }
+
+    public function updateUserLocation($userId, $position) {
+        //return $this->execute("UPDATE map SET position=? WHERE id=?", [$position, $userId]);
+    }
+    //примерно
+    public function clearUserResource($user){
+        //return $this-> execute('DELETE FROM resource WHERE user_id = ?', [$user->id]);
+    }
+    
 }
