@@ -22,8 +22,8 @@ function result($params) {
             case 'getMessages': return $app->getMessages($params);
             
             //gamer info
-            //case 'userInfo': return $app-> userInfo($params);
-            //case 'pocemonUpdate': return $app->pocemonUpdate($params);
+            case 'userInfo': return $app-> userInfo($params);
+            case 'pocemonUpdate': return $app->pocemonUpdate($params);
              /*
             //battle
             case 'updateButtle': return $app-> updateButtle($params); //получаю данные по всем игрокам
