@@ -23,12 +23,9 @@ class Answer {
         '801' => 'unknown state',
         '1001' => 'params login or password not set',
         '1005' => 'Other user is playing wright now. If you doesn`t, please change the password',
-        '1006' => 'user with this email is already registered',
-        '1007' => 'Ошибка: пароль не соответствует требованиям',
-        
+        '1006' => 'user with this email is already registered',  
         '2008' => 'Ошибка обновления покемона',
-        '2009' => 'Покемон не найден',
-       
+        '2009' => 'Покемон не найден',   
         '9000' => 'unknown error'
     );
 

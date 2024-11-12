@@ -104,7 +104,5 @@ public function updatePokemon($pokemon) {
         "UPDATE pokemons SET name = ?, element = ?, lvl = ?, defense = ?, attack = ?, hp = ?, skill = ? WHERE id = ?", 
         [$pokemon->name, $pokemon->element, $pokemon->lvl, $pokemon->defense, $pokemon-> attack, $pokemon->hp, $pokemon->skill, $pokemon->id]
     );
-}
-
-    
+}   
 }
