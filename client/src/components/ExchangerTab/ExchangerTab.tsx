@@ -6,7 +6,7 @@ import './ExchangerTab.scss';
 const ExchangerTab: React.FC = () => {
   const serverContext = useContext(ServerContext);
   
-  // нужно также получить каталог с типом, но вкладка будет одна с яицами
+ 
 
   return (
     <div className="exchanger-container" id="test-exchanger-tab-container">

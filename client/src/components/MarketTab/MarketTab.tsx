@@ -28,12 +28,6 @@ const MarketTab: React.FC = () => {
         )
     }
 
-    const buyItemHandler = (type: EMarketType, id: number): void => { //типы, id 
-        console.log(`купил ${type == EMarketType.item? ' предмет': 'монстра' } под номером ${id}`);
-        // вызываешь функцию для покупки предемета из сервера.
-        // обновляешь юзера либо с метода сервера либо с метода со стора.
-        // обновить каталог
-    }
 
     return (
     <div className='market-tab'>
@@ -63,4 +57,3 @@ const MarketTab: React.FC = () => {
 
 export default MarketTab;
 
-// нужно сделать хандлер, к каждой кнопкке
