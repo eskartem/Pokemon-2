@@ -90,4 +90,11 @@ class Application {
         }
         return ['error' => 242];
     }
+
+    public function getMap($params) {
+        if ($params['token']) {
+            return $this->map->getMap($params['token']);
+        }
+        return ['error' => 242];
+    }
 }

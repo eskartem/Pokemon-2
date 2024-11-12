@@ -178,4 +178,9 @@ class DB {
         // как нить получить ресы пользователя по токену и вернуть, только на sql, а пока статика-_-
         return $this->user->resources;
     }
+
+    public function getMap($token){
+        return $this->execute("SELECT * FROM map WHERE id=1", [$token]);
+    }
+        
 }

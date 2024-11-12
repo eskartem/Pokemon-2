@@ -13,12 +13,12 @@ function result($params) {
     if ($method) {
         $app = new Application();
         switch ($method) {
-            // user
+            //user
             case 'login': return $app->login($params);
             case 'logout': return $app->logout($params);
             case 'registration': return $app->registration($params);
             case 'getResources': return $app->getResources($params);
-            // chat
+            //chat
             case 'sendMessage': return $app->sendMessage($params);//loop
             case 'getMessages': return $app->getMessages($params);//loop
             //gamer info
@@ -33,7 +33,7 @@ function result($params) {
             //map
             // case 'startGame': return $app-> startGame($params);
             // case 'endGame': return $app-> endGame($params);
-            // case 'getMap': return $app-> getMap($params);
+            case 'getMap': return $app-> getMap($params);
             // case 'sceneUpgrade': return $app-> sceneUpgrade($params); //loop
             // case 'moveUser': return $app-> moveUser($params);//надо уметь бросать энд гейм
             //market
