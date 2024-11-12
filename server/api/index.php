@@ -21,8 +21,8 @@ function result($params) {
             case 'sendMessage': return $app->sendMessage($params);//loop
             case 'getMessages': return $app->getMessages($params);//loop
             //gamer info
-             case 'userInfo': return $app-> userInfo($params);
-             case 'pokemonUdate': return $app-> pokemonUpdate($params);
+            case 'userInfo': return $app-> userInfo($params);
+            case 'pokemonUpdate': return $app-> pokemonUpdate($params);
             //inventory
 
             //battle
@@ -30,8 +30,8 @@ function result($params) {
             // case 'endBattle': return $app-> endBattle($params);
             // case 'actionUser': return $app-> actionUser($params); //действие игрока в бою во время ход
             //map
-            // case 'startGame': return $app-> startGame($params);
-            // case 'endGame': return $app-> endGame($params);
+             case 'startGame': return $app-> startGame($params);
+             case 'endGame': return $app-> endGame($params);
             // case 'getMap': return $app-> getMap($params);
             // case 'sceneUpgrade': return $app-> sceneUpgrade($params); //loop
             // case 'moveUser': return $app-> moveUser($params);//надо уметь бросать энд гейм

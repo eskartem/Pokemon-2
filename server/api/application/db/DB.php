@@ -234,4 +234,13 @@ class DB {
             [$pokemon->name, $pokemon->element, $pokemon->lvl, $pokemon->defense, $pokemon-> attack, $pokemon->hp, $pokemon->skill, $pokemon->id]
         );
     }   
+
+    public function updateUserLocation($userId, $position) {
+        //return $this->execute("UPDATE map SET position=? WHERE id=?", [$position, $userId]);
+    }
+    //примерно
+    public function clearUserResource($user){
+        //return $this-> execute('DELETE FROM resource WHERE user_id = ?', [$user->id]);
+    }
+    
 }
