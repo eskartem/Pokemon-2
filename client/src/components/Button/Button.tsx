@@ -10,7 +10,6 @@ export type TButton = {
     text?: string;
     onClick: (a: any) => void;
     isDisabled?: boolean;
-    id?: string;
 }
 
 const Button: React.FC<TButton> = (props: TButton) => {

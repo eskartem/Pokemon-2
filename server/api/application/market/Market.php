@@ -14,8 +14,4 @@ class Market {
         return ['error', 2001];
     }
 
-    public function getTraderCatalog() {
-        return $this->db->getCatalog();
-    }
-
 }

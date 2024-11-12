@@ -79,19 +79,4 @@ class Application {
         }
         return ['error' => 242];
     }
-
-    public function startGame($params){
-        if($params['token']){
-            return $this->map->startGame($params['token']);
-        }
-        return ['error' => 242];
-    }
-
-    public function endGame($params){
-        if($params['token']){
-            return $this->map->endGame($params['token']);
-        }
-        return ['error' => 242];
-    }
-    
 }

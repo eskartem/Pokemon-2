@@ -113,30 +113,12 @@ class Server {
         return null;
     }
 
-    async getMarketCatalog():Promise<TMarketCatalog | null> {
+    async getCatalog():Promise<TMarketCatalog | null> {
         const catalog = await this.request<TMarketCatalog>('getCatalog');
         if (catalog) {
             return catalog;
         }
         return null;
-    }
-
-    async buyItem(itemId: string): Promise<boolean | null> {
-        const result = await this.request<boolean>('buyItem', { itemId });
-        return result;
-    }
-
-    async getTraderCatalog(): Promise<TMarketCatalog | null> {
-        const catalog = await this.request<TMarketCatalog>('getTraderCatalog');
-        if (catalog) {
-            return catalog;
-        }
-        return null;
-    }
-    
-    async buyFromTrader(id: string): Promise<boolean | null> {
-        const result = await this.request<boolean>('buy', { id });
-        return result;
     }
 
 }
