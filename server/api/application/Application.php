@@ -41,8 +41,8 @@ class Application {
     }
 
     public function registration($params) {
-        if ($params['login'] && $params['password'] && $params['name']) {
-            return $this->user->registration($params['login'], $params['password'], $params['name']);
+        if ($params['login'] && $params['hash'] && $params['name']) {
+            return $this->user->registration($params['login'], $params['hash'], $params['name']);
         }
         return ['error' => 242];
     }
@@ -79,7 +79,7 @@ class Application {
         }
         return ['error' => 242];
     }
-
+    
     public function getResources($params) {
         if ($params['token']) {
             $user = $this->user->getUser($params['token']);

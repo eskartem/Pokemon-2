@@ -18,9 +18,9 @@ function result($params) {
             case 'logout': return $app->logout($params);
             case 'registration': return $app->registration($params);
             case 'getResources': return $app->getResources($params);
-            //chat
+            // chat
             case 'sendMessage': return $app->sendMessage($params);//loop
-            case 'getMessages': return $app->getMessages($params);//loop
+            case 'getMessages': return $app->getMessages($params);
             //gamer info
             // case 'userInfo': return $app-> userInfo($params);
             // case 'pokemonUpgrade': return $app-> pokemonUpgrade($params);
