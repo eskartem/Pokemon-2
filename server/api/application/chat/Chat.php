@@ -1,8 +1,7 @@
 <?php   
 
 class Chat{
-    private $db = new DB();
-    
+    private $db;
     function __construct($db) {
         $this->db = $db;
     }

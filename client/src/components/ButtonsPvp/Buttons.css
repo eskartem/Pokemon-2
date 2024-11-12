@@ -1,0 +1,24 @@
+.button {
+    align-items: center;
+}
+
+.buttonMenu {
+    display: flex;
+}
+
+.secondPlayerButtonn {
+    margin-left: 700px;
+}
+
+.hideButton {
+    display: none;
+}
+
+.showButton {
+    display: block;
+}
+
+.buttons {
+    border-radius: 5px;
+    margin-left: 30%;
+}

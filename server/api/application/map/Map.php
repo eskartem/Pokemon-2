@@ -11,6 +11,7 @@ class Map {
         return true; // просто заглушка
     }
 
+    
     public function startGame($token) {
         $user = $this->db->getUserByToken($token);
         if (!$user) {
