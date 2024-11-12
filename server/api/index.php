@@ -18,35 +18,29 @@ function result($params) {
             case 'logout': return $app->logout($params);
             case 'registration': return $app->registration($params);
             // chat
-            case 'sendMessage': return $app->sendMessage($params);
-            case 'getMessages': return $app->getMessages($params);
-            
+            case 'sendMessage': return $app->sendMessage($params);//loop
+            case 'getMessages': return $app->getMessages($params);//loop
             //gamer info
-            case 'userInfo': return $app-> userInfo($params);
-            case 'pokemonUpdate': return $app-> pokemonUpdate($params);
-             /*
+             case 'userInfo': return $app-> userInfo($params);
+             case 'pokemonUdate': return $app-> pokemonUpdate($params);
+            //inventory
+
             //battle
-            case 'updateButtle': return $app-> updateButtle($params); //получаю данные по всем игрокам
-            case 'endButtle': return $app-> endButtle($params);
-            case 'actionUser': return $app-> actionUser($params); //действие игрока в бою во время ход
-
+            // case 'updateBattle': return $app-> updateBattle($params); // loop //получаю данные по всем игрокам
+            // case 'endBattle': return $app-> endBattle($params);
+            // case 'actionUser': return $app-> actionUser($params); //действие игрока в бою во время ход
             //map
-            case 'startGame': return $app-> startGame($params);
-            case 'endGame': return $app-> endGame($params);
-            case 'getMap': return $app-> getMap($params);
-            case 'sceneUpgrade': return $app-> sceneUpgrade($params); //loop
-            case 'moveUser': return $app-> moveUser($params); 
-            
-            //надо уметь бросать энд гейм 
-
+            // case 'startGame': return $app-> startGame($params);
+            // case 'endGame': return $app-> endGame($params);
+            // case 'getMap': return $app-> getMap($params);
+            // case 'sceneUpgrade': return $app-> sceneUpgrade($params); //loop
+            // case 'moveUser': return $app-> moveUser($params);//надо уметь бросать энд гейм
             //market
             case 'getCatalog': return $app-> getCatalog($params);
-            case 'buy': return $app-> buy($params);
-            case 'sale': return $app-> sale($params);
+            // case 'buy': return $app-> buy($params);
+            // case 'sale': return $app-> sale($params);
 
-*/
             default: return ['error' => 102];
-
         }
     }
     return ['error' => 101];

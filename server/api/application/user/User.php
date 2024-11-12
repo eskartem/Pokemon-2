@@ -1,8 +1,7 @@
 <?php
 
 class User {
-    private $db = new DB();
-
+    private $db;
     function __construct($db) {
         $this->db = $db;
     }
@@ -20,7 +19,10 @@ class User {
                 return [
                     'id' => $user->id,
                     'name' => $user->name,
-                    'token' => $token
+                    'token' => $token,
+                    'coins' => $user->coins,
+                    'crystals' => $user->crystals,
+                    'eggFragments' => $user->egg_fragments,
                 ];
             }
             return ['error' => 1002];
@@ -37,8 +39,8 @@ class User {
         return ['error' => 1003];
     }
 
-    
     public function registration($login, $password, $name) {
+
 
         $user = $this->db->getUserByLogin($login, $password);
         if ($user) {
@@ -52,7 +54,10 @@ class User {
             return [
                 'id' => $user->id,
                 'name' => $user->name,
-                'token' => $token
+                'token' => $token,
+                'coins' => $user->coins,
+                'crystals' => $user->crystals,
+                'eggFragments' => $user->egg_fragments,
             ];
         }
         return ['error' => 1004];

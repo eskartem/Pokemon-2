@@ -2,27 +2,155 @@
 
 class DB {
     private $pdo;
+    private $catalog;
+    private $traderCatalog;
 
     function __construct() {
+
         // MySQL
-        /*
+
         $host = '127.0.0.1';
         $port = '3306';
         $user = 'root';
-        $pass = '---';
-        $db = 'nopainnogame';
+        $pass = '';
+        $db = 'monstaris';
         $connect = "mysql:host=$host;port=$port;dbname=$db;charset=utf8";
         $this->pdo = new PDO($connect, $user, $pass);
-        */
+        
 
         // Postgres
-        $host = 'localhost';
-        $port = '3000';
-        $user = 'postgres';
-        $pass = '---';
-        $db = 'authPrototype';
-        $connect = "pgsql:host=$host;port=$port;dbname=$db;";
-        //$this->pdo = new PDO($connect, $user, $pass, [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]);
+        
+        // $host = 'localhost';
+        // $port = '5432';
+        // $user = 'postgres';
+        // $pass = '---';
+        // $db = 'nopainnogame';
+        // $connect = "pgsql:host=$host;port=$port;dbname=$db;";
+        // $this->pdo = new PDO($connect, $user, $pass, [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]);
+
+        $p1 = new stdClass();
+        $p1->id = 1;
+        $p1->name = "Duck";
+        $p1->element = 'fire';
+        $p1->rarity = 'common';
+        $p1->lvl = 3;
+        $p1->stats = [
+            'hp' => 10,
+            'ad'=> 15,
+            'df'=> 16,
+        ];
+        $p1->cost = 25;
+
+        $p2 = new stdClass(); 
+        $p2->id = 2;
+        $p2->name = "Kock";
+        $p2->element = 'water';
+        $p2->rarity = 'legendary';
+        $p2->cost = 310;
+        $p2->lvl = 5;
+        $p2->stats = [
+            'hp' => 20,
+            'ad'=> 10,
+            'df'=> 15,
+        ];
+
+        $p3 = new stdClass(); 
+        $p3->id = 3;
+        $p3->name = "Pock";
+        $p3->element = 'air';
+        $p3->rarity = 'rare';
+        $p3->cost = 304;
+        $p3->lvl = 10;
+        $p3->stats = [
+            'hp' => 14,
+            'ad'=> 19,
+            'df'=> 10,
+        ];
+
+        $res1 = new stdClass();
+        $res1->id = 10;
+        $res1->name = "кристаллы улучшения";
+        $res1->number = 5;
+        $res1->cost = 10;
+        
+        $res2 = new stdClass();
+        $res2->id = 11;
+        $res2->name = "кусок яйца";
+        $res2->number = 2;
+        $res2->cost = 50;
+
+        $res3 = new stdClass();
+        $res3->id = 10;
+        $res3->name = "Кусок яйца";
+        $res3->number = 5;
+        $res3->cost = 350;
+
+
+        $this->catalog = [
+            'creatures' => [$p1, $p2, $p3],
+            'resources' => [$res1, $res2, $res3],
+        ];
+
+        // Инициализация каталога торговца
+        $t1 = new stdClass();
+        $t1->id = 1;
+        $t1->name = "Duck";
+        $t1->element = 'fire';
+        $t1->rarity = 'common';
+        $t1->lvl = 3;
+        $t1->stats = [
+            'hp' => 10,
+            'ad' => 15,
+            'df' => 16,
+        ];
+        $t1->cost = 25;
+        $t2 = new stdClass(); 
+        $t2->id = 2;
+        $t2->name = "Kock";
+        $t2->element = 'water';
+        $t2->rarity = 'legendary';
+        $t2->lvl = 5;
+        $t2->stats = [
+            'hp' => 20,
+            'ad' => 10,
+            'df' => 15,
+        ];
+        $t2->cost = 310;
+        $t3 = new stdClass(); 
+        $t3->id = 3;
+        $t3->name = "Pock";
+        $t3->element = 'air';
+        $t3->rarity = 'rare';
+        $t3->lvl = 10;
+        $t3->stats = [
+            'hp' => 14,
+            'ad' => 19,
+            'df' => 10,
+        ];
+        $t3->cost = 304;
+        // Инициализация ресурсов для каталога торговца
+        $resur1 = new stdClass();
+        $resur1->id = 10;
+        $resur1->name = "кристаллы улучшения";
+        $resur1->number = 5;
+        $resur1->cost = 10;
+        
+        $resur2 = new stdClass();
+        $resur2->id = 11;
+        $resur2->name = "кусок яйца";
+        $resur2->number = 2;
+        $resur2->cost = 50;
+        $resur3 = new stdClass();
+        $resur3->id = 12;
+        $resur3->name = "Кусок яйца";
+        $resur3->number = 5;
+        $resur3->cost = 350;
+        // Инициализация каталога торговца
+        $this->traderCatalog = [
+            'creatures' => [$t1, $t2, $t3],
+            'resources' => [$resur1, $resur2, $resur3],
+        ];
+
     }
 
     public function __destruct() {
@@ -50,25 +178,21 @@ class DB {
     }
 
     public function getUserByLogin($login) {
-        $user = new stdClass();
-        $user -> id = '123';
-        $user-> login = 'login';
-        $user ->pass = md5($login.'111');
-        $user ->name = "имя";
-        return $user;
-        //return $this->query("SELECT * FROM users WHERE login=?", [$login]);
+        return $this->query("SELECT * FROM users WHERE login=?", [$login]);
+        // return $this->user;
     }
 
     public function getUserByToken($token) {
         return $this->query("SELECT * FROM users WHERE token=?", [$token]);
+        // return $this->user;
     }
 
     public function updateToken($userId, $token) {
-        //$this->execute("UPDATE users SET token=? WHERE id=?", [$token, $userId]);
+        $this->execute("UPDATE users SET token=? WHERE id=?", [$token, $userId]);
     }
 
-    public function registration($login, $password, $name) {
-        $this->execute("INSERT INTO users (login,password,name) VALUES (?, ?, ?)",[$login, $hash, $name]);
+    public function registration($login, $hash, $name) {
+        $this->execute("INSERT INTO users (login,password,name, team_id, inventory_id) VALUES (?, ?, ?, ?, ?)",[$login, $hash, $name, '1', '1']);
     }
 
     public function getChatHash() {
@@ -90,19 +214,24 @@ class DB {
                                 ORDER BY m.created DESC"
         );
     }
-//////////////////////////////////////////переписать запросы правильно по бд
-public function getPokemonByIdAndUser($userId) {
-    return $this->queryAll("SELECT * FROM pokemons WHERE user_id = ?", [$userId]);
-}      
 
-public function getPokemonById($pokemonId) {
-    return $this->query("SELECT * FROM pokemons WHERE id = ?", [$pokemonId]);
-}
+    public function getCatalog() {
+        return $this->catalog;
+    }
+    
+    //переписать запросы правильно по бд
+    public function getPokemonByIdAndUser($userId) {
+        return $this->queryAll("SELECT * FROM pokemons WHERE user_id = ?", [$userId]);
+    }      
 
-public function updatePokemon($pokemon) {
-    $this->execute(
-        "UPDATE pokemons SET name = ?, element = ?, lvl = ?, defense = ?, attack = ?, hp = ?, skill = ? WHERE id = ?", 
-        [$pokemon->name, $pokemon->element, $pokemon->lvl, $pokemon->defense, $pokemon-> attack, $pokemon->hp, $pokemon->skill, $pokemon->id]
-    );
-}   
+    public function getPokemonById($pokemonId) {
+        return $this->query("SELECT * FROM pokemons WHERE id = ?", [$pokemonId]);
+    }
+
+    public function updatePokemon($pokemon) {
+        $this->execute(
+            "UPDATE pokemons SET name = ?, element = ?, lvl = ?, defense = ?, attack = ?, hp = ?, skill = ? WHERE id = ?", 
+            [$pokemon->name, $pokemon->element, $pokemon->lvl, $pokemon->defense, $pokemon-> attack, $pokemon->hp, $pokemon->skill, $pokemon->id]
+        );
+    }   
 }
