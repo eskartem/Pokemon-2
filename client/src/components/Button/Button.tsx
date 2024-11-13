@@ -10,6 +10,7 @@ export type TButton = {
     text?: string;
     onClick: (a: any) => void;
     isDisabled?: boolean;
+    id?: string;
 }
 
 const Button: React.FC<TButton> = (props: TButton) => {
@@ -20,9 +21,11 @@ const Button: React.FC<TButton> = (props: TButton) => {
         text = 'No Text',
         onClick = () => { },
         isDisabled = false,
+        id,
     } = props;
 
     return (<button
+        id = {id}
         className={cn('button', `button-${variant}`, className, { 'hover': isHover, 'disabled': isDisabled })}
         onClick={onClick}
     >

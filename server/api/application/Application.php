@@ -87,7 +87,8 @@ class Application {
                 return $this->user->getResources($params['token']);
             }
             return ['error' => 705];
-
+        }
+    }
 
     public function startGame($params){
         if($params['token']){
