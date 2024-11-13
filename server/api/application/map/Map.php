@@ -62,4 +62,10 @@ class Map {
         return ['message' => 'Вы успешно вышли из игры.'];
 
     }
+
+    public function moveUser($id, $x, $y) {
+        $position = [$x, $y];
+        $this->db->updateUserPosition($id, $position);
+        return true;
+    }
 }
