@@ -24,7 +24,7 @@ class Map {
             }
         }
         return ['error' => 9000, 'message' => 'Зарегестрируйтесь или войдите для просмотра карты.'];
-
+    }
     
     public function startGame($token) {
         $user = $this->db->getUserByToken($token);
