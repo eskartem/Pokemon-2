@@ -164,19 +164,20 @@ class DB {
 
     //map
     public function updateUserLocation($userId, $x, $y) {
-        $this->execute("UPDATE User SET x = ?, y = ? WHERE id = ?", [$x, $y, $userId]);
+        $this->execute("UPDATE users SET x = ?, y = ? WHERE id = ?", [$x, $y, $userId]);
     }
     
     //не уверена я в этом запросе
     public function getAmountResourcesByUser($userId){
         return[
             'eggs' => $this-> query('SELECT resourse FROM inventory WHERE id = ? AND resourse_type = "eggs"',[$userId]),
-            'crystal' => $this-> query('SELECT resourse FROM inventory WHERE id = ? AND resourse_type = "crystal"',[$userId])
+            'crystal' => $this-> query('SELECT resourse FROM inventory WHERE id = ? AND resourse_type = "crystal"',[$userId]),
+            'egg_fragments' => $this-> query('SELECT resourse FROM inventory WHERE id = ? AND resourse_type = "egg_fragments"',[$userId])
         ];
     }
 
     public function getMoneyByUser($userId){
-        return $this-> query('SELECT money FROM user WHERE id = ?',[$userId]);
+        return $this-> query('SELECT money FROM users WHERE id = ?',[$userId]);
     }
 
 
@@ -188,10 +189,12 @@ class DB {
     public function clearUserMoney($userId){
         $having_money = $this->getMoneyByUser($userId);
         $money = $having_money - ($having_money * 0.3);
-        $this->execute('UPDATE User SET money = ? WHERE id = ?',[$money, $userId]);
+        $this->execute('UPDATE users SET money = ? WHERE id = ?',[$money, $userId]);
     }
     
+    public function updateUserStatus($userId, $status){
+        $this->execute('UPDATE users SET status = ? WHERE id =?', [$status, $userId]);
+    }
 
 }
     
-}

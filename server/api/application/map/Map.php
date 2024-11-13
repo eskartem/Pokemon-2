@@ -55,7 +55,7 @@ class Map {
             $this->db->clearUserMoney($user);
             return ['message' => 'Вы вышли из карты не в городе и потеряли некоторые ресурсы.'];
         }
-
+        $this->db->updateUserStatus($user, 'offline');
         // Если игрок в городе, он ничего не теряет
         return ['message' => 'Вы успешно вышли из игры.'];
 
