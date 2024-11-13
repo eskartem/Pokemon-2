@@ -167,16 +167,20 @@ class DB {
         $this->execute("UPDATE users SET x = ?, y = ? WHERE id = ?", [$x, $y, $userId]);
     }
 
-    public function getMontersByUser($userId, $status){
-        return $this->execute('SELECT * FROM monsters WHERE id = ? AND status = ?', [$userId, $status]);
-
+    public function getMontersByUser($userId, $status = null) {
+        if ($status === null) {
+            return $this->execute('SELECT * FROM monsters WHERE user_id = ?', [$userId]);
+        } else {
+            return $this->execute('SELECT * FROM monsters WHERE user_id = ? AND status = ?', [$userId, $status]);
+        }
     }
+    
     //не уверена я в этом запросе
     public function getAmountResourcesByUser($userId){
         return[
-            'eggs' => $this-> query('SELECT resourse FROM inventory WHERE id = ? AND resourse_type = "eggs"',[$userId]),
-            'crystal' => $this-> query('SELECT resourse FROM inventory WHERE id = ? AND resourse_type = "crystal"',[$userId]),
-            'egg_fragments' => $this-> query('SELECT resourse FROM inventory WHERE id = ? AND resourse_type = "egg_fragments"',[$userId])
+            'eggs' => $this-> query('SELECT resourse FROM inventory WHERE user_id = ? AND resourse_type = "eggs"',[$userId]),
+            'crystal' => $this-> query('SELECT resourse FROM inventory WHERE user_id = ? AND resourse_type = "crystal"',[$userId]),
+            'egg_fragments' => $this-> query('SELECT resourse FROM inventory WHERE user_id = ? AND resourse_type = "egg_fragments"',[$userId])
         ];
     }
 
