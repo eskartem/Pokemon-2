@@ -90,3 +90,5 @@ export type TMarketCatalog = {
     creatures: TMarketCreature[],
     resources: TMarketItem[]
 }
+
+export type TTraderCatalog = TMarketCatalog;
