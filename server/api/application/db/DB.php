@@ -133,7 +133,7 @@ class DB {
     public function registration($login, $hash, $name) {
         $this->execute("INSERT INTO users (login,password,name, team_id, inventory_id) VALUES (?, ?, ?, ?, ?)",[$login, $hash, $name, '1', '1']);
     }
-
+//Chat
     public function getChatHash() {
         return $this->query("SELECT * FROM hashes WHERE id=1");
     }
@@ -162,12 +162,36 @@ class DB {
         return $this->catalog;
     }
 
-    public function updateUserLocation($userId, $position) {
-        //return $this->execute("UPDATE map SET position=? WHERE id=?", [$position, $userId]);
+    //map
+    public function updateUserLocation($userId, $x, $y) {
+        $this->execute("UPDATE User SET x = ?, y = ? WHERE id = ?", [$x, $y, $userId]);
     }
-    //примерно
-    public function clearUserResource($user){
-        //return $this-> execute('DELETE FROM resource WHERE user_id = ?', [$user->id]);
+    
+    //не уверена я в этом запросе
+    public function getAmountResourcesByUser($userId){
+        return[
+            'eggs' => $this-> query('SELECT resourse FROM inventory WHERE id = ? AND resourse_type = "eggs"',[$userId]),
+            'crystal' => $this-> query('SELECT resourse FROM inventory WHERE id = ? AND resourse_type = "crystal"',[$userId])
+        ];
     }
+
+    public function getMoneyByUser($userId){
+        return $this-> query('SELECT money FROM user WHERE id = ?',[$userId]);
+    }
+
+
+    public function clearUserResource($userId, $resourceType, $amount ){
+        $this-> execute('UPDATE inventory SET resoure = resoure - ? 
+                        WHERE user_id = ? AND resoure_type = ? AND resoure >= ?;', [$amount, $userId, $resourceType, $amount]);
+    }
+
+    public function clearUserMoney($userId){
+        $having_money = $this->getMoneyByUser($userId);
+        $money = $having_money - ($having_money * 0.3);
+        $this->execute('UPDATE User SET money = ? WHERE id = ?',[$money, $userId]);
+    }
+    
+
+}
     
 }
