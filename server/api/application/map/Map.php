@@ -17,16 +17,20 @@ class Map {
         if (!$user) {
             return ['error' => 404]; 
         }
-
+        //как узнать на каких координатах находится пользак
+        $x = 0;
+        $y = 0;
+        
         if ($this->isUserInTown($user)) {
             return ['message' => 'Вы уже находитесь в городе.']; 
         }
-
-        // Логика спавна - игрок появляется в городе, не знаю как правильно это расписать
-        // $user->db-> ...= 'town'; 
-        $this->db->updateUserPosition($user); // Обновляем местоположение в базе данных
+        // Обновляем местоположение в базе данных
+        $this->db->updateUserLocation($user, $x, $y); 
+        //обновление статуса (разведчик)
+        $this->db->updateUserStatus($user, 'scout'); 
 
         return [
+            $this->db->getMonstersByUser($user, 'in team'),
             'message' => 'Вы успешно зашли в игру и появились в городе.',
         ];
     }

@@ -166,7 +166,11 @@ class DB {
     public function updateUserLocation($userId, $x, $y) {
         $this->execute("UPDATE users SET x = ?, y = ? WHERE id = ?", [$x, $y, $userId]);
     }
-    
+
+    public function getMontersByUser($userId, $status){
+        return $this->execute('SELECT * FROM monsters WHERE id = ? AND status = ?', [$userId, $status]);
+
+    }
     //не уверена я в этом запросе
     public function getAmountResourcesByUser($userId){
         return[
@@ -180,16 +184,16 @@ class DB {
         return $this-> query('SELECT money FROM users WHERE id = ?',[$userId]);
     }
 
-
-    public function clearUserResource($userId, $resourceType, $amount ){
-        $this-> execute('UPDATE inventory SET resoure = resoure - ? 
-                        WHERE user_id = ? AND resoure_type = ? AND resoure >= ?;', [$amount, $userId, $resourceType, $amount]);
-    }
-
     public function clearUserMoney($userId){
         $having_money = $this->getMoneyByUser($userId);
         $money = $having_money - ($having_money * 0.3);
         $this->execute('UPDATE users SET money = ? WHERE id = ?',[$money, $userId]);
+    }
+
+    
+    public function clearUserResource($userId, $resourceType, $amount ){
+        $this-> execute('UPDATE inventory SET resoure = resoure - ? 
+                        WHERE user_id = ? AND resoure_type = ? AND resoure >= ?;', [$amount, $userId, $resourceType, $amount]);
     }
     
     public function updateUserStatus($userId, $status){
