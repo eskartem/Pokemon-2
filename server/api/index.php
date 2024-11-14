@@ -1,5 +1,5 @@
 <?php
-
+//hi
 error_reporting(1);
 
 header('Content-Type: application/json; charset=utf-8');
@@ -13,10 +13,11 @@ function result($params) {
     if ($method) {
         $app = new Application();
         switch ($method) {
-            // user
+            //user
             case 'login': return $app->login($params);
             case 'logout': return $app->logout($params);
             case 'registration': return $app->registration($params);
+            case 'getResources': return $app->getResources($params);
             // chat
             case 'sendMessage': return $app->sendMessage($params);//loop
             case 'getMessages': return $app->getMessages($params);
@@ -30,9 +31,10 @@ function result($params) {
             // case 'endBattle': return $app-> endBattle($params);
             // case 'actionUser': return $app-> actionUser($params); //действие игрока в бою во время ход
             //map
-            // case 'startGame': return $app-> startGame($params);
-            // case 'endGame': return $app-> endGame($params);
-            // case 'getMap': return $app-> getMap($params);
+            case 'getMap': return $app-> getMap($params);
+             case 'startGame': return $app-> startGame($params);
+             case 'endGame': return $app-> endGame($params);
+
             // case 'sceneUpgrade': return $app-> sceneUpgrade($params); //loop
             // case 'moveUser': return $app-> moveUser($params);//надо уметь бросать энд гейм
             //market
