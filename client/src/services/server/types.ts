@@ -92,3 +92,5 @@ export type TMarketCatalog = {
 }
 
 export type TTraderCatalog = TMarketCatalog;
+
+

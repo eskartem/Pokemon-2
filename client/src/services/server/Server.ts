@@ -138,6 +138,11 @@ class Server {
         const result = await this.request<boolean>('buy', { id });
         return result;
     }
+
+    async exchangeEggsForPokemon(): Promise<{ success: boolean }> {
+        // Здесь должна быть логика для запроса на сервер
+        return { success: true }; // Пример возврата. Настоящая логика может отличаться.
+      }
 }
 
 export default Server;
