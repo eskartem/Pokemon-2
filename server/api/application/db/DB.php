@@ -176,21 +176,27 @@ class DB {
     }
     
     //не уверена я в этом запросе
-    public function getAmountResourcesByUser($userId){
-        return[
-            'eggs' => $this-> query('SELECT resourse FROM inventory WHERE user_id = ? AND resourse_type = "eggs"',[$userId]),
-            'crystal' => $this-> query('SELECT resourse FROM inventory WHERE user_id = ? AND resourse_type = "crystal"',[$userId]),
-            'egg_fragments' => $this-> query('SELECT resourse FROM inventory WHERE user_id = ? AND resourse_type = "egg_fragments"',[$userId])
-        ];
+    public function getAmountResourcesByUser($userId, $element_id = null){
+        if($element_id === null){
+            return[
+                'eggs' => $this-> query('SELECT resourse FROM inventory WHERE user_id = ? AND resourse_type = "eggs"',[$userId]),
+                'crystal' => $this-> query('SELECT resourse FROM inventory WHERE user_id = ? AND resourse_type = "crystal"',[$userId]),
+                'egg_fragments' => $this-> query('SELECT resourse FROM inventory WHERE user_id = ? AND resourse_type = "egg_fragments"',[$userId])
+        ];}else{
+            return[
+                'eggs' => $this-> query('SELECT resourse FROM inventory WHERE user_id = ? AND resourse_type = "eggs" AND element_id = ?',[$userId, $element_id]),
+                'crystal' => $this-> query('SELECT resourse FROM inventory WHERE user_id = ? AND resourse_type = "crystal" AND element_id = ?',[$userId, $element_id]),
+                'egg_fragments' => $this-> query('SELECT resourse FROM inventory WHERE user_id = ? AND resourse_type = "egg_fragments" AND element_id = ?',[$userId, $element_id]) 
+            ];
+
+        }
     }
 
     public function getMoneyByUser($userId){
         return $this-> query('SELECT money FROM users WHERE id = ?',[$userId]);
     }
 
-    public function clearUserMoney($userId){
-        $having_money = $this->getMoneyByUser($userId);
-        $money = $having_money - ($having_money * 0.3);
+    public function clearUserMoney($userId, $money){
         $this->execute('UPDATE users SET money = ? WHERE id = ?',[$money, $userId]);
     }
 

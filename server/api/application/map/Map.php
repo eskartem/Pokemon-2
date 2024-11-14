@@ -17,15 +17,11 @@ class Map {
         if (!$user) {
             return ['error' => 404]; 
         }
-        //как узнать на каких координатах находится пользак
-        $x = 0;
-        $y = 0;
         
         if ($this->isUserInTown($user)) {
             return ['message' => 'Вы уже находитесь в городе.']; 
         }
-        // Обновляем местоположение в базе данных
-        $this->db->updateUserLocation($user, $x, $y); 
+ 
         //обновление статуса (разведчик)
         $this->db->updateUserStatus($user, 'scout'); 
 
@@ -48,6 +44,9 @@ class Map {
                     $resources['crystal'][0]['resourse'] : 0;
         $crystalAmount = $crystalAmount * 0.2;
         
+        $having_money = $this->db->getMoneyByUser($user);
+        $money = $having_money - ($having_money * 0.3);
+
         if (!$user) {
             return ['error' => 404]; 
         }
@@ -56,9 +55,10 @@ class Map {
             // Игрок выходил из карты не в городе - теряет некоторые ресурсы
             $this->db->clearUserResource($user, 'eggs', $eggAmount); 
             $this->db->clearUserResource($user, 'crystal', $crystalAmount); 
-            $this->db->clearUserMoney($user);
+            $this->db->clearUserMoney($user, $money);
             return ['message' => 'Вы вышли из карты не в городе и потеряли некоторые ресурсы.'];
         }
+
         $this->db->updateUserStatus($user, 'offline');
         // Если игрок в городе, он ничего не теряет
         return ['message' => 'Вы успешно вышли из игры.'];
