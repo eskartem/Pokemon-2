@@ -84,7 +84,8 @@ class User {
             if (!$user) {
                 return ['error' => 404];
             }
-            
+            //наверно надо написать проверку id покемона
+
             //узнаем уровень покемона
             $levelMonster = $this->db->getMonsterLevelById($monsterId);
 
@@ -111,6 +112,7 @@ class User {
                     $this->db->upgradeLevelMonstersByUser($user, $monsterId);
                     //2 уровень - +40 к урону, +90 к здоровью покемона.
                     $this->db->getParametersMonsterByLevel($level);
+                    return true;
                 }
             }
             if ($levelMonster === 2){
@@ -125,6 +127,7 @@ class User {
                     $this->db->upgradeLevelMonstersByUser($user, $monsterId);
                     //3 уровень - +70 к урону,+110 к здоровью покемона.
                     $this->db->getParametersMonsterByLevel($level); 
+                    return true;
                 }
             }
             if ($levelMonster === 3){
@@ -139,6 +142,7 @@ class User {
                     $this->db->upgradeLevelMonstersByUser($user, $monsterId);
                     //4 уровень-  +120 к урону, +150 к здоровью покемона.
                     $this->db->getParametersMonsterByLevel($level); 
+                    return true;
                 }
             }
             if ($levelMonster === 4){
@@ -153,6 +157,7 @@ class User {
                     $this->db->upgradeLevelMonstersByUser($user, $monsterId);
                     //5 уровень +200 к урону, +270 к здоровью покемона.
                     $this->db->getParametersMonsterByLevel($level); 
+                    return true;
                 }
             }
             if ($levelMonster === 5){
