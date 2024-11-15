@@ -247,8 +247,8 @@ class DB {
         $this->execute('UPDATE monsters SET level = level + 1 WHERE user_id = ? AND id = ?', [$userId, $monsterId]);
     }
 
-    public function updateMonsterByUser($userId, $monsterId, $hp) {
-        $this->execute("UPDATE monsters SET  hp = hp + ?  WHERE user_id = ? AND id = ?", [$hp, $userId, $monsterId]);
+    public function getParametersMonsterByLevel($level) {
+        $this->execute("SELECT * FROM monster_level WHERE level = ?", [$level]);
     }
     
     public function getElementByMonsters($monsterId){
@@ -277,8 +277,6 @@ class DB {
 
         }
     }
-
-
 
     public function clearUserResource($userId, $resourceType, $amount ){
         $this-> execute('UPDATE inventory SET resoure = resoure - ? 
