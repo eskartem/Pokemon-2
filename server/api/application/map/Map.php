@@ -33,6 +33,10 @@ class Map {
 
     public function endGame($token) {
         $user = $this->db->getUserByToken($token);
+        if (!$user) {
+            return ['error' => 404]; 
+        }
+
         $resources = $this->db->getAmountResourcesByUser($user);
 
         // 10% кусков яиц покемонов
@@ -47,21 +51,24 @@ class Map {
         $having_money = $this->db->getMoneyByUser($user);
         $money = $having_money - ($having_money * 0.3);
 
-        if (!$user) {
-            return ['error' => 404]; 
-        }
         // Проверяем, находится ли игрок в городе
         if (!$this->isUserInTown($user)) {
             // Игрок выходил из карты не в городе - теряет некоторые ресурсы
             $this->db->clearUserResource($user, 'eggs', $eggAmount); 
             $this->db->clearUserResource($user, 'crystal', $crystalAmount); 
             $this->db->clearUserMoney($user, $money);
-            return ['message' => 'Вы вышли из карты не в городе и потеряли некоторые ресурсы.'];
+            return [
+                true,
+                'message' => 'Вы вышли из карты не в городе и потеряли некоторые ресурсы.'
+            ];
         }
 
         $this->db->updateUserStatus($user, 'offline');
         // Если игрок в городе, он ничего не теряет
-        return ['message' => 'Вы успешно вышли из игры.'];
+        return [
+            true, 
+            'message' => 'Вы успешно вышли из игры.'
+        ];
 
     }
 }
