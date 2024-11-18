@@ -1,7 +1,7 @@
 import md5 from 'md5';
 import CONFIG from "../../config";
 import Store from "../store/Store";
-import { TAnswer, TError, TMessagesResponse, TUser, TUserResources, TMarketCatalog } from "./types";
+import { TAnswer, TError, TMessagesResponse, TUser, TMarketCatalog } from "./types";
 
 const { CHAT_TIMESTAMP, HOST } = CONFIG;
 
@@ -94,7 +94,6 @@ class Server {
                 cb(hash);
             }
         }, CHAT_TIMESTAMP);
-
     }
 
     stopChatMessages(): void {
@@ -105,20 +104,35 @@ class Server {
         }
     }
 
-    async getUserResources(): Promise<TUserResources | null> {
-        const resources = await this.request<TUserResources>('getResources');
-        if (resources) {
-            return resources;
-        }
-        return null;
-    }
-
     async getCatalog():Promise<TMarketCatalog | null> {
         const catalog = await this.request<TMarketCatalog>('getCatalog');
         if (catalog) {
             return catalog;
         }
         return null;
+    }
+
+    async moveUser(dx: number, dy: number) {
+        await this.request<TUser>('moveUser', {dx: dx+'', dy: dy+''})
+    }
+
+    startCoordinatesUpdates(cb: (hash: string) => void): void {
+        this.chatInterval = setInterval(async () => {
+            const result = await this.getCoordinates();
+            if (result) {
+                const { coordinates, hash } = result;
+                this.store.addCoordinates(coordinates);
+                cb(hash);
+            }
+        }, CHAT_TIMESTAMP);
+    }
+
+    stopCoordinatesUpdates(): void {
+        if (this.chatInterval) {
+            clearInterval(this.chatInterval);
+            this.chatInterval = null;
+            this.store.clearCoordinates();
+        }
     }
 
 }

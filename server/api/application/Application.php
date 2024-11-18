@@ -79,4 +79,5 @@ class Application {
         }
         return ['error' => 242];
     }
+
 }

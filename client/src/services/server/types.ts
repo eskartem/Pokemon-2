@@ -15,6 +15,8 @@ export type TUser = {
     coins: number;
     crystals: number;
     eggFragments: number;
+    x: number;
+    y: number;
 }
 
 export type TMessage = {
@@ -89,4 +91,10 @@ export type TMarketItem = {
 export type TMarketCatalog = {
     creatures: TMarketCreature[],
     resources: TMarketItem[]
+}
+
+export type TMapPlayer = {
+    name: string,
+    x: number,
+    y: number
 }

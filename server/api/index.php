@@ -18,7 +18,7 @@ function result($params) {
             case 'logout': return $app->logout($params);
             case 'registration': return $app->registration($params);
             // chat
-            case 'sendMessage': return $app->sendMessage($params);//loop
+            case 'sendMessage': return $app->sendMessage($params);
             case 'getMessages': return $app->getMessages($params);//loop
             //gamer info
             // case 'userInfo': return $app-> userInfo($params);
@@ -34,7 +34,7 @@ function result($params) {
             // case 'endGame': return $app-> endGame($params);
             // case 'getMap': return $app-> getMap($params);
             // case 'sceneUpgrade': return $app-> sceneUpgrade($params); //loop
-            // case 'moveUser': return $app-> moveUser($params);//надо уметь бросать энд гейм
+            // case 'moveUser': return $app-> moveUser($params);
             //market
             case 'getCatalog': return $app-> getCatalog($params);
             // case 'buy': return $app-> buy($params);
