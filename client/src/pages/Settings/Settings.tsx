@@ -9,7 +9,7 @@ const Settings: React.FC<IBasePage> = (props: IBasePage) => {
     const { setPage } = props;
     const server = useContext(ServerContext);
 
-    const backClickHandler = () => setPage(PAGES.MAINMENU);
+    const backClickHandler = () => setPage(PAGES.GAME);
 
     const logoutClickHandler = async () => {
         await server.logout();
