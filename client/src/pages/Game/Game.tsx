@@ -2,7 +2,7 @@ import React, {useContext} from 'react';
 import Button from '../../components/Button/Button';
 import Map from '../../components/Map/Map';
 import Chat from '../../components/Chat/Chat';
-import { StoreContext } from '../../App';
+import { StoreContext, ServerContext } from '../../App';
 import { IBasePage, PAGES } from '../PageManager';
 
 import './Game.scss';
@@ -10,14 +10,21 @@ import './Game.scss';
 const Game: React.FC<IBasePage> = (props: IBasePage) => {
 
     const { setPage } = props;
-
+    const server = useContext(ServerContext);
     const store = useContext(StoreContext);
     const user = store.getUser()
 
-    const settingsClickHandler = () => setPage(PAGES.SETTINGS);
     const inventoryClickHandler = () => setPage(PAGES.INVENTORY);
     const marketClickHandler = () => setPage(PAGES.MARKET);
     const battleClickHandler = () => setPage(PAGES.BATTLE);
+    const logoutClickHandler = async () => {
+        if (await server.logout()) {
+            setPage(PAGES.LOGIN);
+        }
+    }
+    const muteButtonHandler = async () => {
+        // сделать запрос на сервак по изменению поля is_mute в таблицe users
+    }
     
     if (!user) { return ( <div><h1> пользователь не найден </h1></div> )} // закоментировать для работы без бекэнда
 
@@ -28,15 +35,14 @@ const Game: React.FC<IBasePage> = (props: IBasePage) => {
                     <h1> Ник: {user?.name} </h1>
                     <div className='user-resources'>
                         <h1 className='resources-text'>монеты: {user?.coins} |</h1>
-                        <h1 className='resources-text'>кристаллы улучшения: {user?.crystals} |</h1>
-                        <h1 className='resources-text'>куски яиц: {user?.eggFragments}</h1>
                     </div>
                 </div>
                 <div className='button-panel'>
                     <Button onClick={inventoryClickHandler} text='Инвентарь' />
                     <Button onClick={marketClickHandler} text='Рынок' />
                     <Button onClick={battleClickHandler} text='Битва' />
-                    <Button onClick={settingsClickHandler} text='Настройки' />
+                    <Button onClick={logoutClickHandler} text='разлогиниться' />
+                    <Button onClick={muteButtonHandler} text='заглушить' />
                 </div>
                 <Map/>
                 <div className="control-panel">
