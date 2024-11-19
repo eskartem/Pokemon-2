@@ -176,11 +176,18 @@ class DB {
         //мб токен вообще не используется и удалить его нах
     }
         
-
-
     public function updateUserLocation($userId, $position) {
         //return $this->execute("UPDATE map SET position=? WHERE id=?", [$position, $userId]);
+
+
+
+        /* 
+        в map нет записей с position, но они есть в user как x и y
+        не изменяю $position в самом методе, чтобы ничего не поломалось
+        */
+        //return $this->execute("UPDATE users SET x=?, y=? WHERE id=?", [$position[0], $position[1], $userId]);
     }
+
     //примерно
     public function clearUserResource($user){
         //return $this-> execute('DELETE FROM resource WHERE user_id = ?', [$user->id]);

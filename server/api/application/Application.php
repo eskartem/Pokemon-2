@@ -113,5 +113,17 @@ class Application {
         }
         return ['error' => 242];
     }
-    
-} 
+
+    public function moveUser($params) {
+        if ($params['token']){
+            $user = $this->user->getUser($params['token']);
+            if ($user) {
+                return $this->map->moveUser($user->id, $user->x, $user->y);
+                //непонятно где должен быть этот метод: в map или user, пока так
+            }
+            return ['error' => 242];
+        }
+        return ['error' => 242];
+    }
+
+}

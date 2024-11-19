@@ -36,7 +36,7 @@ function result($params) {
              case 'endGame': return $app-> endGame($params);
 
             // case 'sceneUpgrade': return $app-> sceneUpgrade($params); //loop
-            // case 'moveUser': return $app-> moveUser($params);//надо уметь бросать энд гейм
+            case 'moveUser': return $app-> moveUser($params);//надо уметь бросать энд гейм
             //market
             case 'getCatalog': return $app-> getCatalog($params);
             // case 'buy': return $app-> buy($params);

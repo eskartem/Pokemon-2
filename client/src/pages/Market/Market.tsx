@@ -23,7 +23,7 @@ const Market: React.FC<IBasePage> = (props: IBasePage) => {
     
     const user = store.getUser();
 
-    const backClickHandler = () => setPage(PAGES.MAINMENU);
+    const backClickHandler = () => setPage(PAGES.GAME   );
 
     if (!user) {
         return (
