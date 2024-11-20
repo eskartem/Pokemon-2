@@ -33,7 +33,6 @@ const Login: React.FC<IBasePage> = (props: IBasePage) => {
             </div>
             <div className='login-buttons'>
                 <Button onClick={loginClickHandler} text='Авторизоваться' id='test-login-button_auth' />
-                <Button onClick={backClickHandler} text='Назад' />
             </div>
             <span className='register-link' onClick={registerClickHandler}>
                 У меня нет аккаунта

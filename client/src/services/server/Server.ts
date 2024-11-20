@@ -64,6 +64,7 @@ class Server {
         if (result) {
             this.store.clearUser();
         }
+        return result;
     }
 
     registration(login: string, password: string, name: string): Promise<boolean | null> {
