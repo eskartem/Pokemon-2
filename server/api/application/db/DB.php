@@ -3,7 +3,6 @@
 class DB {
     private $pdo;
     private $catalog;
-    private $traderCatalog;
 
     function __construct() {
 
@@ -91,66 +90,6 @@ class DB {
             'resources' => [$res1, $res2, $res3],
         ];
 
-        // Инициализация каталога торговца
-        $t1 = new stdClass();
-        $t1->id = 1;
-        $t1->name = "Duck";
-        $t1->element = 'fire';
-        $t1->rarity = 'common';
-        $t1->lvl = 3;
-        $t1->stats = [
-            'hp' => 10,
-            'ad' => 15,
-            'df' => 16,
-        ];
-        $t1->cost = 25;
-        $t2 = new stdClass(); 
-        $t2->id = 2;
-        $t2->name = "Kock";
-        $t2->element = 'water';
-        $t2->rarity = 'legendary';
-        $t2->lvl = 5;
-        $t2->stats = [
-            'hp' => 20,
-            'ad' => 10,
-            'df' => 15,
-        ];
-        $t2->cost = 310;
-        $t3 = new stdClass(); 
-        $t3->id = 3;
-        $t3->name = "Pock";
-        $t3->element = 'air';
-        $t3->rarity = 'rare';
-        $t3->lvl = 10;
-        $t3->stats = [
-            'hp' => 14,
-            'ad' => 19,
-            'df' => 10,
-        ];
-        $t3->cost = 304;
-        // Инициализация ресурсов для каталога торговца
-        $resur1 = new stdClass();
-        $resur1->id = 10;
-        $resur1->name = "кристаллы улучшения";
-        $resur1->number = 5;
-        $resur1->cost = 10;
-        
-        $resur2 = new stdClass();
-        $resur2->id = 11;
-        $resur2->name = "кусок яйца";
-        $resur2->number = 2;
-        $resur2->cost = 50;
-        $resur3 = new stdClass();
-        $resur3->id = 12;
-        $resur3->name = "Кусок яйца";
-        $resur3->number = 5;
-        $resur3->cost = 350;
-        // Инициализация каталога торговца
-        $this->traderCatalog = [
-            'creatures' => [$t1, $t2, $t3],
-            'resources' => [$resur1, $resur2, $resur3],
-        ];
-
     }
 
     public function __destruct() {
@@ -222,9 +161,23 @@ class DB {
     public function getCatalog() {
         return $this->catalog;
     }
-   
+
+
+    public function getResources($token) {
+        // как нить получить ресы пользователя по токену и вернуть, только на sql, а пока статика-_-
+        //return $this->user->resources;
+    }
+
+    public function getMap($token){
+        return ['map' => $this->execute("SELECT * FROM map WHERE id=1", [$token]), 
+                'zones' => $this->execute("SELECT * FROM zones WHERE id=1", [$token]), 
+                'zones_types' => $this->execute("SELECT * FROM zones_types WHERE id=1", [$token])
+        ];
+        //мб токен вообще не используется и удалить его нах
+    }
+        
     public function updateUserLocation($userId, $x, $y) {
-        $this->execute("UPDATE User SET x = ?, y = ? WHERE id = ?", [$x, $y, $userId]);
+        $this->execute("UPDATE users SET x = ?, y = ? WHERE id = ?", [$x, $y, $userId]);
     }
 
     public function getMontersByUser($userId, $status = null) {
@@ -260,7 +213,7 @@ class DB {
     public function getIdByElement($element){
         return $this->execute('SELECT id FROM element WHERE name = ?', [$element]);
     }
-
+    
     //не уверена я в этом запросе
     public function getAmountResourcesByUser($userId, $element_id = null){
         if($element_id === null){
@@ -278,17 +231,18 @@ class DB {
         }
     }
 
-    public function clearUserResource($userId, $resourceType, $amount ){
-        $this-> execute('UPDATE inventory SET resoure = resoure - ? 
-                        WHERE user_id = ? AND resoure_type = ? AND resoure >= ?;', [$amount, $userId, $resourceType, $amount]);
-    }
-
     public function getMoneyByUser($userId){
-        return $this-> query('SELECT money FROM User WHERE id = ?',[$userId]);
+        return $this-> query('SELECT money FROM users WHERE id = ?',[$userId]);
     }
 
     public function clearUserMoney($userId, $money){
         $this->execute('UPDATE users SET money = ? WHERE id = ?',[$money, $userId]);
+    }
+
+    
+    public function clearUserResource($userId, $resourceType, $amount ){
+        $this-> execute('UPDATE inventory SET resoure = resoure - ? 
+                        WHERE user_id = ? AND resoure_type = ? AND resoure >= ?;', [$amount, $userId, $resourceType, $amount]);
     }
     
     public function updateUserStatus($userId, $status){

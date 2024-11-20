@@ -4,13 +4,13 @@ import cn from 'classnames';
 import './Button.scss';
 
 export type TButton = {
+    id?: string;
     variant?: string;
     isHover?: boolean;
     className?: string;
     text?: string;
     onClick: (a: any) => void;
     isDisabled?: boolean;
-    id?: string;
 }
 
 const Button: React.FC<TButton> = (props: TButton) => {

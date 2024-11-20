@@ -77,13 +77,14 @@ class Application {
     }
     
     //немного недоделано
-    public function pokemonUpdate($params) {
-        if ($params['token'] && $params['pokemonId']) {
-            return $this->user->pokemonUpdate($params['token'], $params['pokemonId']);
+    public function pokemonUpgrade($params) {
+        if ($params['token'] && $params['monsterId']) {
+            return $this->user->pokemonUpgrade($params['token'], $params['monsterId']);
         }
         return ['error' => 404];
     }
-    
+
+
     public function getCatalog($params) {
         if ($params['token']) {
             $user = $this->user->getUser($params['token']);
@@ -95,9 +96,29 @@ class Application {
         return ['error' => 242];
     }
 
+    public function getResources($params) {
+        if ($params['token']) {
+            $user = $this->user->getUser($params['token']);
+            if ($user) {
+                return $this->user->getResources($params['token']);
+            }
+            return ['error' => 705];
+        }
+    }
+
+
     public function startGame($params){
         if($params['token']){
             return $this->map->startGame($params['token']);
+
+        }
+        return ['error' => 242];
+    }
+
+
+    public function getMap($params) {
+        if ($params['token']) {
+            return $this->map->getMap($params['token']);
         }
         return ['error' => 242];
     }
@@ -108,5 +129,17 @@ class Application {
         }
         return ['error' => 242];
     }
-    
+
+    public function moveUser($params) {
+        if ($params['token']){
+            $user = $this->user->getUser($params['token']);
+            if ($user) {
+                return $this->map->moveUser($user->id, $user->x, $user->y);
+                //непонятно где должен быть этот метод: в map или user, пока так
+            }
+            return ['error' => 242];
+        }
+        return ['error' => 242];
+    }
+
 }
