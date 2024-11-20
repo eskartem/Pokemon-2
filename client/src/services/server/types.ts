@@ -81,6 +81,7 @@ export enum EMarketRes {
 }
 
 export type TMarketItem = {
+    id: number,
     name: EMarketRes,
     number: number,
     cost: number
@@ -92,5 +93,3 @@ export type TMarketCatalog = {
 }
 
 export type TTraderCatalog = TMarketCatalog;
-
-
