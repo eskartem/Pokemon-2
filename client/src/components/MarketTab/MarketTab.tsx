@@ -1,66 +1,92 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { ServerContext } from '../../App';
-import { TMarketCreature, TMarketCatalog, TMarketItem } from '../../services/server/types';
+import { TMarketCatalog} from '../../services/server/types';
 import Button from '../Button/Button';
 
 import './MarketTab.scss';
 
-enum EMarketType {
-    monster,
-    item
-}
-
 const MarketTab: React.FC = () => {
-
     const server = useContext(ServerContext);
     const [catalog, setCatalog] = useState<TMarketCatalog | null>(null);
+    const [error, setError] = useState<string | null>(null);
+
+
+    enum EMarketType {
+      monster,
+      item
+  }
+  
+    // Загружаем данные каталога
     useEffect(() => {
         (async () => {
-            setCatalog(await server.getMarketCatalog());
-       })();
-    }, []);
+            try {
+                const catalogData = await server.getCatalog(); // Используем getCatalog
+                setCatalog(catalogData);
+            } catch (e) {
+                setError('Ошибка загрузки каталога');
+            }
+        })();
+    }, [server]);
 
+    // Обработчик покупки
+    const handleBuy = async (id: number, type: EMarketType) => {
+        try {
+            let success: boolean | null = false;
+            if (type === EMarketType.monster) {
+                success = await server.buyItem(id.toString()); // Покупаем существо
+            } else if (type === EMarketType.item) {
+                success = await server.buyItem(id.toString()); // Покупаем ресурс
+            }
+
+            if (success) {
+                alert('Покупка успешна!');
+                // Перезагружаем каталог после успешной покупки
+                const updatedCatalog = await server.getCatalog();
+                setCatalog(updatedCatalog);
+            } else {
+                alert('Не удалось выполнить покупку.');
+            }
+        } catch (err) {
+            console.error('Ошибка при покупке:', err);
+            alert('Произошла ошибка при выполнении покупки.');
+        }
+    };
+
+ 
     if (!catalog) {
-        return (
-            <div>
-                ошибка
-            </div>
-        )
-    }
-
-    const buyItemHandler = (type: EMarketType, id: number): void => { //типы, id 
-        console.log(`купил ${type == EMarketType.item? ' предмет': 'монстра' } под номером ${id}`);
-        // вызываешь функцию для покупки предемета из сервера.
-        // обновляешь юзера либо с метода сервера либо с метода со стора.
-        // обновить каталог
+        return <div>{error || 'Ошибка'}</div>;
     }
 
     return (
-    <div className='market-tab'>
-       <div className='monsters-tab'>
-       {catalog.creatures.map( (elem, index) => {
-                return ( 
-                    <div className='market-lot' key={index}>
-                            {index + 1} | {elem.cost} coins: {elem.name} | {elem.element} | lvl:{elem.lvl} |
-                            stats: {elem.stats.hp} hp, {elem.stats.ad} ad, {elem.stats.df} df |
-                            <Button onClick={() => buyItemHandler(EMarketType.monster, index + 1)} text='купить'/>
-                    </div> )
-                    }
-            )}
+        <div className="market-tab">
+            {/* Список существ */}
+            <div className="monsters-tab">
+                {catalog.creatures.map((elem) => (
+                    <div className="market-lot" key={`creature-${elem.id}`}>
+                        {elem.cost} coins: {elem.name} | {elem.element} | lvl: {elem.lvl} |
+                        stats: {elem.stats.hp} hp, {elem.stats.ad} ad, {elem.stats.df} df |
+                        <Button
+                            text="Купить"
+                            onClick={() => handleBuy(elem.id, EMarketType.monster)}
+                        />
+                    </div>
+                ))}
+            </div>
+
+            {/* Список ресурсов */}
+            <div className="items-tab">
+                {catalog.resources.map((elem) => (
+                    <div className="market-lot" key={`resource-${elem.id}`}>
+                        {elem.cost} coins: {elem.name} | {elem.number} шт. |
+                        <Button
+                            text="Купить"
+                            onClick={() => handleBuy(elem.id, EMarketType.item)}
+                        />
+                    </div>
+                ))}
+            </div>
         </div>
-        <div className='items_tab'>
-        {catalog.resources.map( (elem, index) => {
-                return ( 
-                    <div className='market-lot' key={index}>
-                            {index + 1 + catalog.creatures.length} | {elem.cost} coins: {elem.name} | {elem.number} шт. |
-                            <Button onClick={() => buyItemHandler(EMarketType.item, index + 1 + catalog.creatures.length)} text='купить'/>
-                    </div> )
-                    }   
-            )}
-        </div>
-    </div>)
-}
+    );
+};
 
 export default MarketTab;
-
-// нужно сделать хандлер, к каждой кнопкке

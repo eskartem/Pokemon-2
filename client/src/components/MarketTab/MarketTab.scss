@@ -1,9 +1,43 @@
-
-.market-lot {
-    border: 3px solid black;
-    margin: 4px;
-}
-
-.market-tab {
-    border: 5px solid black;
-}
+.market-container {
+    padding: 20px;
+  }
+  
+  .market-catalog {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+  
+  .pokemon-item {
+    width: 150px;
+    text-align: center;
+    cursor: pointer;
+    border: 1px solid #ddd;
+    padding: 10px;
+    border-radius: 10px;
+  }
+  
+  .pokemon-item img {
+    width: 100px;
+    height: 100px;
+  }
+  
+  .buy-status, .coins-status {
+    margin-top: 10px;
+    font-weight: bold;
+  }
+  
+  .buy-button {
+    margin-top: 20px;
+    background-color: green;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+  }
+  
+  .buy-button:disabled {
+    background-color: grey;
+    cursor: not-allowed;
+  }
+  
