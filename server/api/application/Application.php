@@ -118,7 +118,7 @@ class Application {
         if ($params['token']){
             $user = $this->user->getUser($params['token']);
             if ($user) {
-                return $this->map->moveUser($user->id, $user->x, $user->y);
+                return $this->map->moveUser($user->id, $user->x, $user->y, $user->status);
                 //непонятно где должен быть этот метод: в map или user, пока так
             }
             return ['error' => 242];
