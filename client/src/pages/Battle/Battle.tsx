@@ -70,7 +70,7 @@ const Pvp = (props: any) => {
       window.removeEventListener('resize', handleResize);
     };})
 
-    const backClickHandler = () => setPage(PAGES.MAINMENU);
+    const backClickHandler = () => setPage(PAGES.GAME);
   
   return (<>
     <Stage {...stageProps} className='pvpArea'>
