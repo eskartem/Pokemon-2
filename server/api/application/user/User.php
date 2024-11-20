@@ -78,7 +78,7 @@ public function userInfo($token) {
 }
 
 
-public function pokemonUpgrade($token, $monsterId) {
+public function upgradePokemon($token, $monsterId) {
     // Получаем пользователя по токену
     $user = $this->db->getUserByToken($token);
     if (!$user) {

@@ -77,9 +77,9 @@ class Application {
     }
     
     //немного недоделано
-    public function pokemonUpgrade($params) {
+    public function upgradePokemon($params) {
         if ($params['token'] && $params['monsterId']) {
-            return $this->user->pokemonUpgrade($params['token'], $params['monsterId']);
+            return $this->user->upgradePokemon($params['token'], $params['monsterId']);
         }
         return ['error' => 404];
     }
