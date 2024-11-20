@@ -64,6 +64,7 @@ class Server {
         if (result) {
             this.store.clearUser();
         }
+        return result;
     }
 
     registration(login: string, password: string, name: string): Promise<boolean | null> {
@@ -139,6 +140,10 @@ class Server {
         return result;
     }
 
+    async exchangeEggsForPokemon(): Promise<{ success: boolean }> {
+        // Здесь должна быть логика для запроса на сервер
+        return { success: true }; // Пример возврата. Настоящая логика может отличаться.
+      }
 }
 
 export default Server;

@@ -34,7 +34,7 @@ const Registration: React.FC<IBasePage> = (props: IBasePage) => {
 
         if (login && password && name && await server.registration(login, password, name) ) {
             if (await server.login(login, password)) {
-                setPage(PAGES.MAINMENU);
+                setPage(PAGES.GAME);
             }
         }
     };

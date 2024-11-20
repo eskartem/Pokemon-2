@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.1:3306
--- Время создания: Ноя 04 2024 г., 19:08
+-- Время создания: Ноя 13 2024 г., 10:36
 -- Версия сервера: 8.0.30
 -- Версия PHP: 8.1.9
 
@@ -24,13 +24,138 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
+-- Структура таблицы `elements`
+--
+
+CREATE TABLE `elements` (
+  `id` int NOT NULL,
+  `name` varchar(8) NOT NULL,
+  `boost_id` int NOT NULL,
+  `nerf_id` int NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `fight`
+--
+
+CREATE TABLE `fight` (
+  `id` int NOT NULL,
+  `user1_id` int NOT NULL,
+  `user2_id` int NOT NULL,
+  `turn` int NOT NULL,
+  `status` varchar(16) NOT NULL,
+  `result` int NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Структура таблицы `hashes`
 --
 
 CREATE TABLE `hashes` (
   `id` int NOT NULL,
-  `chat_hash` varchar(32) NOT NULL
+  `chat_hash` varchar(256) NOT NULL,
+  `map_hash` varchar(32) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Дамп данных таблицы `hashes`
+--
+
+INSERT INTO `hashes` (`id`, `chat_hash`, `map_hash`) VALUES
+(1, '853d7d057cda9930114b47ae3578f139', '');
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `inventory`
+--
+
+CREATE TABLE `inventory` (
+  `id` int NOT NULL,
+  `user_id` int NOT NULL,
+  `resource` int NOT NULL,
+  `resource_type` varchar(16) NOT NULL,
+  `element_id` int NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `lots`
+--
+
+CREATE TABLE `lots` (
+  `id` int NOT NULL,
+  `seller_id` int NOT NULL,
+  `inventory_id` int NOT NULL,
+  `datetime` datetime NOT NULL,
+  `start_cost` int NOT NULL,
+  `step_cost` int NOT NULL,
+  `current_cost` int NOT NULL,
+  `timestamp_cost` int NOT NULL,
+  `buyer_id` int NOT NULL,
+  `status` varchar(16) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `map`
+--
+
+CREATE TABLE `map` (
+  `id` int NOT NULL,
+  `name` varchar(16) NOT NULL,
+  `width` int NOT NULL,
+  `height` int NOT NULL,
+  `image` varchar(64) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `map_zones`
+--
+
+CREATE TABLE `map_zones` (
+  `id` int NOT NULL,
+  `map_id` int NOT NULL,
+  `name` varchar(16) NOT NULL,
+  `x` int NOT NULL,
+  `y` int NOT NULL,
+  `width` int NOT NULL,
+  `height` int NOT NULL,
+  `type` varchar(16) NOT NULL,
+  `element_id` int NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `market`
+--
+
+CREATE TABLE `market` (
+  `id` int NOT NULL,
+  `type` varchar(256) NOT NULL,
+  `item_id` int NOT NULL,
+  `cost` int NOT NULL,
+  `amount` int NOT NULL,
+  `seller_id` int NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Дамп данных таблицы `market`
+--
+
+INSERT INTO `market` (`id`, `type`, `item_id`, `cost`, `amount`, `seller_id`) VALUES
+(1, 'resource', 1, 100, 1, 1),
+(2, 'creature', 2, 1, 999999, 3),
+(3, 'creature', 1, 314, 3534, 2);
 
 -- --------------------------------------------------------
 
@@ -41,8 +166,8 @@ CREATE TABLE `hashes` (
 CREATE TABLE `messages` (
   `id` int NOT NULL,
   `user_id` int NOT NULL,
-  `message` varchar(64) NOT NULL,
-  `created` timestamp NOT NULL
+  `message` varchar(256) NOT NULL,
+  `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
@@ -50,12 +175,62 @@ CREATE TABLE `messages` (
 --
 
 INSERT INTO `messages` (`id`, `user_id`, `message`, `created`) VALUES
-(1, 1, 'привет, мир!', '2024-11-01 11:29:33'),
-(2, 1, 'Сосал?', '2024-11-01 11:33:25'),
-(3, 1, 'Да', '2024-11-01 11:33:32'),
-(4, 3, 'fdgdf', '2024-11-01 12:42:53'),
-(5, 1, 'бубылда', '2024-11-01 13:37:29'),
-(6, 1, 'my honest reaction for english lesson☠☠☠', '2024-11-01 14:10:52');
+(1, 1, 'дурак', '2024-10-30 06:49:22'),
+(2, 1, 'сам дурак', '2024-10-30 06:52:42'),
+(3, 3, 'Ты чё, пёс?!', '2024-10-30 06:53:34'),
+(4, 3, 'новое сообщение', '2024-10-30 06:54:41'),
+(5, 1, 'сама ДУРА!!!', '2024-10-30 06:57:20'),
+(6, 1, 'ljskjhdfg', '2024-11-13 07:23:07');
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `monsters`
+--
+
+CREATE TABLE `monsters` (
+  `id` int NOT NULL,
+  `user_id` int NOT NULL,
+  `monster_type_id` int NOT NULL,
+  `level` int NOT NULL,
+  `hp` int NOT NULL,
+  `status` varchar(16) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `monster_types`
+--
+
+CREATE TABLE `monster_types` (
+  `id` int NOT NULL,
+  `element_id` int NOT NULL,
+  `name` varchar(16) NOT NULL,
+  `hp` int NOT NULL,
+  `attack` int NOT NULL,
+  `defense` int NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `resources`
+--
+
+CREATE TABLE `resources` (
+  `id` int NOT NULL,
+  `name` varchar(256) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Дамп данных таблицы `resources`
+--
+
+INSERT INTO `resources` (`id`, `name`) VALUES
+(1, 'Пиво'),
+(2, 'Кристаллы'),
+(3, 'Яйца (желательно мужские)');
 
 -- --------------------------------------------------------
 
@@ -65,34 +240,76 @@ INSERT INTO `messages` (`id`, `user_id`, `message`, `created`) VALUES
 
 CREATE TABLE `users` (
   `id` int NOT NULL,
-  `login` varchar(20) NOT NULL,
-  `password` varchar(32) NOT NULL,
-  `name` varchar(20) NOT NULL,
-  `token` varchar(32) DEFAULT NULL,
-  `coins` int NOT NULL DEFAULT '500',
-  `crystals` int NOT NULL DEFAULT '0',
-  `egg_fragments` int NOT NULL DEFAULT '0',
+  `login` varchar(256) NOT NULL,
+  `password` varchar(256) NOT NULL,
+  `token` varchar(256) DEFAULT NULL,
+  `name` varchar(256) NOT NULL,
+  `money` int DEFAULT '0',
   `rating` int NOT NULL DEFAULT '0',
-  `team_id` int NOT NULL,
-  `inventory_id` int NOT NULL
+  `x` int NOT NULL DEFAULT '80',
+  `y` int NOT NULL DEFAULT '45',
+  `status` varchar(32) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Дамп данных таблицы `users`
 --
 
-INSERT INTO `users` (`id`, `login`, `password`, `name`, `token`, `coins`, `crystals`, `egg_fragments`, `rating`, `team_id`, `inventory_id`) VALUES
-(1, 'admin', 'bbad8d72c1fac1d081727158807a8798', 'admin1', 'f15bffcff9cf15d838f3f174f1f52d31', 10100, 1500, 1200, 45, 1, 1),
-(3, 'admin1', '295ce6711606eaea5a2e8f0c4703e7b7', 'admin2', NULL, 500, 0, 0, 0, 1, 1);
+INSERT INTO `users` (`id`, `login`, `password`, `token`, `name`, `money`, `rating`, `x`, `y`, `status`) VALUES
+(1, 'vasya', 'fcb03559c0317682f5d65a88aca50012', '7542ae11d383df9cb07e163495314a85', 'Вася Пупкин', 0, 0, 80, 45, ''),
+(2, 'petya', 'bcb209cf0d43e198e6467f8b0ac3387a', '431542fe9302b7f2807069adb7504bd5', 'Пётр Петрович', 0, 0, 80, 45, ''),
+(3, 'masha', 'e213995da574de722a416f65b43d8314', '1916666aacbb8732bf2d12238b2cd5db', 'Маша Сергеевна', 0, 0, 80, 45, '');
 
 --
 -- Индексы сохранённых таблиц
 --
 
 --
+-- Индексы таблицы `elements`
+--
+ALTER TABLE `elements`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Индексы таблицы `fight`
+--
+ALTER TABLE `fight`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Индексы таблицы `hashes`
 --
 ALTER TABLE `hashes`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Индексы таблицы `inventory`
+--
+ALTER TABLE `inventory`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Индексы таблицы `lots`
+--
+ALTER TABLE `lots`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Индексы таблицы `map`
+--
+ALTER TABLE `map`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Индексы таблицы `map_zones`
+--
+ALTER TABLE `map_zones`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Индексы таблицы `market`
+--
+ALTER TABLE `market`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -102,26 +319,105 @@ ALTER TABLE `messages`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Индексы таблицы `monsters`
+--
+ALTER TABLE `monsters`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Индексы таблицы `monster_types`
+--
+ALTER TABLE `monster_types`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Индексы таблицы `resources`
+--
+ALTER TABLE `resources`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Индексы таблицы `users`
 --
 ALTER TABLE `users`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `login` (`login`);
 
 --
 -- AUTO_INCREMENT для сохранённых таблиц
 --
 
 --
+-- AUTO_INCREMENT для таблицы `elements`
+--
+ALTER TABLE `elements`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT для таблицы `fight`
+--
+ALTER TABLE `fight`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT для таблицы `hashes`
 --
 ALTER TABLE `hashes`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT для таблицы `inventory`
+--
+ALTER TABLE `inventory`
   MODIFY `id` int NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT для таблицы `lots`
+--
+ALTER TABLE `lots`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT для таблицы `map`
+--
+ALTER TABLE `map`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT для таблицы `map_zones`
+--
+ALTER TABLE `map_zones`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT для таблицы `market`
+--
+ALTER TABLE `market`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT для таблицы `messages`
 --
 ALTER TABLE `messages`
   MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+
+--
+-- AUTO_INCREMENT для таблицы `monsters`
+--
+ALTER TABLE `monsters`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT для таблицы `monster_types`
+--
+ALTER TABLE `monster_types`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT для таблицы `resources`
+--
+ALTER TABLE `resources`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT для таблицы `users`

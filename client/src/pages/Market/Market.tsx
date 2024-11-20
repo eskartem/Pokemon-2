@@ -18,7 +18,7 @@ const Market: React.FC<IBasePage> = (props: IBasePage) => {
   const store = useContext(StoreContext);
   const [tab, setTab] = useState<TABS>(TABS.MARKET);
 
-  const user = store.getUser();
+    const backClickHandler = () => setPage(PAGES.GAME   );
 
   const backClickHandler = () => setPage(PAGES.MAINMENU);
 
