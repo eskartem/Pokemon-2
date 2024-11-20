@@ -1,135 +1,63 @@
-
-import React, { useContext, useEffect, useState, useMemo, useRef } from 'react';
+import React, {useContext} from 'react';
+import Button from '../../components/Button/Button';
+import Map from '../../components/Map/Map';
+import Chat from '../../components/Chat/Chat';
+import { StoreContext, ServerContext } from '../../App';
 import { IBasePage, PAGES } from '../PageManager';
-// import CONFIG from '../../config';
-// import Button from '../../components/Button/Button';
-// import Game from '../../game/Game';
-// import { Canvas, useCanvas } from '../../services/canvas';
-// import useSprites from './hooks/useSprites';
 
-// const GAME_FIELD = 'game-field';
-// const GREEN = '#00e81c';
+import './Game.scss';
 
-const GamePage: React.FC<IBasePage> = (props: IBasePage) => {
-    // const { WINDOW, SPRITE_SIZE } = CONFIG;
-    // const { setPage } = props;
-    // let game: Game | null = null;
-    // // инициализация канваса
-    // let canvas: Canvas | null = null;
-    // const Canvas = useCanvas(render);
-    // let interval: NodeJS.Timer | null = null;
-    // // инициализация карты спрайтов
-    // const [
-    //     [spritesImage],
-    //     getSprite,
-    // ] = useSprites();
+const Game: React.FC<IBasePage> = (props: IBasePage) => {
 
-    // function printFillSprite(image: HTMLImageElement, canvas: Canvas, { x = 0, y = 0 }, points: number[]): void {
-    //     canvas.spriteFull(image, x, y, points[0], points[1], points[2]);
-    // }
+    const { setPage } = props;
+    const server = useContext(ServerContext);
+    const store = useContext(StoreContext);
+    const user = store.getUser()
 
-    // function printKapitoshka(canvas: Canvas, { x = 0, y = 0 }, points: number[]): void {
-    //     printFillSprite(spritesImage, canvas, { x, y }, points);
-    // }
+    const inventoryClickHandler = () => setPage(PAGES.INVENTORY);
+    const marketClickHandler = () => setPage(PAGES.MARKET);
+    const battleClickHandler = () => setPage(PAGES.BATTLE);
+    const logoutClickHandler = async () => {
+        if (await server.logout()) {
+            setPage(PAGES.LOGIN);
+        }
+    }
+    const muteButtonHandler = async () => {
+        // сделать запрос на сервак по изменению поля is_mute в таблицe users
+    }
+    
+    if (!user) { return ( <div><h1> пользователь не найден </h1></div> )} // закоментировать для работы без бекэнда
 
-
-    // // функция отрисовки одного кадра сцены
-    // function render(FPS: number): void {
-    //     if (canvas && game) {
-    //         canvas.clear();
-    //         const { kapitoshka } = game.getScene();
-
-    //         /************************/
-    //         /* нарисовать Капитошку */
-    //         /************************/
-    //         const { x, y } = kapitoshka;
-    //         printKapitoshka(canvas, { x, y }, getSprite(1));
-
-    //         /******************/
-    //         /* нарисовать FPS */
-    //         /******************/
-    //         canvas.text(WINDOW.LEFT + 0.2, WINDOW.TOP + 0.5, String(FPS), GREEN);
-    //         /************************/
-    //         /* отрендерить картинку */
-    //         /************************/
-    //         canvas.render();
-    //     }
-    // }
-
-    // const backClickHandler = () => setPage(PAGES.CHAT);
-
-    // /****************/
-    // /* Mouse Events */
-    // /****************/
-    // const mouseMove = (_x: number, _y: number) => {
-    // }
-
-    // const mouseClick = (_x: number, _y: number) => {
-    // }
-
-    // const mouseRightClick = () => {
-    // }
-    // /****************/
-
-    // useEffect(() => {
-    //     // инициализация игры
-    //     game = new Game();
-    //     canvas = Canvas({
-    //         parentId: GAME_FIELD,
-    //         WIDTH: WINDOW.WIDTH * SPRITE_SIZE,
-    //         HEIGHT: WINDOW.HEIGHT * SPRITE_SIZE,
-    //         WINDOW,
-    //         callbacks: {
-    //             mouseMove,
-    //             mouseClick,
-    //             mouseRightClick,
-    //         },
-    //     });
-    //     return () => {
-    //         // деинициализировать все экземпляры
-    //         game?.destructor();
-    //         canvas?.destructor();
-    //         canvas = null;
-    //         game = null;
-    //         if (interval) {
-    //             clearInterval(interval);
-    //             interval = null;
-    //         }
-    //     }
-    // });
-
-    // useEffect(() => {
-    //     const keyDownHandler = (event: KeyboardEvent) => {
-    //         const delta = 0.2;
-    //         const keyCode = event.keyCode ? event.keyCode : event.which ? event.which : 0;
-    //         switch (keyCode) {
-    //             case 65: // a
-    //                 game?.move(-delta, 0);
-    //             break
-    //             case 68: // d
-    //                 game?.move(delta, 0);
-    //             break
-    //             case 87: // w
-    //                 game?.move(0, -delta);
-    //             break
-    //             case 83: // s
-    //                 game?.move(0, delta);
-    //             break
-    //         }
-    //     }
-
-    //     document.addEventListener('keydown', keyDownHandler);
-
-    //     return () => {
-    //         document.removeEventListener('keydown', keyDownHandler);
-    //     }
-    // });
-
-    return (<div className='game'>
-        {/* <h1>Игра</h1>
-        <Button onClick={backClickHandler} text='Назад' />
-        <div id={GAME_FIELD} className={GAME_FIELD}></div> */}
-    </div>)
+    return (
+        <div className="game-wrapper">
+            <div>
+                <div className='user-panel'>
+                    <h1> Ник: {user?.name} </h1>
+                    <div className='user-resources'>
+                        <h1 className='resources-text'>монеты: {user?.coins} |</h1>
+                    </div>
+                </div>
+                <div className='button-panel'>
+                    <Button onClick={inventoryClickHandler} text='Инвентарь' />
+                    <Button onClick={marketClickHandler} text='Рынок' />
+                    <Button onClick={battleClickHandler} text='Битва' />
+                    <Button onClick={logoutClickHandler} text='разлогиниться' />
+                    <Button onClick={muteButtonHandler} text='заглушить' />
+                </div>
+                <Map/>
+                <div className="control-panel">
+                    <button className="move-button" onClick={() => {}} >←</button>
+                    <button className="move-button" onClick={() => {}} >↑</button>
+                    <button className="move-button" onClick={() => {}} >↓</button>
+                    <button className="move-button" onClick={() => {}} >→</button>
+                    <button onClick={() => {}}>clear path</button>
+                </div>
+            </div>
+            <Chat />
+        </div>
+    );
 }
 
-export default GamePage;
+export default Game;
+
+

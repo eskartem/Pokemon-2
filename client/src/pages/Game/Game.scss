@@ -1,0 +1,14 @@
+
+#canvas {
+    border: 5px solid black;
+}
+
+.game-wrapper {
+    display: flex;
+    flex-direction: row;
+}
+
+.move-button {
+    min-width: 50px;
+    min-height: 50px;
+}
