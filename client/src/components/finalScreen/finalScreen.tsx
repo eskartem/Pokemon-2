@@ -40,7 +40,7 @@ const FinalScreen: React.FC<FinalScreenProps> = (props: FinalScreenProps) => {
             <div className="popup-overlay">
                 <div className="popup">
                     <h2>Вы Победили</h2>
-                    <button onClick={() => {updateScene()}}>Начать заново</button>
+                    <button id="test-battle-button-yourReplayBattle" onClick={() => {updateScene()}}>Начать заново</button>
                 </div>
             </div>
         )}
@@ -48,7 +48,7 @@ const FinalScreen: React.FC<FinalScreenProps> = (props: FinalScreenProps) => {
             <div className="popup-overlay">
                 <div className="popup">
                     <h2>Вы Проиграли</h2>
-                    <button onClick={() => {updateScene()}}>Начать заново</button>
+                    <button id="test-battle-button-enemyReplayBattle" onClick={() => {updateScene()}}>Начать заново</button>
                 </div>
             </div>
         )}
