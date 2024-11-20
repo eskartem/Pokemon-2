@@ -112,29 +112,6 @@ class Server {
         return null;
     }
 
-    async moveUser(dx: number, dy: number) {
-        await this.request<TUser>('moveUser', {dx: dx+'', dy: dy+''})
-    }
-
-    startCoordinatesUpdates(cb: (hash: string) => void): void {
-        this.chatInterval = setInterval(async () => {
-            const result = await this.getCoordinates();
-            if (result) {
-                const { coordinates, hash } = result;
-                this.store.addCoordinates(coordinates);
-                cb(hash);
-            }
-        }, CHAT_TIMESTAMP);
-    }
-
-    stopCoordinatesUpdates(): void {
-        if (this.chatInterval) {
-            clearInterval(this.chatInterval);
-            this.chatInterval = null;
-            this.store.clearCoordinates();
-        }
-    }
-
 }
 
 export default Server;
