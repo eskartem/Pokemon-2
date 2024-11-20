@@ -17,7 +17,7 @@ const Login: React.FC<IBasePage> = (props: IBasePage) => {
         const password = passwordRef.current.value;
         //if (1) { // тестовое условие, чтобы логин всегда был успешный и работал без бекенда
         if (login && password && await server.login(login, password)) { // login: admin, пароль: 111
-            setPage(PAGES.MAINMENU);
+            setPage(PAGES.GAME); 
         }
     }
 
@@ -31,7 +31,7 @@ const Login: React.FC<IBasePage> = (props: IBasePage) => {
                 <input ref={passwordRef} placeholder='пароль' type='password' />
             </div>
             <div className='login-buttons'>
-                <img className='loginClick' src={LoginImg} alt='' onClick={loginClickHandler}></img>
+                <Button onClick={loginClickHandler} text='Авторизоваться' id='test-login-button_auth' />
             </div>
             <span className='register-link' onClick={registerClickHandler}>
                 У меня нет аккаунта

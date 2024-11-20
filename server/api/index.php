@@ -23,7 +23,7 @@ function result($params) {
             case 'getMessages': return $app->getMessages($params);
             //gamer info
             // case 'userInfo': return $app-> userInfo($params);
-            // case 'pokemonUpgrade': return $app-> pokemonUpgrade($params);
+            // case 'updatePokemon': return $app-> updatePokemon($params);
             //inventory
 
             //battle
@@ -32,11 +32,10 @@ function result($params) {
             // case 'actionUser': return $app-> actionUser($params); //действие игрока в бою во время ход
             //map
             case 'getMap': return $app-> getMap($params);
-             case 'startGame': return $app-> startGame($params);
-             case 'endGame': return $app-> endGame($params);
-
-            // case 'sceneUpgrade': return $app-> sceneUpgrade($params); //loop
-            // case 'moveUser': return $app-> moveUser($params);//надо уметь бросать энд гейм
+            case 'startGame': return $app-> startGame($params);
+            case 'endGame': return $app-> endGame($params);
+            // case 'updateScene': return $app-> updateScene($params); //loop
+            case 'moveUser': return $app-> moveUser($params);//надо уметь бросать энд гейм
             //market
             case 'getCatalog': return $app-> getCatalog($params);
             // case 'buy': return $app-> buy($params);

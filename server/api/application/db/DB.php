@@ -168,19 +168,24 @@ class DB {
         return $this->user->resources;
     }
 
-    public function getMap($token){
-        return ['map' => $this->execute("SELECT * FROM map WHERE id=1", [$token]), 
-                'zones' => $this->execute("SELECT * FROM zones WHERE id=1", [$token]), 
-                'zones_types' => $this->execute("SELECT * FROM zones_types WHERE id=1", [$token])
+    public function getMap(){
+        return ['map' => $this->execute("SELECT * FROM map WHERE id=1"), 
+                'map_zones' => $this->execute("SELECT * FROM map_zones WHERE id=1")
         ];
-        //мб токен вообще не используется и удалить его нах
     }
         
-
-
     public function updateUserLocation($userId, $position) {
         //return $this->execute("UPDATE map SET position=? WHERE id=?", [$position, $userId]);
+
+
+
+        /* 
+        в map нет записей с position, но они есть в user как x и y
+        не изменяю $position в самом методе, чтобы ничего не поломалось
+        */
+        //return $this->execute("UPDATE users SET x=?, y=? WHERE id=?", [$position[0], $position[1], $userId]);
     }
+
     //примерно
     public function clearUserResource($user){
         //return $this-> execute('DELETE FROM resource WHERE user_id = ?', [$user->id]);

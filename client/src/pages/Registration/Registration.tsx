@@ -28,13 +28,13 @@ const Registration: React.FC<IBasePage> = (props: IBasePage) => {
         }
 
         if (!isValidPassword(password)) {
-            alert("Пароль должен содержать не менее 8 символов, включая заглавные и строчные буквы, цифры и специальные символы.");
+            alert("Пароль должен содержать не менее 8 символов и не более 15, включая заглавные и строчные буквы латинского алфавита, цифры и специальные символы.");
             return;
         }
 
         if (login && password && name && await server.registration(login, password, name) ) {
             if (await server.login(login, password)) {
-                setPage(PAGES.MAINMENU);
+                setPage(PAGES.GAME);
             }
         }
     };
