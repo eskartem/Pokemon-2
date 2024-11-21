@@ -52,12 +52,14 @@ const Chat: React.FC = () => {
 
     return (<div className='chat'>
         <h1>Чат</h1>
-        <div className='chat-messages'>
+        <div id='test-chat-div-chat' className='chat-messages'>
             {messages.reverse().map((message, index) => <div key={index}>{`${message.author} (${message.created}): ${message.message}`}</div>)}
         </div>
-        {input}
+        <div id='test-chat-div-input'>
+            {input}
+        </div>
         <div className='chat-buttons'>
-            <Button onClick={sendClickHandler} text='Отправить' />
+            <Button id='test-chat-button-send' onClick={sendClickHandler} text='Отправить' />
         </div>
     </div>)
 }
