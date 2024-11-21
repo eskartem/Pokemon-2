@@ -12,7 +12,7 @@ const Game: React.FC<IBasePage> = (props: IBasePage) => {
     const { setPage } = props;
     const server = useContext(ServerContext);
     const store = useContext(StoreContext);
-    const user = store.getUser()
+    let user = store.getUser()
 
     const inventoryClickHandler = () => setPage(PAGES.INVENTORY);
     const marketClickHandler = () => setPage(PAGES.MARKET);
@@ -27,6 +27,17 @@ const Game: React.FC<IBasePage> = (props: IBasePage) => {
     }
     
     if (!user) { return ( <div><h1> пользователь не найден </h1></div> )} // закоментировать для работы без бекэнда
+
+    const moveUser = async (dx: number, dy: number)  => {
+        // if ( await server.moveUser(dx, dy) ) { //moveUser не написан
+        if (true){
+            user = store.getUser();
+            if (!user) return
+            setUserPosition(prev => {
+                return {x: prev.x + dx, y: prev.y + dy};
+            });
+        }
+    }
 
     return (
         <div className="game-wrapper">
