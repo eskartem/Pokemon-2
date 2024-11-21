@@ -11,4 +11,13 @@ const TraderTab: React.FC = () => {
     </div>)
 }
 
+  // тоже самое как и для маркета, просто метооды для торговца
+
+  return (
+    <div id="test-trader-tab-container">
+    торговец
+    </div>
+  );
+};
+
 export default TraderTab;
