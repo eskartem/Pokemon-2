@@ -1,4 +1,4 @@
-import { TMessages, TUser, TUserResources } from "../server/types";
+import { TMessages, TUser } from "../server/types";
 
 const TOKEN = 'token';
 
@@ -54,24 +54,6 @@ class Store {
     setChatHash(hash: string): void {
         this.chatHash = hash;
     }
-
-    setUserResources(resources: TUserResources): void {
-        if (this.user) {
-            this.user.resources = resources;
-        }
-    }
-
-    getUserResources(): TUserResources | null {
-        return this.user ? this.user.resources : null;
-    }
-    addEggToInventory(): void {
-        if (this.user) {
-            if (this.user.resources) {
-                this.user.resources.eggFragments += 1; // Увеличиваем количество яиц
-            }
-        }
-    }
-
 }
 
 export default Store;
