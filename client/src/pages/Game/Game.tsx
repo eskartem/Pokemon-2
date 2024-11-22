@@ -32,25 +32,27 @@ const Game: React.FC<IBasePage> = (props: IBasePage) => {
         <div className="game-wrapper">
             <div>
                 <div className='user-panel'>
-                    <h1> Ник: {user?.name} </h1>
+                    <h1 className='user-panel-nick'> Ник:</h1>
+                    <h1 id='test-game-h1-name' className='user-panel-nick'> {user?.name} | </h1>
                     <div className='user-resources'>
-                        <h1 className='resources-text'>монеты: {user?.coins} |</h1>
+                        <h1 className='user-resources-coins'>монеты: </h1>
+                        <h1 id='test-game-h1-coins' className='user-resources-coins'> {user?.coins} </h1>
                     </div>
                 </div>
                 <div className='button-panel'>
-                    <Button onClick={inventoryClickHandler} text='Инвентарь' />
-                    <Button onClick={marketClickHandler} text='Рынок' />
-                    <Button onClick={battleClickHandler} text='Битва' />
-                    <Button onClick={logoutClickHandler} text='разлогиниться' />
-                    <Button onClick={muteButtonHandler} text='заглушить' />
+                    <Button id='test-game-button-inventory' onClick={inventoryClickHandler} text='Инвентарь' />
+                    <Button id='test-game-button-market' onClick={marketClickHandler} text='Рынок' />
+                    <Button id='test-game-button-battle' onClick={battleClickHandler} text='Битва' />
+                    <Button id='test-game-button-logout' onClick={logoutClickHandler} text='разлогиниться' />
+                    <Button id='test-game-button-mute' onClick={muteButtonHandler} text='заглушить' />
                 </div>
-                <Map/>
+                <Map />
                 <div className="control-panel">
-                    <button className="move-button" onClick={() => {}} >←</button>
-                    <button className="move-button" onClick={() => {}} >↑</button>
-                    <button className="move-button" onClick={() => {}} >↓</button>
-                    <button className="move-button" onClick={() => {}} >→</button>
-                    <button onClick={() => {}}>clear path</button>
+                    <button id='test-game-button-arrowleft' className="move-button" onClick={() => {}} >←</button>
+                    <button id='test-game-button-arrowup' className="move-button" onClick={() => {}} >↑</button>
+                    <button id='test-game-button-arrowdown' className="move-button" onClick={() => {}} >↓</button>
+                    <button id='test-game-button-arrowright' className="move-button" onClick={() => {}} >→</button>
+                    <button id='test-game-button-clearpath' onClick={() => {}}>clear path</button>
                 </div>
             </div>
             <Chat />
