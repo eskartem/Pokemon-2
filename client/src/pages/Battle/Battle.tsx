@@ -1,5 +1,5 @@
 import {useEffect, useState} from 'react';
-import {Stage, Text} from '@pixi/react';
+import {Stage} from '@pixi/react';
 import { PAGES } from '../PageManager';
 
 import {FirstAnemoMonster, SecondAnemoMonster, ThirdAnemoMonster, FourthAnemoMonster, FirstGeoMonster, SecondGeoMonster,
@@ -20,7 +20,7 @@ import './Battle.scss';
 import MathPvp from '../../services/MathPvp/MathPvp';
 
 const Pvp = (props: any) => {
-  let firstSelectedMonster: Monsters = new FourthPyroMonster("yourSide", 6);
+  let firstSelectedMonster: Monsters = new FirstAnemoMonster("yourSide", 6);
   let secondSelectedMonster: Monsters = new FirstGeoMonster("yourSide", 1);
   let thirdSelectedMonster: Monsters = new FirstHydroMonster("yourSide", 1);
   let firstSelectedEnemyMonster: Monsters = new SecondPyroMonster("enemySide", 1);

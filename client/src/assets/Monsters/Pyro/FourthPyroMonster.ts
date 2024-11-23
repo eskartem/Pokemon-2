@@ -17,7 +17,10 @@ class FourthPyroMonster extends Monster {
     skill = {
         name: 'Пепельный взрыв',
         scale: 1.5
-    }   
+    } 
+    weakening = {
+        whirlpoolWeakening: false
+    }     
 }
 
 export default FourthPyroMonster

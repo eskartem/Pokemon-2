@@ -18,6 +18,9 @@ class SecondPyroMonster extends Monster {
         name: 'Фениксова искра',
         scale: 1.1
     }   
+    weakening = {
+        whirlpoolWeakening: false
+    }   
 }
 
 export default SecondPyroMonster

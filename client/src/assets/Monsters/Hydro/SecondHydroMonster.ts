@@ -17,7 +17,10 @@ class SecondHydroMonster extends Monster {
     skill = {
         name: 'Каскад',
         scale: 1.5
-    }   
+    }
+    weakening = {
+        whirlpoolWeakening: false
+    }      
 }
 
 export default SecondHydroMonster

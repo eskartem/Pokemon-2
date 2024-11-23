@@ -17,7 +17,10 @@ class SecondAnemoMonster extends Monster {
     skill = {
         name: 'Штормовой порыв',
         scale: 1.1
-    }   
+    }
+    weakening = {
+        whirlpoolWeakening: false
+    }      
 }
 
 export default SecondAnemoMonster

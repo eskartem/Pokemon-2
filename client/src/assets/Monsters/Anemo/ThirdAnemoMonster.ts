@@ -17,7 +17,10 @@ class ThirdAnemoMonster extends Monster {
     skill = {
         name: 'Воздушный клинок',
         scale: 1.1
-    }   
+    }
+    weakening = {
+        whirlpoolWeakening: false
+    }      
 }
 
 export default ThirdAnemoMonster

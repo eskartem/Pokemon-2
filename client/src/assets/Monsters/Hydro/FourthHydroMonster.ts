@@ -16,8 +16,11 @@ class FourthHydroMonster extends Monster {
     isAlive: boolean = true;
     skill = {
         name: 'Водоворот',
-        scale: 1
-    }   
+        scale: 1.7
+    }
+    weakening = {
+        whirlpoolWeakening: false
+    }      
 }
 
 export default FourthHydroMonster

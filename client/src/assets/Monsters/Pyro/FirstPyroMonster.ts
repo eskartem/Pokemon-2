@@ -17,6 +17,9 @@ class FirstPyroMonster extends Monster {
     skill = {
         name: 'Испепеляющий удар',
         scale: 1.4
+    }
+    weakening = {
+        whirlpoolWeakening: false
     }   
 }
 

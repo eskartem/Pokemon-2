@@ -2,13 +2,11 @@ import { Monsters } from "../../assets/Monsters/Monster";
 
 type setHealthPoint = (healthPoint: number) => void; 
 
-type setTimer = (time: number) => void;
-
 class MathPvp {
-
+    
     dealingDamage = (setHealthPointFirst: setHealthPoint, setHealthPointSecond: setHealthPoint, setHealthPointThird: setHealthPoint,
         healthPointFirst: number, healthPointSecond: number, healthPointThird: number, attackedFirst: Monsters, attackedSecond: Monsters,
-        attackedThird: Monsters, attacking: Monsters, action: string, mainTarget: Monsters
+        attackedThird: Monsters, attacking: Monsters, action: string, mainTarget: Monsters, arr: Monsters[]
     ): number[] => {
         if(action === 'baseAttack') {
             if (mainTarget === attackedFirst) {
@@ -37,34 +35,34 @@ class MathPvp {
                         setHealthPointThird(healthPointThird =Math.round(healthPointThird - attacking.attack * attacking.skill.scale))
                     } return [healthPointFirst, healthPointSecond, healthPointThird]
                 case "Гравитационная волна": 
-                if (mainTarget === attackedFirst) {
-                    let time = 0;
-                    const GravitationalWave = setInterval(() => {
-                        time++;
-                        setHealthPointFirst(healthPointFirst = Math.round(healthPointFirst - attacking.attack * attacking.skill.scale))
-                        if (time === 5) {
-                            clearInterval(GravitationalWave)
-                        }
-                    }, 1000)
-                } else if (mainTarget === attackedSecond) {
-                    let time = 0;
-                    const GravitationalWave = setInterval(() => {
-                        time++;
-                        setHealthPointSecond(healthPointSecond = Math.round(healthPointSecond - attacking.attack * attacking.skill.scale))
-                        if (time === 5) {
-                            clearInterval(GravitationalWave)
-                        }
-                    }, 1000)
-                } else if (mainTarget === attackedThird) {
-                    let time = 0;
-                    const GravitationalWave = setInterval(() => {
-                        time++;
-                        setHealthPointThird(healthPointThird = Math.round(healthPointThird - attacking.attack * attacking.skill.scale))
-                        if (time === 5) {
-                            clearInterval(GravitationalWave)
-                        }
-                    }, 1000)
-                } return [healthPointFirst, healthPointSecond, healthPointThird]
+                    if (mainTarget === attackedFirst) {
+                        let time = 0;
+                        const GravitationalWave = setInterval(() => {
+                            time++;
+                            setHealthPointFirst(healthPointFirst = Math.round(healthPointFirst - attacking.attack * attacking.skill.scale))
+                            if (time === 5) {
+                                clearInterval(GravitationalWave)
+                            }
+                        }, 1000)
+                    } else if (mainTarget === attackedSecond) {
+                        let time = 0;
+                        const GravitationalWave = setInterval(() => {
+                            time++;
+                            setHealthPointSecond(healthPointSecond = Math.round(healthPointSecond - attacking.attack * attacking.skill.scale))
+                            if (time === 5) {
+                                clearInterval(GravitationalWave)
+                            }
+                        }, 1000)
+                    } else if (mainTarget === attackedThird) {
+                        let time = 0;
+                        const GravitationalWave = setInterval(() => {
+                            time++;
+                            setHealthPointThird(healthPointThird = Math.round(healthPointThird - attacking.attack * attacking.skill.scale))
+                            if (time === 5) {
+                                clearInterval(GravitationalWave)
+                            }
+                        }, 1000)
+                    } return [healthPointFirst, healthPointSecond, healthPointThird]
                 case "Глыбопад":
                     if (mainTarget === attackedFirst) {
                         let count = 0;
@@ -97,6 +95,14 @@ class MathPvp {
                             }
                         }, 2000)
                     } return [healthPointFirst, healthPointSecond, healthPointThird]
+                case "Тектонический удар": 
+                    if (mainTarget === attackedFirst) {
+                            setHealthPointFirst(healthPointFirst = Math.round(healthPointFirst - attacking.attack * attacking.skill.scale))
+                    } else if (mainTarget === attackedSecond) {
+                            setHealthPointSecond(healthPointSecond = Math.round(healthPointSecond - attacking.attack * attacking.skill.scale))
+                    } else if (mainTarget === attackedThird) {
+                        setHealthPointThird(healthPointThird = Math.round(healthPointThird - attacking.attack * attacking.skill.scale))
+                    } return [healthPointFirst, healthPointSecond, healthPointThird]    
                 case "Каскад":
                     if (mainTarget === attackedFirst) {
                         if (mainTarget.element === "Fire" || mainTarget.element === 'Air') {
@@ -182,31 +188,31 @@ class MathPvp {
                         }, 1000)
                     } return [healthPointFirst, healthPointSecond, healthPointThird]
                 case "Фениксова искра": 
-                if (mainTarget === attackedFirst) {
-                    let damage = Math.round(attacking.attack * attacking.skill.scale)
-                    let blastDamage = Math.round(attacking.attack * (attacking.skill.scale + 0.2))
-                    setHealthPointFirst(healthPointFirst = healthPointFirst - damage)
-                    if (healthPointFirst <= 0) {
-                        setHealthPointSecond(healthPointSecond = Math.round(healthPointSecond - blastDamage))
-                        setHealthPointThird(healthPointThird = Math.round(healthPointThird - blastDamage))
-                    }
-                } else if (mainTarget === attackedSecond) {
-                    let damage = Math.round(attacking.attack * attacking.skill.scale)
-                    let blastDamage = Math.round(attacking.attack * (attacking.skill.scale + 0.2))
-                    setHealthPointSecond(healthPointSecond = healthPointSecond - damage)
-                    if (healthPointSecond <= 0) {
-                        setHealthPointFirst(healthPointFirst = Math.round(healthPointFirst - blastDamage))
-                        setHealthPointThird(healthPointThird = Math.round(healthPointThird - blastDamage))
-                    }
-                } else if (mainTarget === attackedThird) {
-                    let damage = Math.round(attacking.attack * attacking.skill.scale)
-                    let blastDamage = Math.round(attacking.attack * (attacking.skill.scale + 0.2))
-                    setHealthPointThird(healthPointThird = healthPointThird - damage)
-                    if (healthPointThird <= 0) {
-                        setHealthPointSecond(healthPointSecond = Math.round(healthPointSecond - blastDamage))
-                        setHealthPointFirst(healthPointFirst = Math.round(healthPointFirst - blastDamage))
-                    }
-                } return [healthPointFirst, healthPointSecond, healthPointThird]
+                    if (mainTarget === attackedFirst) {
+                        let damage = Math.round(attacking.attack * attacking.skill.scale)
+                        let blastDamage = Math.round(attacking.attack * (attacking.skill.scale + 0.2))
+                        setHealthPointFirst(healthPointFirst = healthPointFirst - damage)
+                        if (healthPointFirst <= 0) {
+                            setHealthPointSecond(healthPointSecond = Math.round(healthPointSecond - blastDamage))
+                            setHealthPointThird(healthPointThird = Math.round(healthPointThird - blastDamage))
+                        }
+                    } else if (mainTarget === attackedSecond) {
+                        let damage = Math.round(attacking.attack * attacking.skill.scale)
+                        let blastDamage = Math.round(attacking.attack * (attacking.skill.scale + 0.2))
+                        setHealthPointSecond(healthPointSecond = healthPointSecond - damage)
+                        if (healthPointSecond <= 0) {
+                            setHealthPointFirst(healthPointFirst = Math.round(healthPointFirst - blastDamage))
+                            setHealthPointThird(healthPointThird = Math.round(healthPointThird - blastDamage))
+                        }
+                    } else if (mainTarget === attackedThird) {
+                        let damage = Math.round(attacking.attack * attacking.skill.scale)
+                        let blastDamage = Math.round(attacking.attack * (attacking.skill.scale + 0.2))
+                        setHealthPointThird(healthPointThird = healthPointThird - damage)
+                        if (healthPointThird <= 0) {
+                            setHealthPointSecond(healthPointSecond = Math.round(healthPointSecond - blastDamage))
+                            setHealthPointFirst(healthPointFirst = Math.round(healthPointFirst - blastDamage))
+                        }
+                    } return [healthPointFirst, healthPointSecond, healthPointThird]
                 case "Огненная буря":
                     setHealthPointFirst(healthPointFirst = Math.round(healthPointFirst - attacking.attack * attacking.skill.scale))
                     setHealthPointSecond(healthPointSecond = Math.round(healthPointSecond - attacking.attack * attacking.skill.scale))
@@ -292,13 +298,46 @@ class MathPvp {
                     } else if (mainTarget === attackedThird) {
                         setHealthPointThird(healthPointThird = Math.round(healthPointThird - attacking.attack* attacking.skill.scale))
                     } return [healthPointFirst, healthPointSecond, healthPointThird]
-                case "Тектонический удар": 
+                case "Водоворот":
+                    setHealthPointFirst(healthPointFirst = Math.round(healthPointFirst - attacking.attack * attacking.skill.scale))
+                    setHealthPointSecond(healthPointSecond = Math.round(healthPointSecond - attacking.attack * attacking.skill.scale))
+                    setHealthPointThird(healthPointThird = Math.round(healthPointThird - attacking.attack * attacking.skill.scale))
+                    return [healthPointFirst, healthPointSecond, healthPointThird]
+                case "Ледяной шквал":
                     if (mainTarget === attackedFirst) {
-                            setHealthPointFirst(healthPointFirst = Math.round(healthPointFirst - attacking.attack * attacking.skill.scale))
+                        setHealthPointFirst(healthPointFirst = Math.round(healthPointFirst - attacking.attack))
                     } else if (mainTarget === attackedSecond) {
-                            setHealthPointSecond(healthPointSecond = Math.round(healthPointSecond - attacking.attack * attacking.skill.scale))
+                            setHealthPointSecond(healthPointSecond = Math.round(healthPointSecond - attacking.attack))
                     } else if (mainTarget === attackedThird) {
-                        setHealthPointThird(healthPointThird = Math.round(healthPointThird - attacking.attack * attacking.skill.scale))
+                        setHealthPointThird(healthPointThird = Math.round(healthPointThird - attacking.attack))
+                    } return [healthPointFirst, healthPointSecond, healthPointThird]
+                case "Удар ветра":
+                    if (mainTarget === attackedFirst) {
+                        let damageBonus: boolean = false;
+                        if(damageBonus === false){
+                            setHealthPointFirst(healthPointFirst = Math.round(healthPointFirst - attacking.attack *  attacking.skill.scale))
+                        } else {
+                            setHealthPointFirst(healthPointFirst = Math.round(healthPointFirst - attacking.attack * (attacking.skill.scale + 0.2)))
+                            damageBonus = true;
+                        }
+                    } else if (mainTarget === attackedSecond) {
+                        let damageBonus: boolean = false;
+                        if(damageBonus){
+                            setHealthPointSecond(healthPointSecond = Math.round(healthPointSecond - attacking.attack * attacking.skill.scale))
+                            damageBonus = true
+                        } else {
+                            setHealthPointSecond(healthPointSecond = Math.round(healthPointSecond - attacking.attack * (attacking.skill.scale + 0.2)))
+                            damageBonus = true
+                        }
+                    } else if (mainTarget === attackedThird) {
+                        let damageBonus: boolean = false;
+                        if(damageBonus){
+                            setHealthPointThird(healthPointThird = Math.round(healthPointThird - attacking.attack * attacking.skill.scale))
+                            damageBonus = true
+                        } else {
+                            setHealthPointThird(healthPointThird = Math.round(healthPointThird - attacking.attack * (attacking.skill.scale + 0.2)))
+                            damageBonus = true
+                        }
                     } return [healthPointFirst, healthPointSecond, healthPointThird]
                 default: return [healthPointFirst, healthPointSecond, healthPointThird]
             }
@@ -321,6 +360,13 @@ class MathPvp {
         }
         if ((attacking.skill.name === "Тектонический удар" && action === "skill") && this.randomForTectonicImpact() === true) {
             return arr;
+        }
+        if ((attacking.skill.name === "Ледяной шквал" && action === "skill") && this.randomForIceSquall() === true) {
+            this.timeIsOut(arr)
+            const num = arr.indexOf(attacked)
+            const [element] = arr.splice(num, 1);
+            arr.push(element);
+            return arr
         } else {
             this.timeIsOut(arr)
             return arr;

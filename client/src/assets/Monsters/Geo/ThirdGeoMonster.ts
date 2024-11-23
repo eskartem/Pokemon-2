@@ -17,7 +17,10 @@ class ThirdGeoMonster extends Monster {
     skill = {
         name: 'Земной импульс',
         scale: 1.25
-    }   
+    }
+    weakening = {
+        whirlpoolWeakening: false
+    }      
 }
 
 export default ThirdGeoMonster

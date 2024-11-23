@@ -17,7 +17,10 @@ class FirstGeoMonster extends Monster {
     skill = {
         name: 'Тектонический удар',
         scale: 1.5
-    }   
+    }
+    weakening = {
+        whirlpoolWeakening: false
+    }      
 }
 
 export default FirstGeoMonster

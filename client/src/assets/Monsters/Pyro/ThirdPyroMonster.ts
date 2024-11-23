@@ -17,7 +17,10 @@ class ThirdPyroMonster extends Monster {
     skill = {
         name: 'Огненная буря',
         scale: 1.2
-    }   
+    }
+    weakening = {
+        whirlpoolWeakening: false
+    }      
 }
 
 export default ThirdPyroMonster

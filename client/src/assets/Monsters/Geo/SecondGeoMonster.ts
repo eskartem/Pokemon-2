@@ -17,7 +17,10 @@ class SecondGeoMonster extends Monster {
     skill = {
         name: 'Глыбопад',
         scale: 1.2
-    }   
+    }
+    weakening = {
+        whirlpoolWeakening: false
+    }      
 }
 
 export default SecondGeoMonster

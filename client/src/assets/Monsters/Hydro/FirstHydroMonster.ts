@@ -17,7 +17,10 @@ class FirstHydroMonster extends Monster {
     skill = {
         name: 'Ледяной шквал',
         scale: 0
-    }   
+    }
+    weakening = {
+        whirlpoolWeakening: false
+    }      
 }
 
 export default FirstHydroMonster

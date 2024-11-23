@@ -74,6 +74,11 @@ const StatsPanel: React.FC<StatsPanelProps> = (props: StatsPanelProps) => {
                     scale={0.5}
                     y={48}
                 />
+                <Text
+                    text={`element: ${firstSelectedMonster.element}`}
+                    scale={0.5}
+                    y={60}
+                 />
             </Container>
         )}
         {(isOpenSecondMonster && hpBarSecondMonster > 0) && 
@@ -98,6 +103,11 @@ const StatsPanel: React.FC<StatsPanelProps> = (props: StatsPanelProps) => {
                     scale={0.5}
                     y={48}
                 />
+                <Text
+                    text={`element: ${secondSelectedMonster.element}`}
+                    scale={0.5}
+                    y={60}
+                 />
             </Container>
         )}
         {(isOpenThirdMonster && hpBarThirdMonster > 0) && 
@@ -122,6 +132,11 @@ const StatsPanel: React.FC<StatsPanelProps> = (props: StatsPanelProps) => {
                     scale={0.5}
                     y={48}
                 />
+                <Text
+                    text={`element: ${thirdSelectedMonster.element}`}
+                    scale={0.5}
+                    y={60}
+                 />
             </Container>
         )}
         {(isOpenFirstEnemyMonster && hpBarFirstEnemyMonster > 0) && 
@@ -146,6 +161,11 @@ const StatsPanel: React.FC<StatsPanelProps> = (props: StatsPanelProps) => {
                     scale={0.5}
                     y={48}
                 />
+                <Text
+                    text={`element: ${firstSelectedEnemyMonster.element}`}
+                    scale={0.5}
+                    y={60}
+                 />
             </Container>
         )}
         {(isOpenSecondEnemyMonster && hpBarSecondEnemyMonster > 0) && 
@@ -170,6 +190,11 @@ const StatsPanel: React.FC<StatsPanelProps> = (props: StatsPanelProps) => {
                     scale={0.5}
                     y={48}
                 />
+                <Text
+                    text={`element: ${secondSelectedEnemyMonster.element}`}
+                    scale={0.5}
+                    y={60}
+                 />
             </Container>
         )}
         {(isOpenThirdEnemyMonster && hpBarThirdEnemyMonster > 0) && 
@@ -194,6 +219,11 @@ const StatsPanel: React.FC<StatsPanelProps> = (props: StatsPanelProps) => {
                     scale={0.5}
                     y={48}
                 />
+                <Text
+                    text={`element: ${thirdSelectedEnemyMonster.element}`}
+                    scale={0.5}
+                    y={60}
+                 />
             </Container>
         )}
     </>)

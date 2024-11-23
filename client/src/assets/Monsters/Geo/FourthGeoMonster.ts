@@ -17,7 +17,10 @@ class FourthGeoMonster extends Monster {
     skill = {
         name: 'Гравитационная волна',
         scale: 0.25
-    }   
+    }
+    weakening = {
+        whirlpoolWeakening: false
+    }      
 }
 
 export default FourthGeoMonster

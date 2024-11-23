@@ -17,7 +17,10 @@ class ThirdHydroMonster extends Monster {
     skill = {
         name: 'Волна разрушения',
         scale: 1.2
-    }    
+    }
+    weakening = {
+        whirlpoolWeakening: false
+    }       
 }
 
 export default ThirdHydroMonster

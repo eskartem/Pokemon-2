@@ -17,7 +17,10 @@ class FirstAnemoMonster extends Monster {
     skill = {
         name: 'Удар ветра',
         scale: 1.3
-    }   
+    }
+    weakening = {
+        whirlpoolWeakening: false
+    }      
 }
 
 export default FirstAnemoMonster

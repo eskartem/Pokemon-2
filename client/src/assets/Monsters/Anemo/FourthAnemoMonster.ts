@@ -17,7 +17,10 @@ class FourthAnemoMonster extends Monster {
     skill = {
         name: 'Циклон разрушения',
         scale : 1.5
-    }   
+    }
+    weakening = {
+        whirlpoolWeakening: false
+    }      
 }
 
 export default FourthAnemoMonster

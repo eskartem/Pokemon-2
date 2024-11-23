@@ -125,7 +125,8 @@ const Buttons: React.FC<buttonsProps> = (props: buttonsProps) => {
                         thirdSelectedEnemyMonster,
                         activeMonster, 
                         action,
-                        firstSelectedEnemyMonster
+                        firstSelectedEnemyMonster,
+                        sQueue
                     )
                     setHpBarFirstEnemyMonster(hpBarFirstEnemyMonster = healthPoint[0])
                     setHpBarSecondEnemyMonster(hpBarSecondEnemyMonster = healthPoint[1])
@@ -149,7 +150,8 @@ const Buttons: React.FC<buttonsProps> = (props: buttonsProps) => {
                         thirdSelectedEnemyMonster,
                         activeMonster, 
                         action,
-                        secondSelectedEnemyMonster
+                        secondSelectedEnemyMonster,
+                        sQueue
                     )
                     setHpBarFirstEnemyMonster(hpBarFirstEnemyMonster = healthPoint[0])
                     setHpBarSecondEnemyMonster(hpBarSecondEnemyMonster = healthPoint[1])
@@ -173,7 +175,8 @@ const Buttons: React.FC<buttonsProps> = (props: buttonsProps) => {
                         thirdSelectedEnemyMonster,
                         activeMonster, 
                         action,
-                        thirdSelectedEnemyMonster
+                        thirdSelectedEnemyMonster,
+                        sQueue
                     )
                     setHpBarFirstEnemyMonster(hpBarFirstEnemyMonster = healthPoint[0])
                     setHpBarSecondEnemyMonster(hpBarSecondEnemyMonster = healthPoint[1])
@@ -235,7 +238,8 @@ const Buttons: React.FC<buttonsProps> = (props: buttonsProps) => {
                         thirdSelectedMonster,
                         activeMonster, 
                         action,
-                        firstSelectedMonster
+                        firstSelectedMonster,
+                        sQueue
                     )
                     setHpBarFirstMonster(hpBarFirstMonster = healthPoint[0])
                     setHpBarSecondMonster(hpBarSecondMonster = healthPoint[1])
@@ -260,7 +264,8 @@ const Buttons: React.FC<buttonsProps> = (props: buttonsProps) => {
                         thirdSelectedMonster,
                         activeMonster, 
                         action,
-                        secondSelectedMonster
+                        secondSelectedMonster,
+                        sQueue
                     )
                     setHpBarFirstMonster(hpBarFirstMonster = healthPoint[0])
                     setHpBarSecondMonster(hpBarSecondMonster = healthPoint[1])
@@ -284,7 +289,8 @@ const Buttons: React.FC<buttonsProps> = (props: buttonsProps) => {
                         thirdSelectedMonster,
                         activeMonster, 
                         action,
-                        thirdSelectedMonster
+                        thirdSelectedMonster,
+                        sQueue
                     )
                     setHpBarFirstMonster(hpBarFirstMonster = healthPoint[0])
                     setHpBarSecondMonster(hpBarSecondMonster = healthPoint[1])

@@ -3,6 +3,10 @@ interface skill {
     scale: number
 }
 
+interface weakening {
+    whirlpoolWeakening: boolean;
+}
+
 export type Monsters = {
     name: string,
     attack: number,
@@ -13,6 +17,8 @@ export type Monsters = {
     skill: skill,
     isAlive: boolean
     side: string
+    weakening: weakening
+
 }
 
 class Monster {
@@ -26,6 +32,9 @@ class Monster {
     skill: skill = {
         name: "",
         scale: 1
+    }
+    weakening: weakening = {
+        whirlpoolWeakening: false
     }
     isAlive: boolean = true;
 }
