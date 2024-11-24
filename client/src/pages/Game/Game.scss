@@ -8,6 +8,11 @@
     flex-direction: row;
 }
 
+.button-panel {
+    display: inline;
+    list-style-type: none;
+}
+
 .move-button {
     min-width: 50px;
     min-height: 50px;
