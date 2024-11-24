@@ -43,8 +43,8 @@ const Game: React.FC<IBasePage> = (props: IBasePage) => {
                     <Button id='test-game-button-inventory' onClick={inventoryClickHandler} text='Инвентарь' />
                     <Button id='test-game-button-market' onClick={marketClickHandler} text='Рынок' />
                     <Button id='test-game-button-battle' onClick={battleClickHandler} text='Битва' />
-                    <Button id='test-game-button-logout' onClick={logoutClickHandler} text='разлогиниться' />
                     <Button id='test-game-button-mute' onClick={muteButtonHandler} text='заглушить' />
+                    <Button id='test-game-button-logout' onClick={logoutClickHandler} text='разлогиниться' />
                 </div>
                 <Map />
                 <div className="control-panel">
@@ -52,7 +52,7 @@ const Game: React.FC<IBasePage> = (props: IBasePage) => {
                     <button id='test-game-button-arrowup' className="move-button" onClick={() => {}} >↑</button>
                     <button id='test-game-button-arrowdown' className="move-button" onClick={() => {}} >↓</button>
                     <button id='test-game-button-arrowright' className="move-button" onClick={() => {}} >→</button>
-                    <button id='test-game-button-clearpath' onClick={() => {}}>clear path</button>
+                    <button id='test-game-button-clearpath' className='clear-button' onClick={() => {}}>clear path</button>
                 </div>
             </div>
             <Chat />
