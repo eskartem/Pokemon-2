@@ -27,70 +27,53 @@ class DB {
         // $connect = "pgsql:host=$host;port=$port;dbname=$db;";
         // $this->pdo = new PDO($connect, $user, $pass, [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]);
 
-        $p1 = new stdClass();
-        $p1->id = 1;
-        $p1->name = "Duck";
-        $p1->element = 'fire';
-        $p1->rarity = 'common';
-        $p1->lvl = 3;
-        $p1->stats = [
-            'hp' => 10,
-            'ad'=> 15,
-            'df'=> 16,
-        ];
-        $p1->cost = 25;
-
-        $p2 = new stdClass(); 
-        $p2->id = 2;
-        $p2->name = "Kock";
-        $p2->element = 'water';
-        $p2->rarity = 'legendary';
-        $p2->cost = 310;
-        $p2->lvl = 5;
-        $p2->stats = [
-            'hp' => 20,
-            'ad'=> 10,
-            'df'=> 15,
-        ];
-
-        $p3 = new stdClass(); 
-        $p3->id = 3;
-        $p3->name = "Pock";
-        $p3->element = 'air';
-        $p3->rarity = 'rare';
-        $p3->cost = 304;
-        $p3->lvl = 10;
-        $p3->stats = [
-            'hp' => 14,
-            'ad'=> 19,
-            'df'=> 10,
-        ];
-
-        $res1 = new stdClass();
-        $res1->id = 10;
-        $res1->name = "кристаллы улучшения";
-        $res1->number = 5;
-        $res1->cost = 10;
-        
-        $res2 = new stdClass();
-        $res2->id = 11;
-        $res2->name = "кусок яйца";
-        $res2->number = 2;
-        $res2->cost = 50;
-
-        $res3 = new stdClass();
-        $res3->id = 10;
-        $res3->name = "Кусок яйца";
-        $res3->number = 5;
-        $res3->cost = 350;
-
-
         $this->catalog = [
-            'creatures' => [$p1, $p2, $p3],
-            'resources' => [$res1, $res2, $res3],
+            'creatures' => [
+                $this->createCreature(1, "Duck", 'fire', 'common', 3, 25, [
+                    'hp' => 10,
+                    'ad' => 15,
+                    'df' => 16,
+                ]),
+                $this->createCreature(2, "Kock", 'water', 'legendary', 5, 310, [
+                    'hp' => 20,
+                    'ad' => 10,
+                    'df' => 15,
+                ]),
+                $this->createCreature(3, "Pock", 'air', 'rare', 10, 304, [
+                    'hp' => 14,
+                    'ad' => 19,
+                    'df' => 10,
+                ]),
+            ],
+            'resources' => [
+                $this->createResource(10, "кристаллы улучшения", 5, 10),
+                $this->createResource(11, "кусок яйца", 2, 50),
+                $this->createResource(12, "Кусок яйца", 5, 350), 
+            ],
         ];
-
     }
+
+    private function createCreature($id, $name, $element, $rarity, $lvl, $cost, $stats) {
+        $creature = new stdClass();
+        $creature->id = $id;
+        $creature->name = $name;
+        $creature->element = $element;
+        $creature->rarity = $rarity;
+        $creature->lvl = $lvl;
+        $creature->cost = $cost;
+        $creature->stats = $stats;
+        return $creature;
+    }
+
+    private function createResource($id, $name, $number, $cost) {
+        $resource = new stdClass();
+        $resource->id = $id;
+        $resource->name = $name;
+        $resource->number = $number;
+        $resource->cost = $cost;
+        return $resource;
+    }
+
 
     public function __destruct() {
         $this->pdo = null;
