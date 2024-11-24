@@ -50,7 +50,7 @@ const Texts: React.FC<textProps> = (props: textProps) => {
 
 
     return(<>
-    <Container x={stageProps.width * 0.5 - 50} y={20}>
+    <Container x={stageProps.width * 0.5 - 50} y={20} name={"test-battle-pixi-activeMonster"}>
       <Text
         text={`${activeMonster.name}`}
       />

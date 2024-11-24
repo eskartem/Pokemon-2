@@ -50,7 +50,7 @@ const BattleTimer: React.FC<BattleTimerProps> = (props: BattleTimerProps) => {
         }, [timer, activeMonster, Monster]); 
 
         return (
-          <Container x={stageProps.width * 0.5 - 50} y={20}>
+          <Container x={stageProps.width * 0.5 - 50} y={20} name={"test-battle-pixi-Timer"}>
             <Text 
                 text={`${timer}`}
                 x={40}
