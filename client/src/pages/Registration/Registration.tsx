@@ -56,23 +56,6 @@ const Registration: React.FC<IBasePage> = (props: IBasePage) => {
             </div>
         </div>
     </div>)
-
-    /*return (<div className='regist'>
-        <div className='regist-wrapper'>
-            <div className='regist-inputs'>
-                <input ref={nameRef} placeholder ='Никнейм' />
-                <input ref={loginRef} placeholder='логин' />
-                <input ref={passwordRef} placeholder='пароль' type='password' />
-            </div>
-            <div className='regist-buttons'>
-                <Button onClick={registClickHandler} text='Зарегистрироваться' />
-                <span onClick={backClickHandler}>
-                У меня есть аккаунт
-                </span>
-            </div>
-        </div>
-    </div>)
-    */
 }
 
 export default Registration;
