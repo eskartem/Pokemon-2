@@ -14,4 +14,11 @@ class Market {
         return ['error', 2001];
     }
 
+    public function getTraderCatalog($isInTown) {
+        if ($isInTown) {
+            return $this->db->getTraderCatalog();
+        }
+        return ['error', 2001];
+    }
+
 }

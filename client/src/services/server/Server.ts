@@ -1,7 +1,7 @@
 import md5 from 'md5';
 import CONFIG from "../../config";
 import Store from "../store/Store";
-import { TAnswer, TError, TMessagesResponse, TUser, TUserResources, TMarketCatalog } from "./types";
+import { TAnswer, TError, TMessagesResponse, TUser, TUserResources, TMarketCatalog, TTraderCatalog } from "./types";
 
 const { CHAT_TIMESTAMP, HOST } = CONFIG;
 
@@ -126,16 +126,16 @@ class Server {
         return result;
     }
     
-    async getTraderCatalog(): Promise<TMarketCatalog | null> {
-        const catalog = await this.request<TMarketCatalog>('getTraderCatalog');
-        if (catalog) {
-            return catalog;
+    async getTraderCatalog(): Promise<TTraderCatalog | null> {
+        const TraderCatalog = await this.request<TTraderCatalog>('getTraderCatalog');
+        if (TraderCatalog) {
+            return TraderCatalog;
         }
         return null;
     }
     
-    async buyFromTrader(id: string): Promise<boolean | null> {
-        const result = await this.request<boolean>('buy', { id });
+    async buyTraderId(id: string): Promise<boolean | null> {
+        const result = await this.request<boolean>('buyTraderId', { id });
         return result;
     }
 

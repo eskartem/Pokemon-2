@@ -80,6 +80,17 @@ class Application {
         return ['error' => 242];
     }
 
+    public function getTraderCatalog($params) {
+        if ($params['token']) {
+            $user = $this->user->getUser($params['token']);
+            if ($user) {
+                return $this->market->getTraderCatalog($this->map->isUserInTown($user));
+            }
+            return ['error' => 705];
+        }
+        return ['error' => 242];
+    }
+
     public function getResources($params) {
         if ($params['token']) {
             $user = $this->user->getUser($params['token']);

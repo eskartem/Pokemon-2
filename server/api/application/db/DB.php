@@ -73,8 +73,55 @@ class DB {
         $resource->cost = $cost;
         return $resource;
     }
+    
+    // Tradercatalog
+        $this->TraderCatalog = [
+            'creatures' => [
+                $this->createCreature(1, "Duck", 'fire', 'common', 3, 25, [
+                    'hp' => 10,
+                    'ad' => 15,
+                    'df' => 16,
+                ]),
+                $this->createCreature(2, "Kock", 'water', 'legendary', 5, 310, [
+                    'hp' => 20,
+                    'ad' => 10,
+                    'df' => 15,
+                ]),
+                $this->createCreature(3, "Pock", 'air', 'rare', 10, 304, [
+                    'hp' => 14,
+                    'ad' => 19,
+                    'df' => 10,
+                ]),
+            ],
+            'resources' => [
+                $this->createResource(10, "кристаллы улучшения", 5, 10),
+                $this->createResource(11, "кусок яйца", 2, 50),
+                $this->createResource(12, "Кусок яйца", 5, 350), 
+            ],
+        ];
+    }
 
+    private function createCreature($id, $name, $element, $rarity, $lvl, $cost, $stats) {
+        $creature = new stdClass();
+        $creature->id = $id;
+        $creature->name = $name;
+        $creature->element = $element;
+        $creature->rarity = $rarity;
+        $creature->lvl = $lvl;
+        $creature->cost = $cost;
+        $creature->stats = $stats;
+        return $creature;
+    }
 
+    private function createResource($id, $name, $number, $cost) {
+        $resource = new stdClass();
+        $resource->id = $id;
+        $resource->name = $name;
+        $resource->number = $number;
+        $resource->cost = $cost;
+        return $resource;
+    }
+    //end
     public function __destruct() {
         $this->pdo = null;
     }
@@ -145,6 +192,9 @@ class DB {
         return $this->catalog;
     }
 
+    public function getTraderCatalog() {
+        return $this->TraderCatalog;
+    }
 
     public function getResources($token) {
         // как нить получить ресы пользователя по токену и вернуть, только на sql, а пока статика-_-
