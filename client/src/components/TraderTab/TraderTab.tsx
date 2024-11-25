@@ -3,7 +3,6 @@ import { ServerContext } from '../../App';
 import { TTraderCatalog } from '../../services/server/types';
 
 const TraderTab: React.FC = () => {
-
   const server = useContext(ServerContext); // Используем контексты
   let catalog: TTraderCatalog | null = null;
   useEffect(
@@ -12,6 +11,7 @@ const TraderTab: React.FC = () => {
 
     }, []
   );
+
   // тоже самое как и для маркета, просто метооды для торговца
 
   return (
