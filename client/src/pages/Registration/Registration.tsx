@@ -13,7 +13,7 @@ const Registration: React.FC<IBasePage> = (props: IBasePage) => {
     const passwordRef = useRef<HTMLInputElement>(null);
 
     const isValidPassword = (password: string) => {
-        const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!"№;%:?*()_+=\-\`{}"?><.])(?=.*\S).{8,15}$/;
+        const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!"№;%:?*@()_+=\-\`{}"?><.])(?=.*\S).{8,15}$/;
         return passwordRegex.test(password);
     };
 
@@ -51,7 +51,7 @@ const Registration: React.FC<IBasePage> = (props: IBasePage) => {
                     <input ref={passwordRef} placeholder='пароль' type='password' id='test-registration-input_pass' />
                 </div>
                 <div className='regist-buttons'>
-                    <Button onClick={registClickHandler} text='Зарегистрироваться' id='test-registration-button_auth' />
+                <img className='registrClick' id='test-registration-img_auth' src={RegistrImg} alt='' onClick={registClickHandler}></img> 
                     <span className='register-link' onClick={backClickHandler}>
                         У меня есть аккаунт
                     </span>
