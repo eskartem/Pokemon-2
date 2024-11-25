@@ -131,7 +131,7 @@ class DB {
     }
 
     public function registration($login, $hash, $name) {
-        $this->execute("INSERT INTO users (login,password,name, team_id, inventory_id) VALUES (?, ?, ?, ?, ?)",[$login, $hash, $name, '1', '1']);
+        $this->execute("INSERT INTO users (login,password,name) VALUES (?, ?, ?)",[$login, $hash, $name]);
     }
 
     public function getChatHash() {
