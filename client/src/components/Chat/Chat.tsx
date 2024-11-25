@@ -53,9 +53,14 @@ const Chat: React.FC = () => {
     return (<div className='chat'>
         <h1>Чат</h1>
         <div id='test-chat-div-chat' className='chat-messages'>
-            {messages.reverse().map((message, index) => <div key={index}>{`${message.author} (${message.created}): ${message.message}`}</div>)}
+            {messages.reverse().map((message, index) => 
+            <div className='nt' key={index}>
+                <span className="message-author">{message.author} </span> 
+                <span className="message-timestamp">({message.created}): </span> 
+                <span className="message-text">{message.message}</span>
+            </div>)}
         </div>
-        <div id='test-chat-div-input'>
+        <div id='test-chat-div-input' className='chat-input'>
             {input}
         </div>
         <div className='chat-buttons'>
