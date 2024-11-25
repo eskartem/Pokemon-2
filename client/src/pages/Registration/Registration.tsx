@@ -13,7 +13,7 @@ const Registration: React.FC<IBasePage> = (props: IBasePage) => {
     const passwordRef = useRef<HTMLInputElement>(null);
 
     const isValidPassword = (password: string) => {
-        const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!"№;%:?*()_+=\-\`{}"?><.])(?=.*\S).{8,}$/;
+        const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!"№;%:?*@()_+=\-\`{}"?><.])(?=.*\S).{8,15}$/;
         return passwordRegex.test(password);
     };
 
@@ -41,38 +41,25 @@ const Registration: React.FC<IBasePage> = (props: IBasePage) => {
 
     const backClickHandler = () => setPage(PAGES.LOGIN);
 
-    return (<div className='regist'>
-        <div className='regist-wrapper'>
-            <div className='regist-inputs'>
-                <input ref={nameRef} placeholder ='никнейм' />
-                <input ref={loginRef} placeholder='логин' />
-                <input ref={passwordRef} placeholder='пароль' type='password' />
-            </div>
-            <div className='regist-buttons'>
-                <img className='registrClick' src={RegistrImg} alt='' onClick={registClickHandler}></img>
-                <span className='login-link' onClick={backClickHandler}>
-                У меня уже есть аккаунт
-                </span>
+    return (
+        <div className='regist' id='test-registration-page'>
+            <div>Регистрация</div>
+            <div className='regist-wrapper' >
+                <div className='regist-inputs'>
+                    <input ref={nameRef} placeholder='Никнейм' id='test-registration-input_name'/>
+                    <input ref={loginRef} placeholder='логин' id='test-registration-input_login'/>
+                    <input ref={passwordRef} placeholder='пароль' type='password' id='test-registration-input_pass' />
+                </div>
+                <div className='regist-buttons'>
+                <img className='registrClick' id='test-registration-img_auth' src={RegistrImg} alt='' onClick={registClickHandler}></img> 
+                    <span className='register-link' onClick={backClickHandler}>
+                        У меня есть аккаунт
+                    </span>
+                </div>
             </div>
         </div>
-    </div>)
+    );
 
-    /*return (<div className='regist'>
-        <div className='regist-wrapper'>
-            <div className='regist-inputs'>
-                <input ref={nameRef} placeholder ='Никнейм' />
-                <input ref={loginRef} placeholder='логин' />
-                <input ref={passwordRef} placeholder='пароль' type='password' />
-            </div>
-            <div className='regist-buttons'>
-                <Button onClick={registClickHandler} text='Зарегистрироваться' />
-                <span onClick={backClickHandler}>
-                У меня есть аккаунт
-                </span>
-            </div>
-        </div>
-    </div>)
-    */
 }
 
 export default Registration;

@@ -1,5 +1,5 @@
 <?php
-//hi
+
 error_reporting(1);
 
 header('Content-Type: application/json; charset=utf-8');
@@ -22,8 +22,8 @@ function result($params) {
             case 'sendMessage': return $app->sendMessage($params);//loop
             case 'getMessages': return $app->getMessages($params);
             //gamer info
-            // case 'userInfo': return $app-> userInfo($params);
-            // case 'updatePokemon': return $app-> updatePokemon($params);
+             case 'userInfo': return $app-> userInfo($params);
+             case 'updradePokemon': return $app-> upgradePokemon($params);
             //inventory
 
             //battle
