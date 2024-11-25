@@ -31,7 +31,7 @@ const Login: React.FC<IBasePage> = (props: IBasePage) => {
                 <input ref={passwordRef} placeholder='пароль' type='password' />
             </div>
             <div className='login-buttons'>
-                <Button onClick={loginClickHandler} text='Авторизоваться' id='test-login-button_auth' />
+                <img className='loginClick' src={LoginImg} alt='' onClick={loginClickHandler}></img>
             </div>
             <span className='register-link' onClick={registerClickHandler}>
                 У меня нет аккаунта
@@ -39,21 +39,6 @@ const Login: React.FC<IBasePage> = (props: IBasePage) => {
         </div>
     </div>)
 
-    /*return (<div className='login'>
-        <div className='login-wrapper'>
-            <div className='login-inputs'>
-                <input ref={loginRef} placeholder='логин' />
-                <input ref={passwordRef} placeholder='пароль' type='password' />
-            </div>
-            <div className='login-buttons'>
-                <Button onClick={loginClickHandler} text='Авторизоваться' />
-                <Button onClick={backClickHandler} text='Назад' />
-            </div>
-            <span className='register-link' onClick={registerClickHandler}>
-                У меня нет аккаунта
-            </span>
-        </div>
-    </div>)*/
 }
 
 export default Login;
