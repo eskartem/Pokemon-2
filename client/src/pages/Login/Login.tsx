@@ -24,14 +24,16 @@ const Login: React.FC<IBasePage> = (props: IBasePage) => {
     const registerClickHandler = () => setPage(PAGES.REGISTRATION);
     const backClickHandler = () => setPage(PAGES.PRELOADER);
 
-    return (<div className='login'>
-        <div className='login-wrapper'>
+    return (<div className='login' id='test-login-page'>
+        <div>Логин</div>
+        <div className='login-wrapper' >
             <div className='login-inputs'>
-                <input ref={loginRef} placeholder='логин' />
-                <input ref={passwordRef} placeholder='пароль' type='password' />
+                <input ref={loginRef} placeholder='логин' id='test-login-input_login'/>
+                <input ref={passwordRef} placeholder='пароль' type='password' id='test-login-input_pass' />
             </div>
             <div className='login-buttons'>
                 <Button onClick={loginClickHandler} text='Авторизоваться' id='test-login-button_auth' />
+                <Button onClick={backClickHandler} text='Назад' />
             </div>
             <span className='register-link' onClick={registerClickHandler}>
                 У меня нет аккаунта
@@ -39,21 +41,6 @@ const Login: React.FC<IBasePage> = (props: IBasePage) => {
         </div>
     </div>)
 
-    /*return (<div className='login'>
-        <div className='login-wrapper'>
-            <div className='login-inputs'>
-                <input ref={loginRef} placeholder='логин' />
-                <input ref={passwordRef} placeholder='пароль' type='password' />
-            </div>
-            <div className='login-buttons'>
-                <Button onClick={loginClickHandler} text='Авторизоваться' />
-                <Button onClick={backClickHandler} text='Назад' />
-            </div>
-            <span className='register-link' onClick={registerClickHandler}>
-                У меня нет аккаунта
-            </span>
-        </div>
-    </div>)*/
 }
 
 export default Login;
