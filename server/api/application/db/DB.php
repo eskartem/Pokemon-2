@@ -3,6 +3,7 @@
 class DB {
     private $pdo;
     private $catalog;
+    private $TraderCatalog;
 
     function __construct() {
 
@@ -99,7 +100,7 @@ class DB {
                 $this->createResource(12, "Кусок яйца", 5, 350), 
             ],
         ];
-    }
+    } 
 
     private function createCreature($id, $name, $element, $rarity, $lvl, $cost, $stats) {
         $creature = new stdClass();
@@ -120,7 +121,7 @@ class DB {
         $resource->number = $number;
         $resource->cost = $cost;
         return $resource;
-    }
+    } 
     //end
     public function __destruct() {
         $this->pdo = null;
