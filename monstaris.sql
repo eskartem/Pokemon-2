@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.1:3306
--- Время создания: Ноя 13 2024 г., 10:36
+-- Время создания: Ноя 21 2024 г., 21:37
 -- Версия сервера: 8.0.30
 -- Версия PHP: 8.1.9
 
@@ -34,6 +34,16 @@ CREATE TABLE `elements` (
   `nerf_id` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
+--
+-- Дамп данных таблицы `elements`
+--
+
+INSERT INTO `elements` (`id`, `name`, `boost_id`, `nerf_id`) VALUES
+(1, 'вода', 2, 3),
+(2, 'огонь', 4, 1),
+(3, 'земля', 1, 4),
+(4, 'воздух', 3, 2);
+
 -- --------------------------------------------------------
 
 --
@@ -47,6 +57,20 @@ CREATE TABLE `fight` (
   `turn` int NOT NULL,
   `status` varchar(16) NOT NULL,
   `result` int NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `game`
+--
+
+CREATE TABLE `game` (
+  `id` int NOT NULL,
+  `map_id` int NOT NULL,
+  `attack_upgrade` int NOT NULL,
+  `defense_upgrade` int NOT NULL,
+  `hp_upgrade` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
@@ -115,6 +139,13 @@ CREATE TABLE `map` (
   `image` varchar(64) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
+--
+-- Дамп данных таблицы `map`
+--
+
+INSERT INTO `map` (`id`, `name`, `width`, `height`, `image`) VALUES
+(1, 'карта', 160, 90, '');
+
 -- --------------------------------------------------------
 
 --
@@ -130,8 +161,15 @@ CREATE TABLE `map_zones` (
   `width` int NOT NULL,
   `height` int NOT NULL,
   `type` varchar(16) NOT NULL,
-  `element_id` int NOT NULL
+  `element_id` int DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Дамп данных таблицы `map_zones`
+--
+
+INSERT INTO `map_zones` (`id`, `map_id`, `name`, `x`, `y`, `width`, `height`, `type`, `element_id`) VALUES
+(1, 1, 'город', 80, 45, 12, 12, 'town', NULL);
 
 -- --------------------------------------------------------
 
@@ -228,9 +266,14 @@ CREATE TABLE `resources` (
 --
 
 INSERT INTO `resources` (`id`, `name`) VALUES
-(1, 'Пиво'),
-(2, 'Кристаллы'),
-(3, 'Яйца (желательно мужские)');
+(1, 'Кристалл воды'),
+(2, 'Кристалл огня'),
+(3, 'Кристалл земли'),
+(4, 'Кристалл воздуха'),
+(5, 'Яйцо воды'),
+(6, 'Яйцо огня'),
+(7, 'Яйцо земли'),
+(8, 'Яйцо воздуха');
 
 -- --------------------------------------------------------
 
@@ -256,7 +299,7 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `login`, `password`, `token`, `name`, `money`, `rating`, `x`, `y`, `status`) VALUES
-(1, 'vasya', 'fcb03559c0317682f5d65a88aca50012', '7542ae11d383df9cb07e163495314a85', 'Вася Пупкин', 0, 0, 80, 45, ''),
+(1, 'vasya', 'fcb03559c0317682f5d65a88aca50012', '32cdf82b5bf1e476101d047cf7d26d94', 'Вася Пупкин', 0, 0, 80, 45, ''),
 (2, 'petya', 'bcb209cf0d43e198e6467f8b0ac3387a', '431542fe9302b7f2807069adb7504bd5', 'Пётр Петрович', 0, 0, 80, 45, ''),
 (3, 'masha', 'e213995da574de722a416f65b43d8314', '1916666aacbb8732bf2d12238b2cd5db', 'Маша Сергеевна', 0, 0, 80, 45, '');
 
@@ -274,6 +317,12 @@ ALTER TABLE `elements`
 -- Индексы таблицы `fight`
 --
 ALTER TABLE `fight`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Индексы таблицы `game`
+--
+ALTER TABLE `game`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -351,12 +400,18 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT для таблицы `elements`
 --
 ALTER TABLE `elements`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT для таблицы `fight`
 --
 ALTER TABLE `fight`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT для таблицы `game`
+--
+ALTER TABLE `game`
   MODIFY `id` int NOT NULL AUTO_INCREMENT;
 
 --
@@ -381,13 +436,13 @@ ALTER TABLE `lots`
 -- AUTO_INCREMENT для таблицы `map`
 --
 ALTER TABLE `map`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT для таблицы `map_zones`
 --
 ALTER TABLE `map_zones`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT для таблицы `market`
@@ -417,7 +472,7 @@ ALTER TABLE `monster_types`
 -- AUTO_INCREMENT для таблицы `resources`
 --
 ALTER TABLE `resources`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT для таблицы `users`

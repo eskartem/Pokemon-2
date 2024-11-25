@@ -165,7 +165,7 @@ class DB {
 
     public function getResources($token) {
         // как нить получить ресы пользователя по токену и вернуть, только на sql, а пока статика-_-
-        return $this->user->resources;
+        //return $this->user->resources;
     }
 
     public function getMap($token){

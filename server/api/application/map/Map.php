@@ -20,7 +20,7 @@ class Map {
             if ($mapData) {
                 return $mapData;
             } else {
-                return ['error' => 9000];
+                return ['error' => 9000, 'message' => 'Карта не найдена.'];
             }
         }
         return ['error' => 9000, 'message' => 'Зарегестрируйтесь или войдите для просмотра карты.'];
@@ -29,7 +29,7 @@ class Map {
     public function startGame($token) {
         $user = $this->db->getUserByToken($token);
         if (!$user) {
-            return ['error' => 404]; 
+            return ['error' => 705]; 
         }
         
         if ($this->isUserInTown($user)) {
@@ -48,7 +48,7 @@ class Map {
     public function endGame($token) {
         $user = $this->db->getUserByToken($token);
         if (!$user) {
-            return ['error' => 404]; 
+            return ['error' => 705]; 
         }
 
         $resources = $this->db->getAmountResourcesByUser($user);

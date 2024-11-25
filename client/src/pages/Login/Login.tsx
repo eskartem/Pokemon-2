@@ -2,7 +2,7 @@ import React, { useContext, useRef } from 'react';
 import { ServerContext } from '../../App';
 import Button from '../../components/Button/Button';
 import { IBasePage, PAGES } from '../PageManager';
-
+import LoginImg from '../../assets/img/login/login.png';
 import './Login.scss';
 
 const Login: React.FC<IBasePage> = (props: IBasePage) => {
@@ -15,7 +15,7 @@ const Login: React.FC<IBasePage> = (props: IBasePage) => {
         if (!loginRef.current || !passwordRef.current) {return;}
         const login = loginRef.current.value;
         const password = passwordRef.current.value;
-        // if (1) { // тестовое условие, чтобы логин всегда был успешный и работал без бекенда
+        //if (1) { // тестовое условие, чтобы логин всегда был успешный и работал без бекенда
         if (login && password && await server.login(login, password)) { // login: admin, пароль: 111
             setPage(PAGES.GAME); 
         }
@@ -33,12 +33,14 @@ const Login: React.FC<IBasePage> = (props: IBasePage) => {
             </div>
             <div className='login-buttons'>
                 <Button onClick={loginClickHandler} text='Авторизоваться' id='test-login-button_auth' />
+                <Button onClick={backClickHandler} text='Назад' />
             </div>
             <span className='register-link' onClick={registerClickHandler}>
                 У меня нет аккаунта
             </span>
         </div>
     </div>)
+
 }
 
 export default Login;
