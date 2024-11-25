@@ -1,16 +1,17 @@
-import React from 'react';
-
-import './TraderTab.scss';
+import React, { useContext, useEffect, useState } from 'react';
+import { ServerContext } from '../../App';
+import { TTraderCatalog } from '../../services/server/types';
 
 const TraderTab: React.FC = () => {
 
-    
-    return (
-    <div className='trader-tab'>
-        торговец
-    </div>)
-}
+  const server = useContext(ServerContext); // Используем контексты
+  let catalog: TTraderCatalog | null = null;
+  useEffect(
+    () => {
+    ( async () => {catalog = await server.getTraderCatalog();})()
 
+    }, []
+  );
   // тоже самое как и для маркета, просто метооды для торговца
 
   return (
