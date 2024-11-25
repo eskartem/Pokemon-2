@@ -54,6 +54,14 @@ class Store {
     setChatHash(hash: string): void {
         this.chatHash = hash;
     }
+
+    /*setMap(map: TGetMap): void {
+        this.map = map;
+    }
+
+    getMap(): TGetMap | null {
+        return this.getMap;
+    }*/
 }
 
 export default Store;

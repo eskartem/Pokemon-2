@@ -169,8 +169,10 @@ class DB {
     }
 
     public function getMap(){
-        return ['map' => $this->execute("SELECT * FROM map WHERE id=1"), 
-                'map_zones' => $this->execute("SELECT * FROM map_zones WHERE id=1")
+        //$mapId = $this->query->("SELECT map_id FROM game");
+        $mapId = 1;
+        return ['map' => $this->query("SELECT * FROM map WHERE id = ?", [$mapId]), 
+                'mapZones' => $this->queryAll("SELECT * FROM map_zones WHERE map_id = ?", [$mapId])
         ];
     }
         
