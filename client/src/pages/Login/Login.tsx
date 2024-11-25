@@ -32,8 +32,7 @@ const Login: React.FC<IBasePage> = (props: IBasePage) => {
                 <input ref={passwordRef} placeholder='пароль' type='password' id='test-login-input_pass' />
             </div>
             <div className='login-buttons'>
-                <Button onClick={loginClickHandler} text='Авторизоваться' id='test-login-button_auth' />
-                <Button onClick={backClickHandler} text='Назад' />
+                <img className='loginClick' id='test-login-img_auth' src={LoginImg} alt='' onClick={loginClickHandler}></img>
             </div>
             <span className='register-link' onClick={registerClickHandler}>
                 У меня нет аккаунта

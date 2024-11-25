@@ -2,7 +2,7 @@ import React, { useContext, useRef } from 'react';
 import { ServerContext } from '../../App';
 import Button from '../../components/Button/Button';
 import { IBasePage, PAGES } from '../PageManager';
-import RegistrImg from '../../assets/img/login/registr.png';
+import RegistrImg from '../../assets/img/login/regist.png';
 import './Registration.scss';
 
 const Registration: React.FC<IBasePage> = (props: IBasePage) => {
@@ -51,7 +51,7 @@ const Registration: React.FC<IBasePage> = (props: IBasePage) => {
                     <input ref={passwordRef} placeholder='пароль' type='password' id='test-registration-input_pass' />
                 </div>
                 <div className='regist-buttons'>
-                    <Button onClick={registClickHandler} text='Зарегистрироваться' id='test-registration-button_auth' />
+                <img className='registrClick' id='test-registration-img_auth' src={RegistrImg} alt='' onClick={registClickHandler}></img> 
                     <span className='register-link' onClick={backClickHandler}>
                         У меня есть аккаунт
                     </span>

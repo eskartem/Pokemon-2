@@ -49,6 +49,8 @@
             gap: 15px;
 
             input {
+                color: #d4d0d0;
+                text-shadow: -1px -1px 0 #356eb4, 1px -1px 0 #356eb4, -1px 1px 0 #356eb4, 1px 1px 0 #356eb4;
                 padding: 10px;
                 border: 1px solid #ccc;
                 border-radius: 4px;
@@ -56,12 +58,14 @@
                 transition: border 0.3s;
 
                 &::placeholder {
-                    color: lightgray; // Светло-серый цвет
+                    color: lightgray;
+                    text-shadow: 0px 0px 0 #356eb4, 0px 0px 0 #356eb4, 0px 0px 0 #356eb4, 0px 0px 0 #356eb4;
                     opacity: 1;
                 }
 
                 &:focus {
-                    border-color: #4A90E2;
+                    color: #9fbef4;
+                    border-color: #4ab7e2;
                     outline: none;
                 }
             }
