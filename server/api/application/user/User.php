@@ -94,8 +94,7 @@ public function upgradePokemon($token, $monsterId) {
 
     //узнаем скок кристалов у пользака определенной стихии 
     $resources = $this->db->getAmountResourcesByUser($user, $element_id_By_Monster);
-    $crystalAmount = !empty($resources['crystal']) ? 
-            $resources['crystal'][0]['resourse'] : 0;
+    $crystalAmount = !empty($resources['crystal']) ? $resources['crystal'] : 0;
     
     $resourceType = 'crystal';
     
@@ -111,8 +110,12 @@ public function upgradePokemon($token, $monsterId) {
             //увеливаем уровень
             $this->db->upgradeLevelMonstersByUser($user, $monsterId);
             //2 уровень - +40 к урону, +90 к здоровью покемона.
-            $this->db->getParametersMonsterByLevel($level);
-            return true;
+            $param = $this->db->getParametersMonsterByLevel($level);
+            $hp_param = !empty($param['hp']) ? $param['hp'] : 0;
+            $attack_param = !empty($param['attack']) ? $param['attack'] : 0;
+            //как добавить к уже имеющимся параметрам
+            $hp = 0;
+            $attack = 0;
         }
     }
     if ($levelMonster === 2){
@@ -126,8 +129,10 @@ public function upgradePokemon($token, $monsterId) {
             //увеливаем уровень
             $this->db->upgradeLevelMonstersByUser($user, $monsterId);
             //3 уровень - +70 к урону,+110 к здоровью покемона.
-            $this->db->getParametersMonsterByLevel($level); 
-            return true;
+            $param = $this->db->getParametersMonsterByLevel($level);
+            $hp_param = !empty($param['hp']) ? $param['hp'] : 0;
+            $attack_param = !empty($param['attack']) ? $param['attack'] : 0;
+
         }
     }
     if ($levelMonster === 3){
@@ -141,8 +146,10 @@ public function upgradePokemon($token, $monsterId) {
             //увеливаем уровень
             $this->db->upgradeLevelMonstersByUser($user, $monsterId);
             //4 уровень-  +120 к урону, +150 к здоровью покемона.
-            $this->db->getParametersMonsterByLevel($level); 
-            return true;
+            $param = $this->db->getParametersMonsterByLevel($level);
+            $hp_param = !empty($param['hp']) ? $param['hp'] : 0;
+            $attack_param = !empty($param['attack']) ? $param['attack'] : 0;
+
         }
     }
     if ($levelMonster === 4){
@@ -156,13 +163,20 @@ public function upgradePokemon($token, $monsterId) {
             //увеливаем уровень
             $this->db->upgradeLevelMonstersByUser($user, $monsterId);
             //5 уровень +200 к урону, +270 к здоровью покемона.
-            $this->db->getParametersMonsterByLevel($level); 
-            return true;
+            $param = $this->db->getParametersMonsterByLevel($level);
+            $hp_param = !empty($param['hp']) ? $param['hp'] : 0;
+            $attack_param = !empty($param['attack']) ? $param['attack'] : 0;
+
         }
     }
     if ($levelMonster === 5){
         return ['message' => 'Покемон максимально уровня'];
     }
+    return[
+        $level,
+        $hp,
+        $attack
+    ];
 }
 
 }

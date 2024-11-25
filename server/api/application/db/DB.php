@@ -200,9 +200,13 @@ class DB {
         $this->execute('UPDATE monsters SET level = level + 1 WHERE user_id = ? AND id = ?', [$userId, $monsterId]);
     }
 
+    //параметры покемона, которые прибавлются при улучшении
     public function getParametersMonsterByLevel($level) {
-        $this->execute("SELECT * FROM monster_level WHERE level = ?", [$level]);
-    }
+        return [ 
+            'attack' => $this->query("SELECT attack FROM monster_level WHERE level = ?", [$level]),
+            'hp' => $this->query("SELECT hp FROM monster_level WHERE level = ?", [$level])
+        ];
+    } 
     
     public function getElementByMonsters($monsterId){
         $monsters_type_id = $this->execute('SELECT mosters_type_id FROM monsters WHERE id = ?',[$monsterId]);
@@ -211,7 +215,7 @@ class DB {
 
     //узнаем id стихии
     public function getIdByElement($element){
-        return $this->execute('SELECT id FROM element WHERE name = ?', [$element]);
+        return $this->execute('SELECT id FROM elements WHERE name = ?', [$element]);
     }
     
     //не уверена я в этом запросе

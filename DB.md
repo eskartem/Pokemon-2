@@ -76,6 +76,16 @@
 | hp | ineger | |
 | status | string | "in pocket", "in team" |
 
+**Таблица monsters_level**
+
+| Название | Тип | Комментарий |
+| - | - | - |
+| id | integer | PK |
+| level | string | |
+| hp | integer |  прибавка к здоровью |
+| attack | integer | прибавка к урону|
+
+
 ### Карта
 
 **Таблица map**

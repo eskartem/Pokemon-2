@@ -249,7 +249,11 @@ Inventory: {
     
 **Успешный ответ**
 ```
-    Answer<true>
+    Answer<{
+        level: number; - уровень покемона
+        hp: number; - здоровье покемона
+        attack: number; - урон покемона
+    }>
 ```
 **Ошибки**
 
