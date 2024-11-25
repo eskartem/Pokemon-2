@@ -1,9 +1,10 @@
-import React, {useContext} from 'react';
+import React, {useContext, useState} from 'react';
 import Button from '../../components/Button/Button';
 import Map from '../../components/Map/Map';
 import Chat from '../../components/Chat/Chat';
 import { StoreContext, ServerContext } from '../../App';
 import { IBasePage, PAGES } from '../PageManager';
+import { TPoint } from '../../config';
 
 import './Game.scss';
 
@@ -13,6 +14,8 @@ const Game: React.FC<IBasePage> = (props: IBasePage) => {
     const server = useContext(ServerContext);
     const store = useContext(StoreContext);
     let user = store.getUser()
+
+    const [userPosition, setUserPosition] = useState<TPoint>({ x: user?.x ?? 0, y: user?.y ?? 0 });
 
     const inventoryClickHandler = () => setPage(PAGES.INVENTORY);
     const marketClickHandler = () => setPage(PAGES.MARKET);
@@ -55,7 +58,7 @@ const Game: React.FC<IBasePage> = (props: IBasePage) => {
                     <Button onClick={logoutClickHandler} text='разлогиниться' />
                     <Button onClick={muteButtonHandler} text='заглушить' />
                 </div>
-                <Map/>
+                <Map />
                 <div className="control-panel">
                     <button className="move-button" onClick={() => {}} >←</button>
                     <button className="move-button" onClick={() => {}} >↑</button>
