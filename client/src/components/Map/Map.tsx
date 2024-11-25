@@ -1,17 +1,14 @@
-import React, { useContext, useState } from 'react';
-import { StoreContext, ServerContext } from '../../App';
-import { TMapPlayer } from '../../services/server/types';
-import { TPoint } from '../../config';
-import mapImage from '../../assets/img/mapImage.jpg';
-import characterImage from '../../assets/img/character.png'; // Добавить путь к изображению персонажа
+import React, { useContext} from 'react';
 import { Sprite, Stage } from '@pixi/react';
+import { StoreContext} from '../../App';
+import mapImage from '../../assets/img/mapImage.jpg';
+import characterImage from '../../assets/img/character.png';
 
 import './Map.scss';
 
 const Map: React.FC = () => {
 
     const store = useContext(StoreContext);
-    const server = useContext(ServerContext);
 
     let user = store.getUser();
 
@@ -43,22 +40,14 @@ const Map: React.FC = () => {
                 className='stage'
                 width={canvasWidth}
                 height={canvasHeight}
-                // onPointerDown={pointerDownHandler}
-                // onPointerUp={pointerUpHandler}
-                // onPointerMove={pointerMoveHandler}
-                // onPointerLeave={pointerLeaveHandler}
             >
                 <Sprite
                     image={MAP.SRC}
-                    // x={mapPosition.x}
-                    // y={mapPosition.y}
                     width={MAP.WIDTH * tileWidth}
                     height={MAP.HEIGHT * tileWidth}
                 />
                 <Sprite
                     image={characterImage}
-                    // x={userPosition.x * tileWidth + mapPosition.x}
-                    // y={userPosition.y * tileWidth + mapPosition.y}
                     width={tileWidth}
                     height={tileWidth}
                 />

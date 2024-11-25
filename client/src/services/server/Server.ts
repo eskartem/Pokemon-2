@@ -1,7 +1,7 @@
 import md5 from 'md5';
 import CONFIG from "../../config";
 import Store from "../store/Store";
-import { TAnswer, TError, TMessagesResponse, TUser, TMarketCatalog } from "./types";
+import { TAnswer, TError, TMessagesResponse, TUser, TMarketCatalog, TUserResources } from "./types";
 
 const { CHAT_TIMESTAMP, HOST } = CONFIG;
 
