@@ -114,7 +114,7 @@ class Server {
         return null;
     }
 
-    async getCatalog():Promise<TMarketCatalog | null> {
+    async getMarketCatalog():Promise<TMarketCatalog | null> {
         const catalog = await this.request<TMarketCatalog>('getCatalog');
         if (catalog) {
             return catalog;
