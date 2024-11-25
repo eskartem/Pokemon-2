@@ -93,8 +93,6 @@ export type TMarketCatalog = {
     resources: TMarketItem[]
 }
 
-export type TMapPlayer = {
-    name: string,
-    x: number,
-    y: number
-}
+export type TTraderCatalog = TMarketCatalog;
+
+

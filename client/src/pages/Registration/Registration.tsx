@@ -2,7 +2,7 @@ import React, { useContext, useRef } from 'react';
 import { ServerContext } from '../../App';
 import Button from '../../components/Button/Button';
 import { IBasePage, PAGES } from '../PageManager';
-
+import RegistrImg from '../../assets/img/login/registr.png';
 import './Registration.scss';
 
 const Registration: React.FC<IBasePage> = (props: IBasePage) => {
@@ -13,7 +13,7 @@ const Registration: React.FC<IBasePage> = (props: IBasePage) => {
     const passwordRef = useRef<HTMLInputElement>(null);
 
     const isValidPassword = (password: string) => {
-        const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!"№;%:?*()_+=\-\`{}"?><.])(?=.*\S).{8,15}$/;
+        const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!"№;%:?*()_+=\-\`{}"?><.])(?=.*\S).{8,}$/;
         return passwordRegex.test(password);
     };
 
@@ -28,7 +28,7 @@ const Registration: React.FC<IBasePage> = (props: IBasePage) => {
         }
 
         if (!isValidPassword(password)) {
-            alert("Пароль должен содержать не менее 8 символов, включая заглавные и строчные буквы латинского алфавита, цифры и специальные символы.");
+            alert("Пароль должен содержать не менее 8 символов и не более 15, включая заглавные и строчные буквы латинского алфавита, цифры и специальные символы.");
             return;
         }
 
@@ -41,24 +41,21 @@ const Registration: React.FC<IBasePage> = (props: IBasePage) => {
 
     const backClickHandler = () => setPage(PAGES.LOGIN);
 
-    return (
-        <div className='regist' id='test-registration-page'>
-            <div>Регистрация</div>
-            <div className='regist-wrapper' >
-                <div className='regist-inputs'>
-                    <input ref={nameRef} placeholder='Никнейм' id='test-registration-input_name'/>
-                    <input ref={loginRef} placeholder='логин' id='test-registration-input_login'/>
-                    <input ref={passwordRef} placeholder='пароль' type='password' id='test-registration-input_pass' />
-                </div>
-                <div className='regist-buttons'>
-                    <Button onClick={registClickHandler} text='Зарегистрироваться' id='test-registration-button_auth' />
-                    <span className='register-link' onClick={backClickHandler}>
-                        У меня есть аккаунт
-                    </span>
-                </div>
+    return (<div className='regist'>
+        <div className='regist-wrapper'>
+            <div className='regist-inputs'>
+                <input ref={nameRef} placeholder ='никнейм' />
+                <input ref={loginRef} placeholder='логин' />
+                <input ref={passwordRef} placeholder='пароль' type='password' />
+            </div>
+            <div className='regist-buttons'>
+                <img className='registrClick' src={RegistrImg} alt='' onClick={registClickHandler}></img>
+                <span className='login-link' onClick={backClickHandler}>
+                У меня уже есть аккаунт
+                </span>
             </div>
         </div>
-    );
+    </div>)
 }
 
 export default Registration;

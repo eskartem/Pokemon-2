@@ -1,145 +1,147 @@
-# описание БД
+# Описание БД
 
-## сущности
+## Сущности
 
 * Пользователь-Игрок
 * Карта
 * Рынок
-* Бой
+* Бой 
 
-## Формализация сущностей
+## Формолизация сущностей
 
-### Общеигровые таблицы
+### общеигровые таблицы
 
-** таблица hashes **
-| название | Тип | Комментарий |
+**Таблица hashes**
+
+| Название | Тип | Комментарий |
 | - | - | - |
-| id | integer | РК |
-| chat_hash | string | - |
-| map_hash | string | - |
+| id | integer | PK |
+| chat_hash | string |  |
 
-** таблица game **
-| название | Тип | Комментарий |
+**Таблица game**
+
+| Название | Тип | Комментарий |
 | - | - | - |
-| id | integer | РК |
-| boost | integer | значение превосходства одного элемента над другим |
-| nerf | integer | значение превосходства одного элемента над другим |
-| attack_upgrade | integer | - |
-| ... | ... | ... |
+| id | integer | PK |
+| map_id | integer | 1 |
+| attack_upgrade | integer |  |
+| defense_upgrade | integer |  |
+| hp_upgrade | integer |  |
 
 ### Пользователь-Игрок
 
-** таблица users **
-| название | Тип | Комментарий |
+**Таблица User**
+
+| Название | Тип | Комментарий |
 | - | - | - |
-| id | integer | РК |
-| name | string | - |
+| id | integer | PK |
+| name | string |  |
 | login | string | unique |
-| password | string | - |
-| token | string | - |
-| money | integer | - |
-| rating | integer | - |
-| x | integer | - |
-| y | integer | - |
-| status | string | [ fight, scout, offline ], можно добавить ещё, не конечный список |
+| password | string |  |
+| token | string |  |
+| money | integer | |
+| rating | | |
+| x | integer | |
+| y | integer | |
+| status | string | fight, scout, offline, ...  |
 
-
-** Таблица monsters **
-| название | Тип | Комментарий |
+**Таблица elements** (стихии)
+| Название | Тип | Комментарий |
 | - | - | - |
-| id | integer | РК |
-| name | string | - |
-| element | integer | - |
-| hp | integer | - |
-| attack | integer | - |
-| defense | integer | - |
+| id | integer | PK |
+| name | string |  |
+| boost_id| | |
+| nerf_id |  | |
 
-** Таблица elements **
-| название | Тип | Комментарий |
+**Таблица monsters_types**
+
+| Название | Тип | Комментарий |
 | - | - | - |
-| id | integer | РК |
-| name | string | - |
-| boost_id | integer | - |
-| nerf_id | integer | - |
+| id | integer | PK |
+| name | string | |
+| hp | integer | |
+| attack | | |
+|elements_id | | |
 
-** Таблица monster_types **
-| название | Тип | Комментарий |
+
+**Таблица monsters**
+
+| Название | Тип | Комментарий |
 | - | - | - |
-| id | integer | РК |
-| name | string | - |
-| element | integer | - |
-| hp | integer | - |
-| attack | integer | - |
-| defense | integer | - |
-
-
-** Таблица monsters **
-| название | Тип | Комментарий |
-| - | - | - |
-| id | integer | РК |
-| user_id | string | - |
-| monster_type_id | integer | - |
-| level | integer | 1 |
-| hp | integer | - |
-| status | string | [ 'in pocket', 'in team'] |
+| id | integer | PK |
+| name | string |  |
+| user_id | integer | |
+| mosters_type_id | integer | |
+| level | integer| |
+| hp | ineger | |
+| status | string | "in pocket", "in team" |
 
 ### Карта
 
-** таблица map **
-| название | Тип | Комментарий |
-| - | - | - |
-| id | integer | РК |
-| name | string | - |
-| width | integer | - |
-| height | integer | - |
-| image | string | картинка карты |
+**Таблица map**
 
-** таблица map_zones **
-| название | Тип | Комментарий |
+| Название | Тип | Комментарий |
 | - | - | - |
-| id | integer | РК |
-| map_id | integer | - |
-| name | string | - |
-| x | integer | - |
-| y | integer | - |
-| width | integer | - |
-| height | integer | - |
-| type | string | [ 'town', 'safe', 'dungeon'] |
-| element_id | integer | - |
+| id | integer | PK |
+| name | string | |
+| width | integer | |
+| height | integer | |
+| image | string| |
+
+
+**Таблица map_zones**
+
+| Название | Тип | Комментарий |
+| - | - | - |
+| id | integer | PK |
+| map_id | integer |  |
+| x | integer| |
+| y | integer| |
+| name | string | |
+| width | integer | |
+| height | integer | |
+| type | string| 'town', 'safe', 'dungeon', |
+| element_id | integer| can be NULL |
+| image | string| |
+
 
 ### Рынок
 
-** таблица inventory **
-| название | Тип | Комментарий |
-| - | - | - |
-| id | integer | РК |
-| user_id | integer | - |
-| resource | integer | кол-во ресурса |
-| resource_type | string | 'crystals', 'eggs', 'egg fragments' |
-| element_id | integer | - |
+**Таблица inventory**
 
-** таблица market **
-| название | Тип | Комментарий |
+| Название | Тип | Комментарий |
 | - | - | - |
-| id | integer | РК |
-| seller_id | integer | - |
-| inventory_id | integer | - |
-| datetime | datetime | - |
-| start_price | integer | стартовая цена |
-| cost_step | integer | минимальный шаг ставки |
-| current_cost | integer | текущая цена |
-| buyer_id | integer | текущий покупатель с самой высокой ставкой |
-| timestamp_cost | datetime | время создания текущей ставки |
-| status | string | [ 'open', 'sell', 'cancel'] |
+| id | integer | PK |
+| user_id | integer | |
+| resoure | integer | количество ресурса|
+| resoure_type | string | кристаллы, яйца, осколки |
+| element_id | integer| |
 
-### Бой
 
-** таблица fight **
-| название | Тип | Комментарий |
+**Таблица lots**
+
+| Название | Тип | Комментарий |
 | - | - | - |
-| id | integer | РК |
-| user_id1 | integer | - |
-| user_id2 | integer | 1, 2 |
-| turn | integer | - |
-| status | string | [ 'open', 'close'] |
-| result | integer | 1, 2, null |
+| id | integer | PK |
+| seller_id | integer | | Ссылка, на пользователя который продает
+| inventory_id | integer | |
+| datatime | datatime | |
+| start_cost |integer | стартовая цена |
+| step-cost | integer | минимальный шаг ставки |
+| current_cost | integer| текущая цена |
+| timestamp_cost | integer| время создание текущей цены |
+| buyer_id | integer | текущий покупатель с самой высокой текущей ставкой |
+| status | string | 'open', 'sell', 'cancel'|
+
+### Бой 
+
+**Таблица fight**
+
+| Название | Тип | Комментарий |
+| - | - | - |
+| id | integer | PK |
+| user1_id | integer | |
+| user2_id | integer | |
+| turn | integer | 1, 2 | (кто атакует)
+| status | string | 'open', 'close'| необходим для того, ?
+| result | integer | 1, 2, null | (кто победил)

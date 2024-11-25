@@ -8,7 +8,38 @@
     flex-direction: row;
 }
 
+.button-panel {
+    display: inline;
+    list-style-type: none;
+}
+
 .move-button {
     min-width: 50px;
     min-height: 50px;
+    &:hover {
+        cursor: pointer;
+    }
+}
+
+.clear-button {
+    &:hover {
+        cursor: pointer;
+    }
+}
+
+.user-panel-nick {
+    display: inline;
+}
+
+.user-resources-coins {
+    display: inline;
+}
+
+.user-resources {
+    display: inline;
+}
+
+.game-wrapper {
+    color: #9fbef4;
+    text-shadow: -1px -1px 0 #356eb4, 1px -1px 0 #356eb4, -1px 1px 0 #356eb4, 1px 1px 0 #356eb4;
 }

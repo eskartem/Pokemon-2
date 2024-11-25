@@ -105,7 +105,15 @@ class Server {
         }
     }
 
-    async getCatalog():Promise<TMarketCatalog | null> {
+    async getUserResources(): Promise<TUserResources | null> {
+        const resources = await this.request<TUserResources>('getResources');
+        if (resources) {
+            return resources;
+        }
+        return null;
+    }
+
+    async getMarketCatalog():Promise<TMarketCatalog | null> {
         const catalog = await this.request<TMarketCatalog>('getCatalog');
         if (catalog) {
             return catalog;
@@ -113,6 +121,28 @@ class Server {
         return null;
     }
 
+    async buyItem(itemId: string): Promise<boolean | null> {
+        const result = await this.request<boolean>('buyItem', { itemId });
+        return result;
+    }
+
+    async getTraderCatalog(): Promise<TMarketCatalog | null> {
+        const catalog = await this.request<TMarketCatalog>('getTraderCatalog');
+        if (catalog) {
+            return catalog;
+        }
+        return null;
+    }
+    
+    async buyFromTrader(id: string): Promise<boolean | null> {
+        const result = await this.request<boolean>('buy', { id });
+        return result;
+    }
+
+    async exchangeEggsForPokemon(): Promise<{ success: boolean }> {
+        // Здесь должна быть логика для запроса на сервер
+        return { success: true }; // Пример возврата. Настоящая логика может отличаться.
+      }
 }
 
 export default Server;
