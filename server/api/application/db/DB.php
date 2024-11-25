@@ -3,6 +3,7 @@
 class DB {
     private $pdo;
     private $catalog;
+    private $TraderCatalog;
 
     function __construct() {
 
@@ -77,31 +78,31 @@ class DB {
     // Tradercatalog
         $this->TraderCatalog = [
             'creatures' => [
-                $this->createCreature(1, "Duck", 'fire', 'common', 3, 25, [
+                $this->createCreature1(1, "Duck", 'fire', 'common', 3, 25, [
                     'hp' => 10,
                     'ad' => 15,
                     'df' => 16,
                 ]),
-                $this->createCreature(2, "Kock", 'water', 'legendary', 5, 310, [
+                $this->createCreature1(2, "Kock", 'water', 'legendary', 5, 310, [
                     'hp' => 20,
                     'ad' => 10,
                     'df' => 15,
                 ]),
-                $this->createCreature(3, "Pock", 'air', 'rare', 10, 304, [
+                $this->createCreature1(3, "Pock", 'air', 'rare', 10, 304, [
                     'hp' => 14,
                     'ad' => 19,
                     'df' => 10,
                 ]),
             ],
             'resources' => [
-                $this->createResource(10, "кристаллы улучшения", 5, 10),
-                $this->createResource(11, "кусок яйца", 2, 50),
-                $this->createResource(12, "Кусок яйца", 5, 350), 
+                $this->createResource1(10, "кристаллы улучшения", 5, 10),
+                $this->createResource1(11, "кусок яйца", 2, 50),
+                $this->createResource1(12, "Кусок яйца", 5, 350), 
             ],
         ];
     }
 
-    private function createCreature($id, $name, $element, $rarity, $lvl, $cost, $stats) {
+    private function createCreature1($id, $name, $element, $rarity, $lvl, $cost, $stats) {
         $creature = new stdClass();
         $creature->id = $id;
         $creature->name = $name;
@@ -113,7 +114,7 @@ class DB {
         return $creature;
     }
 
-    private function createResource($id, $name, $number, $cost) {
+    private function createResource1($id, $name, $number, $cost) {
         $resource = new stdClass();
         $resource->id = $id;
         $resource->name = $name;
