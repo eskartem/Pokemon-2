@@ -209,8 +209,8 @@ class DB {
     } 
     
     public function getElementByMonsters($monsterId){
-        $monsters_type_id = $this->execute('SELECT mosters_type_id FROM monsters WHERE id = ?',[$monsterId]);
-        return $this->execute('SELECT elements_id FROM monsters_type WHERE id = ?',[$monsters_type_id]);
+        $monsters_type_id = $this->execute('SELECT monster_type_id FROM monsters WHERE id = ?',[$monsterId]);
+        return $this->execute('SELECT element_id FROM monsters_types WHERE id = ?',[$monsters_type_id]);
     }
 
     //узнаем id стихии
