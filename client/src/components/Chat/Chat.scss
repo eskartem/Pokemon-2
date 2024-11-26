@@ -1,7 +1,9 @@
 .chat {
     max-width: 35vw;
+    max-height: 35vw;
     display: flex;
     flex-direction: column;
+    align-items: center;
     border: 5px solid #0540a5;
 
     &-inputs {
@@ -28,10 +30,12 @@
 }
 
 .chat-messages {
+    max-height: 35vw;
     border: 5px solid #9fbef4;
     text-align: left;
     padding: 5px;
     backdrop-filter: blur(10px);
+    overflow-y: auto;
 }
 
 .message-text {
