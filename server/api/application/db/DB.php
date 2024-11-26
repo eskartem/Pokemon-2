@@ -169,9 +169,9 @@ class DB {
     }
 
     public function getMap($token){
-        return ['map' => $this->execute("SELECT * FROM map WHERE id=1", [$token]), 
-                'zones' => $this->execute("SELECT * FROM zones WHERE id=1", [$token]), 
-                'zones_types' => $this->execute("SELECT * FROM zones_types WHERE id=1", [$token])
+        return ['map' => $this->query("SELECT * FROM map WHERE id=1", [$token]), 
+                'zones' => $this->query("SELECT * FROM zones WHERE id=1", [$token]), 
+                'zones_types' => $this->query("SELECT * FROM zones_types WHERE id=1", [$token])
         ];
         //мб токен вообще не используется и удалить его нах
     }
@@ -182,18 +182,18 @@ class DB {
 
     public function getMontersByUser($userId, $status = null) {
         if ($status === null) {
-            return $this->execute('SELECT * FROM monsters WHERE user_id = ?', [$userId]);
+            return $this->query('SELECT * FROM monsters WHERE user_id = ?', [$userId]);
         } else {
-            return $this->execute('SELECT * FROM monsters WHERE user_id = ? AND status = ?', [$userId, $status]);
+            return $this->query('SELECT * FROM monsters WHERE user_id = ? AND status = ?', [$userId, $status]);
         }
     }
 
     public function getInventoryByUser($userId){
-        return $this->execute('SELECT * FROM inventory WHERE user_id = ?', [$userId]);
+        return $this->query('SELECT * FROM inventory WHERE user_id = ?', [$userId]);
     }
     
     public function getMonsterLevelById($monsterId){
-        return $this->execute('SELECT level FROM monsters WHERE id = ?',[$monsterId]);
+        return $this->query('SELECT level FROM monsters WHERE id = ?',[$monsterId]);
     }
     
     public function upgradeLevelMonstersByUser($userId, $monsterId){
@@ -209,13 +209,13 @@ class DB {
     } 
     
     public function getElementByMonsters($monsterId){
-        $monsters_type_id = $this->execute('SELECT monster_type_id FROM monsters WHERE id = ?',[$monsterId]);
-        return $this->execute('SELECT element_id FROM monsters_types WHERE id = ?',[$monsters_type_id]);
+        $monsters_type_id = $this->query('SELECT monster_type_id FROM monsters WHERE id = ?',[$monsterId]);
+        return $this->query('SELECT element_id FROM monsters_types WHERE id = ?',[$monsters_type_id]);
     }
 
     //узнаем id стихии
     public function getIdByElement($element){
-        return $this->execute('SELECT id FROM elements WHERE name = ?', [$element]);
+        return $this->query('SELECT id FROM elements WHERE name = ?', [$element]);
     }
     
     //не уверена я в этом запросе
