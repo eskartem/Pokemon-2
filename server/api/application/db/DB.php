@@ -180,7 +180,7 @@ class DB {
         $this->execute("UPDATE users SET x = ?, y = ? WHERE id = ?", [$x, $y, $userId]);
     }
 
-    public function getMontersByUser($userId, $status = null) {
+    public function getMonstersByUser($userId, $status = null) {
         if ($status === null) {
             return $this->queryAll('SELECT * FROM monsters WHERE user_id = ?', [$userId]);
         } else {
