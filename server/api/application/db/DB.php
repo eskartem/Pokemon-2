@@ -169,8 +169,8 @@ class DB {
     }
 
     public function getMap(){
-        return ['map' => $this->execute("SELECT * FROM map WHERE id=1"), 
-                'map_zones' => $this->execute("SELECT * FROM map_zones WHERE id=1")
+        return ['map' => $this->query("SELECT * FROM map WHERE id=1"), 
+                'map_zones' => $this->query("SELECT * FROM map_zones WHERE id=1")
         ];
     }
         
@@ -180,9 +180,9 @@ class DB {
 
     public function getMontersByUser($userId, $status = null) {
         if ($status === null) {
-            return $this->execute('SELECT * FROM monsters WHERE user_id = ?', [$userId]);
+            return $this->query('SELECT * FROM monsters WHERE user_id = ?', [$userId]);
         } else {
-            return $this->execute('SELECT * FROM monsters WHERE user_id = ? AND status = ?', [$userId, $status]);
+            return $this->query('SELECT * FROM monsters WHERE user_id = ? AND status = ?', [$userId, $status]);
         }
     }
     //не уверена я в этом запросе
