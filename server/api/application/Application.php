@@ -140,15 +140,14 @@ class Application {
         $x = (int)$params['x'];
         $y = (int)$params['y'];
         $mapData = json_decode($this->map->getMap(), true);
-
-        if (!$mapData || !isset($mapData['data']['map']['width'], $mapData['data']['map']['height'])) {
-            return ['error' => 850];
-        }
-
         $borders = [
             'width' => $mapData['data']['map']['width'],
             'height' => $mapData['data']['map']['height']
         ];
+
+        if (!$mapData || !isset($mapData['data']['map']['width'], $mapData['data']['map']['height'])) {
+            return ['error' => 850];
+        }
 
         if ($x < 0 || $x > $borders['width'] || $y < 0 || $y > $borders['height']) {
             return ['error' => 2003];
