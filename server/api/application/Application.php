@@ -115,15 +115,50 @@ class Application {
     }
 
     public function moveUser($params) {
-        if ($params['token']){
-            $user = $this->user->getUser($params['token']);
-            if ($user) {
-                return $this->map->moveUser($user->id, $user->x, $user->y, $user->status);
-                //непонятно где должен быть этот метод: в map или user, пока так
-            }
+        if (!isset($params['token'])) {
             return ['error' => 242];
         }
-        return ['error' => 242];
+
+        $user = $this->user->getUser($params['token']);
+        if (!$user) {
+            return ['error' => 705];
+        }
+
+        if (!isset($params['x'], $params['y'])) {
+            return ['error' => 2001];
+        }
+
+        if (!filter_var($params['x'], FILTER_VALIDATE_INT) || !filter_var($params['y'], FILTER_VALIDATE_INT)) {
+            return ['error' => 2002];
+        }
+
+        $x = $params['x'];
+        $y = $params['y'];
+
+        $mapData = json_decode($this->map->getMap(), true);
+        if (!$mapData || !isset($mapData['data']['map']['width'], $mapData['data']['map']['height'])) {
+            return ['error' => 850];
+        }
+
+        $borders = [
+            'width' => $mapData['data']['map']['width'],
+            'height' => $mapData['data']['map']['height']
+        ];
+
+        if ($x < 0 || $x > $borders['width'] || $y < 0 || $y > $borders['height']) {
+            return ['error' => 2003];
+        }
+
+        if ($x == $user->x && $y == $user->y) {
+            return ['error' => 2004];
+        }
+
+        /*if ($user->status != 'scout'){
+            return ['error' => 2005];
+        }*/
+
+        return $this->map->moveUser($user->id, $x, $y);
     }
+    
 
 }

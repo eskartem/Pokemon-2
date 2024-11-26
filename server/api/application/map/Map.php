@@ -63,23 +63,7 @@ class Map {
 
     }
 
-    public function moveUser($id, $x, $y, $status) {
-        $position = [$x, $y];
-        $this->db->updateUserPosition($id, $position);
-        return true;
-        /*
-        // это тот самый эндгейм?
-        if ($status == 'scout'){
-            //если надо будет переместить юзера как-то вне скаутинга, то вообще убрать этот if
-            $position = [$x, $y];
-            $this->db->updateUserPosition($id, $position);
-            return true;
-        }
-        if ($status == 'fight'){
-            return ['error' => 9000, 'message' => 'Невозможно перемещаться во время боя.']
-        }
-        //перемещать в город (на x=80, y=45), если игрок оффлайн??
-        return ['error' => 9000, 'message' => 'Невозможно перемещаться. Игрок не в игре.']
-        */
+    public function moveUser($id, $x, $y) {
+        return $this->db->updateUserPosition($id, $x, $y);
     }
 }
