@@ -24,14 +24,23 @@ const Login: React.FC<IBasePage> = (props: IBasePage) => {
     const registerClickHandler = () => setPage(PAGES.REGISTRATION);
     const backClickHandler = () => setPage(PAGES.PRELOADER);
 
-    return (<div className='login'>
-        <div className='login-wrapper'>
+    return (<div className='login' id='test-login-page'>
+        <div>Логин</div>
+        <div className='login-wrapper' >
             <div className='login-inputs'>
-                <input ref={loginRef} placeholder='логин' />
-                <input ref={passwordRef} placeholder='пароль' type='password' />
+                <input ref={loginRef} 
+                placeholder='логин' id='test-login-input_login'
+                onKeyDown={(event) => {if (event.key == "Enter") loginClickHandler()}}  
+                />
+                <input 
+                ref={passwordRef} 
+                onKeyDown={(event) => {if (event.key == "Enter") loginClickHandler()}}  
+                placeholder='пароль' id='test-login-input_pass'
+                type='password' 
+                />
             </div>
             <div className='login-buttons'>
-                <img className='loginClick' src={LoginImg} alt='' onClick={loginClickHandler}></img>
+                <img className='loginClick' id='test-login-img_auth' src={LoginImg} alt='' onClick={loginClickHandler}></img>
             </div>
             <span className='register-link' onClick={registerClickHandler}>
                 У меня нет аккаунта

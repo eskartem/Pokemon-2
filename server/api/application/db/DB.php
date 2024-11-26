@@ -131,7 +131,7 @@ class DB {
     }
 
     public function registration($login, $hash, $name) {
-        $this->execute("INSERT INTO users (login,password,name, team_id, inventory_id) VALUES (?, ?, ?, ?, ?)",[$login, $hash, $name, '1', '1']);
+        $this->execute("INSERT INTO users (login,password,name) VALUES (?, ?, ?)",[$login, $hash, $name]);
     }
 
     public function getChatHash() {
@@ -162,10 +162,9 @@ class DB {
         return $this->catalog;
     }
 
-
     public function getResources($token) {
         // как нить получить ресы пользователя по токену и вернуть, только на sql, а пока статика-_-
-        return $this->user->resources;
+        //return $this->user->resources;
     }
 
     public function getMap(){
@@ -180,10 +179,76 @@ class DB {
         $this->execute("UPDATE users SET x = ?, y = ? WHERE id = ?", [$x, $y, $userId]);
     }
 
-    //примерно
-    public function clearUserResource($user){
-        //return $this-> execute('DELETE FROM resource WHERE user_id = ?', [$user->id]);
+    public function getMonstersByUser($userId, $status = null) {
+        if ($status === null) {
+            return $this->queryAll('SELECT * FROM monsters WHERE user_id = ?', [$userId]);
+        } else {
+            return $this->queryAll('SELECT * FROM monsters WHERE user_id = ? AND status = ?', [$userId, $status]);
+        }
+    }
+
+    public function getInventoryByUser($userId){
+        return $this->query('SELECT * FROM inventory WHERE user_id = ?', [$userId]);
     }
     
+    public function getMonsterLevelById($monsterId){
+        return $this->query('SELECT level FROM monsters WHERE id = ?',[$monsterId]);
+    }
+    
+    public function upgradeLevelMonstersByUser($userId, $monsterId){
+        $this->execute('UPDATE monsters SET level = level + 1 WHERE user_id = ? AND id = ?', [$userId, $monsterId]);
+    }
+
+    //параметры покемона, которые прибавлются при улучшении
+    public function getParametersMonsterByLevel($level) {
+        return [ 
+            'attack' => $this->query("SELECT attack FROM monster_level WHERE level = ?", [$level]),
+            'hp' => $this->query("SELECT hp FROM monster_level WHERE level = ?", [$level])
+        ];
+    } 
+    
+    public function getElementByMonsters($monsterId){
+        $monsters_type_id = $this->query('SELECT monster_type_id FROM monsters WHERE id = ?',[$monsterId]);
+        return $this->query('SELECT element_id FROM monsters_types WHERE id = ?',[$monsters_type_id]);
+    }
+
+    //узнаем id стихии
+    public function getIdByElement($element){
+        return $this->query('SELECT id FROM elements WHERE name = ?', [$element]);
+    }
+    
+    //не уверена я в этом запросе
+    public function getAmountResourcesByUser($userId, $element_id = null){
+        if($element_id === null){
+            return[
+                'eggs' => $this-> query('SELECT resource FROM inventory WHERE user_id = ? AND resource_type = "eggs"',[$userId]),
+                'crystal' => $this-> query('SELECT resource FROM inventory WHERE user_id = ? AND resource_type = "crystal"',[$userId]),
+                'egg_fragments' => $this-> query('SELECT resource FROM inventory WHERE user_id = ? AND resource_type = "egg_fragments"',[$userId])
+        ];}else{
+            return[
+                'eggs' => $this-> query('SELECT resource FROM inventory WHERE user_id = ? AND resource_type = "eggs" AND element_id = ?',[$userId, $element_id]),
+                'crystal' => $this-> query('SELECT resource FROM inventory WHERE user_id = ? AND resource_type = "crystal" AND element_id = ?',[$userId, $element_id]),
+                'egg_fragments' => $this-> query('SELECT resource FROM inventory WHERE user_id = ? AND resource_type = "egg_fragments" AND element_id = ?',[$userId, $element_id]) 
+            ];
+
+        }
+    }
+
+    public function getMoneyByUser($userId){
+        return $this-> query('SELECT money FROM users WHERE id = ?',[$userId]);
+    }
+
+    public function clearUserMoney($userId, $money){
+        $this->execute('UPDATE users SET money = ? WHERE id = ?',[$money, $userId]);
+    }
+   
+    public function clearUserResource($userId, $resourceType, $amount, $element_id ){
+        $this-> execute('UPDATE inventory SET resource = resource - ? 
+                        WHERE user_id = ? AND resource_type = ? AND element_id = ?', [$amount, $userId, $resourceType, $element_id]);
+    }
+    
+    public function updateUserStatus($userId, $status){
+        $this->execute('UPDATE users SET status = ? WHERE id =?', [$status, $userId]);
+    }
 
 }

@@ -15,6 +15,8 @@ export type TUser = {
     coins: number;
     crystals: number;
     eggFragments: number;
+    x: number;
+    y: number;
 }
 
 export type TMessage = {
