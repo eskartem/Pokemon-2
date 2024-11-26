@@ -162,17 +162,17 @@ class DB {
         return $this->catalog;
     }
 
-
     public function getResources($token) {
         // как нить получить ресы пользователя по токену и вернуть, только на sql, а пока статика-_-
         //return $this->user->resources;
     }
 
     public function getMap(){
-        return ['map' => $this->query("SELECT * FROM map WHERE id=1"), 
-                'map_zones' => $this->query("SELECT * FROM map_zones WHERE id=1")
+        //$mapId = $this->query->("SELECT map_id FROM game");
+        $mapId = 1;
+        return ['map' => $this->query("SELECT * FROM map WHERE id = ?", [$mapId]), 
+                'mapZones' => $this->queryAll("SELECT * FROM map_zones WHERE map_id = ?", [$mapId])
         ];
-        //мб токен вообще не используется и удалить его нах
     }
         
     public function updateUserLocation($userId, $x, $y) {
@@ -241,8 +241,7 @@ class DB {
     public function clearUserMoney($userId, $money){
         $this->execute('UPDATE users SET money = ? WHERE id = ?',[$money, $userId]);
     }
-
-    
+   
     public function clearUserResource($userId, $resourceType, $amount, $element_id ){
         $this-> execute('UPDATE inventory SET resource = resource - ? 
                         WHERE user_id = ? AND resource_type = ? AND element_id = ?', [$amount, $userId, $resourceType, $element_id]);
