@@ -182,9 +182,9 @@ class DB {
 
     public function getMontersByUser($userId, $status = null) {
         if ($status === null) {
-            return $this->query('SELECT * FROM monsters WHERE user_id = ?', [$userId]);
+            return $this->queryAll('SELECT * FROM monsters WHERE user_id = ?', [$userId]);
         } else {
-            return $this->query('SELECT * FROM monsters WHERE user_id = ? AND status = ?', [$userId, $status]);
+            return $this->queryAll('SELECT * FROM monsters WHERE user_id = ? AND status = ?', [$userId, $status]);
         }
     }
 
