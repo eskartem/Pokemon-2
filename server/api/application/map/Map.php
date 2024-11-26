@@ -12,18 +12,8 @@ class Map {
     }
 
 
-    public function getMap($token) {
-        $user = $this->db->getUserByToken($token);
-        if ($user) {
-            $mapData = $this->db->getMap();
-            //хз, имеет ли вообще смысл писать этот кал, просто хочется чтобы к бд обращались только внутри класса DB
-            if ($mapData) {
-                return $mapData;
-            } else {
-                return ['error' => 9000];
-            }
-        }
-        return ['error' => 9000, 'message' => 'Зарегестрируйтесь или войдите для просмотра карты.'];
+    public function getMap() {
+        return $this->db->getMap();
     }
     
     public function startGame($token) {

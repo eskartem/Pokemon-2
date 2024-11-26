@@ -88,6 +88,7 @@ class Application {
             }
             return ['error' => 705];
         }
+        return ['error' => 242];
     }
 
 
@@ -102,7 +103,11 @@ class Application {
 
     public function getMap($params) {
         if ($params['token']) {
-            return $this->map->getMap($params['token']);
+            $user = $this->user->getUser($params['token']);
+            if ($user) {
+                return $this->map->getMap();
+            }
+            return ['error' => 705];
         }
         return ['error' => 242];
     }
