@@ -46,7 +46,7 @@ const Registration: React.FC<IBasePage> = (props: IBasePage) => {
             <div className='regist-inputs'>
                 <input 
                 ref={nameRef} 
-                placeholder ='никнейм' id='test-registration-input_name'
+                placeholder ='никнейм' id='test-registration-input_name' 
                 onKeyDown={(event) => {if (event.key == "Enter") registClickHandler()}}
                 />
                 <input 

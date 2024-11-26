@@ -168,10 +168,9 @@ class DB {
         //return $this->user->resources;
     }
 
-    public function getMap($token){
-        return ['map' => $this->query("SELECT * FROM map WHERE id=1", [$token]), 
-                'zones' => $this->query("SELECT * FROM zones WHERE id=1", [$token]), 
-                'zones_types' => $this->query("SELECT * FROM zones_types WHERE id=1", [$token])
+    public function getMap(){
+        return ['map' => $this->query("SELECT * FROM map WHERE id=1"), 
+                'map_zones' => $this->query("SELECT * FROM map_zones WHERE id=1")
         ];
         //мб токен вообще не используется и удалить его нах
     }
