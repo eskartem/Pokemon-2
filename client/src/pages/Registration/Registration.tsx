@@ -41,21 +41,31 @@ const Registration: React.FC<IBasePage> = (props: IBasePage) => {
 
     const backClickHandler = () => setPage(PAGES.LOGIN);
 
-    return (
-        <div className='regist' id='test-registration-page'>
-            <div>Регистрация</div>
-            <div className='regist-wrapper' >
-                <div className='regist-inputs'>
-                    <input ref={nameRef} placeholder='Никнейм' id='test-registration-input_name'/>
-                    <input ref={loginRef} placeholder='логин' id='test-registration-input_login'/>
-                    <input ref={passwordRef} placeholder='пароль' type='password' id='test-registration-input_pass' />
-                </div>
-                <div className='regist-buttons'>
-                <img className='registrClick' id='test-registration-img_auth' src={RegistrImg} alt='' onClick={registClickHandler}></img> 
-                    <span className='register-link' onClick={backClickHandler}>
-                        У меня есть аккаунт
-                    </span>
-                </div>
+    return (<div className='regist' id='test-registration-page'>
+        <div className='regist-wrapper'>
+            <div className='regist-inputs'>
+                <input 
+                ref={nameRef} 
+                placeholder ='никнейм' id='test-registration-input_name'
+                onKeyDown={(event) => {if (event.key == "Enter") registClickHandler()}}
+                />
+                <input 
+                ref={loginRef} 
+                placeholder='логин' id='test-registration-input_login'
+                onKeyDown={(event) => {if (event.key == "Enter") registClickHandler()}}
+                />
+                <input 
+                onKeyDown={(event) => {if (event.key == "Enter") registClickHandler()}}
+                ref={passwordRef} 
+                placeholder='пароль' id='test-registration-input_pass'
+                type='password' 
+                />
+            </div>
+            <div className='regist-buttons'>
+                <img className='registrClick' id='test-registration-img_auth' src={RegistrImg} alt='' onClick={registClickHandler}></img>
+                <span className='login-link' onClick={backClickHandler}>
+                У меня уже есть аккаунт
+                </span>
             </div>
         </div>
     );

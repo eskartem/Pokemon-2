@@ -28,8 +28,16 @@ const Login: React.FC<IBasePage> = (props: IBasePage) => {
         <div>Логин</div>
         <div className='login-wrapper' >
             <div className='login-inputs'>
-                <input ref={loginRef} placeholder='логин' id='test-login-input_login'/>
-                <input ref={passwordRef} placeholder='пароль' type='password' id='test-login-input_pass' />
+                <input ref={loginRef} 
+                placeholder='логин' id='test-login-input_login'
+                onKeyDown={(event) => {if (event.key == "Enter") loginClickHandler()}}  
+                />
+                <input 
+                ref={passwordRef} 
+                onKeyDown={(event) => {if (event.key == "Enter") loginClickHandler()}}  
+                placeholder='пароль' id='test-login-input_pass'
+                type='password' 
+                />
             </div>
             <div className='login-buttons'>
                 <img className='loginClick' id='test-login-img_auth' src={LoginImg} alt='' onClick={loginClickHandler}></img>
