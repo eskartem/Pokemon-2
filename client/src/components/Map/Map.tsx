@@ -6,6 +6,13 @@ import characterImage from '../../assets/img/character.png';
 
 import './Map.scss';
 
+type TMap = {
+    callbacks: {
+        mousedown: () => void,
+         
+    }
+}
+
 const Map: React.FC = () => {
 
     const store = useContext(StoreContext);
@@ -17,17 +24,36 @@ const Map: React.FC = () => {
         HEIGHT: 9,
         LEFT: -16,
         BOTTOM: -9
-    }
+    } // вынести в config
 
     const winAspect = 16/9;
     const canvasWidth = 800;
     const canvasHeight =  1 / winAspect * canvasWidth;
     const tileWidth = canvasWidth / WINV.WIDTH;
 
+    let canMove = false;
+
     const MAP = {
         WIDTH: WINV.WIDTH * 5,
         HEIGHT: WINV.HEIGHT * 5,
         SRC: mapImage
+    }
+
+    const mousedown = (): void => {
+        canMove = true;
+    }
+
+    const mouseup = (): void => {
+        canMove = false;
+    }
+
+    const mouseleave = (): void => {
+        canMove = false;
+    }
+
+    const mousemove = (): void => {
+        if (!canMove) return;
+        
     }
 
     if (!user) {
@@ -40,9 +66,15 @@ const Map: React.FC = () => {
                 className='stage'
                 width={canvasWidth}
                 height={canvasHeight}
+                onMouseMove={mousemove}
+                onMouseDown={mousedown}
+                onMouseUp={mouseup}
+                onMouseLeave={mouseleave}
             >
                 <Sprite
                     image={MAP.SRC}
+                    x={WINV.LEFT}
+                    y={WINV.BOTTOM}
                     width={MAP.WIDTH * tileWidth}
                     height={MAP.HEIGHT * tileWidth}
                 />

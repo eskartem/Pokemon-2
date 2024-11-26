@@ -4,7 +4,6 @@ import Map from '../../components/Map/Map';
 import Chat from '../../components/Chat/Chat';
 import { StoreContext, ServerContext } from '../../App';
 import { IBasePage, PAGES } from '../PageManager';
-import { TPoint } from '../../config';
 
 import './Game.scss';
 
@@ -13,9 +12,7 @@ const Game: React.FC<IBasePage> = (props: IBasePage) => {
     const { setPage } = props;
     const server = useContext(ServerContext);
     const store = useContext(StoreContext);
-    let user = store.getUser()
-
-    const [userPosition, setUserPosition] = useState<TPoint>({ x: user?.x ?? 0, y: user?.y ?? 0 });
+    let user = store.getUser();
 
     const inventoryClickHandler = () => setPage(PAGES.INVENTORY);
     const marketClickHandler = () => setPage(PAGES.MARKET);
@@ -29,18 +26,7 @@ const Game: React.FC<IBasePage> = (props: IBasePage) => {
         // сделать запрос на сервак по изменению поля is_mute в таблицe users
     }
     
-    if (!user) { return ( <div><h1> пользователь не найден </h1></div> )} // закоментировать для работы без бекэнда
-
-    const moveUser = async (dx: number, dy: number)  => {
-        // if ( await server.moveUser(dx, dy) ) { //moveUser не написан
-        if (true){
-            user = store.getUser();
-            if (!user) return
-            setUserPosition(prev => {
-                return {x: prev.x + dx, y: prev.y + dy};
-            });
-        }
-    }
+    if (!user) { return ( <div><h1> Что-то пошло не так. </h1></div> );} // закоментировать для работы без бекэнда
 
     return (
         <div className="game-wrapper">
@@ -54,7 +40,7 @@ const Game: React.FC<IBasePage> = (props: IBasePage) => {
                     <Button id='test-game-button-market' onClick={marketClickHandler} text='Рынок' />
                     <Button id='test-game-button-battle' onClick={battleClickHandler} text='Битва' />
                     <li><Button id='test-game-button-mute' onClick={muteButtonHandler} text='заглушить' />
-                    <Button id='test-game-button-logout' onClick={logoutClickHandler} text='разлогиниться' /></li>
+                    <Button id='test-game-button-logout' onClick={logoutClickHandler} text='Выйти' /></li>
                 </div>
                 <Chat />
             </div>
