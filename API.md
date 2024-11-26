@@ -21,7 +21,7 @@
     * 4.4. sendMessage
     * 4.5. getMessages
     * 4.6. userInfo
-    * 4.7. pokemonUpgrade
+    * 4.7. upgradePokemon
     * 4.8. startGame
     * 4.9. endGame
 
@@ -105,7 +105,7 @@ Inventory: {
 | sendMessage | Отправить сообщение в чат |
 | getMessages | Получить сообщения в чате |
 | userInfo | Получить информацию о пользователе и его наборе покемонов|
-| pokemonUpgrade | Улучшение покемонов |
+| upgradePokemon | Улучшение покемонов |
 | startGame | Начало игры |
 | endGame | Конец игры на карте |
 
@@ -236,7 +236,7 @@ Inventory: {
 **Ошибки**
 *`705` - пользователь не найден
 
-#### 4.7. pokemonUpgrade
+#### 4.7. upgradePokemon
 Улучшение покемонов
 
 **Параметры**
@@ -249,7 +249,11 @@ Inventory: {
     
 **Успешный ответ**
 ```
-    Answer<true>
+    Answer<{
+        level: number; - уровень покемона
+        hp: number; - здоровье покемона
+        attack: number; - урон покемона
+    }>
 ```
 **Ошибки**
 

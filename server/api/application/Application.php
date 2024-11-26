@@ -69,6 +69,22 @@ class Application {
         return ['error' => 242];
     }
 
+    public function userInfo($params) {
+        if ($params['token']) {
+            return $this->user->userInfo($params['token']);
+        }
+        return ['error' => 404];
+    }
+    
+    //немного недоделано
+    public function upgradePokemon($params) {
+        if ($params['token'] && $params['monsterId']) {
+            return $this->user->upgradePokemon($params['token'], $params['monsterId']);
+        }
+        return ['error' => 404];
+    }
+
+
     public function getCatalog($params) {
         if ($params['token']) {
             $user = $this->user->getUser($params['token']);

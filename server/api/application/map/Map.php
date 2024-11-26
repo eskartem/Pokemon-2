@@ -83,6 +83,7 @@ class Map {
             true, 
             'message' => 'Вы успешно вышли из игры.'
         ];
+
     }
 
     public function moveUser($id, $x, $y, $status) {
