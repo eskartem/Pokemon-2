@@ -64,6 +64,6 @@ class Map {
     }
 
     public function moveUser($id, $x, $y) {
-        return $this->db->updateUserPosition($id, $x, $y);
+        return $this->db->updateUserLocation($id, $x, $y);
     }
 }

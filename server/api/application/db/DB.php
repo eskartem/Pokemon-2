@@ -174,16 +174,8 @@ class DB {
         ];
     }
         
-    public function updateUserLocation($userId, $position) {
-        //return $this->execute("UPDATE map SET position=? WHERE id=?", [$position, $userId]);
-
-
-
-        /* 
-        в map нет записей с position, но они есть в user как x и y
-        не изменяю $position в самом методе, чтобы ничего не поломалось
-        */
-        //return $this->execute("UPDATE users SET x=?, y=? WHERE id=?", [$position[0], $position[1], $userId]);
+    public function updateUserLocation($userId, $x, $y) {
+        $this->execute("UPDATE users SET x = ?, y = ? WHERE id = ?", [$x, $y, $userId]);
     }
 
     //примерно

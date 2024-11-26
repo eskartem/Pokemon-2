@@ -132,10 +132,10 @@ class Application {
             return ['error' => 2002];
         }
 
-        $x = $params['x'];
-        $y = $params['y'];
-
+        $x = (int)$params['x'];
+        $y = (int)$params['y'];
         $mapData = json_decode($this->map->getMap(), true);
+
         if (!$mapData || !isset($mapData['data']['map']['width'], $mapData['data']['map']['height'])) {
             return ['error' => 850];
         }
@@ -151,7 +151,7 @@ class Application {
 
         if ($x == $user->x && $y == $user->y) {
             return ['error' => 2004];
-        }
+        } 
 
         /*if ($user->status != 'scout'){
             return ['error' => 2005];
