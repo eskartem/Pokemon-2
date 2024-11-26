@@ -40,7 +40,7 @@ const Registration: React.FC<IBasePage> = (props: IBasePage) => {
 
     const backClickHandler = () => setPage(PAGES.LOGIN);
 
-    return (<div className='regist'>
+    return (<div className='regist' id='test-registration-page'>
         <div className='regist-wrapper'>
             <div className='regist-inputs'>
                 <input 
@@ -56,18 +56,19 @@ const Registration: React.FC<IBasePage> = (props: IBasePage) => {
                 <input 
                 onKeyDown={(event) => {if (event.key === "Enter") registClickHandler()}}
                 ref={passwordRef} 
-                placeholder='пароль' 
-                type='password'
+                placeholder='пароль' id='test-registration-input_pass'
+                type='password' 
                 />
             </div>
             <div className='regist-buttons'>
-                <img className='registrClick' src={RegistrImg} alt='' onClick={registClickHandler}></img>
+                <img className='registrClick' id='test-registration-img_auth' src={RegistrImg} alt='' onClick={registClickHandler}></img>
                 <span className='login-link' onClick={backClickHandler}>
                 У меня уже есть аккаунт
                 </span>
             </div>
         </div>
-    </div>)
+        </div>);
+
 }
 
 export default Registration;

@@ -18,12 +18,18 @@ class Answer {
         '706' => 'text message is empty',
         '707' => 'could not send message', // e-mail;
         '708' => 'invalid code from E-mail',
-        '709' => ' session did not start or you need use previous method',
+        '709' => ' session did not start or you need to use previous method',
         '800' => 'not found object',
         '801' => 'unknown state',
-        '1001' => 'params login or password not set',
-        '1005' => 'Other user is playing wright now. If you doesn`t, please change the password',
+        '850' => 'incorrect array output',
+        '1001' => 'params login or password are not set',
+        '1005' => 'Other user is playing right now. If it is not you, please change your password.',
         '1006' => 'user with this email is already registered',
+        '2001' => 'coordinates to move are not set',
+        '2002' => 'coordinates to move are not correct',
+        '2003' => 'coordinates to move are out of map borders',
+        '2004' => 'cannot move to the same coordinates',
+        '2005' => 'cannot move during the combat or offline',
         '9000' => 'unknown error'
     );
 
