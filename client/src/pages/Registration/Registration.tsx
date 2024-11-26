@@ -13,7 +13,7 @@ const Registration: React.FC<IBasePage> = (props: IBasePage) => {
     const passwordRef = useRef<HTMLInputElement>(null);
 
     const isValidPassword = (password: string) => {
-        const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!"№;%:?*()_+=\-\`{}"?><.])(?=.*\S).{8,}$/;
+        const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!"№;%:?*@()_+=\-\`{}"?><.])(?=.*\S).{8,15}$/;
         return passwordRegex.test(password);
     };
 
@@ -41,34 +41,35 @@ const Registration: React.FC<IBasePage> = (props: IBasePage) => {
 
     const backClickHandler = () => setPage(PAGES.LOGIN);
 
-    return (<div className='regist'>
+    return (<div className='regist' id='test-registration-page'>
         <div className='regist-wrapper'>
             <div className='regist-inputs'>
                 <input 
                 ref={nameRef} 
-                placeholder ='никнейм' 
+                placeholder ='никнейм' id='test-registration-input_name' 
                 onKeyDown={(event) => {if (event.key == "Enter") registClickHandler()}}
                 />
                 <input 
                 ref={loginRef} 
-                placeholder='логин' 
+                placeholder='логин' id='test-registration-input_login'
                 onKeyDown={(event) => {if (event.key == "Enter") registClickHandler()}}
                 />
                 <input 
                 onKeyDown={(event) => {if (event.key == "Enter") registClickHandler()}}
                 ref={passwordRef} 
-                placeholder='пароль' 
+                placeholder='пароль' id='test-registration-input_pass'
                 type='password' 
                 />
             </div>
             <div className='regist-buttons'>
-                <img className='registrClick' src={RegistrImg} alt='' onClick={registClickHandler}></img>
+                <img className='registrClick' id='test-registration-img_auth' src={RegistrImg} alt='' onClick={registClickHandler}></img>
                 <span className='login-link' onClick={backClickHandler}>
                 У меня уже есть аккаунт
                 </span>
             </div>
         </div>
-    </div>)
+    );
+
 }
 
 export default Registration;

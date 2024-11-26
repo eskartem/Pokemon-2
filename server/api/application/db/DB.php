@@ -131,7 +131,7 @@ class DB {
     }
 
     public function registration($login, $hash, $name) {
-        $this->execute("INSERT INTO users (login,password,name, team_id, inventory_id) VALUES (?, ?, ?, ?, ?)",[$login, $hash, $name, '1', '1']);
+        $this->execute("INSERT INTO users (login,password,name ) VALUES (?, ?, ?)",[$login, $hash, $name]);
     }
 
     public function getChatHash() {
@@ -165,31 +165,59 @@ class DB {
 
     public function getResources($token) {
         // как нить получить ресы пользователя по токену и вернуть, только на sql, а пока статика-_-
-        return $this->user->resources;
+        //return $this->user->resources;
     }
 
     public function getMap(){
-        return ['map' => $this->execute("SELECT * FROM map WHERE id=1"), 
-                'map_zones' => $this->execute("SELECT * FROM map_zones WHERE id=1")
+        return ['map' => $this->query("SELECT * FROM map WHERE id=1"), 
+                'map_zones' => $this->query("SELECT * FROM map_zones WHERE id=1")
         ];
     }
         
-    public function updateUserLocation($userId, $position) {
-        //return $this->execute("UPDATE map SET position=? WHERE id=?", [$position, $userId]);
-
-
-
-        /* 
-        в map нет записей с position, но они есть в user как x и y
-        не изменяю $position в самом методе, чтобы ничего не поломалось
-        */
-        //return $this->execute("UPDATE users SET x=?, y=? WHERE id=?", [$position[0], $position[1], $userId]);
+    public function updateUserLocation($userId, $x, $y) {
+        $this->execute("UPDATE users SET x = ?, y = ? WHERE id = ?", [$x, $y, $userId]);
     }
 
-    //примерно
-    public function clearUserResource($user){
-        //return $this-> execute('DELETE FROM resource WHERE user_id = ?', [$user->id]);
+    public function getMontersByUser($userId, $status = null) {
+        if ($status === null) {
+            return $this->query('SELECT * FROM monsters WHERE user_id = ?', [$userId]);
+        } else {
+            return $this->query('SELECT * FROM monsters WHERE user_id = ? AND status = ?', [$userId, $status]);
+        }
+    }
+    //не уверена я в этом запросе
+    public function getAmountResourcesByUser($userId, $element_id = null){
+        if($element_id === null){
+            return[
+                'eggs' => $this-> query('SELECT resourse FROM inventory WHERE user_id = ? AND resourse_type = "eggs"',[$userId]),
+                'crystal' => $this-> query('SELECT resourse FROM inventory WHERE user_id = ? AND resourse_type = "crystal"',[$userId]),
+                'egg_fragments' => $this-> query('SELECT resourse FROM inventory WHERE user_id = ? AND resourse_type = "egg_fragments"',[$userId])
+        ];}else{
+            return[
+                'eggs' => $this-> query('SELECT resourse FROM inventory WHERE user_id = ? AND resourse_type = "eggs" AND element_id = ?',[$userId, $element_id]),
+                'crystal' => $this-> query('SELECT resourse FROM inventory WHERE user_id = ? AND resourse_type = "crystal" AND element_id = ?',[$userId, $element_id]),
+                'egg_fragments' => $this-> query('SELECT resourse FROM inventory WHERE user_id = ? AND resourse_type = "egg_fragments" AND element_id = ?',[$userId, $element_id]) 
+            ];
+
+        }
+    }
+
+    public function getMoneyByUser($userId){
+        return $this-> query('SELECT money FROM users WHERE id = ?',[$userId]);
+    }
+
+    public function clearUserMoney($userId, $money){
+        $this->execute('UPDATE users SET money = ? WHERE id = ?',[$money, $userId]);
+    }
+
+    
+    public function clearUserResource($userId, $resourceType, $amount ){
+        $this-> execute('UPDATE inventory SET resoure = resoure - ? 
+                        WHERE user_id = ? AND resoure_type = ? AND resoure >= ?;', [$amount, $userId, $resourceType, $amount]);
     }
     
+    public function updateUserStatus($userId, $status){
+        $this->execute('UPDATE users SET status = ? WHERE id =?', [$status, $userId]);
+    }
 
 }
