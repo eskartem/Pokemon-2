@@ -27,8 +27,16 @@ const Login: React.FC<IBasePage> = (props: IBasePage) => {
     return (<div className='login'>
         <div className='login-wrapper'>
             <div className='login-inputs'>
-                <input ref={loginRef} placeholder='логин' />
-                <input ref={passwordRef} placeholder='пароль' type='password' />
+                <input ref={loginRef} 
+                placeholder='логин'
+                onKeyDown={(event) => {if (event.key == "Enter") loginClickHandler()}}  
+                />
+                <input 
+                ref={passwordRef} 
+                onKeyDown={(event) => {if (event.key == "Enter") loginClickHandler()}}  
+                placeholder='пароль' 
+                type='password' 
+                />
             </div>
             <div className='login-buttons'>
                 <img className='loginClick' src={LoginImg} alt='' onClick={loginClickHandler}></img>

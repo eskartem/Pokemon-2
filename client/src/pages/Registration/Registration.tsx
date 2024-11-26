@@ -44,9 +44,22 @@ const Registration: React.FC<IBasePage> = (props: IBasePage) => {
     return (<div className='regist'>
         <div className='regist-wrapper'>
             <div className='regist-inputs'>
-                <input ref={nameRef} placeholder ='никнейм' />
-                <input ref={loginRef} placeholder='логин' />
-                <input ref={passwordRef} placeholder='пароль' type='password' />
+                <input 
+                ref={nameRef} 
+                placeholder ='никнейм' 
+                onKeyDown={(event) => {if (event.key == "Enter") registClickHandler()}}
+                />
+                <input 
+                ref={loginRef} 
+                placeholder='логин' 
+                onKeyDown={(event) => {if (event.key == "Enter") registClickHandler()}}
+                />
+                <input 
+                onKeyDown={(event) => {if (event.key == "Enter") registClickHandler()}}
+                ref={passwordRef} 
+                placeholder='пароль' 
+                type='password' 
+                />
             </div>
             <div className='regist-buttons'>
                 <img className='registrClick' src={RegistrImg} alt='' onClick={registClickHandler}></img>
