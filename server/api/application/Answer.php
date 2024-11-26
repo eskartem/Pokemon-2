@@ -21,7 +21,7 @@ class Answer {
         '709' => ' session did not start or you need to use previous method',
         '800' => 'not found object',
         '801' => 'unknown state',
-        '850' => 'incorrect JSON output',
+        '850' => 'incorrect array output',
         '1001' => 'params login or password are not set',
         '1005' => 'Other user is playing right now. If it is not you, please change your password.',
         '1006' => 'user with this email is already registered',
