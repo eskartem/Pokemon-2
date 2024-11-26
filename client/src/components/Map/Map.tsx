@@ -3,37 +3,31 @@ import { Sprite, Stage } from '@pixi/react';
 import { StoreContext } from '../../App';
 import mapImage from '../../assets/img/mapImage.jpg';
 import characterImage from '../../assets/img/character.png';
+import CONFIG, { TPoint }from '../../config';
 
-import { TPoint } from '../../config';
 import './Map.scss';
 
-const Map: React.FC = () => {
+type TMap = {
+    userPosition: TPoint
+}
+
+const Map: React.FC<TMap> = (props: TMap) => {
+
+    const {userPosition} = props;
+    
     const store = useContext(StoreContext);
     let user = store.getUser();
 
-    const WINV = {
-        WIDTH: 16,
-        HEIGHT: 9,
-        LEFT: -16,
-        BOTTOM: -9
-    } // вынести в config
+    const {MAP, WINV, canvasHeight, canvasWidth, tileSize} = CONFIG;
 
-    const winAspect = 16 / 9;
-    const canvasWidth = 1000;
-    const canvasHeight = 1 / winAspect * canvasWidth;
-    const tileWidth = canvasWidth / WINV.WIDTH;
+    const [mapPosition, setMapPosition] = useState<TPoint>({ 
+        x: (-MAP.WIDTH - WINV.LEFT)*tileSize + userPosition.x, 
+        y: (-MAP.HEIGHT - WINV.BOTTOM)*tileSize+userPosition.y
+    });
+    const [isCanMove, setCanMove] = useState<boolean>(false);
+    const [lastMousePosition, setLastMousePosition] = useState<TPoint>({ x: 0, y: 0 });
 
-    const MAP = {
-        WIDTH: WINV.WIDTH * 5,
-        HEIGHT: WINV.HEIGHT * 5,
-        SRC: mapImage
-    }
-
-    const [mapPosition, setMapPosition] = useState<TPoint>({ x: WINV.LEFT, y: WINV.BOTTOM });
-    const [isCanMove, setCanMove] = useState(false);
-    const [lastMousePosition, setLastMousePosition] = useState({ x: 0, y: 0 });
-    let dx = 0;
-    let dy = 0;
+    console.log(mapPosition, userPosition)
 
     const mousedown = (event: MouseEvent): void => {
         setCanMove(true);
@@ -60,11 +54,11 @@ const Map: React.FC = () => {
 
             // Ограничение по горизонтали
             const maxX = 0;
-            const minX = canvasWidth - MAP.WIDTH * tileWidth;
+            const minX = canvasWidth - MAP.WIDTH * tileSize;
 
             // Ограничение по вертикали
             const maxY = 0;
-            const minY = canvasHeight - MAP.HEIGHT * tileWidth;
+            const minY = canvasHeight - MAP.HEIGHT * tileSize;
 
             return {
                 x: Math.max(minX, Math.min(maxX, newX)),
@@ -81,7 +75,7 @@ const Map: React.FC = () => {
 
     return (
         <div className='map'>
-            <Stage
+            <Stage // канвас
                 className='stage'
                 width={canvasWidth}
                 height={canvasHeight}
@@ -90,19 +84,19 @@ const Map: React.FC = () => {
                 onMouseUp={mouseup}
                 onMouseLeave={mouseleave}
             >
-                <Sprite
-                    image={MAP.SRC}
+                <Sprite  // карта
+                    image={mapImage}
                     x={mapPosition.x}
                     y={mapPosition.y}
-                    width={MAP.WIDTH * tileWidth}
-                    height={MAP.HEIGHT * tileWidth}
+                    width={MAP.WIDTH * tileSize}
+                    height={MAP.HEIGHT * tileSize}
                 />
-                <Sprite
+                <Sprite // гг
                     image={characterImage}
-                    width={tileWidth}
-                    height={tileWidth}
-                    x={mapPosition.x}
-                    y={mapPosition.y}
+                    width={tileSize}
+                    height={tileSize}
+                    x={mapPosition.x + userPosition.x}
+                    y={mapPosition.y + userPosition.y}
                 />
             </Stage>
         </div>

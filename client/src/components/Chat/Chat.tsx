@@ -33,7 +33,7 @@ const Chat: React.FC = () => {
 
     const input = useMemo(() => <input 
     ref={messageRef} 
-    onKeyDown={(event) => {if (event.key == "Enter") sendClickHandler()}} 
+    onKeyDown={(event) => {if (event.key === "Enter") sendClickHandler()}} 
     placeholder='сообщение' />
     , []);
 

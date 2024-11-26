@@ -1,5 +1,5 @@
 import md5 from 'md5';
-import CONFIG from "../../config";
+import CONFIG, { TPoint } from "../../config";
 import Store from "../store/Store";
 import { TAnswer, TError, TMessagesResponse, TUser, TMarketCatalog, TUserResources } from "./types";
 
@@ -142,7 +142,12 @@ class Server {
     async exchangeEggsForPokemon(): Promise<{ success: boolean }> {
         // Здесь должна быть логика для запроса на сервер
         return { success: true }; // Пример возврата. Настоящая логика может отличаться.
-      }
+    }
+
+    async moveUser(dx: number, dy: number): Promise<boolean | null> {
+        return await this.request<boolean>('moveUser', { dx: `${dx}` , dy: `${dy}`});
+    }
+
 }
 
 export default Server;
