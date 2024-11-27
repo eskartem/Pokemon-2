@@ -1,7 +1,7 @@
 import md5 from 'md5';
 import CONFIG, { TPoint } from "../../config";
 import Store from "../store/Store";
-import { TAnswer, TError, TMessagesResponse, TUser, TMarketCatalog, TUserResources } from "./types";
+import { TAnswer, TError, TMessagesResponse, TUser, TMarketCatalog, TUserResources, TMap, TMapZone } from "./types";
 
 const { CHAT_TIMESTAMP, HOST } = CONFIG;
 
@@ -144,8 +144,12 @@ class Server {
         return { success: true }; // Пример возврата. Настоящая логика может отличаться.
     }
 
-    async moveUser(dx: number, dy: number): Promise<boolean | null> {
-        return await this.request<boolean>('moveUser', { dx: `${dx}` , dy: `${dy}`});
+    async getMap(): Promise<{MAP: TMap, mapZones: TMapZone[]} | null> {
+        return await this.request<{MAP: TMap, mapZones: TMapZone[]}>('getMap');
+    }
+
+    async moveUser(x: number, y: number): Promise<boolean | null> {
+        return await this.request<boolean>('moveUser', { x: `${x}` , y: `${y}`});
     }
 
 }

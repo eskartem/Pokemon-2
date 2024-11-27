@@ -1,33 +1,49 @@
-import React, { MouseEvent, useContext, useState } from 'react';
-import { Sprite, Stage } from '@pixi/react';
-import { StoreContext } from '../../App';
+import React, { MouseEvent, useContext, useEffect, useState } from 'react';
+import { Sprite, Stage, Graphics } from '@pixi/react';
+import { StoreContext, ServerContext } from '../../App';
 import mapImage from '../../assets/img/mapImage.jpg';
 import characterImage from '../../assets/img/character.png';
-import CONFIG, { TPoint }from '../../config';
+import CONFIG, { TPoint } from '../../config';
+import { TMap, TMapZone } from '../../services/server/types';
 
 import './Map.scss';
 
-type TMap = {
+interface IMap {
     userPosition: TPoint
 }
 
-const Map: React.FC<TMap> = (props: TMap) => {
+const Map: React.FC<IMap> = (props: IMap) => {
+    const { userPosition } = props;
+    const { WINV, canvasHeight, canvasWidth, tileSize } = CONFIG;
 
-    const {userPosition} = props;
-    
+    const server = useContext(ServerContext);
     const store = useContext(StoreContext);
     let user = store.getUser();
 
-    const {MAP, WINV, canvasHeight, canvasWidth, tileSize} = CONFIG;
+    const [MAP, setMAP] = useState<TMap>({ WIDTH: 0, HEIGHT: 0, IMAGE: '' });
+    const [mapZones, setMapZones] = useState<TMapZone[]>([]);
 
-    const [mapPosition, setMapPosition] = useState<TPoint>({ 
-        x: (-MAP.WIDTH - WINV.LEFT)*tileSize + userPosition.x, 
-        y: (-MAP.HEIGHT - WINV.BOTTOM)*tileSize+userPosition.y
+    useEffect(() => {
+        (async () => {
+            const result = await server.getMap();
+            if (result) {
+                const { MAP: map, mapZones: zones } = result;
+                setMAP(map);
+                setMapZones(zones);
+            }
+        })();
+    }, [server]);
+
+    const [mapPosition, setMapPosition] = useState<TPoint>({
+        x: (-MAP.WIDTH - WINV.LEFT) * tileSize - userPosition.x,
+        y: (-MAP.HEIGHT - WINV.BOTTOM) * tileSize - userPosition.y
     });
     const [isCanMove, setCanMove] = useState<boolean>(false);
     const [lastMousePosition, setLastMousePosition] = useState<TPoint>({ x: 0, y: 0 });
 
-    console.log(mapPosition, userPosition)
+    if (!user || !MAP) {
+        return (<>Карта не загружена. Что-то пошло не так.</>)
+    }
 
     const mousedown = (event: MouseEvent): void => {
         setCanMove(true);
@@ -65,12 +81,7 @@ const Map: React.FC<TMap> = (props: TMap) => {
                 y: Math.max(minY, Math.min(maxY, newY))
             };
         });
-
         setLastMousePosition({ x: event.clientX, y: event.clientY });
-    }
-
-    if (!user) {
-        return (<>Карта не загружена. Что-то пошло не так.</>)
     }
 
     return (
@@ -90,6 +101,21 @@ const Map: React.FC<TMap> = (props: TMap) => {
                     y={mapPosition.y}
                     width={MAP.WIDTH * tileSize}
                     height={MAP.HEIGHT * tileSize}
+                />
+                 <Graphics // зоны
+                    draw={(g) => {
+                        g.clear();
+                        mapZones.forEach(zone => {
+                            g.beginFill(0xAAAAAA);
+                            g.drawRect(
+                                mapPosition.x + zone.x * tileSize,
+                                mapPosition.y + zone.y * tileSize,
+                                zone.width * tileSize,
+                                zone.height * tileSize
+                            );
+                            g.endFill();
+                        });
+                    }}
                 />
                 <Sprite // гг
                     image={characterImage}

@@ -96,18 +96,6 @@ class Application {
         return ['error' => 242];
     }
 
-    public function getResources($params) {
-        if ($params['token']) {
-            $user = $this->user->getUser($params['token']);
-            if ($user) {
-                return $this->user->getResources($params['token']);
-            }
-            return ['error' => 705];
-        }
-        return ['error' => 242];
-    }
-
-
     public function startGame($params){
         if($params['token']){
             return $this->map->startGame($params['token']);
@@ -157,11 +145,11 @@ class Application {
         $y = (int)$params['y'];
         $mapData = $this->map->getMap();
         $borders = [
-            'width' => $mapData['map']->width,
-            'height' => $mapData['map']->height
+            'width' => $mapData['MAP']['WIDTH'],
+            'height' => $mapData['MAP']['HEIGHT']
         ];
     
-        if (!isset($mapData['map']->width, $mapData['map']->height) || !is_array($mapData)) {
+        if (!isset($mapData['MAP']['WIDTH'], $mapData['MAP']['HEIGHT']) || !is_array($mapData)) {
             return ['error' => 850];
         }
 
@@ -179,6 +167,4 @@ class Application {
 
         return $this->map->moveUser($user->id, $x, $y);
     }
-    
-
 }

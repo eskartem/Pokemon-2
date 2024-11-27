@@ -95,4 +95,18 @@ export type TMarketCatalog = {
 
 export type TTraderCatalog = TMarketCatalog;
 
+export type TMap = {
+    HEIGHT: number,
+    WIDTH: number,
+    IMAGE: string
+}
 
+export type TMapZone = {
+    name: string,
+    x: number,
+    y: number,
+    width: number,
+    height: number,
+    type: string,
+    element_id: number // надо название с помощью сложного запроса выдавать, а не само id, наругать бэкендеров.
+}
