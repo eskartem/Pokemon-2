@@ -1,6 +1,5 @@
 import React, { useContext, useRef } from 'react';
 import { ServerContext } from '../../App';
-import Button from '../../components/Button/Button';
 import { IBasePage, PAGES } from '../PageManager';
 import RegistrImg from '../../assets/img/login/registr.png';
 import './Registration.scss';
@@ -13,7 +12,7 @@ const Registration: React.FC<IBasePage> = (props: IBasePage) => {
     const passwordRef = useRef<HTMLInputElement>(null);
 
     const isValidPassword = (password: string) => {
-        const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!"№;%:?*@()_+=\-\`{}"?><.])(?=.*\S).{8,15}$/;
+        const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!"№;%:?*()_+=\-`{}"?><.])(?=.*\S).{8,}$/;
         return passwordRegex.test(password);
     };
 
@@ -46,16 +45,16 @@ const Registration: React.FC<IBasePage> = (props: IBasePage) => {
             <div className='regist-inputs'>
                 <input 
                 ref={nameRef} 
-                placeholder ='никнейм' id='test-registration-input_name' 
-                onKeyDown={(event) => {if (event.key == "Enter") registClickHandler()}}
+                placeholder ='никнейм' 
+                onKeyDown={(event) => {if (event.key === "Enter") loginRef.current?.focus()}}
                 />
                 <input 
                 ref={loginRef} 
-                placeholder='логин' id='test-registration-input_login'
-                onKeyDown={(event) => {if (event.key == "Enter") registClickHandler()}}
+                placeholder='логин' 
+                onKeyDown={(event) => {if (event.key === "Enter") passwordRef.current?.focus()}}
                 />
                 <input 
-                onKeyDown={(event) => {if (event.key == "Enter") registClickHandler()}}
+                onKeyDown={(event) => {if (event.key === "Enter") registClickHandler()}}
                 ref={passwordRef} 
                 placeholder='пароль' id='test-registration-input_pass'
                 type='password' 

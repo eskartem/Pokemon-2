@@ -12,7 +12,13 @@ class Map {
     }
 
     public function getMap() {
-        return $this->db->getMap();
+        $result = $this->db->getMap();
+        $map = $result['map'];
+        $map_zones = $result['map_zones'];
+        return [
+            'MAP' => ['WIDTH' => $map->width, 'HEIGHT' => $map->height, 'IMAGE' => $map->image],
+            'mapZones' => $map_zones
+        ];
     }
     
     public function startGame($token) {
