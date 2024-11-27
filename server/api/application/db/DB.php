@@ -63,6 +63,10 @@ class DB {
         // return $this->user;
     }
 
+    public function getUsersByStatus($status) {
+        return $this->queryAll("SELECT id, login, name, x, y FROM users WHERE status=?", [$status]);
+    }
+
     public function updateToken($userId, $token) {
         $this->execute("UPDATE users SET token=? WHERE id=?", [$token, $userId]);
     }

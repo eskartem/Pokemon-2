@@ -167,4 +167,25 @@ class Application {
 
         return $this->map->moveUser($user->id, $x, $y);
     }
+
+    
+    public function updateScene(){
+        /*
+        мы не поняли что должен делать этот метод
+        отправка каких-то данных о карте и ее пользователях, чтобы на клиенте могли рендерить это в цикле??
+        */
+        $mapData = $this->map->getMap();
+        if (!$mapData) {
+            return ['error' => 101];
+        }
+
+        $players = array_merge($this->user->getUsersByStatus('fight') ?? [], $this->user->getUsersByStatus('scout') ?? []);
+
+        return [
+            'map' => $mapData,
+            'playersIngame' => $players,
+        ];
+    }
+
+
 }

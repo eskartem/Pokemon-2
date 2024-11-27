@@ -77,6 +77,9 @@ public function userInfo($token) {
     return ['error' => 404]; 
 }
 
+public function getUsersByStatus($status){
+    return $this->db->getUsersByStatus($status);
+}
 
 public function upgradePokemon($token, $monsterId) {
     // Получаем пользователя по токену
