@@ -80,7 +80,7 @@ class Application {
         return ['error' => 404];
     }
     
-    //немного недоделано
+    //добавить проверку имеет ли польз монстра такого id
     public function upgradePokemon($params) {
         if ($params['token'] && $params['monsterId']) {
             $user = $this->user->getUser($params['token']);
@@ -123,8 +123,11 @@ class Application {
 
     public function startGame($params){
         if($params['token']){
-            return $this->map->startGame($params['token']);
-
+            $user = $this->user->getUser($params['token']);
+            if ($user) {
+                return $this->map->startGame($params['token']);
+            }
+            return ['error' => 705];
         }
         return ['error' => 242];
     }
