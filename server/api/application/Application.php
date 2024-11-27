@@ -113,5 +113,18 @@ class Application {
         }
         return ['error' => 242];
     }
+
+    public function buy($params) {
+        if ($params['token'] && $params['id']) {
+            $user = $this->user->getUser($params['token']);
+            if ($user) {
+                $user = $this->market->buyItem($user->id, $params['id']);
+            } else {
+                return ['error' => 705]; 
+            }
+        } else {
+            return ['error' => 242]; 
+        }
+    }
     
 } 
