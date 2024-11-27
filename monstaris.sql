@@ -291,7 +291,7 @@ CREATE TABLE `users` (
   `rating` int NOT NULL DEFAULT '0',
   `x` int NOT NULL DEFAULT '80',
   `y` int NOT NULL DEFAULT '45',
-  `status` varchar(32) NOT NULL
+  `status` varchar(32) NOT NULL DEFAULT 'offline'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
@@ -299,9 +299,9 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `login`, `password`, `token`, `name`, `money`, `rating`, `x`, `y`, `status`) VALUES
-(1, 'vasya', 'fcb03559c0317682f5d65a88aca50012', '32cdf82b5bf1e476101d047cf7d26d94', 'Вася Пупкин', 0, 0, 80, 45, ''),
-(2, 'petya', 'bcb209cf0d43e198e6467f8b0ac3387a', '431542fe9302b7f2807069adb7504bd5', 'Пётр Петрович', 0, 0, 80, 45, ''),
-(3, 'masha', 'e213995da574de722a416f65b43d8314', '1916666aacbb8732bf2d12238b2cd5db', 'Маша Сергеевна', 0, 0, 80, 45, '');
+(1, 'vasya', 'fcb03559c0317682f5d65a88aca50012', '32cdf82b5bf1e476101d047cf7d26d94', 'Вася Пупкин', 0, 0, 80, 45, 'offline'),
+(2, 'petya', 'bcb209cf0d43e198e6467f8b0ac3387a', '431542fe9302b7f2807069adb7504bd5', 'Пётр Петрович', 0, 0, 80, 45, 'offline'),
+(3, 'masha', 'e213995da574de722a416f65b43d8314', '1916666aacbb8732bf2d12238b2cd5db', 'Маша Сергеевна', 0, 0, 80, 45, 'offline');
 
 --
 -- Индексы сохранённых таблиц

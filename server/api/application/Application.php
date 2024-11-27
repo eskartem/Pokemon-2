@@ -69,6 +69,22 @@ class Application {
         return ['error' => 242];
     }
 
+    public function userInfo($params) {
+        if ($params['token']) {
+            return $this->user->userInfo($params['token']);
+        }
+        return ['error' => 404];
+    }
+    
+    //немного недоделано
+    public function upgradePokemon($params) {
+        if ($params['token'] && $params['monsterId']) {
+            return $this->user->upgradePokemon($params['token'], $params['monsterId']);
+        }
+        return ['error' => 404];
+    }
+
+
     public function getCatalog($params) {
         if ($params['token']) {
             $user = $this->user->getUser($params['token']);
@@ -79,17 +95,6 @@ class Application {
         }
         return ['error' => 242];
     }
-
-    public function getResources($params) {
-        if ($params['token']) {
-            $user = $this->user->getUser($params['token']);
-            if ($user) {
-                return $this->user->getResources($params['token']);
-            }
-            return ['error' => 705];
-        }
-    }
-
 
     public function startGame($params){
         if($params['token']){
@@ -102,7 +107,11 @@ class Application {
 
     public function getMap($params) {
         if ($params['token']) {
-            return $this->map->getMap($params['token']);
+            $user = $this->user->getUser($params['token']);
+            if ($user) {
+                return $this->map->getMap();
+            }
+            return ['error' => 705];
         }
         return ['error' => 242];
     }
@@ -115,15 +124,68 @@ class Application {
     }
 
     public function moveUser($params) {
-        if ($params['token']){
-            $user = $this->user->getUser($params['token']);
-            if ($user) {
-                return $this->map->moveUser($user->id, $user->x, $user->y, $user->status);
-                //непонятно где должен быть этот метод: в map или user, пока так
-            }
+        if (!isset($params['token'])) {
             return ['error' => 242];
         }
-        return ['error' => 242];
+
+        $user = $this->user->getUser($params['token']);
+        if (!$user) {
+            return ['error' => 705];
+        }
+
+        if (!isset($params['x'], $params['y'])) {
+            return ['error' => 2001];
+        }
+
+        if (!filter_var($params['x'], FILTER_VALIDATE_INT) || !filter_var($params['y'], FILTER_VALIDATE_INT)) {
+            return ['error' => 2002];
+        }
+
+        $x = (int)$params['x'];
+        $y = (int)$params['y'];
+        $mapData = $this->map->getMap();
+        $borders = [
+            'width' => $mapData['MAP']['WIDTH'],
+            'height' => $mapData['MAP']['HEIGHT']
+        ];
+    
+        if (!isset($mapData['MAP']['WIDTH'], $mapData['MAP']['HEIGHT']) || !is_array($mapData)) {
+            return ['error' => 850];
+        }
+
+        if ($x < 0 || $x > $borders['width'] || $y < 0 || $y > $borders['height']) {
+            return ['error' => 2003];
+        }
+
+        if ($x == $user->x && $y == $user->y) {
+            return ['error' => 2004];
+        } 
+
+        /*if ($user->status != 'scout'){
+            return ['error' => 2005];
+        }*/
+
+        return $this->map->moveUser($user->id, $x, $y);
     }
+
+    
+    public function updateScene(){
+        /*
+        мы не поняли что должен делать этот метод
+        отправка каких-то данных о карте и ее пользователях, чтобы на клиенте могли рендерить это в цикле??
+        */
+        $mapData = $this->map->getMap();
+        if (!$mapData) {
+            return ['error' => 101];
+        }
+
+        $players = array_merge($this->user->getUsersByStatus('fight') ?? [], $this->user->getUsersByStatus('scout') ?? []);
+
+        return [
+            'map' => $mapData,
+            'playersIngame' => $players,
+        ];
+    }
+
 
 }
