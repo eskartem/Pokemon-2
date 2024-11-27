@@ -64,14 +64,13 @@ class User {
     }
 
 //Gamer Info
-
 public function userInfo($token) {
     $user = $this->db->getUserByToken($token);
     if ($user) {
         return [
             $user,
-            $this->db-> getMonstersByUser($user),
-            $this->db-> getInventoryByUser($user)
+            $this->db-> getMonstersByUser($user->id),
+            $this->db-> getInventoryByUser($user->id)
         ];
     }
     return ['error' => 404]; 
@@ -85,7 +84,6 @@ public function upgradePokemon($token, $monsterId) {
         return ['error' => 404];
     }
     //наверно надо написать проверку id покемона
-
     //узнаем уровень покемона
     $levelMonster = $this->db->getMonsterLevelById($monsterId);
 

@@ -28,30 +28,19 @@ class Map {
     
     public function startGame($token) {
         $user = $this->db->getUserByToken($token);
-        if (!$user) {
-            return ['error' => 705]; 
-        }
-        
-        if ($this->isUserInTown($user)) {
-            return ['message' => 'Вы уже находитесь в городе.']; 
-        }
- 
         //обновление статуса (разведчик)
-        $this->db->updateUserStatus($user, 'scout'); 
-
+        $this->db->updateUserStatus($user->id, 'scout'); 
         return [
-            $this->db->getMonstersByUser($user, 'in team'),
-            'message' => 'Вы успешно зашли в игру и появились в городе.',
+            $user,
+            $this->db->getMonstersByUser($user->id),
+            $this->db->getInventoryByUser($user->id)
         ];
     }
 
     public function endGame($token) {
+        
         $user = $this->db->getUserByToken($token);
-        if (!$user) {
-            return ['error' => 705]; 
-        }
-
-        $resources = $this->db->getAmountResourcesByUser($user);
+        $resources = $this->db->getAmountResourcesByUser($user->id);
 
         // 10% кусков яиц покемонов
         $eggAmount = !empty($resources['eggs']) ? 
@@ -62,22 +51,22 @@ class Map {
                     $resources['crystal'][0]['resourse'] : 0;
         $crystalAmount = $crystalAmount * 0.2;
         
-        $having_money = $this->db->getMoneyByUser($user);
+        $having_money = $this->db->getMoneyByUser($user->id);
         $money = $having_money - ($having_money * 0.3);
 
         // Проверяем, находится ли игрок в городе
         if (!$this->isUserInTown($user)) {
             // Игрок выходил из карты не в городе - теряет некоторые ресурсы
-            $this->db->clearUserResource($user, 'eggs', $eggAmount); 
-            $this->db->clearUserResource($user, 'crystal', $crystalAmount); 
-            $this->db->clearUserMoney($user, $money);
+            $this->db->clearUserResource($user->id, 'eggs', $eggAmount); 
+            $this->db->clearUserResource($user->id, 'crystal', $crystalAmount); 
+            $this->db->clearUserMoney($user->id, $money);
             return [
                 true,
                 'message' => 'Вы вышли из карты не в городе и потеряли некоторые ресурсы.'
             ];
         }
 
-        $this->db->updateUserStatus($user, 'offline');
+        $this->db->updateUserStatus($user->id, 'offline');
         // Если игрок в городе, он ничего не теряет
         return [
             true, 
@@ -86,23 +75,7 @@ class Map {
 
     }
 
-    public function moveUser($id, $x, $y, $status) {
-        $position = [$x, $y];
-        $this->db->updateUserPosition($id, $position);
-        return true;
-        /*
-        // это тот самый эндгейм?
-        if ($status == 'scout'){
-            //если надо будет переместить юзера как-то вне скаутинга, то вообще убрать этот if
-            $position = [$x, $y];
-            $this->db->updateUserPosition($id, $position);
-            return true;
-        }
-        if ($status == 'fight'){
-            return ['error' => 9000, 'message' => 'Невозможно перемещаться во время боя.']
-        }
-        //перемещать в город (на x=80, y=45), если игрок оффлайн??
-        return ['error' => 9000, 'message' => 'Невозможно перемещаться. Игрок не в игре.']
-        */
+    public function moveUser($id, $x, $y) {
+        return $this->db->updateUserLocation($id, $x, $y);
     }
 }

@@ -71,7 +71,11 @@ class Application {
 
     public function userInfo($params) {
         if ($params['token']) {
-            return $this->user->userInfo($params['token']);
+            $user = $this->user->getUser($params['token']);
+            if ($user) {
+                return $this->user->userInfo($params['token']);
+            }
+            return ['error' => 705];
         }
         return ['error' => 404];
     }
@@ -79,7 +83,11 @@ class Application {
     //немного недоделано
     public function upgradePokemon($params) {
         if ($params['token'] && $params['monsterId']) {
-            return $this->user->upgradePokemon($params['token'], $params['monsterId']);
+            $user = $this->user->getUser($params['token']);
+            if ($user) {
+                return $this->user->upgradePokemon($params['token'], $params['monsterId']);
+            }
+            return ['error' => 705];
         }
         return ['error' => 404];
     }
@@ -106,6 +114,12 @@ class Application {
         }
     }
 
+    public function getMap($params) {
+        if ($params['token']) {
+            return $this->map->getMap($params['token']);
+        }
+        return ['error' => 242];
+    }
 
     public function startGame($params){
         if($params['token']){
@@ -115,17 +129,13 @@ class Application {
         return ['error' => 242];
     }
 
-
-    public function getMap($params) {
-        if ($params['token']) {
-            return $this->map->getMap($params['token']);
-        }
-        return ['error' => 242];
-    }
-
     public function endGame($params){
         if($params['token']){
-            return $this->map->endGame($params['token']);
+            $user = $this->user->getUser($params['token']);
+            if ($user) {
+                return $this->map->endGame($params['token']);
+            }
+            return ['error' => 705];
         }
         return ['error' => 242];
     }
