@@ -23,7 +23,7 @@ const Chat: React.FC = () => {
         }
 
         if (user) {
-            server.startChatMessages(newMessages);
+            //server.startChatMessages(newMessages);
         }
 
         return () => {

@@ -9,14 +9,18 @@ export type TAnswer<T> = {
     error?: TError;
 }
 
-export type TUser = {
-    token: string;
+type TGamer = {
+    id: number;
     name: string;
+    x: number;
+    y: number;    
+}
+
+export type TUser = TGamer & {
+    token: string;
     coins: number;
     crystals: number;
     eggFragments: number;
-    x: number;
-    y: number;
 }
 
 export type TMessage = {
@@ -31,6 +35,12 @@ export type TMessagesResponse = {
     messages: TMessages;
     hash: string;
 }
+
+export type TUpdateSceneResponse = {
+    gamers: TGamer[];
+    hash: string;
+}
+
 
 // элементы стихии
 export enum EElement {

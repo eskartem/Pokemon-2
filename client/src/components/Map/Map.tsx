@@ -4,7 +4,7 @@ import { StoreContext, ServerContext } from '../../App';
 import mapImage from '../../assets/img/mapImage.jpg';
 import characterImage from '../../assets/img/character.png';
 import CONFIG, { TPoint } from '../../config';
-import { TMap, TMapZone } from '../../services/server/types';
+import { TMap, TMapZone, TUpdateSceneResponse } from '../../services/server/types';
 
 import './Map.scss';
 
@@ -32,6 +32,21 @@ const Map: React.FC<IMap> = (props: IMap) => {
                 setMapZones(zones);
             }
         })();
+
+        const updateSceneHandler = (result: TUpdateSceneResponse) => {
+            // получил игроков на карте
+            // среди них нашёл себя по id
+            // нарисовал себя, область своей видимости и остальных игроков
+        }
+
+        if (user) {
+            server.startSceneUpdate(updateSceneHandler);
+        }
+
+        return () => {
+            server.stopSceneUpdate();
+        }
+
     }, [server]);
 
     const [mapPosition, setMapPosition] = useState<TPoint>({
@@ -45,20 +60,14 @@ const Map: React.FC<IMap> = (props: IMap) => {
         return (<>Карта не загружена. Что-то пошло не так.</>)
     }
 
-    const mousedown = (event: MouseEvent): void => {
+    const mousedown = (event: MouseEvent) => {
         setCanMove(true);
         setLastMousePosition({ x: event.clientX, y: event.clientY });
     }
+    const mouseup = () => setCanMove(false);
+    const mouseleave = () => setCanMove(false);
 
-    const mouseup = (): void => {
-        setCanMove(false);
-    }
-
-    const mouseleave = (): void => {
-        setCanMove(false);
-    }
-
-    const mousemove = (event: MouseEvent): void => {
+    const mousemove = (event: MouseEvent) => {
         if (!isCanMove) return;
 
         const deltaX = event.clientX - lastMousePosition.x;

@@ -43,6 +43,7 @@ const CONFIG = {
 
 
     CHAT_TIMESTAMP: 200, //ms
+    SCENE_TIMESTAMP: 300, //ms
 
 };
 

@@ -6,6 +6,7 @@ class Store {
     user: TUser | null = null;
     messages: TMessages = [];
     chatHash: string = 'empty chat hash';
+    sceneHash: string = 'empty scene hash';
 
     setToken(token: string): void {
         localStorage.setItem(TOKEN, token);
@@ -53,6 +54,14 @@ class Store {
 
     setChatHash(hash: string): void {
         this.chatHash = hash;
+    }
+
+    getSceneHash(): string {
+        return this.sceneHash;
+    }
+
+    setSceneHash(hash: string): void {
+        this.sceneHash = hash;
     }
 
     /*setMap(map: TGetMap): void {
