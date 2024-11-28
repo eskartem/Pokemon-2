@@ -129,11 +129,15 @@ class User {
         $this->db->upgradeHpMonstersByUser($user->id, $monsterId, $hp_param);
         $hp = $this->db->getMonsterHpById($monsterId);
         //$hp = isset($hp->hp) ? intval($hp->hp) : 0;
+        $parametersMonsterType = $this->db->getMonsterTypeById($monster_type_id);
+        $attack = isset($parametersMonsterType->attack) ? intval($parametersMonsterType->attack) : 0;
+        $attack = $attack + $attack_param;
+
 
         return[
             $this->db->getMonsterLevelById($monsterId),
             $hp,
-            $attack_param
+            $attack
         ];
     }
 

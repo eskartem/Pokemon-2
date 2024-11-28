@@ -133,6 +133,10 @@ class DB {
         return $this->query('SELECT level FROM monsters WHERE id = ?',[$monsterId]);
     }
     
+    public function getMonsterTypeById($monster_type_id){
+        return $this->query('SELECT * FROM monster_types WHERE id = ?',[$monster_type_id]);
+    }
+    
     public function upgradeLevelMonstersByUser($userId, $monsterId){
         $this->execute('UPDATE monsters SET level = level + 1 WHERE user_id = ? AND id = ?', [$userId, $monsterId]);
     }
