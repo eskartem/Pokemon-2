@@ -89,7 +89,7 @@ class Application {
                     return $this->user->upgradePokemon($params['token'], $params['monsterId']);
                 }
               
-                return ['error' => 2009];
+                return ['error' => 702];
             }
             return ['error' => 705];
 

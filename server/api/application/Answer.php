@@ -15,6 +15,7 @@ class Answer {
         '605' => 'invalid teamId',
         '700' => 'No skins',
         '701' => 'Skin is not found',
+        '702' => 'pokemon is not found',
         '706' => 'text message is empty',
         '707' => 'could not send message', // e-mail;
         '708' => 'invalid code from E-mail',
@@ -24,7 +25,6 @@ class Answer {
         '1001' => 'params login or password not set',
         '1005' => 'Other user is playing wright now. If you doesn`t, please change the password',
         '1006' => 'user with this email is already registered',
-        '2009' => 'pokemon is not found',
         '9000' => 'unknown error'
     );
 
