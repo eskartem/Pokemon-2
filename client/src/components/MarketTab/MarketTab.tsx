@@ -33,9 +33,9 @@ const MarketTab: React.FC = () => {
         try {
             let success: boolean | null = false;
             if (type === EMarketType.monster) {
-                success = await server.buyItem(id.toString()); // Покупаем существо
+                //success = await server.buyItem(id.toString()); // Покупаем существо
             } else if (type === EMarketType.item) {
-                success = await server.buyItem(id.toString()); // Покупаем ресурс
+                //success = await server.buyItem(id.toString()); // Покупаем ресурс
             }
 
             if (success) {

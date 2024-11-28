@@ -14,4 +14,18 @@ class Market {
         return ['error', 2001];
     }
 
+    public function buy($userId, $userBalance, $buyType, $purchaseId){
+
+        if ($buyType === 'pokemon'){
+            $lots = $this->db->getLotsByPurchaseId($purchaseId);
+            //return $this->db->buyPokemon($user->id, $params['id'])
+        }
+
+        if ($buyType === 'item'){
+            //return $this->db->buyItem($user->id, $params['id'])
+        }
+
+        //$this->market->buyItem($user->id, $params['id']);
+    }
+
 }

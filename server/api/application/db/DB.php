@@ -187,4 +187,8 @@ class DB {
     }
     
 
+    public function getLotsByPurchaseId($purchaseId){
+        //return $this->query();
+        return true;
+    }
 }
