@@ -80,14 +80,19 @@ class Application {
         return ['error' => 404];
     }
     
-    //добавить проверку имеет ли польз монстра такого id
     public function upgradePokemon($params) {
         if ($params['token'] && $params['monsterId']) {
             $user = $this->user->getUser($params['token']);
+            $monsters = $this->user->getMonster($params['monsterId']);
             if ($user) {
-                return $this->user->upgradePokemon($params['token'], $params['monsterId']);
+                if ($monsters->user_id === $user->id) {
+                    return $this->user->upgradePokemon($params['token'], $params['monsterId']);
+                }
+              
+                return ['error' => 2009];
             }
             return ['error' => 705];
+
         }
         return ['error' => 404];
     }

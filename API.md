@@ -230,7 +230,7 @@ Inventory: {
 
 **Успешный ответ**
 ```
-    Answer<User, Monsters, Inventory >
+    Answer<User, Monsters, Inventory>
 ```
 
 **Ошибки**
@@ -272,7 +272,7 @@ Inventory: {
 
 **Успешный ответ**
 ```
-    Answer<Monsters>
+    Answer<User, Monsters, Inventory>>
 ```
 **Ошибки**
 
