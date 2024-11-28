@@ -1,21 +1,32 @@
-import React, {useContext, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import Button from '../../components/Button/Button';
 import Map from '../../components/Map/Map';
 import Chat from '../../components/Chat/Chat';
 import { StoreContext, ServerContext } from '../../App';
 import { IBasePage, PAGES } from '../PageManager';
-import { TPoint } from '../../config';
+import CONFIG, { TPoint } from '../../config';
 
 import './Game.scss';
 
 const Game: React.FC<IBasePage> = (props: IBasePage) => {
 
+    const {tileSize} = CONFIG;
+
     const { setPage } = props;
     const server = useContext(ServerContext);
     const store = useContext(StoreContext);
-    let user = store.getUser()
+    let user = store.getUser();
 
-    const [userPosition, setUserPosition] = useState<TPoint>({ x: user?.x ?? 0, y: user?.y ?? 0 });
+    const [userPosition, setUserPosition] = useState<TPoint>({x: (user?.x ?? 0) * tileSize, y: (user?.y ?? 0) * tileSize});
+
+    const moveUser = async (dx: number, dy: number) => {
+        if (!user) return;
+        const result = await server.moveUser(user.x + dx, user.y + dy);
+        if (!result) return;
+        user.x += dx;
+        user.y += dy;
+        setUserPosition({x: user.x * tileSize, y: user.y * tileSize});
+    }
 
     const inventoryClickHandler = () => setPage(PAGES.INVENTORY);
     const marketClickHandler = () => setPage(PAGES.MARKET);
@@ -28,22 +39,39 @@ const Game: React.FC<IBasePage> = (props: IBasePage) => {
     const muteButtonHandler = async () => {
         // сделать запрос на сервак по изменению поля is_mute в таблицe users
     }
-    
-    if (!user) { return ( <div><h1> пользователь не найден </h1></div> )} // закоментировать для работы без бекэнда
 
-    const moveUser = async (dx: number, dy: number)  => {
-        // if ( await server.moveUser(dx, dy) ) { //moveUser не написан
-        if (true){
-            user = store.getUser();
-            if (!user) return
-            setUserPosition(prev => {
-                return {x: prev.x + dx, y: prev.y + dy};
-            });
-        }
-    }
+    useEffect(() => {
+        const keyDownHandler = (event: KeyboardEvent) => {
+            event.preventDefault();
+            switch (event.key) {
+                case 'ArrowUp':
+                    moveUser(0, -1);
+                    break;
+                case 'ArrowDown':
+                    moveUser(0, 1);
+                    break;
+                case 'ArrowLeft':
+                    moveUser(-1, 0);    
+                    break;
+                case 'ArrowRight':
+                    moveUser(1, 0);
+                    break;
+                default:
+                    break;
+            }
+        };
+
+        window.addEventListener('keydown', keyDownHandler);
+
+        return () => {
+            window.removeEventListener('keydown', keyDownHandler);
+        };
+    });
+    
+    if (!user) { return ( <div><h1> Что-то пошло не так. </h1></div> );} // закоментировать для работы без бекэнда
 
     return (
-        <div className="game-wrapper">
+        <div className="game-wrapper" >
             <div>
                 <div className='user-panel'>
                     <h1 className='user-panel-nick'> Ник:</h1>
@@ -54,7 +82,7 @@ const Game: React.FC<IBasePage> = (props: IBasePage) => {
                     <Button id='test-game-button-market' onClick={marketClickHandler} text='Рынок' />
                     <Button id='test-game-button-battle' onClick={battleClickHandler} text='Битва' />
                     <li><Button id='test-game-button-mute' onClick={muteButtonHandler} text='заглушить' />
-                    <Button id='test-game-button-logout' onClick={logoutClickHandler} text='разлогиниться' /></li>
+                    <Button id='test-game-button-logout' onClick={logoutClickHandler} text='Выйти' /></li>
                 </div>
                 <Chat />
             </div>
@@ -63,13 +91,15 @@ const Game: React.FC<IBasePage> = (props: IBasePage) => {
                     <h1 className='user-resources-coins'>монеты: </h1>
                     <h1 id='test-game-h1-coins' className='user-resources-coins'> {user?.coins} </h1>
                 </div>
-                <Map />
+                <Map userPosition={userPosition} />
                 <div className="control-panel">
-                    <button id='test-game-button-arrowleft' className="move-button" onClick={() => {}} >←</button>
-                    <button id='test-game-button-arrowup' className="move-button" onClick={() => {}} >↑</button>
-                    <button id='test-game-button-arrowdown' className="move-button" onClick={() => {}} >↓</button>
-                    <button id='test-game-button-arrowright' className="move-button" onClick={() => {}} >→</button>
-                    <button id='test-game-button-clearpath' className='clear-button' onClick={() => {}}>clear path</button>
+                    <Button id='test-game-button-arrowleft' className="move-button" 
+                    onClick={() => moveUser(-1, 0)} text={'←'} />
+                    <div className='vertical-move-buttons'>
+                        <Button id='test-game-button-arrowup' className="move-button" onClick={() => moveUser(0, -1)} text={'↑'} />
+                        <Button id='test-game-button-arrowdown' className="move-button" onClick={() => moveUser(0, 1)} text={'↓'} />
+                    </div>
+                    <Button id='test-game-button-arrowright' className="move-button" onClick={() => moveUser(1, 0)} text={'→'} />
                 </div>
             </div>
         </div>

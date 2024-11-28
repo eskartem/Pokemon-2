@@ -11,19 +11,14 @@ class Map {
         return true; // просто заглушка
     }
 
-
-    public function getMap($token) {
-        $user = $this->db->getUserByToken($token);
-        if ($user) {
-            $mapData = $this->db->getMap();
-            //хз, имеет ли вообще смысл писать этот кал, просто хочется чтобы к бд обращались только внутри класса DB
-            if ($mapData) {
-                return $mapData;
-            } else {
-                return ['error' => 9000, 'message' => 'Карта не найдена.'];
-            }
-        }
-        return ['error' => 9000, 'message' => 'Зарегестрируйтесь или войдите для просмотра карты.'];
+    public function getMap() {
+        $result = $this->db->getMap();
+        $map = $result['map'];
+        $map_zones = $result['map_zones'];
+        return [
+            'MAP' => ['WIDTH' => $map->width, 'HEIGHT' => $map->height, 'IMAGE' => $map->image],
+            'mapZones' => $map_zones
+        ];
     }
     
     public function startGame($token) {
