@@ -130,7 +130,7 @@ class Application {
         return ['error' => 242];
     }
 
-    public function startGame($params){
+    /*public function startGame($params){
         if($params['token']){
             $user = $this->user->getUser($params['token']);
             if ($user) {
@@ -150,7 +150,7 @@ class Application {
             return ['error' => 705];
         }
         return ['error' => 242];
-    }
+    }*/
 
     public function moveUser($params) {
         if (!isset($params['token'])) {

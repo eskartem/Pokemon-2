@@ -21,7 +21,7 @@ class Map {
         ];
     }
     
-    public function startGame($token) {
+    /*public function startGame($token) {
         $user = $this->db->getUserByToken($token);
         //обновление статуса (разведчик)
         $this->db->updateUserStatus($user->id, 'scout'); 
@@ -38,7 +38,7 @@ class Map {
         
         $this->db->updateUserStatus($user->id, 'offline');
         return true;
-    }
+    }*/
 
     public function moveUser($id, $x, $y) {
         return $this->db->updateUserLocation($id, $x, $y);
