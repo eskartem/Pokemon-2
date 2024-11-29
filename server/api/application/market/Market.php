@@ -14,18 +14,23 @@ class Market {
         return ['error', 2001];
     }
 
-    public function buy($userId, $userBalance, $buyType, $purchaseId){
-
-        if ($buyType === 'pokemon'){
-            $lots = $this->db->getLotsByPurchaseId($purchaseId);
-            //return $this->db->buyPokemon($user->id, $params['id'])
-        }
-
-        if ($buyType === 'item'){
-            //return $this->db->buyItem($user->id, $params['id'])
-        }
-
-        //$this->market->buyItem($user->id, $params['id']);
+    public function getLot($lotId) {
+        return $this->db->getLotByLotId($lotId);
     }
 
+    public function buy($userId, $userBalance, $buyType, $purchaseId, $lotInfo){
+        if ($lotInfo->status === 'open'){       
+            if ($lotInfo->current_cost < $userBalance){
+                if ($buyType === 'pokemon'){
+                    //return $this->db->buyPokemon($user->id, $params['id'])
+                }
+                if ($buyType === 'item'){
+                    //return ['check'];
+                    //return $this->db->buyItem($user->id, $params['id'])
+                }
+            }
+            return ['error' => 3003];
+        }
+        return ['error' => 3005];
+    }
 }

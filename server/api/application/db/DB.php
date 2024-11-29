@@ -187,8 +187,7 @@ class DB {
     }
     
 
-    public function getLotsByPurchaseId($purchaseId){
-        //return $this->query();
-        return true;
+    public function getLotByLotId($lotId){
+        return $this->query("SELECT * FROM lots WHERE id=?", [$lotId]);
     }
 }

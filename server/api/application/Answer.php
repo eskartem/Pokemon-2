@@ -25,6 +25,10 @@ class Answer {
         '1005' => 'Other user is playing wright now. If you doesn`t, please change the password',
         '1006' => 'user with this email is already registered',
         '3001' => 'incorrect parameter for purchasing',
+        '3002' => 'this pokemon / item does not exist',
+        '3003' => 'you do not have enough currency to buy this',
+        '3004' => 'this lot does not exist',
+        '3005' => 'this lot has been closed already',
         '9000' => 'unknown error'
     );
 

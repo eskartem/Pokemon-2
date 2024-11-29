@@ -115,23 +115,28 @@ class Application {
     }
 
     public function buy($params) {
-        if (!$params['token'] || !$params['buyType'] || !$params['id']){
+        if (!$params['token'] || !$params['buyType'] || !$params['id'] || !$params['lotId']){
             return ['error' => 242]; 
         }
 
         $purchaseId = $params['id'];
         $buyType = $params['buyType'];
+        $lot = $this->market->getLot($params['lotId']);
         $user = $this->user->getUser($params['token']);
 
         if (!$user) {
             return ['error' => 705];
         }
 
-        if (!($buyType === 'pokemon') || !($buyType === 'item')){
+        if (!$lot) {
+            return ['error' => 3004];
+        }
+
+        if ($buyType !== 'pokemon' && $buyType !== 'item') {
             return ['error' => 3001];
         }
 
-        return $this->market->buy($user->id, $user->money, $buyType, $purchaseId);
+        return $this->market->buy($user->id, $user->money, $buyType, $purchaseId, $lot);
     }
     
 } 
