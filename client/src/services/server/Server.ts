@@ -122,7 +122,7 @@ class Server {
     }
 
     async buyItem(id: string): Promise<boolean | null> {
-        const result = await this.request<boolean>('buyItem', { id });
+        const result = await this.request<boolean>('buy', { id });
         return result;
     }
     
