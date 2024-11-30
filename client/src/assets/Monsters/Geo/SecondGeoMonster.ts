@@ -7,16 +7,16 @@ class SecondGeoMonster extends Monster {
         this.level = level
     }
     side: string = this.side;
-    name: string = 'Ratata';
-    attack: number = 120;
-    healthPoint: number = 480;
-    defense: number = 50;
+    name: string = 'Dugtrio';
+    attack: number = 70;
+    healthPoint: number = 520;
+    defense: number = 55;
     element: string = 'Earth';
     level: number = this.level;
     isAlive: boolean = true;
     skill = {
-        name: 'Глыбопад',
-        scale: 1.2
+        name: 'Гравитационная волна',
+        scale: 0.25
     }
     weakening = {
         whirlpoolWeakening: false

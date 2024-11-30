@@ -1,5 +1,6 @@
 import {useCallback} from "react";
-import { Graphics, Text } from "@pixi/react";
+import { Graphics, Text, Container } from "@pixi/react";
+import { TextStyle } from "pixi.js";
 
 import { Monsters } from "../../../assets/Monsters/Monster";
 
@@ -43,6 +44,12 @@ const HpBars: React.FC<hpBarsProps> = (props: hpBarsProps) => {
         let healthPercentage = (healthPoint / maxHealthPoint) * 100
         return (healthPercentage / 100) * 200 
       }
+
+      const textStyle = new TextStyle({
+        fill: '#ffffff', // Цвет текста
+        stroke: '#000000', // Цвет обводки
+        strokeThickness: 2,
+      });
       
       const hpBarFirstPlayer = useCallback((g: any) => {
       g.clear();
@@ -105,6 +112,60 @@ const HpBars: React.FC<hpBarsProps> = (props: hpBarsProps) => {
     return (<>
       <Graphics draw={hpBarFirstPlayer} name={"test-battle-pixi-yourHealthPoint"}></Graphics>
       <Graphics draw={hpBarSecondPlayer} name={"test-battle-pixi-enemyHealthPoint"}></Graphics>
+      <Container x={stageProps.width * 0.01} y={stageProps.height * 0.02}>
+        <Text
+          text={`${hpBarFirstMonster}`}
+          x={8}
+          y={3}
+          scale={0.7}
+          style={textStyle}
+        />
+      </Container>
+      <Container x={stageProps.width * 0.01} y={stageProps.height * 0.1}>
+        <Text
+          text={`${hpBarSecondMonster}`}
+          x={8}
+          y={3}
+          scale={0.7}
+          style={textStyle}
+        />
+      </Container>
+      <Container x={stageProps.width * 0.01} y={stageProps.height * 0.18}>
+        <Text
+          text={`${hpBarThirdMonster}`}
+          x={8}
+          y={3}
+          scale={0.7}
+          style={textStyle}
+        />
+      </Container>
+      <Container x={stageProps.width * 0.80} y={stageProps.height * 0.02}>
+        <Text
+          text={`${hpBarFirstEnemyMonster}`}
+          x={170}
+          y={3}
+          scale={0.7}
+          style={textStyle}
+        />
+      </Container>
+      <Container x={stageProps.width * 0.80} y={stageProps.height * 0.1}>
+        <Text
+          text={`${hpBarSecondEnemyMonster}`}
+          x={170}
+          y={3}
+          scale={0.7}
+          style={textStyle}
+        />
+      </Container>
+      <Container x={stageProps.width * 0.80} y={stageProps.height * 0.18}>
+        <Text
+          text={`${hpBarThirdEnemyMonster}`}
+          x={170}
+          y={3}
+          scale={0.7}
+          style={textStyle}
+        />
+      </Container>
     </>)
 }
 

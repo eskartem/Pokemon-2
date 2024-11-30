@@ -18,7 +18,6 @@ export type Monsters = {
     isAlive: boolean
     side: string
     weakening: weakening
-
 }
 
 class Monster {

@@ -2,9 +2,9 @@ import {useEffect, useState} from 'react';
 import {Stage} from '@pixi/react';
 import { PAGES } from '../PageManager';
 
-import {FirstAnemoMonster, SecondAnemoMonster, ThirdAnemoMonster, FourthAnemoMonster, FirstGeoMonster, SecondGeoMonster,
-  ThirdGeoMonster, FourthGeoMonster, FirstHydroMonster, SecondHydroMonster, ThirdHydroMonster, FourthHydroMonster, 
-  FirstPyroMonster, SecondPyroMonster, ThirdPyroMonster, FourthPyroMonster} from '../../assets/Monsters/AllMoster'
+import {FirstAnemoMonster, SecondAnemoMonster, ThirdAnemoMonster, FirstGeoMonster, 
+  ThirdGeoMonster, FirstHydroMonster, SecondHydroMonster, ThirdHydroMonster, 
+  FirstPyroMonster, SecondPyroMonster, ThirdPyroMonster} from '../../assets/Monsters/AllMoster'
 
 import Buttons from '../../components/ButtonsPvp/Buttons';
 import HpBars from '../../components/Graphics/hpBars/hpBars';
@@ -14,19 +14,28 @@ import FinalScreen from '../../components/finalScreen/finalScreen';
 import Button from '../../components/Button/Button';
 import BattleTimer from '../../components/Graphics/battleTimer/battleTimer';
 
+import {easyBot, mediumBot, hardBot} from '../../assets/Bots/bots';
+
 import { Monsters } from "../../assets/Monsters/Monster"
 
 import './Battle.scss';
 import MathPvp from '../../services/MathPvp/MathPvp';
 
 const Pvp = (props: any) => {
-  let firstSelectedMonster: Monsters = new FirstAnemoMonster("yourSide", 6);
+  //Select enemy
+  const enemy = new hardBot() 
+  const enemyType = 'bot'
+
+  let firstSelectedMonster: Monsters = new ThirdGeoMonster("yourSide", 1);
   let secondSelectedMonster: Monsters = new FirstGeoMonster("yourSide", 1);
   let thirdSelectedMonster: Monsters = new FirstHydroMonster("yourSide", 1);
-  let firstSelectedEnemyMonster: Monsters = new SecondPyroMonster("enemySide", 1);
-  let secondSelectedEnemyMonster: Monsters = new FourthAnemoMonster("enemySide", 1);
-  let thirdSelectedEnemyMonster: Monsters = new FourthHydroMonster("enemySide", 1);
-
+  //let firstSelectedEnemyMonster: Monsters = new FirstPyroMonster('enemySide', 1)
+  //let secondSelectedEnemyMonster: Monsters = new SecondPyroMonster('enemySide', 2)
+  //let thirdSelectedEnemyMonster: Monsters =  new ThirdAnemoMonster('enemySide', 3)
+  let firstSelectedEnemyMonster: Monsters = enemy.selectedMonsters[0]
+  let secondSelectedEnemyMonster: Monsters =  enemy.selectedMonsters[1]
+  let thirdSelectedEnemyMonster: Monsters =   enemy.selectedMonsters[2]
+  
   const mathPvp = new MathPvp();
 
   const { setPage } = props; 
@@ -148,8 +157,8 @@ const Pvp = (props: any) => {
       setHpBarSecondMonster={setHpBarSecondMonster}
       setHpBarThirdEnemyMonster={setHpBarThirdEnemyMonster}
       setHpBarThirdMonster={setHpBarThirdMonster}
+      enemyType={enemyType}
     />
-
     <FinalScreen hpBarFirstMonster={hpBarFirstMonster}
       hpBarSecondMonster={hpBarSecondMonster}
       hpBarThirdMonster={hpBarThirdMonster}

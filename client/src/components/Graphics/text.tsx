@@ -42,12 +42,6 @@ const Texts: React.FC<textProps> = (props: textProps) => {
         hpBarThirdEnemyMonster
     } = props
 
-    const textStyle = new TextStyle({
-        fill: '#ffffff', // Цвет текста
-        stroke: '#000000', // Цвет обводки
-        strokeThickness: 2,
-      });
-
 
     return(<>
     <Container x={stageProps.width * 0.5 - 50} y={20} name={"test-battle-pixi-activeMonster"}>
@@ -55,48 +49,6 @@ const Texts: React.FC<textProps> = (props: textProps) => {
         text={`${activeMonster.name}`}
       />
     </Container>
-    <Text
-        text={`${hpBarFirstMonster}`}
-        x={stageProps.width * 0.01 + 7}
-        y={stageProps.height * 0.02 + 3}
-        scale={0.7}
-        style={textStyle}
-      />
-      <Text
-        text={`${hpBarSecondMonster}`}
-        x={stageProps.width * 0.01 + 7}
-        y={stageProps.height * 0.1 + 3}
-        scale={0.7}
-        style={textStyle}
-      />
-      <Text
-        text={`${hpBarThirdMonster}`}
-        x={stageProps.width * 0.01 + 7}
-        y={stageProps.height * 0.18 + 3}
-        scale={0.7}
-        style={textStyle}
-      />
-      <Text
-        text={`${hpBarFirstEnemyMonster}`}
-        x={stageProps.width * 0.99 - 32}
-        y={stageProps.height * 0.02 + 3}
-        scale={0.7}
-        style={textStyle}
-      />
-      <Text
-        text={`${hpBarSecondEnemyMonster}`}
-        x={stageProps.width * 0.99 - 32}
-        y={stageProps.height * 0.1 + 3}
-        scale={0.7}
-        style={textStyle}
-      />
-      <Text
-        text={`${hpBarThirdEnemyMonster}`}
-        x={stageProps.width * 0.99 - 32}
-        y={stageProps.height * 0.18 + 3}
-        scale={0.7}
-        style={textStyle}
-      />
       {hpBarFirstMonster > 0 && (
         <Text 
               text={`${firstSelectedMonster.name}`}

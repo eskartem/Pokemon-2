@@ -7,16 +7,16 @@ class FirstAnemoMonster extends Monster {
         this.level = level
     }
     side: string = this.side;
-    name: string = 'Pidgey';
-    attack: number = 130;
-    healthPoint: number = 470;
-    defense: number = 40;
+    name: string = "Farfetch'd";
+    attack: number = 150;
+    healthPoint: number = 520;
+    defense: number = 60;
     element: string = 'Air';
     level: number = this.level;
     isAlive: boolean = true;
     skill = {
-        name: 'Удар ветра',
-        scale: 1.3
+        name: 'Циклон разрушения',
+        scale : 1.5
     }
     weakening = {
         whirlpoolWeakening: false
