@@ -1,0 +1,139 @@
+{
+	"info": {
+		"_postman_id": "1f8759b9-41b5-4bc5-8af8-a44b5beb1d5f",
+		"name": "reg",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "40065591"
+	},
+	"item": [
+		{
+			"name": "MT_006.1",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "GET /api/?login=546&hash=3bb6e82a69bb4764fbd8e96435625b1f&name=user&method=registration&token=f071528aecfab420524a1df1bda7f8b8 HTTP/1.1",
+						"value": "",
+						"type": "text",
+						"disabled": true
+					},
+					{
+						"key": "Accept",
+						"value": " */*",
+						"type": "text"
+					},
+					{
+						"key": "Accept-Encoding",
+						"value": " gzip, deflate",
+						"type": "text"
+					},
+					{
+						"key": "Accept-Language",
+						"value": " ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7",
+						"type": "text"
+					},
+					{
+						"key": "Connection",
+						"value": " keep-alive",
+						"type": "text"
+					},
+					{
+						"key": "Host",
+						"value": " server",
+						"type": "text"
+					},
+					{
+						"key": "Origin",
+						"value": " http://localhost:3000",
+						"type": "text"
+					},
+					{
+						"key": "Referer",
+						"value": " http://localhost:3000/",
+						"type": "text"
+					},
+					{
+						"key": "User-Agent",
+						"value": " Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "login",
+							"value": " test-pochta@mail.ru",
+							"type": "text"
+						},
+						{
+							"key": "hash",
+							"value": " 3bb6e82a69bb4764fbd8e96435625b1f",
+							"type": "text"
+						},
+						{
+							"key": "name",
+							"value": " user",
+							"type": "text"
+						},
+						{
+							"key": "method",
+							"value": " registration",
+							"type": "text"
+						},
+						{
+							"key": "token",
+							"value": " f071528aecfab420524a1df1bda7f8b8",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://server/api/?login=test-pochta@mail.ru&hash=3bb6e82a69bb4764fbd8e96435625b1f&name=user&method=registration&token=f071528aecfab420524a1df1bda7f8b8",
+					"protocol": "http",
+					"host": [
+						"server"
+					],
+					"path": [
+						"api",
+						""
+					],
+					"query": [
+						{
+							"key": "login",
+							"value": "test-pochta@mail.ru"
+						},
+						{
+							"key": "hash",
+							"value": "3bb6e82a69bb4764fbd8e96435625b1f"
+						},
+						{
+							"key": "name",
+							"value": "user"
+						},
+						{
+							"key": "method",
+							"value": "registration"
+						},
+						{
+							"key": "token",
+							"value": "f071528aecfab420524a1df1bda7f8b8"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "MT_006.5",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		}
+	]
+}

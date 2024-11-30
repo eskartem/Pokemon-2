@@ -1,6 +1,5 @@
 import React, { useContext, useRef } from 'react';
 import { ServerContext } from '../../App';
-import Button from '../../components/Button/Button';
 import { IBasePage, PAGES } from '../PageManager';
 import RegistrImg from '../../assets/img/login/registr.png';
 import './Registration.scss';
@@ -13,7 +12,7 @@ const Registration: React.FC<IBasePage> = (props: IBasePage) => {
     const passwordRef = useRef<HTMLInputElement>(null);
 
     const isValidPassword = (password: string) => {
-        const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!"№;%:?*()_+=\-\`{}"?><.])(?=.*\S).{8,}$/;
+        const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!"№;%:?*()_+=\-`{}"?><.])(?=.*\S).{8,}$/;
         return passwordRegex.test(password);
     };
 
@@ -41,34 +40,35 @@ const Registration: React.FC<IBasePage> = (props: IBasePage) => {
 
     const backClickHandler = () => setPage(PAGES.LOGIN);
 
-    return (<div className='regist'>
+    return (<div className='regist' id='test-registration-page'>
         <div className='regist-wrapper'>
             <div className='regist-inputs'>
                 <input 
                 ref={nameRef} 
                 placeholder ='никнейм' 
-                onKeyDown={(event) => {if (event.key == "Enter") registClickHandler()}}
+                onKeyDown={(event) => {if (event.key === "Enter") loginRef.current?.focus()}}
                 />
                 <input 
                 ref={loginRef} 
                 placeholder='логин' 
-                onKeyDown={(event) => {if (event.key == "Enter") registClickHandler()}}
+                onKeyDown={(event) => {if (event.key === "Enter") passwordRef.current?.focus()}}
                 />
                 <input 
-                onKeyDown={(event) => {if (event.key == "Enter") registClickHandler()}}
+                onKeyDown={(event) => {if (event.key === "Enter") registClickHandler()}}
                 ref={passwordRef} 
-                placeholder='пароль' 
+                placeholder='пароль' id='test-registration-input_pass'
                 type='password' 
                 />
             </div>
             <div className='regist-buttons'>
-                <img className='registrClick' src={RegistrImg} alt='' onClick={registClickHandler}></img>
+                <img className='registrClick' id='test-registration-img_auth' src={RegistrImg} alt='' onClick={registClickHandler}></img>
                 <span className='login-link' onClick={backClickHandler}>
                 У меня уже есть аккаунт
                 </span>
             </div>
         </div>
-    </div>)
+        </div>);
+
 }
 
 export default Registration;
