@@ -50,13 +50,13 @@ const Map: React.FC<IMap> = (props: IMap) => {
     }, [server]);
 
     const [mapPosition, setMapPosition] = useState<TPoint>({
-        x: (-MAP.WIDTH - WINV.LEFT) * tileSize - userPosition.x,
-        y: (-MAP.HEIGHT - WINV.BOTTOM) * tileSize - userPosition.y
+        x: -(MAP.WIDTH + WINV.LEFT) * tileSize - userPosition.x,
+        y: -(MAP.HEIGHT + WINV.BOTTOM) * tileSize - userPosition.y
     });
     const [isCanMove, setCanMove] = useState<boolean>(false);
     const [lastMousePosition, setLastMousePosition] = useState<TPoint>({ x: 0, y: 0 });
 
-    if (!user || !MAP) {
+    if (!user) {
         return (<>Карта не загружена. Что-то пошло не так.</>)
     }
 
@@ -115,7 +115,10 @@ const Map: React.FC<IMap> = (props: IMap) => {
                     draw={(g) => {
                         g.clear();
                         mapZones.forEach(zone => {
-                            g.beginFill(0xAAAAAA);
+                            let color: string;
+                            if (zone.type === 'town') color = '0xAAAAAA';
+                            else color = '0x111111';
+                            g.beginFill(color);
                             g.drawRect(
                                 mapPosition.x + zone.x * tileSize,
                                 mapPosition.y + zone.y * tileSize,

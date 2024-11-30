@@ -24,15 +24,15 @@ class Map {
     public function startGame($token) {
         $user = $this->db->getUserByToken($token);
         if (!$user) {
-            return ['error' => 705]; 
+            return ['error' => 705];
         }
         
         if ($this->isUserInTown($user)) {
-            return ['message' => 'Вы уже находитесь в городе.']; 
+            return ['message' => 'Вы уже находитесь в городе.'];
         }
  
         //обновление статуса (разведчик)
-        $this->db->updateUserStatus($user, 'scout'); 
+        $this->db->updateUserStatus($user, 'scout');
 
         return [
             $this->db->getMonstersByUser($user, 'in team'),
@@ -43,7 +43,7 @@ class Map {
     public function endGame($token) {
         $user = $this->db->getUserByToken($token);
         if (!$user) {
-            return ['error' => 705]; 
+            return ['error' => 705];
         }
 
         $resources = $this->db->getAmountResourcesByUser($user);
@@ -83,9 +83,9 @@ class Map {
 
     public function moveUser($userId, $direction, $currentX, $currentY) {
         $mapData = $this->getMap();
-        if (!isset($mapData['MAP']['WIDTH'], $mapData['MAP']['HEIGHT']) || !is_array($mapData)) {
-            return ['error' => 850];
-        }
+        // if (!isset($mapData['MAP']['WIDTH'], $mapData['MAP']['HEIGHT']) || !is_array($mapData)) {
+        //     return ['error' => 850];
+        // }
     
         $borders = [
             'width' => $mapData['MAP']['WIDTH'],
@@ -104,9 +104,9 @@ class Map {
         $newX = $currentX + $dx;
         $newY = $currentY + $dy;
 
-        if ($newX < 0 || $newX > $borders['width'] || $newY < 0 || $newY > $borders['height']) {
-            return ['error' => 2003];
-        }
+        // if ($newX < 0 || $newX > $borders['width'] || $newY < 0 || $newY > $borders['height']) {
+        //     return ['error' => 2003];
+        // }
 
         $this->db->updateMapHash(md5(rand()));
         return $this->db->moveUser($userId, $newX, $newY);

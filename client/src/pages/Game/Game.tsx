@@ -21,13 +21,6 @@ const Game: React.FC<IBasePage> = (props: IBasePage) => {
 
     const moveUser = async (direction: EDIRECTION) => {
         server.moveUser(direction);
-        /*if (!user) return;
-        const result = await server.moveUser(direction);
-        if (!result) return;
-        user.x += dx;
-        user.y += dy;
-        setUserPosition({x: user.x * tileSize, y: user.y * tileSize});
-        */
     }
 
     const inventoryClickHandler = () => setPage(PAGES.INVENTORY);
