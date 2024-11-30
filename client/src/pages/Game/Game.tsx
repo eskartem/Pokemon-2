@@ -50,11 +50,9 @@ const Game: React.FC<IBasePage> = (props: IBasePage) => {
                     <h1 id='test-game-h1-name' className='user-panel-nick'> {user?.name} | </h1>
                 </div>
                 <div className='button-panel'>
-                    <Button id='test-game-button-inventory' onClick={inventoryClickHandler} text='Инвентарь' />
-                    <Button id='test-game-button-market' onClick={marketClickHandler} text='Рынок' />
-                    <Button id='test-game-button-battle' onClick={battleClickHandler} text='Битва' />
-                    <li><Button id='test-game-button-mute' onClick={muteButtonHandler} text='заглушить' />
-                    <Button id='test-game-button-logout' onClick={logoutClickHandler} text='разлогиниться' /></li>
+                    <li><Button id='test-game-button-market' onClick={marketClickHandler} text='Рынок' /></li>
+                    <li><Button id='test-game-button-inventory' onClick={inventoryClickHandler} text='Инвентарь' /></li>
+                    <li><Button id='test-game-button-battle' onClick={battleClickHandler} text='Битва' /></li>
                 </div>
                 <Chat />
             </div>
@@ -63,6 +61,8 @@ const Game: React.FC<IBasePage> = (props: IBasePage) => {
                     <h1 className='user-resources-coins'>монеты: </h1>
                     <h1 id='test-game-h1-coins' className='user-resources-coins'> {user?.coins} </h1>
                 </div>
+                <Button id='test-game-button-mute' onClick={muteButtonHandler} text='заглушить' />
+                <Button id='test-game-button-logout' onClick={logoutClickHandler} text='разлогиниться' />
                 <Map />
                 <div className="control-panel">
                     <button id='test-game-button-arrowleft' className="move-button" onClick={() => {}} >←</button>
