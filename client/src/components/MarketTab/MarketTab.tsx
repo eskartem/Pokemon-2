@@ -1,6 +1,6 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useContext, useState, useEffect } from 'react'; 
 import { ServerContext } from '../../App';
-import { TMarketCatalog} from '../../services/server/types';
+import { TMarketCatalog } from '../../services/server/types';
 import Button from '../Button/Button';
 
 import './MarketTab.scss';
@@ -9,21 +9,30 @@ const MarketTab: React.FC = () => {
     const server = useContext(ServerContext);
     const [catalog, setCatalog] = useState<TMarketCatalog | null>(null);
     const [error, setError] = useState<string | null>(null);
-
+    const [isLoading, setIsLoading] = useState<boolean>(true); // Новый флаг загрузки
 
     enum EMarketType {
-      monster,
-      item
-  }
-  
+        monster,
+        item
+    }
+
     // Загружаем данные каталога
     useEffect(() => {
         (async () => {
+            setIsLoading(true);
             try {
+                console.log('Полученные данные каталога:', catalog);
                 const catalogData = await server.getCatalog(); // Используем getCatalog
+                if (!catalogData) {
+                    throw new Error('Каталог не найден');
+                }
                 setCatalog(catalogData);
+                setError(null); 
             } catch (e) {
-                setError('Ошибка загрузки каталога');
+                console.error('Ошибка при загрузке каталога:', catalog);
+                setError('Ошибка загрузки каталога. Попробуйте позже.');
+            } finally {
+                setIsLoading(false);
             }
         })();
     }, [server]);
@@ -31,17 +40,19 @@ const MarketTab: React.FC = () => {
     // Обработчик покупки
     const handleBuy = async (id: number, type: EMarketType) => {
         try {
+            console.log('Покупка началась:', { id, type });
             let success: boolean | null = false;
             if (type === EMarketType.monster) {
-                //success = await server.buyItem(id.toString()); // Покупаем существо
+                console.log('Запрос на покупку существа:', { id });
+                success = await server.buyItem(id.toString()); // Покупаем существо
             } else if (type === EMarketType.item) {
-                //success = await server.buyItem(id.toString()); // Покупаем ресурс
+                console.log('Запрос на покупку ресурса:', { id });
+                success = await server.buyItem(id.toString()); // Покупаем ресурс
             }
 
             if (success) {
                 alert('Покупка успешна!');
-                // Перезагружаем каталог после успешной покупки
-                const updatedCatalog = await server.getCatalog();
+                const updatedCatalog = await server.getCatalog(); // Обновление каталога
                 setCatalog(updatedCatalog);
             } else {
                 alert('Не удалось выполнить покупку.');
@@ -52,7 +63,6 @@ const MarketTab: React.FC = () => {
         }
     };
 
- 
     if (!catalog) {
         return <div>{error || 'Ошибка'}</div>;
     }
