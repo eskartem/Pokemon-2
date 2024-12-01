@@ -5,6 +5,7 @@ require_once ('chat/Chat.php');
 require_once ('market/Market.php');
 require_once ('map/Map.php');
 require_once ('battle/Battle.php');
+require_once ('inventory/Inventory.php');
 
 class Application {
     private $user;
@@ -12,6 +13,7 @@ class Application {
     private $market;
     private $map;
     private $battle;
+    private $inventory;
     
     function __construct() {
         $db = new DB();
@@ -20,6 +22,7 @@ class Application {
         $this->market = new Market($db);
         $this->map = new Map($db);
         $this->battle = new Battle($db);
+        $this->inventory = new Inventory($db);
     }
 
     public function login($params) {
@@ -146,5 +149,37 @@ class Application {
             return ['error' => 705];
         }
         return ['error' => 242];
+    }
+
+    public function sell($params){
+        if (!isset($params['token']) || !isset($params['type']) || !isset($params['inventoryId'])) {
+            return ['error' => 242];
+        }
+        $user = $this->user->getUser($params['token']);
+        if (!$user) {
+            return ['error' => 705];
+        }
+
+        if (!in_array($params['type'], ['lot', 'merchant', 'exchanger'], true)) {
+            return ['error' => 3001];
+        }
+
+        $lotExtra = $params['lotExtra'] ?? null;
+        if (!in_array($lotExtra, ['pokemon', 'item', null], true)) {
+            return ['error' => 3002];
+        }
+
+        $inventory = $this->inventory->getInventory($params['inventoryId']);
+        if (!$inventory){
+            return ['error' => 3007];
+        }
+
+        $objectId = $params['objectId'] ?? null;
+        if (!is_null($objectId) && !filter_var($objectId, FILTER_VALIDATE_INT)) {
+            return ['error' => 3002];
+        }
+
+        //кажется обжект айди нужен только лотам
+        return $this->market->sell($user->id, $params['type'], $inventory, $lotExtra, $objectId);
     }
 }

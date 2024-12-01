@@ -23,7 +23,7 @@ class DB {
         // $port = '5432';
         // $user = 'postgres';
         // $pass = '---';
-        // $db = 'nopainnogame';
+        // $db = 'cockstaris';
         // $connect = "pgsql:host=$host;port=$port;dbname=$db;";
         // $this->pdo = new PDO($connect, $user, $pass, [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]);
 
@@ -194,5 +194,9 @@ class DB {
 
     public function getPlayersIngame() {
         return $this->queryAll('SELECT id, name, x, y FROM users WHERE token<>"" AND status<>"offline"');
+    }
+
+    public function getInventoryByItsId($inventoryId) {
+        return $this->query('SELECT * FROM inventory WHERE id=?', [$inventoryId]);
     }
 }

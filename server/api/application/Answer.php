@@ -30,6 +30,9 @@ class Answer {
         '2003' => 'coordinates to move are out of map borders',
         '2004' => 'cannot move to the same coordinates',
         '2005' => 'cannot move during the combat or offline',
+        '3001' => 'incorrect "type" parameter',
+        '3002' => 'incorrect parameter for lot',
+        '3007' => 'inventory with that ID has not been found',
         '9000' => 'unknown error'
     );
 
