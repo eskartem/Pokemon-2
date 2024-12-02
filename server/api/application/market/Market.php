@@ -18,16 +18,10 @@ class Market {
         return $this->db->getLotByLotId($lotId);
     }
 
-    public function buy($userId, $userBalance, $buyType, $purchaseId, $lotInfo){
+    public function buy($userId, $userBalance, $lotInfo, $newBet){
         if ($lotInfo->status === 'open'){       
             if ($lotInfo->current_cost < $userBalance){
-                if ($buyType === 'pokemon'){
-                    //return $this->db->buyPokemon($user->id, $params['id'])
-                }
-                if ($buyType === 'item'){
-                    //return ['check'];
-                    //return $this->db->buyItem($user->id, $params['id'])
-                }
+                return $this->db->setNewBet($userId, $lotInfo, $newBet);
             }
             return ['error' => 3003];
         }
