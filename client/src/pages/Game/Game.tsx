@@ -17,8 +17,6 @@ const Game: React.FC<IBasePage> = (props: IBasePage) => {
     const store = useContext(StoreContext);
     let user = store.getUser();
 
-    const [userPosition, setUserPosition] = useState<TPoint>({x: (user?.x ?? 0) * tileSize, y: (user?.y ?? 0) * tileSize});
-
     const moveUser = async (direction: EDIRECTION) => {
         server.moveUser(direction);
     }
@@ -78,14 +76,14 @@ const Game: React.FC<IBasePage> = (props: IBasePage) => {
                     <li><Button id='test-game-button-mute' onClick={muteButtonHandler} text='заглушить' />
                     <Button id='test-game-button-logout' onClick={logoutClickHandler} text='Выйти' /></li>
                 </div>
-                <Chat />
+                {/* <Chat /> */}
             </div>
             <div>
                 <div className='user-resources'>
                     <h1 className='user-resources-coins'>монеты: </h1>
                     <h1 id='test-game-h1-coins' className='user-resources-coins'> {user?.coins} </h1>
                 </div>
-                <Map userPosition={userPosition} />
+                <Map />
                 <div className="control-panel">
                     <Button id='test-game-button-arrowleft' className="move-button" 
                     onClick={() => moveUser(EDIRECTION.LEFT)} text={'←'} />

@@ -11,7 +11,7 @@ const ExchangerTab: React.FC = () => {
   
   const user = storeContext.getUser(); // Получаем данные пользователя из store
 
-  const [eggFragments, setEggFragments] = useState<number>(user?.eggFragments || 0);
+  // const [eggFragments, setEggFragments] = useState<number>(user?.eggFragments || 0); пока что 
   const [canExchange, setCanExchange] = useState<boolean>(false);
   const [exchangeStatus, setExchangeStatus] = useState<string>('');
   const [exchangerImage, setExchangerImage] = useState<string>(ExchangerImage);

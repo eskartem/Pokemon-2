@@ -4,22 +4,19 @@ import { StoreContext, ServerContext } from '../../App';
 import mapImage from '../../assets/img/mapImage.jpg';
 import characterImage from '../../assets/img/character.png';
 import CONFIG, { TPoint } from '../../config';
-import { TMap, TMapZone, TUpdateSceneResponse } from '../../services/server/types';
+import { TMap, TMapZone, TUpdateSceneResponse, TGamer } from '../../services/server/types';
 
 import './Map.scss';
 
-interface IMap {
-    userPosition: TPoint
-}
 
-const Map: React.FC<IMap> = (props: IMap) => {
-    const { userPosition } = props;
+const Map: React.FC = () => {
     const { WINV, canvasHeight, canvasWidth, tileSize } = CONFIG;
 
     const server = useContext(ServerContext);
     const store = useContext(StoreContext);
     let user = store.getUser();
 
+    const [gamers, setGamers] = useState<TGamer[]>([]);
     const [MAP, setMAP] = useState<TMap>({ WIDTH: 0, HEIGHT: 0, IMAGE: '' });
     const [mapZones, setMapZones] = useState<TMapZone[]>([]);
 
@@ -50,8 +47,8 @@ const Map: React.FC<IMap> = (props: IMap) => {
     }, [server]);
 
     const [mapPosition, setMapPosition] = useState<TPoint>({
-        x: -(MAP.WIDTH + WINV.LEFT) * tileSize - userPosition.x,
-        y: -(MAP.HEIGHT + WINV.BOTTOM) * tileSize - userPosition.y
+        x: -(MAP.WIDTH + WINV.LEFT) * tileSize,
+        y: -(MAP.HEIGHT + WINV.BOTTOM) * tileSize
     });
     const [isCanMove, setCanMove] = useState<boolean>(false);
     const [lastMousePosition, setLastMousePosition] = useState<TPoint>({ x: 0, y: 0 });
@@ -64,6 +61,7 @@ const Map: React.FC<IMap> = (props: IMap) => {
         setCanMove(true);
         setLastMousePosition({ x: event.clientX, y: event.clientY });
     }
+
     const mouseup = () => setCanMove(false);
     const mouseleave = () => setCanMove(false);
 
@@ -84,6 +82,7 @@ const Map: React.FC<IMap> = (props: IMap) => {
             // Ограничение по вертикали
             const maxY = 0;
             const minY = canvasHeight - MAP.HEIGHT * tileSize;
+            console.log(newY);
 
             return {
                 x: Math.max(minX, Math.min(maxX, newX)),
@@ -111,7 +110,7 @@ const Map: React.FC<IMap> = (props: IMap) => {
                     width={MAP.WIDTH * tileSize}
                     height={MAP.HEIGHT * tileSize}
                 />
-                 <Graphics // зоны
+                 {/* <Graphics // зоны
                     draw={(g) => {
                         g.clear();
                         mapZones.forEach(zone => {
@@ -128,14 +127,14 @@ const Map: React.FC<IMap> = (props: IMap) => {
                             g.endFill();
                         });
                     }}
-                />
-                <Sprite // гг
+                /> */}
+                {/* <Sprite // гг
                     image={characterImage}
                     width={tileSize}
                     height={tileSize}
-                    x={mapPosition.x + userPosition.x}
-                    y={mapPosition.y + userPosition.y}
-                />
+                    x={mapPosition.x}
+                    y={mapPosition.y}
+                /> */}
             </Stage>
         </div>
     )
