@@ -16,12 +16,14 @@ class Answer {
         '700' => 'No skins',
         '701' => 'Skin is not found',
         '702' => 'pokemon is not found',
+        '703' => 'max level pokemon',
         '706' => 'text message is empty',
         '707' => 'could not send message', // e-mail;
         '708' => 'invalid code from E-mail',
         '709' => ' session did not start or you need to use previous method',
         '800' => 'not found object',
         '801' => 'unknown state',
+        '802' => 'lack of funds', //не хватает средств
         '850' => 'incorrect array output',
         '1006' => 'user with this email is already registered',
         '2001' => 'coordinates to move are not set',

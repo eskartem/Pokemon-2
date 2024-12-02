@@ -115,9 +115,9 @@ class User {
         } elseif ($levelMonster === 4 && $crystalAmount >= 500) {
             $amount = 500;
         } elseif ($levelMonster === 5) {
-            return ['message' => 'Покемон максимально уровня'];
+            return ['error' => 703 ];
         } else {
-            return ['message' => 'Не хватает средств'];
+            return ['error' => 802 ];
         }
 
         $resourceType = 'crystal';
