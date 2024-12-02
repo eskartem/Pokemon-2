@@ -1,13 +1,13 @@
 {
 	"info": {
-		"_postman_id": "1f8759b9-41b5-4bc5-8af8-a44b5beb1d5f",
+		"_postman_id": "825cc722-e121-47d3-956a-eb787b4e9520",
 		"name": "reg",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "40065591"
 	},
 	"item": [
 		{
-			"name": "MT_006.1",
+			"name": "MT_006.1 + MT_006.5",
 			"protocolProfileBehavior": {
 				"disableBodyPruning": true
 			},
@@ -124,14 +124,6 @@
 						}
 					]
 				}
-			},
-			"response": []
-		},
-		{
-			"name": "MT_006.5",
-			"request": {
-				"method": "GET",
-				"header": []
 			},
 			"response": []
 		}
