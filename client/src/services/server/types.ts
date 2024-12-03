@@ -67,6 +67,7 @@ export type TStats = {
 
 // само существо
 export type TCreature = {
+    id: number;
     name: string;
     lvl: number;
     element: EElement,
@@ -76,9 +77,11 @@ export type TCreature = {
 
 // ресы пользователя
 export type TUserResources = {
-    coins: number,
-    crystals: number,
-    eggFragments: number,
+    id: number,
+    user_id: number,
+    resoure: number,
+    resoure_type: string,
+    element_id: number,
 }
 
 //существо на рынке
@@ -119,4 +122,10 @@ export type TMapZone = {
     height: number,
     type: string,
     element_id: number // надо название с помощью сложного запроса выдавать, а не само id, наругать бэкендеров.
+}
+
+export enum EStatus {
+    open,
+    sell,
+    cancel
 }

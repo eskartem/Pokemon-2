@@ -106,13 +106,24 @@ class Server {
         }
     }
 
-    async getUserResources(): Promise<TUserResources | null> {
-        const resources = await this.request<TUserResources>('getResources');
-        if (resources) {
-            return resources;
+    async userInfo(): Promise<TUserResources | null> {
+        const userInfo = await this.request<TUserResources>('userInfo');
+        if (userInfo) {
+            return userInfo;
         }
         return null;
     }
+    
+
+    async upgradePokemon(pokemonId: number): Promise<boolean> {
+        const result = await this.request<boolean>('upgradePokemon', { pokemonId: pokemonId.toString() });
+        if (result) {
+            return result;
+        }
+        return false;
+    }
+
+    
 
     async getMarketCatalog():Promise<TMarketCatalog | null> {
         const catalog = await this.request<TMarketCatalog>('getCatalog');
