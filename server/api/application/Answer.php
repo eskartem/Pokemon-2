@@ -22,7 +22,7 @@ class Answer {
         '800' => 'not found object',
         '801' => 'unknown state',
         '850' => 'incorrect array output',
-        // '1001' => 'params login or password are not set', почему коды ошибки дублируются, вопрос к Алёне.
+        // '1001' => 'params login or password are not set', почему коды ошибки дублируются
         // '1005' => 'Other user is playing right now. If it is not you, please change your password.',
         '1006' => 'user with this email is already registered',
         '2001' => 'coordinates to move are not set',

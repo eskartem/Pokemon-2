@@ -18,8 +18,8 @@ const Preloader: React.FC<IBasePage> = (props: IBasePage) => {
             </div>
             <span>Загрузка...</span>
             <section className="preloader__authors">
-                <h1>Автор:</h1>
-                <div className="authors_name alex"><span>Трусов Алексей</span></div>
+                <h1>Авторы:</h1>
+                <div className="authors_name alex"><span>Трусов Алексей и ИВТ-21</span></div>
             </section>
         </div>
     );
