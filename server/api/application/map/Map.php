@@ -12,11 +12,8 @@ class Map {
         $mapZone = $mapData['mapZones'];
         foreach ($mapZone as $zone){
             if ($zone['name'] === $zoneName){
-                $minX = $zone['x'] - $zone['width'] / 2;
-                $maxX = $zone['x'] + $zone['width'] / 2;
-                $minY = $zone['y'] - $zone['height'] / 2;
-                $maxY = $zone['y'] + $zone['height'] / 2;
-                if ($user->x >= $minX && $user->x <= $maxX && $user->y >= $minY && $user->y <= $maxY){
+                if ($user->x >= $zone['x'] && $user->x <= $zone['x'] + $zone['width'] && 
+                    $user->y >= $zone['y'] && $user->y <= $zone['y'] + $zone['height']){
                     return true;
                 }
             }
