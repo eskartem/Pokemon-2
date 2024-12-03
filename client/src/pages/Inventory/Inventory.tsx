@@ -35,8 +35,7 @@ const Inventory: React.FC<IBasePage> = (props: IBasePage) => {
     };
 
     const handleStats = () => {
-        if (!selectedPokemon) return;
-        alert(`Статистика:\nИмя: ${selectedPokemon.name}\nУровень: ${selectedPokemon.lvl}\nHP: ${selectedPokemon.stats.hp}\nАтака: ${selectedPokemon.stats.ad}\nЗащита: ${selectedPokemon.stats.df}`);
+        // в дальнейшем
     };
 
     return (
