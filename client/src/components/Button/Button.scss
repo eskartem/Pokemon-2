@@ -1,13 +1,17 @@
 @import '../../scss/variables';
 
 .button {
+    font-family: 'Franklin Gothic Medium';
     font-size: 2vh;
     background-color: $button-background-color;
-    border-radius: 10px;
-    border: solid $button-border-color 3px;
+    border-radius: 3px;
+    border: solid $button-border-color 1px;
     min-width: 120px;
     text-align: center;
-    padding: 0 5px 8px 5px;
+    color: #9fbef4;
+    text-shadow: -1px -1px 0 #356eb4, 1px -1px 0 #356eb4, -1px 1px 0 #356eb4, 1px 1px 0 #356eb4;
+    padding: 3px 5px 8px 5px;
+    cursor: pointer;
 
     &:hover {
         background-color: $button-hover-color;

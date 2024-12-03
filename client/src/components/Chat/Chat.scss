@@ -1,12 +1,10 @@
 .chat {
+    max-width: 35vw;
+    max-height: 35vw;
     display: flex;
     flex-direction: column;
-    border: 5px solid #3f91d4;
-
-    h1 {
-        color: #9fbef4;
-        text-shadow: -1px -1px 0 #698fbf, 1px -1px 0 #698fbf, -1px 1px 0 #698fbf, 1px 1px 0 #698fbf;;
-    }
+    align-items: center;
+    border: 5px solid #0540a5;
 
     &-inputs {
         display: flex;
@@ -23,12 +21,38 @@
     &-buttons {
         display: flex;
         justify-content: space-between;
-        max-width: 500px;
+        //max-width: 500px;
     }
 }
 
+.chat-buttons {
+    justify-content: flex-end;
+}
+
 .chat-messages {
-    border: 5px solid black;
+    max-height: 35vw;
+    border: 5px solid #9fbef4;
     text-align: left;
     padding: 5px;
+    backdrop-filter: blur(10px);
+    overflow-y: auto;
 }
+
+.message-text {
+    color: #ffffff;
+    text-shadow: -1px -1px 0 #000000, 1px -1px 0 #000000, -1px 1px 0 #000000, 1px 1px 0 #000000;
+}
+
+.chat-input {
+
+    input {
+        color: #ffffff;
+        text-shadow: -1px -1px 0 #000000, 1px -1px 0 #000000, -1px 1px 0 #000000, 1px 1px 0 #000000;
+
+        &::placeholder {
+            color: #9fbef4;
+            text-shadow: -1px -1px 0 #356eb4, 1px -1px 0 #356eb4, -1px 1px 0 #356eb4, 1px 1px 0 #356eb4;
+        }
+    }
+}
+

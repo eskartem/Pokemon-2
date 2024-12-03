@@ -1,5 +1,5 @@
 <?php
-//hi
+
 error_reporting(1);
 
 header('Content-Type: application/json; charset=utf-8');
@@ -17,13 +17,12 @@ function result($params) {
             case 'login': return $app->login($params);
             case 'logout': return $app->logout($params);
             case 'registration': return $app->registration($params);
-            case 'getResources': return $app->getResources($params);
             // chat
             case 'sendMessage': return $app->sendMessage($params);//loop
             case 'getMessages': return $app->getMessages($params);
             //gamer info
-            // case 'userInfo': return $app-> userInfo($params);
-            // case 'pokemonUpdate': return $app-> pokemonUpdate($params);
+             case 'userInfo': return $app-> userInfo($params);
+             case 'updradePokemon': return $app-> upgradePokemon($params);
             //inventory
 
             //battle
@@ -32,11 +31,12 @@ function result($params) {
             // case 'actionUser': return $app-> actionUser($params); //действие игрока в бою во время ход
             //map
             case 'getMap': return $app-> getMap($params);
-             case 'startGame': return $app-> startGame($params);
-             case 'endGame': return $app-> endGame($params);
+            case 'startGame': return $app-> startGame($params);
+            case 'endGame': return $app-> endGame($params);
 
-            // case 'sceneUpgrade': return $app-> sceneUpgrade($params); //loop
-            // case 'moveUser': return $app-> moveUser($params);//надо уметь бросать энд гейм
+            case 'updateScene': return $app-> updateScene($params); //loop
+            case 'moveUser': return $app-> moveUser($params);//надо уметь бросать энд гейм
+
             //market
             case 'getCatalog': return $app-> getCatalog($params);
             case 'buy': return $app->buy($params);

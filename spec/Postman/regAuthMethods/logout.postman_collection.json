@@ -1,0 +1,18 @@
+{
+	"info": {
+		"_postman_id": "08677496-32e1-42c8-9668-ade5d0645f9a",
+		"name": "logout",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "40065591"
+	},
+	"item": [
+		{
+			"name": "MT_006.6",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		}
+	]
+}

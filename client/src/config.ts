@@ -24,20 +24,26 @@ const CONFIG = {
     // dev
     HOST: 'http://server:80/api',
 
+    WINV: {
+        WIDTH: 32,
+        HEIGHT: 18,
+        LEFT: -16,
+        BOTTOM: -9
+    },
+    
+    winAspect: 16 / 9,
+    canvasWidth: 1000,
+    canvasHeight: 9/16 * 1000,
+    tileSize: 1000 / 32,
+    
+    MAP: {
+        WIDTH: 160,
+        HEIGHT: 90,
+    },
+
 
     CHAT_TIMESTAMP: 200, //ms
 
-    SPRITE_SIZE: 64, // размер спрайта в пикселях
-    LINE_OF_SPRITES: 10, // количество спрайтов в карте спрайтов
-    WIDTH: 50, // ширина карты
-    HEIGHT: 32, // высота карты 
-    // игровое окно, видимое пользователю
-    WINDOW: {
-        LEFT: 0,
-        TOP: 0,
-        HEIGHT: 12,
-        WIDTH: 20,
-    },
 };
 
 export default CONFIG;

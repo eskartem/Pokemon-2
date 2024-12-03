@@ -1,7 +1,7 @@
 import md5 from 'md5';
-import CONFIG from "../../config";
+import CONFIG, { TPoint } from "../../config";
 import Store from "../store/Store";
-import { TAnswer, TError, TMessagesResponse, TUser, TUserResources, TMarketCatalog } from "./types";
+import { TAnswer, TError, TMessagesResponse, TUser, TMarketCatalog, TUserResources, TMap, TMapZone } from "./types";
 
 const { CHAT_TIMESTAMP, HOST } = CONFIG;
 
@@ -64,6 +64,7 @@ class Server {
         if (result) {
             this.store.clearUser();
         }
+        return result;
     }
 
     registration(login: string, password: string, name: string): Promise<boolean | null> {
@@ -94,7 +95,6 @@ class Server {
                 cb(hash);
             }
         }, CHAT_TIMESTAMP);
-
     }
 
     stopChatMessages(): void {
@@ -143,7 +143,16 @@ class Server {
     async exchangeEggsForPokemon(): Promise<{ success: boolean }> {
         // Здесь должна быть логика для запроса на сервер
         return { success: true }; // Пример возврата. Настоящая логика может отличаться.
-      }
+    }
+
+    async getMap(): Promise<{MAP: TMap, mapZones: TMapZone[]} | null> {
+        return await this.request<{MAP: TMap, mapZones: TMapZone[]}>('getMap');
+    }
+
+    async moveUser(x: number, y: number): Promise<boolean | null> {
+        return await this.request<boolean>('moveUser', { x: `${x}` , y: `${y}`});
+    }
+
 }
 
 export default Server;
