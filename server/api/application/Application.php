@@ -85,15 +85,17 @@ class Application {
     }
 
 
-    public function getCatalog($params) {
-        if ($params['token']) {
-            $user = $this->user->getUser($params['token']);
-            if ($user) {
-                return $this->market->getCatalog($this->map->isUserInTown($user));
-            }
+    public function getAllLots($params) {
+        if (!$params['token']) {
+            return ['error' => 242];
+        }
+
+        $user = $this->user->getUser($params['token']);
+        if (!$user) {
             return ['error' => 705];
         }
-        return ['error' => 242];
+
+        return $this->market->getAllLots($this->map->isUserInZone($user, "город"));
     }
 
     public function startGame($params){

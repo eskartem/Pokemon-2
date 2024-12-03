@@ -38,7 +38,7 @@ function result($params) {
             case 'moveUser': return $app-> moveUser($params);//надо уметь бросать энд гейм
 
             //market
-            case 'getCatalog': return $app-> getCatalog($params);
+            case 'getAllLots': return $app->getAllLots($params); // новое название getAllLots, вместо getCatalog
             // case 'buy': return $app-> buy($params);
             // case 'sale': return $app-> sale($params);
 
