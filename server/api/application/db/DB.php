@@ -197,6 +197,15 @@ class DB {
     }
 
     public function getInventoryByItsId($inventoryId) {
-        return $this->query('SELECT * FROM inventory WHERE id=?', [$inventoryId]);
+        return $this->queryAll('SELECT * FROM inventory WHERE id=?', [$inventoryId]);
     }
+
+    public function getResourcesById($objectId){
+        return query('SELECT * FROM resources WHERE id=?', [$objectId]);
+    }
+
+    public function sellResources($sellingResourceId, $resourceAmount){
+        return execute('UPDATE inventory SET resources_amount=resources_amount-? WHERE resources_id=?', [$resourceAmount, $sellingResourceId]);
+    }
+
 }

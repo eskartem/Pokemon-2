@@ -155,6 +155,7 @@ class Application {
         if (!isset($params['token']) || !isset($params['type']) || !isset($params['inventoryId'])) {
             return ['error' => 242];
         }
+        //пересмотреть инвентори айди, параметр тот же, поменять их поиск
         $user = $this->user->getUser($params['token']);
         if (!$user) {
             return ['error' => 705];
@@ -179,7 +180,12 @@ class Application {
             return ['error' => 3002];
         }
 
-        //кажется обжект айди нужен только лотам
-        return $this->market->sell($user->id, $params['type'], $inventory, $lotExtra, $objectId);
+        $resourceAmount = $params['amount'] ?? null;
+        if (!is_null($objectId) && !filter_var($objectId, FILTER_VALIDATE_INT)) {
+            return ['error' => 3002];
+        }
+
+        //как будто lotExtra тоже не нужен
+        return $this->market->sell($user->id, $params['type'], $inventory, $lotExtra, $objectId, $resourceAmount);
     }
 }

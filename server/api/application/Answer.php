@@ -33,6 +33,8 @@ class Answer {
         '3001' => 'incorrect "type" parameter',
         '3002' => 'incorrect parameter for lot',
         '3007' => 'inventory with that ID has not been found',
+        '3008' => 'selling object with that ID has not been found',
+        '3009' => 'not enough resources to sell that amount',
         '9000' => 'unknown error'
     );
 
