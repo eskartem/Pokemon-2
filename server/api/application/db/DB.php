@@ -194,4 +194,8 @@ class DB {
             "UPDATE lots SET buyer_id = ?, timestamp_cost = UNIX_TIMESTAMP(), current_cost = ? WHERE id = ?", [$userId, $newBet, $lotId]
         );
     }
+    public function getMarket() {
+        return $this->queryAll(""); // пустой метод заглушка ,удалить после реализациия нормального метода для получения лотов.
+    }
+
 }

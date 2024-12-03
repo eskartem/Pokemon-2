@@ -85,11 +85,11 @@ class Application {
     }
 
 
-    public function getCatalog($params) {
+    public function getMarket($params) {
         if ($params['token']) {
             $user = $this->user->getUser($params['token']);
             if ($user) {
-                return $this->market->getCatalog($this->map->isUserInTown($user));
+                return $this->market->getMarket($this->map->isUserInTown($user));
             }
             return ['error' => 705];
         }
