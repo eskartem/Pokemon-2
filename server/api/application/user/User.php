@@ -120,9 +120,9 @@ class User {
             return ['error' => 802 ];
         }
 
-        $resourceType = 'crystal';
+        $resourceTypeId = 1;
         //вычитаем ресурсы
-        $this->db->clearUserResource($user->id, $resourceType, $amount);
+        $this->db->clearUserResource($user->id, $resourceTypeId, $amount);
         //увеливаем уровень
         $this->db->upgradeLevelMonstersByUser($user->id, $monsterId);
     
