@@ -23,7 +23,7 @@ class DB {
         // $port = '5432';
         // $user = 'postgres';
         // $pass = '---';
-        // $db = 'nopainnogame';
+        // $db = 'cockstaris';
         // $connect = "pgsql:host=$host;port=$port;dbname=$db;";
         // $this->pdo = new PDO($connect, $user, $pass, [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]);
 
@@ -75,12 +75,16 @@ class DB {
         $this->execute("INSERT INTO users (login,password,name) VALUES (?, ?, ?)",[$login, $hash, $name]);
     }
 
-    public function getChatHash() {
+    public function getHash() {
         return $this->query("SELECT * FROM hashes WHERE id=1");
     }
 
     public function updateChatHash($hash) {
         $this->execute("UPDATE hashes SET chat_hash=? WHERE id=1", [$hash]);
+    }
+
+    public function updateMapHash($hash) {
+        $this->execute("UPDATE hashes SET map_hash=? WHERE id=1", [$hash]);
     }
 
     public function addMessage($userId, $message) {
@@ -100,8 +104,8 @@ class DB {
     }
 
     public function getMap(){
-        //$mapId = $this->query->("SELECT map_id FROM game");
-        $mapId = 1;
+        $game = $this->query("SELECT map_id FROM game");
+        $mapId = $game->map_id;
         return ['map' => $this->query("SELECT * FROM map WHERE id = ?", [$mapId]),
                 'map_zones' => $this->queryAll("SELECT 
                 name, x, y, width, height, type, element_id 
@@ -109,8 +113,11 @@ class DB {
         ];
     }
         
-    public function updateUserLocation($userId, $x, $y) {
-        return $this->execute("UPDATE users SET x = ?, y = ? WHERE id = ?", [$x, $y, $userId]);
+    public function moveUser($userId, $newX, $newY) {
+        return $this->execute("UPDATE users 
+            SET x=?, y=? 
+            WHERE id=?", [$newX, $newY, $userId]
+        );
     }
 
     public function getMonstersByUser($userId, $status = null) {
@@ -196,4 +203,28 @@ class DB {
     public function getAllLots(){
         return $this->queryAll('SELECT * from lots');
     }
+    public function getPlayersIngame() {
+        return $this->queryAll('SELECT id, name, x, y FROM users WHERE token<>"" AND status<>"offline"');
+    }
+
+    public function getInventoryById($userId) {
+        return $this->queryAll('SELECT * FROM inventory WHERE user_id=?', [$userId]);
+    }
+
+    public function getResources(){
+        return $this->queryAll('SELECT * FROM resources');
+    }
+
+    public function getResourcesById($objectId){
+        return $this->query('SELECT * FROM resources WHERE id=?', [$objectId]);
+    }
+
+    public function sellResources($sellingResourceId, $resourceAmount, $userId){
+        return $this->execute('UPDATE inventory SET resource_amount=resource_amount-? WHERE resource_id=? AND user_id=?', [$resourceAmount, $sellingResourceId, $userId]);
+    }
+
+    public function changeMoney($userId, $balanceIncrease){
+        return $this->execute('UPDATE users SET money=money+? WHERE id=?', [$balanceIncrease, $userId]);
+    }
+
 }

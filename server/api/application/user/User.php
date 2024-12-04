@@ -7,6 +7,9 @@ class User {
     }
 
     public function getUser($token) {
+        // проверять активность игроков и 
+        // менять им статус на offline в случае отсутствия оной
+        //...
         return $this->db->getUserByToken($token);
     }
 
