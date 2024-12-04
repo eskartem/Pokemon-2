@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.1:3306
--- Время создания: Ноя 28 2024 г., 16:42
+-- Время создания: Дек 04 2024 г., 17:03
 -- Версия сервера: 8.0.30
 -- Версия PHP: 8.1.9
 
@@ -102,20 +102,23 @@ CREATE TABLE `inventory` (
   `id` int NOT NULL,
   `user_id` int NOT NULL,
   `resource` int NOT NULL,
-  `resource_type` varchar(16) NOT NULL,
-  `element_id` int NOT NULL
+  `resource_type` varchar(16) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Дамп данных таблицы `inventory`
 --
 
-INSERT INTO `inventory` (`id`, `user_id`, `resource`, `resource_type`, `element_id`) VALUES
-(1, 1, 1145, 'crystal', 1),
-(2, 1, 77, 'crystal', 3),
-(3, 2, 1000, 'eggs', 2),
-(4, 2, 1345, 'crystal', 2),
-(5, 1, 693, 'crystal', 2);
+INSERT INTO `inventory` (`id`, `user_id`, `resource`, `resource_type`) VALUES
+(1, 1, 1000, 'crystal'),
+(2, 1, 146, 'eggs'),
+(3, 1, 87, 'eggFragments'),
+(4, 2, 976, 'crystal'),
+(5, 2, 25, 'eggs'),
+(6, 2, 89, 'eggFragments'),
+(7, 3, 256, 'crystal'),
+(8, 3, 7, 'eggs'),
+(9, 3, 94, 'eggFragments');
 
 -- --------------------------------------------------------
 
@@ -252,8 +255,8 @@ CREATE TABLE `monsters` (
 
 INSERT INTO `monsters` (`id`, `user_id`, `monster_type_id`, `level`, `hp`, `status`) VALUES
 (1, 2, 1, 2, 350, 'in team'),
-(2, 1, 2, 5, 432, 'in team'),
-(3, 2, 2, 4, 35, 'in team');
+(2, 1, 2, 4, 1992, 'in team'),
+(3, 2, 2, 5, 305, 'in team');
 
 -- --------------------------------------------------------
 
@@ -321,10 +324,7 @@ INSERT INTO `resources` (`id`, `name`) VALUES
 (2, 'Кристалл огня'),
 (3, 'Кристалл земли'),
 (4, 'Кристалл воздуха'),
-(5, 'Яйцо воды'),
-(6, 'Яйцо огня'),
-(7, 'Яйцо земли'),
-(8, 'Яйцо воздуха');
+(5, 'Яйцо воды');
 
 -- --------------------------------------------------------
 
@@ -350,10 +350,9 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `login`, `password`, `token`, `name`, `money`, `rating`, `x`, `y`, `status`) VALUES
-(1, 'vasya', 'fcb03559c0317682f5d65a88aca50012', '60c0c839835baf409678274931836ba1', 'Вася Пупкин', 256, 0, 80, 45, 'offline'),
-(2, 'petya', 'bcb209cf0d43e198e6467f8b0ac3387a', '431542fe9302b7f2807069adb7504bd5', 'Пётр Петрович', 0, 0, 50, 34, 'scout'),
-(3, 'masha', 'e213995da574de722a416f65b43d8314', '1916666aacbb8732bf2d12238b2cd5db', 'Маша Сергеевна', 0, 0, 80, 45, 'offline'),
-(4, 'ale', '494d25837f73cc7fd3076c0266437d8a', 'a764f0cfd96f268c5f0687209b645a87', 'alyona', 0, 0, 80, 45, 'offline');
+(1, 'vasya', 'fcb03559c0317682f5d65a88aca50012', 'c73e21e2d473650c2fbf8e8fb8c4d70a', 'Вася Пупкин', 256, 0, 80, 45, 'scout'),
+(2, 'petya', 'bcb209cf0d43e198e6467f8b0ac3387a', NULL, 'Пётр Петрович', 0, 0, 50, 34, 'offline'),
+(3, 'masha', 'e213995da574de722a416f65b43d8314', '1916666aacbb8732bf2d12238b2cd5db', 'Маша Сергеевна', 0, 0, 80, 45, 'offline');
 
 --
 -- Индексы сохранённых таблиц
@@ -482,7 +481,7 @@ ALTER TABLE `hashes`
 -- AUTO_INCREMENT для таблицы `inventory`
 --
 ALTER TABLE `inventory`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT для таблицы `lots`

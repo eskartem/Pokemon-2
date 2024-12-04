@@ -99,11 +99,11 @@ class User {
         $monster_type_id = isset($monster_type_id->monster_type_id) ? intval($monster_type_id->monster_type_id) : 0;
     
         //Получаем id стихии, которая принадлежит покемону
-        $element_id = $this->db->getElementByMonsters($monster_type_id);
-        $element_id = isset($element_id->element_id) ? intval($element_id->element_id) : 0;
+        //$element_id = $this->db->getElementByMonsters($monster_type_id);
+        //$element_id = isset($element_id->element_id) ? intval($element_id->element_id) : 0;
     
         //узнаем скок кристалов у пользака определенной стихии 
-        $resources = $this->db->getAmountCrystalByUser($user->id, $element_id);    
+        $resources = $this->db->getAmountCrystalByUser($user->id);    
         $crystalAmount = isset($resources->resource) ? intval($resources->resource) : 0;
 
         if ($levelMonster === 1 && $crystalAmount >= 10) {
@@ -122,7 +122,7 @@ class User {
 
         $resourceType = 'crystal';
         //вычитаем ресурсы
-        $this->db->clearUserResource($user->id, $resourceType, $amount, $element_id);
+        $this->db->clearUserResource($user->id, $resourceType, $amount);
         //увеливаем уровень
         $this->db->upgradeLevelMonstersByUser($user->id, $monsterId);
     
