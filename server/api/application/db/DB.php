@@ -193,4 +193,7 @@ class DB {
         $this->execute('UPDATE users SET status = ? WHERE id =?', [$status, $userId]);
     }
 
+    public function getAllLots(){
+        return $this->queryAll('SELECT * from lots');
+    }
 }

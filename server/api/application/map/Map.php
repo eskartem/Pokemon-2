@@ -7,8 +7,18 @@ class Map {
         $this->db = $db;
     }
 
-    public function isUserInTown($user) {
-        return true; // просто заглушка
+    public function isUserInZone($user, $zoneName) {
+        $mapData = $this->getMap();
+        $mapZone = $mapData['mapZones'];
+        foreach ($mapZone as $zone){
+            if ($zone['name'] === $zoneName){
+                if ($user->x >= $zone['x'] && $user->x <= $zone['x'] + $zone['width'] && 
+                    $user->y >= $zone['y'] && $user->y <= $zone['y'] + $zone['height']){
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     public function getMap() {
