@@ -5,24 +5,41 @@ import { ServerContext } from '../../App';
 import { IBasePage, PAGES } from '../PageManager'; 
 import './Inventory.scss';
 
+export enum TABS {
+    INVENTORY
+}
+
 const Inventory: React.FC<IBasePage> = (props: IBasePage) => {
     const { setPage } = props;
     const backClickHandler = () => setPage(PAGES.GAME);
     const server = useContext(ServerContext);
     const [allPokemons] = useState<TCreature[]>([]);
     const [selectedPokemon, setSelectedPokemon] = useState<TCreature | null>(null);
-    const [userResources, setUserResources] = useState<TUserResources | null>(null);
+    const [userResources, setUserResources] = useState<TUserResources[]>([]);
+    const [tab, setTab] = useState<TABS>(TABS.INVENTORY);
 
     useEffect(() => {
         async function fetchData() {
-            // сюда еще про покемоны, но нет баттла в server.ts
-            const resources = await server.userInfo();
-            if (resources) {
-                setUserResources(resources);
+            try {
+                const resources = await server.userInfo();
+    
+                if (resources) {
+                    if (Array.isArray(resources)) {
+                        setUserResources(resources);
+                    } else if (typeof resources === 'object') {
+                        setUserResources([resources]);
+                    } else {
+                        console.error('Unexpected data format:', resources);
+                    }
+                }
+            } catch (error) {
+                console.error('Failed to fetch user resources:', error);
             }
         }
+    
         fetchData();
     }, [server]);
+    
 
     const handleUpgrade = async () => {
         if (!selectedPokemon) return;
@@ -38,12 +55,19 @@ const Inventory: React.FC<IBasePage> = (props: IBasePage) => {
         // в дальнейшем
     };
 
+    const getResourceAmount = (type: string) => {
+        const resource = userResources.find(res => res.resource_type === type);
+        return resource ? resource.resource : 0;
+    };
+
     return (
         <div className="inventory">
             <div className="resources">
-                {userResources ? (
+                {userResources.length > 0 ? (
                     <>
-                        <p>Ресурсы: {userResources.Inventory}</p>
+                        <p>Монеты: {getResourceAmount('')}</p>
+                        <p>Яйца: {getResourceAmount('eggs')}</p>
+                        <p>Фрагменты яиц: {getResourceAmount('eggFragments')}</p>
                     </>
                 ) : (
                     <p>Загрузка ресурсов...</p>
@@ -64,9 +88,9 @@ const Inventory: React.FC<IBasePage> = (props: IBasePage) => {
             </div>
 
             <div className="actions">
-                <Button onClick={handleUpgrade} text="Улучшить"  />
+                <Button onClick={handleUpgrade} text="Улучшить" />
                 <Button onClick={handleStats} text="Статистика" />
-                <Button onClick={backClickHandler} text='назад' />
+                <Button onClick={backClickHandler} text="Назад" />
             </div>
         </div>
     );

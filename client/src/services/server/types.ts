@@ -77,9 +77,10 @@ export type TCreature = {
 
 // ресы пользователя
 export type TUserResources = {
-    User: string,
-    Monsters: string,
-    Inventory: number,
+    id: string,
+    user_id: string,
+    resource: number,
+    resource_type: string
 }
 
 //существо на рынке
@@ -126,4 +127,13 @@ export enum EStatus {
     open,
     sell,
     cancel
+}
+
+export type TMonster = {
+    id: number,
+    user_id: number,
+    monster_type_id: number,
+    level: number,
+    hp: number,
+    status: string
 }
