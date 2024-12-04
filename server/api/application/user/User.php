@@ -10,12 +10,17 @@ class User {
         return $this->db->getUserByToken($token);
     }
 
+    public function getMonster($monsterId){
+        return $this->db->getMonsterById($monsterId);    
+    }
+
     public function login($login, $hash, $rnd) {
         $user = $this->db->getUserByLogin($login);
         if ($user) {
             if (md5($user->password . $rnd) === $hash) {
                 $token = md5(rand());
                 $this->db->updateToken($user->id, $token);
+                $this->db->updateUserStatus($user->id, 'scout'); 
                 return [
                     'id' => $user->id,
                     'name' => $user->name,
@@ -25,6 +30,8 @@ class User {
                     'eggFragments' => $user->egg_fragments,
                     'x' => $user->x,
                     'y'=> $user->y,
+                    $this->db->getMonstersByUser($user->id),
+                    $this->db->getInventoryByUser($user->id)
                 ];
             }
             return ['error' => 1002];
@@ -36,6 +43,7 @@ class User {
         $user = $this->db->getUserByToken($token);
         if ($user) {
             $this->db->updateToken($user->id, null);
+            $this->db->updateUserStatus($user->id, 'offline');
             return true;
         }
         return ['error' => 1003];
@@ -51,6 +59,7 @@ class User {
         if ($user) {
             $token = md5(rand());
             $this->db->updateToken($user->id, $token);
+            $this->db->updateUserStatus($user->id, 'scout'); 
             return [
                 'id' => $user->id,
                 'name' => $user->name,
@@ -58,103 +67,84 @@ class User {
                 'coins' => $user->coins,
                 'crystals' => $user->crystals,
                 'eggFragments' => $user->egg_fragments,
+                $this->db->getMonstersByUser($user->id),
+                $this->db->getInventoryByUser($user->id)
             ];
         }
         return ['error' => 1004];
     }
 
-//Gamer Info
+    //Gamer Info
+    public function userInfo($token) {
+        $user = $this->db->getUserByToken($token);
+        if ($user) {
+            return [
+                $user,
+                $this->db-> getMonstersByUser($user->id),
+                $this->db-> getInventoryByUser($user->id)
+            ];
+        }
+        return ['error' => 404]; 
+    }
 
-public function userInfo($token) {
-    $user = $this->db->getUserByToken($token);
-    if ($user) {
-        return [
-            $user,
-            $this->db-> getMonstersByUser($user),
-            $this->db-> getInventoryByUser($user)
+    public function upgradePokemon($token, $monsterId) {
+        $user = $this->db->getUserByToken($token);
+
+        //узнаем уровень покемона
+        $levelMonster = $this->db->getMonsterLevelById($monsterId);
+        $levelMonster = isset($levelMonster->level) ? intval($levelMonster->level) : 0;
+    
+      //узнаем id типа монстра
+        $monster_type_id = $this->db->getMonsterTypeByMonsters($monsterId);
+        $monster_type_id = isset($monster_type_id->monster_type_id) ? intval($monster_type_id->monster_type_id) : 0;
+    
+        //Получаем id стихии, которая принадлежит покемону
+        //$element_id = $this->db->getElementByMonsters($monster_type_id);
+        //$element_id = isset($element_id->element_id) ? intval($element_id->element_id) : 0;
+    
+        //узнаем скок кристалов у пользака определенной стихии 
+        $resources = $this->db->getAmountCrystalByUser($user->id);    
+        $crystalAmount = isset($resources->resource) ? intval($resources->resource) : 0;
+
+        if ($levelMonster === 1 && $crystalAmount >= 10) {
+            $amount = 10; 
+        } elseif ($levelMonster === 2 && $crystalAmount >= 20) {
+            $amount = 20;
+        } elseif ($levelMonster === 3 && $crystalAmount >= 100) {
+            $amount = 100;
+        } elseif ($levelMonster === 4 && $crystalAmount >= 500) {
+            $amount = 500;
+        } elseif ($levelMonster === 5) {
+            return ['error' => 703 ];
+        } else {
+            return ['error' => 802 ];
+        }
+
+        $resourceType = 'crystal';
+        //вычитаем ресурсы
+        $this->db->clearUserResource($user->id, $resourceType, $amount);
+        //увеливаем уровень
+        $this->db->upgradeLevelMonstersByUser($user->id, $monsterId);
+    
+        $level = $levelMonster + 1;
+        $param = $this->db->getParametersMonsterByLevel($level);
+        $hp_param = isset($param['hp']->hp) ? intval($param['hp']->hp) : 0;
+        //не знаю к чему прибавлять атаку из какой табл брать данные 
+        $attack_param= isset($param['attack']->attack) ? intval($param['attack']->attack) : 0;
+
+        //увеличиваем hp 
+        $this->db->upgradeHpMonstersByUser($user->id, $monsterId, $hp_param);
+        $hp = $this->db->getMonsterHpById($monsterId);
+        //$hp = isset($hp->hp) ? intval($hp->hp) : 0;
+        $parametersMonsterType = $this->db->getMonsterTypeById($monster_type_id);
+        $attack = isset($parametersMonsterType->attack) ? intval($parametersMonsterType->attack) : 0;
+        $attack = $attack + $attack_param;
+
+
+        return[
+            $this->db->getMonsterLevelById($monsterId),
+            $hp
         ];
     }
-    return ['error' => 404]; 
-}
-
-public function getUsersByStatus($status){
-    return $this->db->getUsersByStatus($status);
-}
-
-public function upgradePokemon($token, $monsterId) {
-    // Получаем пользователя по токену
-    $user = $this->db->getUserByToken($token);
-    if (!$user) {
-        return ['error' => 404];
-    }
-    //наверно надо написать проверку id покемона
-
-    //узнаем уровень покемона
-    $levelMonster = $this->db->getMonsterLevelById($monsterId);
-
-    //Получаем id стихии, которая принадлежит покемону
-    $element_id_By_Monster = $this->db->getElementByMonsters($monsterId);
-
-    //узнаем скок кристалов у пользака определенной стихии 
-    $resources = $this->db->getAmountResourcesByUser($user, $element_id_By_Monster);
-    $crystalAmount = !empty($resources['crystal']) ? $resources['crystal'] : 0;
-    
-    $resourceType = 'crystal';
-    
-    if ($levelMonster === 1){
-        if ($crystalAmount < 10){
-            return ['message' => 'Не хватает средств'];
-        }else{
-            $amount = 10; 
-            $level = 2;
-        }
-    }
-    if ($levelMonster === 2){
-        if ($crystalAmount < 20){
-            return ['message' => 'Не хватает средств'];
-        }else{
-            $amount = 20;
-            $level = 3;
-        }
-    }
-    if ($levelMonster === 3){
-        if ($crystalAmount < 100){
-            return ['message' => 'Не хватает средств'];
-        }else{
-            $amount = 100;
-            $level = 4;
-        }
-    }
-    if ($levelMonster === 4){
-        if ($crystalAmount < 500){
-            return ['message' => 'Не хватает средств'];
-        }else{
-            $amount = 500;
-            $level = 5;
-        }
-    }
-    if ($levelMonster === 5){
-        return ['message' => 'Покемон максимально уровня'];
-    }
-
-    //вычитаем ресурсы
-    $this->db->clearUserResource($user, $resourceType, $amount, $element_id_By_Monster );
-    //увеливаем уровень
-    $this->db->upgradeLevelMonstersByUser($user, $monsterId);
-    
-    $param = $this->db->getParametersMonsterByLevel($level);
-    $hp_param = !empty($param['hp']) ? $param['hp'] : 0;
-    $attack_param = !empty($param['attack']) ? $param['attack'] : 0;
-
-    //Я не знаю, к какой таблице нужно добавлять обновленные параметры, пока так
-    $hp = 0;
-    $attack = 0;
-
-    return[
-        $level,
-        $hp,
-        $attack
-    ];
-}
 
 }
