@@ -21,29 +21,29 @@ class Map {
         ];
     }
     
-    public function startGame($token) {
+    /*public function startGame($token) {
         $user = $this->db->getUserByToken($token);
         if (!$user) {
-            return ['error' => 705];
+            return ['error' => 705]; 
         }
         
         if ($this->isUserInTown($user)) {
-            return ['message' => 'Вы уже находитесь в городе.'];
+            return ['message' => 'Вы уже находитесь в городе.']; 
         }
  
         //обновление статуса (разведчик)
-        $this->db->updateUserStatus($user, 'scout');
-
+        $this->db->updateUserStatus($user->id, 'scout'); 
         return [
-            $this->db->getMonstersByUser($user, 'in team'),
-            'message' => 'Вы успешно зашли в игру и появились в городе.',
+            $user,
+            $this->db->getMonstersByUser($user->id),
+            $this->db->getInventoryByUser($user->id)
         ];
     }
-
+   
     public function endGame($token) {
         $user = $this->db->getUserByToken($token);
         if (!$user) {
-            return ['error' => 705];
+            return ['error' => 705]; 
         }
 
         $resources = $this->db->getAmountResourcesByUser($user);
@@ -57,26 +57,52 @@ class Map {
                     $resources['crystal'][0]['resourse'] : 0;
         $crystalAmount = $crystalAmount * 0.2;
         
-        $having_money = $this->db->getMoneyByUser($user);
-        $money = $having_money - ($having_money * 0.3);
+        $this->db->updateUserStatus($user->id, 'offline');
+        return true;
+    }*/
 
-        // Проверяем, находится ли игрок в городе
-        if (!$this->isUserInTown($user)) {
-            // Игрок выходил из карты не в городе - теряет некоторые ресурсы
-            $this->db->clearUserResource($user, 'eggs', $eggAmount); 
-            $this->db->clearUserResource($user, 'crystal', $crystalAmount); 
-            $this->db->clearUserMoney($user, $money);
+    public function moveUser($userId, $direction, $currentX, $currentY) {
+        $mapData = $this->getMap();
+        // if (!isset($mapData['MAP']['WIDTH'], $mapData['MAP']['HEIGHT']) || !is_array($mapData)) {
+        //     return ['error' => 850];
+        // }
+    
+        $borders = [
+            'width' => $mapData['MAP']['WIDTH'],
+            'height' => $mapData['MAP']['HEIGHT']
+        ];
+
+        $dx = 0;
+        $dy = 0;
+        switch ($direction) {
+            case 'left':  $dx = -1; break;
+            case 'right': $dx = 1; break;
+            case 'up':    $dy = 1; break;
+            case 'down':  $dy = -1; break;
+        }
+ 
+        $newX = $currentX + $dx;
+        $newY = $currentY + $dy;
+
+        // if ($newX < 0 || $newX > $borders['width'] || $newY < 0 || $newY > $borders['height']) {
+        //     return ['error' => 2003];
+        // }
+
+        $this->db->updateMapHash(md5(rand()));
+        return $this->db->moveUser($userId, $newX, $newY);
+    }
+
+    public function updateScene($hash) {
+        $currentHash = $this->db->getHash();
+        if ($hash === $currentHash->map_hash) {
             return [
-                true,
-                'message' => 'Вы вышли из карты не в городе и потеряли некоторые ресурсы.'
+                'hash' => $hash
             ];
         }
-
-        $this->db->updateUserStatus($user, 'offline');
-        // Если игрок в городе, он ничего не теряет
+        $playersIngame = $this->db->getPlayersIngame();
         return [
-            true, 
-            'message' => 'Вы успешно вышли из игры.'
+            'playersIngame' => $playersIngame,
+            'hash' => $currentHash->map_hash
         ];
 
     }

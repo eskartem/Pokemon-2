@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.1:3306
--- Время создания: Ноя 21 2024 г., 21:37
+-- Время создания: Дек 04 2024 г., 17:03
 -- Версия сервера: 8.0.30
 -- Версия PHP: 8.1.9
 
@@ -102,9 +102,23 @@ CREATE TABLE `inventory` (
   `id` int NOT NULL,
   `user_id` int NOT NULL,
   `resource` int NOT NULL,
-  `resource_type` varchar(16) NOT NULL,
-  `element_id` int NOT NULL
+  `resource_type` varchar(16) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Дамп данных таблицы `inventory`
+--
+
+INSERT INTO `inventory` (`id`, `user_id`, `resource`, `resource_type`) VALUES
+(1, 1, 1000, 'crystal'),
+(2, 1, 146, 'eggs'),
+(3, 1, 87, 'eggFragments'),
+(4, 2, 976, 'crystal'),
+(5, 2, 25, 'eggs'),
+(6, 2, 89, 'eggFragments'),
+(7, 3, 256, 'crystal'),
+(8, 3, 7, 'eggs'),
+(9, 3, 94, 'eggFragments');
 
 -- --------------------------------------------------------
 
@@ -235,6 +249,38 @@ CREATE TABLE `monsters` (
   `status` varchar(16) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
+--
+-- Дамп данных таблицы `monsters`
+--
+
+INSERT INTO `monsters` (`id`, `user_id`, `monster_type_id`, `level`, `hp`, `status`) VALUES
+(1, 2, 1, 2, 350, 'in team'),
+(2, 1, 2, 4, 1992, 'in team'),
+(3, 2, 2, 5, 305, 'in team');
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `monster_level`
+--
+
+CREATE TABLE `monster_level` (
+  `id` int UNSIGNED NOT NULL,
+  `level` int NOT NULL,
+  `attack` int NOT NULL,
+  `hp` int NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='Стандартное увеличение характеристик покемонов при улучшении';
+
+--
+-- Дамп данных таблицы `monster_level`
+--
+
+INSERT INTO `monster_level` (`id`, `level`, `attack`, `hp`) VALUES
+(1, 2, 40, 90),
+(2, 3, 70, 110),
+(3, 4, 120, 150),
+(4, 5, 200, 270);
+
 -- --------------------------------------------------------
 
 --
@@ -249,6 +295,14 @@ CREATE TABLE `monster_types` (
   `attack` int NOT NULL,
   `defense` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Дамп данных таблицы `monster_types`
+--
+
+INSERT INTO `monster_types` (`id`, `element_id`, `name`, `hp`, `attack`, `defense`) VALUES
+(1, 1, 'Ледяной шквал', 450, 100, 40),
+(2, 2, 'Испеп удар', 510, 140, 45);
 
 -- --------------------------------------------------------
 
@@ -270,10 +324,7 @@ INSERT INTO `resources` (`id`, `name`) VALUES
 (2, 'Кристалл огня'),
 (3, 'Кристалл земли'),
 (4, 'Кристалл воздуха'),
-(5, 'Яйцо воды'),
-(6, 'Яйцо огня'),
-(7, 'Яйцо земли'),
-(8, 'Яйцо воздуха');
+(5, 'Яйцо воды');
 
 -- --------------------------------------------------------
 
@@ -299,8 +350,8 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `login`, `password`, `token`, `name`, `money`, `rating`, `x`, `y`, `status`) VALUES
-(1, 'vasya', 'fcb03559c0317682f5d65a88aca50012', '32cdf82b5bf1e476101d047cf7d26d94', 'Вася Пупкин', 0, 0, 80, 45, 'offline'),
-(2, 'petya', 'bcb209cf0d43e198e6467f8b0ac3387a', '431542fe9302b7f2807069adb7504bd5', 'Пётр Петрович', 0, 0, 80, 45, 'offline'),
+(1, 'vasya', 'fcb03559c0317682f5d65a88aca50012', 'c73e21e2d473650c2fbf8e8fb8c4d70a', 'Вася Пупкин', 256, 0, 80, 45, 'scout'),
+(2, 'petya', 'bcb209cf0d43e198e6467f8b0ac3387a', NULL, 'Пётр Петрович', 0, 0, 50, 34, 'offline'),
 (3, 'masha', 'e213995da574de722a416f65b43d8314', '1916666aacbb8732bf2d12238b2cd5db', 'Маша Сергеевна', 0, 0, 80, 45, 'offline');
 
 --
@@ -374,6 +425,12 @@ ALTER TABLE `monsters`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Индексы таблицы `monster_level`
+--
+ALTER TABLE `monster_level`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Индексы таблицы `monster_types`
 --
 ALTER TABLE `monster_types`
@@ -424,7 +481,7 @@ ALTER TABLE `hashes`
 -- AUTO_INCREMENT для таблицы `inventory`
 --
 ALTER TABLE `inventory`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT для таблицы `lots`
@@ -460,13 +517,19 @@ ALTER TABLE `messages`
 -- AUTO_INCREMENT для таблицы `monsters`
 --
 ALTER TABLE `monsters`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT для таблицы `monster_level`
+--
+ALTER TABLE `monster_level`
+  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT для таблицы `monster_types`
 --
 ALTER TABLE `monster_types`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT для таблицы `resources`
@@ -478,7 +541,7 @@ ALTER TABLE `resources`
 -- AUTO_INCREMENT для таблицы `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
