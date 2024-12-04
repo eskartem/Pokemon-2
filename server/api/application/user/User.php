@@ -104,7 +104,7 @@ class User {
     
         //узнаем скок кристалов у пользака определенной стихии 
         $resources = $this->db->getAmountCrystalByUser($user->id);    
-        $crystalAmount = isset($resources->resource) ? intval($resources->resource) : 0;
+        $crystalAmount = isset($resources->resource_amount) ? intval($resources->resource_amount) : 0;
 
         if ($levelMonster === 1 && $crystalAmount >= 10) {
             $amount = 10; 
@@ -120,9 +120,9 @@ class User {
             return ['error' => 802 ];
         }
 
-        $resourceType = 'crystal';
+        $resourceTypeId = 1;
         //вычитаем ресурсы
-        $this->db->clearUserResource($user->id, $resourceType, $amount);
+        $this->db->clearUserResource($user->id, $resourceTypeId, $amount);
         //увеливаем уровень
         $this->db->upgradeLevelMonstersByUser($user->id, $monsterId);
     
