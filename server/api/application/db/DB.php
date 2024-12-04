@@ -196,24 +196,24 @@ class DB {
         return $this->queryAll('SELECT id, name, x, y FROM users WHERE token<>"" AND status<>"offline"');
     }
 
-    public function getInventoryByItsId($inventoryId) {
-        return $this->queryAll('SELECT * FROM inventory WHERE id=?', [$inventoryId]);
+    public function getInventoryById($userId) {
+        return $this->queryAll('SELECT * FROM inventory WHERE user_id=?', [$userId]);
     }
 
     public function getResources(){
-        return queryAll('SELECT * FROM resources');
+        return $this->queryAll('SELECT * FROM resources');
     }
 
     public function getResourcesById($objectId){
-        return query('SELECT * FROM resources WHERE id=?', [$objectId]);
+        return $this->query('SELECT * FROM resources WHERE id=?', [$objectId]);
     }
 
     public function sellResources($sellingResourceId, $resourceAmount, $userId){
-        return execute('UPDATE inventory SET resources_amount=resources_amount-? WHERE resources_id=? AND user_id=?', [$resourceAmount, $sellingResourceId, $userId]);
+        return $this->execute('UPDATE inventory SET resource_amount=resource_amount-? WHERE resource_id=? AND user_id=?', [$resourceAmount, $sellingResourceId, $userId]);
     }
 
     public function changeMoney($userId, $balanceIncrease){
-        return execute('UPDATE users SET money=money+? WHERE id=?', [$balanceIncrease, $userId]);
+        return $this->execute('UPDATE users SET money=money+? WHERE id=?', [$balanceIncrease, $userId]);
     }
 
 }

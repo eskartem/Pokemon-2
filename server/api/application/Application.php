@@ -179,7 +179,7 @@ class Application {
         }
 
         if ($params['type'] === 'exchanger'){
-            return $this->market->exchange($user->id, $inventory, $resourceAmount);
+            return $this->market->exchange($user->id, $inventory, $params['amount']);
         }
 
         return ['error' => 3001];

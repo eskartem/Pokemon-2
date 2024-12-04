@@ -6,7 +6,7 @@ class Inventory{
         $this->db = $db;
     }
 
-    public function getInventory($inventoryId){
-        return $this->db->getInventoryByItsId($inventoryId);
+    public function getInventory($userId){
+        return $this->db->getInventoryById($userId);
     }
 }
