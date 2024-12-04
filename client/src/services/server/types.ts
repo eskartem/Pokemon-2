@@ -77,11 +77,9 @@ export type TCreature = {
 
 // ресы пользователя
 export type TUserResources = {
-    id: number,
-    user_id: number,
-    resoure: number,
-    resoure_type: string,
-    element_id: number,
+    User: string,
+    Monsters: string,
+    Inventory: number,
 }
 
 //существо на рынке

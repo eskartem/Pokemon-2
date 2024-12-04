@@ -43,9 +43,7 @@ const Inventory: React.FC<IBasePage> = (props: IBasePage) => {
             <div className="resources">
                 {userResources ? (
                     <>
-                        <p>Монеты: {userResources.resoure_type}</p>
-                        <p>Кристаллы: {userResources.resoure_type}</p>
-                        <p>Куски яиц: {userResources.resoure_type}</p>
+                        <p>Ресурсы: {userResources.Inventory}</p>
                     </>
                 ) : (
                     <p>Загрузка ресурсов...</p>
