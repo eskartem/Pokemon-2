@@ -40,7 +40,7 @@ function result($params) {
             //market
             case 'getCatalog': return $app-> getCatalog($params); //
             // case 'buy': return $app-> buy($params);
-            case 'sale': return $app-> sale($params);
+            case 'sell': return $app->sell($params);
 
             default: return ['error' => 102];
         }

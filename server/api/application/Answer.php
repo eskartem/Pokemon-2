@@ -35,6 +35,8 @@ class Answer {
         '3007' => 'inventory with that ID has not been found',
         '3008' => 'selling object with that ID has not been found',
         '3009' => 'not enough resources to sell that amount',
+        '3010' => 'that amount of shells cannot be exchanged',
+        
         '9000' => 'unknown error'
     );
 

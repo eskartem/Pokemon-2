@@ -152,40 +152,36 @@ class Application {
     }
 
     public function sell($params){
-        if (!isset($params['token']) || !isset($params['type']) || !isset($params['inventoryId'])) {
+        if (!isset($params['token'], $params['type'], $params['amount'])){
             return ['error' => 242];
         }
-        //пересмотреть инвентори айди, параметр тот же, поменять их поиск
+
         $user = $this->user->getUser($params['token']);
-        if (!$user) {
+        if (!$user){
             return ['error' => 705];
         }
 
-        if (!in_array($params['type'], ['lot', 'merchant', 'exchanger'], true)) {
-            return ['error' => 3001];
-        }
-
-        $lotExtra = $params['lotExtra'] ?? null;
-        if (!in_array($lotExtra, ['pokemon', 'item', null], true)) {
-            return ['error' => 3002];
-        }
-
-        $inventory = $this->inventory->getInventory($params['inventoryId']);
+        $inventory = $this->inventory->getInventory($user->id);
         if (!$inventory){
             return ['error' => 3007];
         }
 
-        $objectId = $params['objectId'] ?? null;
-        if (!is_null($objectId) && !filter_var($objectId, FILTER_VALIDATE_INT)) {
+        if (!filter_var($params['amount'], FILTER_VALIDATE_INT) || $params['amount'] <= 0) {
             return ['error' => 3002];
         }
 
-        $resourceAmount = $params['amount'] ?? null;
-        if (!is_null($objectId) && !filter_var($objectId, FILTER_VALIDATE_INT)) {
-            return ['error' => 3002];
+        if ($params['type'] === 'merchant') {
+            if (!isset($params['objectId']) || !filter_var($params['objectId'], FILTER_VALIDATE_INT)) {
+                return ['error' => 3002];
+            }
+    
+            return $this->market->sell($user->id, $inventory, $params['objectId'], $params['amount']);
         }
 
-        //как будто lotExtra тоже не нужен
-        return $this->market->sell($user->id, $params['type'], $inventory, $lotExtra, $objectId, $resourceAmount);
+        if ($params['type'] === 'exchanger'){
+            return $this->market->exchange($user->id, $inventory, $resourceAmount);
+        }
+
+        return ['error' => 3001];
     }
 }

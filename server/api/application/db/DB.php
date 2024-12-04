@@ -200,12 +200,20 @@ class DB {
         return $this->queryAll('SELECT * FROM inventory WHERE id=?', [$inventoryId]);
     }
 
+    public function getResources(){
+        return queryAll('SELECT * FROM resources');
+    }
+
     public function getResourcesById($objectId){
         return query('SELECT * FROM resources WHERE id=?', [$objectId]);
     }
 
-    public function sellResources($sellingResourceId, $resourceAmount){
-        return execute('UPDATE inventory SET resources_amount=resources_amount-? WHERE resources_id=?', [$resourceAmount, $sellingResourceId]);
+    public function sellResources($sellingResourceId, $resourceAmount, $userId){
+        return execute('UPDATE inventory SET resources_amount=resources_amount-? WHERE resources_id=? AND user_id=?', [$resourceAmount, $sellingResourceId, $userId]);
+    }
+
+    public function changeMoney($userId, $balanceIncrease){
+        return execute('UPDATE users SET money=money+? WHERE id=?', [$balanceIncrease, $userId]);
     }
 
 }
