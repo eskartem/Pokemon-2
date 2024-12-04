@@ -143,8 +143,7 @@ class User {
 
         return[
             $this->db->getMonsterLevelById($monsterId),
-            $hp,
-            $attack
+            $hp
         ];
     }
 
