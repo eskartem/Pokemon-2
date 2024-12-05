@@ -70,7 +70,7 @@ const Registration: React.FC<IBasePage> = (props: IBasePage) => {
                 </span>
             </div>
         </div>
-        </div>);
+    </div>);
 
 }
 
