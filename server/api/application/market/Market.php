@@ -7,11 +7,11 @@ class Market {
         $this->db = $db;
     }
 
-    public function getCatalog($isInTown) {
+    public function getAllLots($isInTown) {
         if ($isInTown) {
-            return $this->db->getCatalog();
+            return $this->db->getAllLots();
         }
-        return ['error', 2001];
+        return ['error' => 2999];
     }
 
     public function sell($userId, $inventoryInfo, $objectId, $resourceAmount){

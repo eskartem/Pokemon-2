@@ -4,20 +4,16 @@ import Map from '../../components/Map/Map';
 import Chat from '../../components/Chat/Chat';
 import { StoreContext, ServerContext } from '../../App';
 import { IBasePage, PAGES } from '../PageManager';
-import CONFIG, { EDIRECTION, TPoint } from '../../config';
+import { EDIRECTION } from '../../config';
 
 import './Game.scss';
 
 const Game: React.FC<IBasePage> = (props: IBasePage) => {
 
-    const {tileSize} = CONFIG;
-
     const { setPage } = props;
     const server = useContext(ServerContext);
     const store = useContext(StoreContext);
     let user = store.getUser();
-
-    const [userPosition, setUserPosition] = useState<TPoint>({x: (user?.x ?? 0) * tileSize, y: (user?.y ?? 0) * tileSize});
 
     const moveUser = async (direction: EDIRECTION) => {
         server.moveUser(direction);
@@ -60,7 +56,8 @@ const Game: React.FC<IBasePage> = (props: IBasePage) => {
         return () => {
             window.removeEventListener('keydown', keyDownHandler);
         };
-    });
+        
+    }, []);
     
     if (!user) { return ( <div><h1> Что-то пошло не так. </h1></div> );} // закоментировать для работы без бекэнда
 
@@ -85,7 +82,7 @@ const Game: React.FC<IBasePage> = (props: IBasePage) => {
                     <h1 className='user-resources-coins'>монеты: </h1>
                     <h1 id='test-game-h1-coins' className='user-resources-coins'> {user?.coins} </h1>
                 </div>
-                <Map userPosition={userPosition} />
+                <Map />
                 <div className="control-panel">
                     <Button id='test-game-button-arrowleft' className="move-button" 
                     onClick={() => moveUser(EDIRECTION.LEFT)} text={'←'} />
