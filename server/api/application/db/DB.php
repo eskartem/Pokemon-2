@@ -296,4 +296,17 @@ class DB {
         $this->execute('UPDATE users SET status = ? WHERE id =?', [$status, $userId]);
     }
 
+    public function getLotByLotId($lotId){
+        return $this->query("SELECT * FROM lots WHERE id=?", [$lotId]);
+    }
+
+    public function setNewBet($userId, $lotId, $newBet) {
+        return $this->execute(
+            "UPDATE lots SET buyer_id = ?, timestamp_cost = UNIX_TIMESTAMP(), current_cost = ? WHERE id = ?", [$userId, $newBet, $lotId]
+        );
+    }
+    public function getMarket() {
+        return $this->queryAll(""); // пустой метод заглушка ,удалить после реализациия нормального метода для получения лотов.
+    }
+
 }

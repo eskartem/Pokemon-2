@@ -1,7 +1,7 @@
 import md5 from 'md5';
 import CONFIG, { TPoint } from "../../config";
 import Store from "../store/Store";
-import { TAnswer, TError, TMessagesResponse, TUser, TMarketCatalog, TUserResources, TMap, TMapZone, TTraderCatalog } from "./types";
+import { TAnswer, TError, TMessagesResponse, TUser, TUserResources, TMap, TMapZone, TTraderCatalog, TLot } from "./types";
 
 const { CHAT_TIMESTAMP, HOST } = CONFIG;
 
@@ -112,8 +112,8 @@ class Server {
         return null;
     }
 
-    async getCatalog():Promise<TMarketCatalog | null> {
-        const catalog = await this.request<TMarketCatalog>('getCatalog');
+    async getMarket():Promise<TLot[] | null> {
+        const catalog = await this.request<TLot[]>('getMarket');
         if (catalog) {
             return catalog;
         }
@@ -122,6 +122,7 @@ class Server {
 
     async buyItem(id: string): Promise<boolean | null> {
         const result = await this.request<boolean>('buy', { id });
+        console.log('Купить товар с id:', id);
         return result;
     }
     

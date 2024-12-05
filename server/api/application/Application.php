@@ -85,11 +85,11 @@ class Application {
     }
 
 
-    public function getCatalog($params) {
+    public function getMarket($params) {
         if ($params['token']) {
             $user = $this->user->getUser($params['token']);
             if ($user) {
-                return $this->market->getCatalog($this->map->isUserInTown($user));
+                return $this->market->getMarket($this->map->isUserInTown($user));
             }
             return ['error' => 705];
         }
@@ -143,6 +143,21 @@ class Application {
             return $this->map->endGame($params['token']);
         }
         return ['error' => 242];
+    }
+
+    public function buy($params) {
+        if (!$params['token'] || !$params['lotId'] || !$params['bet']){
+            return ['error' => 242]; 
+        }
+
+        $lot = $this->market->getLot($params['lotId']);
+        $user = $this->user->getUser($params['token']);
+        $newBet = $params['bet'];
+        if (!$lot) {
+            return ['error' => 3004];
+        }
+
+        return $this->market->buy($user->id, $user->money, $lot, $newBet);
     }
 
     public function moveUser($params) {

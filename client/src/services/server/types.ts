@@ -82,19 +82,26 @@ export enum EMarketRes {
     eggFragment
 }
 
-export type TMarketItem = {
+export enum EStatus {
+    open,
+    sell,
+    cancel
+}
+
+export type TLot = {
     id: number,
-    name: EMarketRes,
-    number: number,
-    cost: number
+    seller_name: string,
+    datatime: number,
+    start_cost: number,
+    step_cost: number,
+    current_cost: number,
+    timestamp_cost: number,
+    buyer_name: string,
+    status: EStatus
 }
 
-export type TMarketCatalog = {
-    creatures: TMarketCreature[],
-    resources: TMarketItem[]
+export type TMap = {
+    HEIGHT: number,
+    WIDTH: number,
+    IMAGE: string
 }
-
-
-export type TTraderCatalog = TMarketCatalog;
-
-

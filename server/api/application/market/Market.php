@@ -7,18 +7,24 @@ class Market {
         $this->db = $db;
     }
 
-    public function getCatalog($isInTown) {
+    public function getMarket($isInTown) {
         if ($isInTown) {
-            return $this->db->getCatalog();
+            return $this->db->getMarket();
         }
         return ['error', 2001];
     }
 
-    public function getTraderCatalog($isInTown) {
-        if ($isInTown) {
-            return $this->db->getTraderCatalog();
-        }
-        return ['error', 2001];
+    public function getLot($lotId) {
+        return $this->db->getLotByLotId($lotId);
     }
 
+    public function buy($userId, $userBalance, $lotInfo, $newBet){
+        if ($lotInfo->status === 'open'){       
+            if ($lotInfo->current_cost < $userBalance){
+                return $this->db->setNewBet($userId, $lotInfo, $newBet);
+            }
+            return ['error' => 3003];
+        }
+        return ['error' => 3005];
+    }
 }

@@ -42,7 +42,6 @@ const Game: React.FC<IBasePage> = (props: IBasePage) => {
 
     useEffect(() => {
         const keyDownHandler = (event: KeyboardEvent) => {
-            event.preventDefault();
             switch (event.key) {
                 case 'ArrowUp':
                     moveUser(0, -1);
