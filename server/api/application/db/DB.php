@@ -99,6 +99,16 @@ class DB {
         );
     }
 
+    public function updateMoneyByUser($userId, $money){
+        $this->execute('UPDATE users SET money = ? WHERE id = ?',[$money, $userId]);
+    }
+
+    public function addInventoryByUser($userId){
+        $this->execute('INSERT INTO inventory (user_id, resource_id, resource_amount) VALUES (?,1, 0)', [$userId]);
+        $this->execute('INSERT INTO inventory (user_id, resource_id, resource_amount) VALUES (?,2, 0)', [$userId]);
+        $this->execute('INSERT INTO inventory (user_id, resource_id, resource_amount) VALUES (?,3, 0)', [$userId]);
+    }
+
     public function getMap(){
         //$mapId = $this->query->("SELECT map_id FROM game");
         $mapId = 1;
@@ -178,10 +188,6 @@ class DB {
     
     public function getMoneyByUser($userId){
         return $this-> query('SELECT money FROM users WHERE id = ?',[$userId]);
-    }
-
-    public function clearUserMoney($userId, $money){
-        $this->execute('UPDATE users SET money = ? WHERE id = ?',[$money, $userId]);
     }
    
     public function clearUserResource($userId, $resourceTypeId, $amount ){

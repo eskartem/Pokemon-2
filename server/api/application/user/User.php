@@ -56,6 +56,8 @@ class User {
         if ($user) {
             $token = md5(rand());
             $this->db->updateToken($user->id, $token);
+            $this->db-> addInventoryByUser($user->id);
+            $this->db->updateMoneyByUser($user->id, 500);
             $this->db->updateUserStatus($user->id, 'scout'); 
             return [
                 'id' => $user->id,
