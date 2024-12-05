@@ -8,7 +8,7 @@ interface textProps {
     stageProps: {
         width: number,
         height: number,
-      },
+    },
     activeMonster: Monsters,
     firstSelectedMonster: Monsters,
     secondSelectedMonster: Monsters,
@@ -42,7 +42,6 @@ const Texts: React.FC<textProps> = (props: textProps) => {
         hpBarThirdEnemyMonster
     } = props
 
-
     return(<>
     <Container x={stageProps.width * 0.5 - 50} y={20} name={"test-battle-pixi-activeMonster"}>
       <Text
@@ -50,10 +49,10 @@ const Texts: React.FC<textProps> = (props: textProps) => {
       />
     </Container>
       {hpBarFirstMonster > 0 && (
-        <Text 
-              text={`${firstSelectedMonster.name}`}
-              x={stageProps.width * 0.15 - 120}
-              y={stageProps.height * 0.3}
+        <Text
+            text={`${firstSelectedMonster.name}`}
+            x={stageProps.width * 0.15 - 120}
+            y={stageProps.height * 0.3}
         />
       )}
       {hpBarSecondMonster > 0 && (

@@ -21,17 +21,16 @@ import { Monsters } from "../../assets/Monsters/Monster"
 import './Battle.scss';
 import MathPvp from '../../services/MathPvp/MathPvp';
 
-const Pvp = (props: any) => {
-  //Select enemy
-  const enemy = new hardBot() 
-  const enemyType = 'bot'
+const Battle = (props: any) => {
+  //const enemy = new easyBot() /*lvl = 1 */
+  //const enemy = new mediumBot() /*lvl = 3 */
+  const enemy = new hardBot() /*lvl = 5 */
+
+  const enemyType: string = 'bot'
 
   let firstSelectedMonster: Monsters = new ThirdGeoMonster("yourSide", 1);
   let secondSelectedMonster: Monsters = new FirstGeoMonster("yourSide", 1);
   let thirdSelectedMonster: Monsters = new FirstHydroMonster("yourSide", 1);
-  //let firstSelectedEnemyMonster: Monsters = new FirstPyroMonster('enemySide', 1)
-  //let secondSelectedEnemyMonster: Monsters = new SecondPyroMonster('enemySide', 2)
-  //let thirdSelectedEnemyMonster: Monsters =  new ThirdAnemoMonster('enemySide', 3)
   let firstSelectedEnemyMonster: Monsters = enemy.selectedMonsters[0]
   let secondSelectedEnemyMonster: Monsters =  enemy.selectedMonsters[1]
   let thirdSelectedEnemyMonster: Monsters =   enemy.selectedMonsters[2]
@@ -85,7 +84,7 @@ const Pvp = (props: any) => {
   
   return (<>
     <Stage {...stageProps} className='pvpArea'>
-      <Sprites stageProps={stageProps}
+      <Sprites stageProps={stageProps} //Монстры
         firstSelectedMonster={firstSelectedMonster}
         secondSelectedMonster={secondSelectedMonster}
         thirdSelectedMonster={thirdSelectedMonster}
@@ -99,7 +98,7 @@ const Pvp = (props: any) => {
         hpBarSecondEnemyMonster={hpBarSecondEnemyMonster}
         hpBarThirdEnemyMonster={hpBarThirdEnemyMonster}
         />
-      <HpBars stageProps={stageProps} 
+      <HpBars stageProps={stageProps} //Полоски здоровья
         hpBarFirstMonster={hpBarFirstMonster}
         hpBarSecondMonster={hpBarSecondMonster}
         hpBarThirdMonster={hpBarThirdMonster}
@@ -113,7 +112,7 @@ const Pvp = (props: any) => {
         secondSelectedEnemyMonster={secondSelectedEnemyMonster} 
         thirdSelectedEnemyMonster={thirdSelectedEnemyMonster}
       />
-      <Texts activeMonster={activeMonster}
+      <Texts activeMonster={activeMonster} //Различный текст на сцене
         stageProps={stageProps}
         firstSelectedMonster={firstSelectedMonster}
         secondSelectedMonster={secondSelectedMonster}
@@ -128,14 +127,14 @@ const Pvp = (props: any) => {
         hpBarSecondEnemyMonster={hpBarSecondEnemyMonster}
         hpBarThirdEnemyMonster={hpBarThirdEnemyMonster}
         />
-      <BattleTimer stageProps={stageProps}
+      <BattleTimer stageProps={stageProps} //Таймер в игре
         sQueue={sQueue}
         setSQueue={setSQueue}
         setActiveMonster={setActiveMonster}
         activeMonster={activeMonster}
       />
     </Stage>
-    <Buttons sQueue={sQueue}
+    <Buttons sQueue={sQueue} //Кнопки для боя
       activeMonster={activeMonster}
       firstSelectedMonster={firstSelectedMonster}
       secondSelectedMonster={secondSelectedMonster}
@@ -159,7 +158,7 @@ const Pvp = (props: any) => {
       setHpBarThirdMonster={setHpBarThirdMonster}
       enemyType={enemyType}
     />
-    <FinalScreen hpBarFirstMonster={hpBarFirstMonster}
+    <FinalScreen hpBarFirstMonster={hpBarFirstMonster} //Финальное окно
       hpBarSecondMonster={hpBarSecondMonster}
       hpBarThirdMonster={hpBarThirdMonster}
       hpBarFirstEnemyMonster={hpBarFirstEnemyMonster}
@@ -171,4 +170,4 @@ const Pvp = (props: any) => {
 };
 
 
-export default Pvp
+export default Battle

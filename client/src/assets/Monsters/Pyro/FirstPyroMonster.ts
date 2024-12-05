@@ -8,7 +8,7 @@ class FirstPyroMonster extends Monster {
     }
     side: string = this.side;
     name: string = 'Flareon';
-    attack: number = 140;
+    attack: number = 1000;
     healthPoint: number = 510;
     defense: number = 45;
     element: string = 'Fire';
