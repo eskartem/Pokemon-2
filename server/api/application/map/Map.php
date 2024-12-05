@@ -50,8 +50,49 @@ class Map {
         return true;
     }*/
 
-    public function moveUser($id, $x, $y) {
-        return $this->db->updateUserLocation($id, $x, $y);
+    public function moveUser($userId, $direction, $currentX, $currentY) {
+        $mapData = $this->getMap();
+        if (!isset($mapData['MAP']['WIDTH'], $mapData['MAP']['HEIGHT']) || !is_array($mapData)) {
+            return ['error' => 850];
+        }
+    
+        $borders = [
+            'width' => $mapData['MAP']['WIDTH'],
+            'height' => $mapData['MAP']['HEIGHT']
+        ];
+
+        $dx = 0;
+        $dy = 0;
+        switch ($direction) {
+            case 'left':  $dx = -1; break;
+            case 'right': $dx = 1; break;
+            case 'up':    $dy = -1; break;
+            case 'down':  $dy = 1; break;
+        }
+ 
+        $newX = $currentX + $dx;
+        $newY = $currentY + $dy;
+
+        if ($newX < 0 || $newX > $borders['width'] || $newY < 0 || $newY > $borders['height']) {
+            return ['error' => 2003];
+        }
+
+        $this->db->updateMapHash(md5(rand()));
+        return $this->db->moveUser($userId, $newX, $newY);
+    }
+
+    public function updateScene($hash) {
+        $currentHash = $this->db->getHash();
+        if ($hash === $currentHash->map_hash) {
+            return [
+                'hash' => $hash
+            ];
+        }
+        $playersIngame = $this->db->getPlayersIngame();
+        return [
+            'gamers' => $playersIngame,
+            'hash' => $currentHash->map_hash
+        ];
     }
 
     public function updateScene($hash) {
