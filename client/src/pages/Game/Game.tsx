@@ -4,13 +4,11 @@ import Map from '../../components/Map/Map';
 import Chat from '../../components/Chat/Chat';
 import { StoreContext, ServerContext } from '../../App';
 import { IBasePage, PAGES } from '../PageManager';
-import CONFIG, { EDIRECTION, TPoint } from '../../config';
+import { EDIRECTION } from '../../config';
 
 import './Game.scss';
 
 const Game: React.FC<IBasePage> = (props: IBasePage) => {
-
-    const {tileSize} = CONFIG;
 
     const { setPage } = props;
     const server = useContext(ServerContext);
@@ -58,7 +56,8 @@ const Game: React.FC<IBasePage> = (props: IBasePage) => {
         return () => {
             window.removeEventListener('keydown', keyDownHandler);
         };
-    });
+        
+    }, []);
     
     if (!user) { return ( <div><h1> Что-то пошло не так. </h1></div> );} // закоментировать для работы без бекэнда
 
@@ -76,7 +75,7 @@ const Game: React.FC<IBasePage> = (props: IBasePage) => {
                     <li><Button id='test-game-button-mute' onClick={muteButtonHandler} text='заглушить' />
                     <Button id='test-game-button-logout' onClick={logoutClickHandler} text='Выйти' /></li>
                 </div>
-                {/* <Chat /> */}
+                <Chat />
             </div>
             <div>
                 <div className='user-resources'>

@@ -1,10 +1,11 @@
-import { TMessages, TUser } from "../server/types";
+import { TGamer, TMessages, TUser } from "../server/types";
 
 const TOKEN = 'token';
 
 class Store {
     user: TUser | null = null;
     messages: TMessages = [];
+    gamers: TGamer[] = [];
     chatHash: string = 'empty chat hash';
     sceneHash: string = 'empty scene hash';
 
@@ -62,6 +63,14 @@ class Store {
 
     setSceneHash(hash: string): void {
         this.sceneHash = hash;
+    }
+
+    setGamers(gamers: TGamer[]) {
+        this.gamers = gamers;
+    }
+
+    getGamers(): TGamer[] {
+        return this.gamers;
     }
 
     /*setMap(map: TGetMap): void {

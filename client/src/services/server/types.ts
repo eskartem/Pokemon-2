@@ -103,3 +103,9 @@ export type TMapZone = {
     type: string,
     element_id: number // надо название с помощью сложного запроса выдавать, а не само id, наругать бэкендеров.
 }
+
+export enum EZones {
+    town = 'town',
+    safe = 'safe',
+    dungeon = 'dungeon  '
+}
