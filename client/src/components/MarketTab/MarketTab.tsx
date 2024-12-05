@@ -19,7 +19,7 @@ const MarketTab: React.FC = () => {
                 setCatalog(null);
             }
         })();
-    }, [server]);
+    });
 
     // Обработчик покупки
     const handleBuy = async (id: number) => {
