@@ -44,6 +44,7 @@ function result($params) {
 
             default: return ['error' => 102];
         }
+        
     }
     return ['error' => 101];
 }
