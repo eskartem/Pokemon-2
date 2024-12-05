@@ -24,7 +24,10 @@ function result($params) {
              case 'userInfo': return $app-> userInfo($params);
              case 'upgradePokemon': return $app-> upgradePokemon($params);
             //inventory
-            case 'updradePokemon': return $app-> upgradePokemon($params); //
+
+
+
+
             
             //battle
             // case 'updateBattle': return $app-> updateBattle($params); // loop //получаю данные по всем игрокам
@@ -41,7 +44,7 @@ function result($params) {
             //market
             case 'getAllLots': return $app->getAllLots($params); // новое название getAllLots, вместо getCatalog
             // case 'buy': return $app-> buy($params);
-            // case 'sale': return $app-> sale($params);
+            case 'sell': return $app->sell($params);
 
             default: return ['error' => 102];
         }
