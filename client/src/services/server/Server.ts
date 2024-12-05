@@ -65,6 +65,7 @@ class Server {
         if (result) {
             this.store.clearUser();
         }
+        return result;
     }
 
     registration(login: string, password: string, name: string): Promise<boolean | null> {
@@ -113,8 +114,8 @@ class Server {
         return null;
     }
 
-    async buyItem(id: string): Promise<boolean | null> {
-        const result = await this.request<boolean>('buy', { id });
+    async buyItem(itemId: string): Promise<boolean | null> {
+        const result = await this.request<boolean>('buyItem', { itemId });
         return result;
     }
 
