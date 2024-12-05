@@ -94,18 +94,4 @@ class Map {
             'hash' => $currentHash->map_hash
         ];
     }
-
-    public function updateScene($hash) {
-        $currentHash = $this->db->getHash();
-        if ($hash === $currentHash->map_hash) {
-            return [
-                'hash' => $hash
-            ];
-        }
-        $playersIngame = $this->db->getPlayersIngame();
-        return [
-            'playersIngame' => $playersIngame,
-            'hash' => $currentHash->map_hash
-        ];
-    }
 }
