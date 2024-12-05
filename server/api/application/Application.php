@@ -218,5 +218,44 @@ class Application {
         ];
     }
 
+    public function makeLot($params){
+        // некоторые ошибки на другой ветке, я потом  их сюда подсосу
+        if (!isset($params['token'], $params['type'], $params['startCost'], $params['stepCost'], $params['id'])){
+            return ['error' => 242];
+        }
+
+        $user = $this->user->getUser($params['token']);
+        if (!$user) {
+            return ['error' => 705];
+        }
+
+        $inTown = $this->map->isUserInZone($user, "город");
+        if (!$inTown){
+            return ['error' => 2999];
+        }
+
+        if ($params['type'] !== 'pokemon' && $params['type'] !== 'item'){
+            return ['error' => 's'];
+        }
+
+        if ($params['startCost'] <= 0 || $params['stepCost'] <= 0){
+            return ['error' => 's'];
+        }
+
+        $zalog = (int)$params['startCost'] / 100 * 5; // 5%
+        if ($user->money < $zalog){
+            return ['error' => 's'];
+        }
+
+        if ($params['type'] === 'pokemon'){
+            $pokemon = $this->db->getMonsterById($params['id']);
+            if (!$pokemon){
+                return ['error' => 's'];
+            }
+        }
+
+
+    }
+
 
 }

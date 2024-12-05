@@ -31,7 +31,7 @@ class Answer {
         '2003' => 'coordinates to move are out of map borders',
         '2004' => 'cannot move to the same coordinates',
         '2005' => 'cannot move during the combat or offline',
-        '2999' => 'cannot open the market tab, user is not in town',
+        '2999' => 'user is not in town',
         '9000' => 'unknown error'
     );
 
