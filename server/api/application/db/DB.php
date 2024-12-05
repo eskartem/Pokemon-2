@@ -172,7 +172,7 @@ class DB {
     }
     
     public function getAmountCrystalByUser($userId){
-        return $this-> query('SELECT resource FROM inventory WHERE user_id = ? AND resource_type = "crystal" ',[$userId]);
+        return $this-> query('SELECT resource_amount FROM inventory WHERE user_id = ? AND resource_id = 1 ',[$userId]);
         
     }
     
@@ -184,9 +184,9 @@ class DB {
         $this->execute('UPDATE users SET money = ? WHERE id = ?',[$money, $userId]);
     }
    
-    public function clearUserResource($userId, $resourceType, $amount ){
-        $this-> execute('UPDATE inventory SET resource = resource - ? 
-                        WHERE user_id = ? AND resource_type = ?', [$amount, $userId, $resourceType]);
+    public function clearUserResource($userId, $resourceTypeId, $amount ){
+        $this-> execute('UPDATE inventory SET resource_amount = resource_amount - ? 
+                        WHERE user_id = ? AND resource_id = ?', [$amount, $userId, $resourceTypeId]);
     }
     
     public function updateUserStatus($userId, $status){
