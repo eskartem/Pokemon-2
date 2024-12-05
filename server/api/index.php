@@ -21,7 +21,8 @@ function result($params) {
             case 'sendMessage': return $app->sendMessage($params);//loop
             case 'getMessages': return $app->getMessages($params);
             //gamer info
-            case 'userInfo': return $app-> userInfo($params); //
+             case 'userInfo': return $app-> userInfo($params);
+             case 'upgradePokemon': return $app-> upgradePokemon($params);
             //inventory
             case 'updradePokemon': return $app-> upgradePokemon($params); //
             
@@ -31,14 +32,14 @@ function result($params) {
             // case 'actionUser': return $app-> actionUser($params); //действие игрока в бою во время ход
             //map
             case 'getMap': return $app-> getMap($params);
-            case 'startGame': return $app-> startGame($params); //?
-            case 'endGame': return $app-> endGame($params); //?
+            //case 'startGame': return $app-> startGame($params);
+            //case 'endGame': return $app-> endGame($params);
 
             case 'updateScene': return $app-> updateScene($params);
             case 'moveUser': return $app-> moveUser($params);
 
             //market
-            case 'getCatalog': return $app-> getCatalog($params); //
+            case 'getAllLots': return $app->getAllLots($params); // новое название getAllLots, вместо getCatalog
             // case 'buy': return $app-> buy($params);
             // case 'sale': return $app-> sale($params);
 

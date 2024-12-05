@@ -7,8 +7,18 @@ class Map {
         $this->db = $db;
     }
 
-    public function isUserInTown($user) {
-        return true; // просто заглушка
+    public function isUserInZone($user, $zoneName) {
+        $mapData = $this->getMap();
+        $mapZone = $mapData['mapZones'];
+        foreach ($mapZone as $zone){
+            if ($zone['name'] === $zoneName){
+                if ($user->x >= $zone['x'] && $user->x <= $zone['x'] + $zone['width'] && 
+                    $user->y >= $zone['y'] && $user->y <= $zone['y'] + $zone['height']){
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     public function getMap() {
@@ -21,65 +31,24 @@ class Map {
         ];
     }
     
-    public function startGame($token) {
+    /*public function startGame($token) {
         $user = $this->db->getUserByToken($token);
-        if (!$user) {
-            return ['error' => 705];
-        }
-        
-        if ($this->isUserInTown($user)) {
-            return ['message' => 'Вы уже находитесь в городе.'];
-        }
- 
         //обновление статуса (разведчик)
-        $this->db->updateUserStatus($user, 'scout');
-
+        $this->db->updateUserStatus($user->id, 'scout'); 
         return [
-            $this->db->getMonstersByUser($user, 'in team'),
-            'message' => 'Вы успешно зашли в игру и появились в городе.',
+            $user,
+            $this->db->getMonstersByUser($user->id),
+            $this->db->getInventoryByUser($user->id)
         ];
     }
 
+   
     public function endGame($token) {
         $user = $this->db->getUserByToken($token);
-        if (!$user) {
-            return ['error' => 705];
-        }
-
-        $resources = $this->db->getAmountResourcesByUser($user);
-
-        // 10% кусков яиц покемонов
-        $eggAmount = !empty($resources['eggs']) ? 
-                    $resources['eggs'][0]['resourse'] : 0;
-        $eggAmount = $eggAmount * 0.1;
-        //20% кристаллов стихий
-        $crystalAmount = !empty($resources['crystal']) ? 
-                    $resources['crystal'][0]['resourse'] : 0;
-        $crystalAmount = $crystalAmount * 0.2;
         
-        $having_money = $this->db->getMoneyByUser($user);
-        $money = $having_money - ($having_money * 0.3);
-
-        // Проверяем, находится ли игрок в городе
-        if (!$this->isUserInTown($user)) {
-            // Игрок выходил из карты не в городе - теряет некоторые ресурсы
-            $this->db->clearUserResource($user, 'eggs', $eggAmount); 
-            $this->db->clearUserResource($user, 'crystal', $crystalAmount); 
-            $this->db->clearUserMoney($user, $money);
-            return [
-                true,
-                'message' => 'Вы вышли из карты не в городе и потеряли некоторые ресурсы.'
-            ];
-        }
-
-        $this->db->updateUserStatus($user, 'offline');
-        // Если игрок в городе, он ничего не теряет
-        return [
-            true, 
-            'message' => 'Вы успешно вышли из игры.'
-        ];
-
-    }
+        $this->db->updateUserStatus($user->id, 'offline');
+        return true;
+    }*/
 
     public function moveUser($userId, $direction, $currentX, $currentY) {
         $mapData = $this->getMap();

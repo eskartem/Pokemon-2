@@ -71,29 +71,54 @@ class Application {
 
     public function userInfo($params) {
         if ($params['token']) {
-            return $this->user->userInfo($params['token']);
+            $user = $this->user->getUser($params['token']);
+            if ($user) {
+                return $this->user->userInfo($params['token']);
+            }
+            return ['error' => 705];
         }
         return ['error' => 404];
     }
     
-    //немного недоделано
     public function upgradePokemon($params) {
         if ($params['token'] && $params['monsterId']) {
-            return $this->user->upgradePokemon($params['token'], $params['monsterId']);
+            $user = $this->user->getUser($params['token']);
+            $monsters = $this->user->getMonster($params['monsterId']);
+            if ($user) {
+                if ($monsters->user_id === $user->id) {
+                    return $this->user->upgradePokemon($params['token'], $params['monsterId']);
+                }
+              
+                return ['error' => 702];
+            }
+            return ['error' => 705];
+
         }
         return ['error' => 404];
     }
 
 
-    public function getCatalog($params) {
+    public function getAllLots($params) {
+        if (!$params['token']) {
+            return ['error' => 242];
+        }
+
+        $user = $this->user->getUser($params['token']);
+        if (!$user) {
+            return ['error' => 705];
+        }
+
+        return $this->market->getAllLots($this->map->isUserInZone($user, "город"));
+    }
+
+    public function getResources($params) {
         if ($params['token']) {
             $user = $this->user->getUser($params['token']);
             if ($user) {
-                return $this->market->getCatalog($this->map->isUserInTown($user));
+                return $this->user->getResources($params['token']);
             }
             return ['error' => 705];
         }
-        return ['error' => 242];
     }
 
     public function startGame($params){
@@ -115,12 +140,27 @@ class Application {
         return ['error' => 242];
     }
 
-    public function endGame($params){
+    /*public function startGame($params){
         if($params['token']){
-            return $this->map->endGame($params['token']);
+            $user = $this->user->getUser($params['token']);
+            if ($user) {
+                return $this->map->startGame($params['token']);
+            }
+            return ['error' => 705];
         }
         return ['error' => 242];
     }
+
+    public function endGame($params){
+        if($params['token']){
+            $user = $this->user->getUser($params['token']);
+            if ($user) {
+                return $this->map->endGame($params['token']);
+            }
+            return ['error' => 705];
+        }
+        return ['error' => 242];
+    }*/
 
     public function moveUser($params) {
         if (!isset($params['token'])) {
