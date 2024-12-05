@@ -113,11 +113,8 @@ class DB {
         ];
     }
         
-    public function moveUser($userId, $newX, $newY) {
-        return $this->execute("UPDATE users 
-            SET x=?, y=? 
-            WHERE id=?", [$newX, $newY, $userId]
-        );
+    public function updateUserLocation($userId, $x, $y) {
+        return $this->execute("UPDATE users SET x = ?, y = ? WHERE id = ?", [$x, $y, $userId]);
     }
 
     public function getMonstersByUser($userId, $status = null) {

@@ -161,15 +161,45 @@ class Application {
         if (!isset($params['token'])) {
             return ['error' => 242];
         }
+
         $user = $this->user->getUser($params['token']);
         if (!$user) {
             return ['error' => 705];
         }
-        if (!isset($params['direction'])) {
+
+        if (!isset($params['x'], $params['y'])) {
             return ['error' => 2001];
         }
-        $direction = $params['direction'];
-        return $this->map->moveUser($user->id, $direction, $user->x, $user->y);
+
+        if (!filter_var($params['x'], FILTER_VALIDATE_INT) || !filter_var($params['y'], FILTER_VALIDATE_INT)) {
+            return ['error' => 2002];
+        }
+
+        $x = (int)$params['x'];
+        $y = (int)$params['y'];
+        $mapData = $this->map->getMap();
+        $borders = [
+            'width' => $mapData['MAP']['WIDTH'],
+            'height' => $mapData['MAP']['HEIGHT']
+        ];
+    
+        if (!isset($mapData['MAP']['WIDTH'], $mapData['MAP']['HEIGHT']) || !is_array($mapData)) {
+            return ['error' => 850];
+        }
+
+        if ($x < 0 || $x > $borders['width'] || $y < 0 || $y > $borders['height']) {
+            return ['error' => 2003];
+        }
+
+        if ($x == $user->x && $y == $user->y) {
+            return ['error' => 2004];
+        } 
+
+        /*if ($user->status != 'scout'){
+            return ['error' => 2005];
+        }*/
+
+        return $this->map->moveUser($user->id, $x, $y);
     }
 
     public function updateScene($params) {
