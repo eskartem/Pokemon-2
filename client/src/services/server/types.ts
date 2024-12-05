@@ -109,3 +109,21 @@ export enum EZones {
     safe = 'safe',
     dungeon = 'dungeon  '
 }
+
+export type TLots = {
+    id: number,
+    seller_name: string,
+    datatime: number,
+    start_cost: number,
+    step_cost: number,
+    current_cost: number,
+    timestamp_cost: number,
+    buyer_name: string,
+    status: EStatus
+}   
+
+export enum EStatus {
+    open,
+    sell,
+    cancel
+}

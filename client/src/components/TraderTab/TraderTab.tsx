@@ -1,13 +1,14 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { ServerContext } from '../../App';
-import { TTraderCatalog } from '../../services/server/types';
+import { TLots } from '../../services/server/types';
+import Button from '../../components/Button/Button';
 
 const TraderTab: React.FC = () => {
   const server = useContext(ServerContext); // Используем контексты
-  let catalog: TTraderCatalog | null = null;
+  let catalog: TLots | null = null;
   useEffect(
     () => {
-    ( async () => {catalog = await server.getTraderCatalog();})()
+    ( async () => {catalog = await server.sell();})()
 
     }, []
   );

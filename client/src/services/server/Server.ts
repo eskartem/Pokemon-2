@@ -1,7 +1,7 @@
 import md5 from 'md5';
 import CONFIG, { EDIRECTION } from "../../config";
 import Store from "../store/Store";
-import { TAnswer, TError, TMessagesResponse, TUser, TMarketCatalog, TMap, TMapZone, TUpdateSceneResponse } from "./types";
+import { TAnswer, TError, TMessagesResponse, TUser, TLots, TMap, TMapZone, TUpdateSceneResponse } from "./types";
 
 const { CHAT_TIMESTAMP, SCENE_TIMESTAMP, HOST } = CONFIG;
 
@@ -106,8 +106,8 @@ class Server {
         }
     }
 
-    async getMarketCatalog():Promise<TMarketCatalog | null> {
-        const catalog = await this.request<TMarketCatalog>('getCatalog');
+    async getAllLots():Promise<TLots | null> {
+        const catalog = await this.request<TLots>('getAllLots');
         if (catalog) {
             return catalog;
         }
@@ -119,8 +119,8 @@ class Server {
         return result;
     }
 
-    async getTraderCatalog(): Promise<TMarketCatalog | null> {
-        const catalog = await this.request<TMarketCatalog>('getTraderCatalog');
+    async sell(): Promise<TLots | null> {
+        const catalog = await this.request<TLots>('sell');
         if (catalog) {
             return catalog;
         }
