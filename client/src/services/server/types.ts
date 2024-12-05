@@ -127,3 +127,10 @@ export enum EStatus {
     sell,
     cancel
 }
+
+export type TSell = {
+    token: string,
+    type: string,
+    amount: string,
+    objectId: string | " "
+}
