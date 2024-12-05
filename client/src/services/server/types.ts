@@ -76,6 +76,7 @@ export enum EMarketRes {
 }
 
 export type TMarketItem = {
+    id: number,
     name: EMarketRes,
     number: number,
     cost: number
@@ -86,13 +87,10 @@ export type TMarketCatalog = {
     resources: TMarketItem[]
 }
 
+
 export type TTraderCatalog = TMarketCatalog;
 
-export type TMap = {
-    HEIGHT: number,
-    WIDTH: number,
-    IMAGE: string
-}
+
 
 export type TMapZone = {
     name: string,
