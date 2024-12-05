@@ -1,8 +1,4 @@
 
-#canvas {
-    border: 5px solid black;
-}
-
 .game-wrapper {
     display: flex;
     flex-direction: row;
@@ -42,4 +38,18 @@
 .game-wrapper {
     color: #9fbef4;
     text-shadow: -1px -1px 0 #356eb4, 1px -1px 0 #356eb4, -1px 1px 0 #356eb4, 1px 1px 0 #356eb4;
+}
+
+.control-panel {
+    display: inline-flex;
+    align-items: flex-end;
+}
+
+.vertical-move-buttons {
+    display: inline-flex;
+    flex-direction: column;
+}
+
+.move-button {
+    max-width: 1px;
 }

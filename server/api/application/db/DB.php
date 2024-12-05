@@ -157,6 +157,10 @@ class DB {
         // return $this->user;
     }
 
+    public function getUsersByStatus($status) {
+        return $this->queryAll("SELECT id, login, name, x, y FROM users WHERE status=?", [$status]);
+    }
+
     public function updateToken($userId, $token) {
         $this->execute("UPDATE users SET token=? WHERE id=?", [$token, $userId]);
     }
@@ -206,28 +210,34 @@ class DB {
         return ['map' => $this->execute("SELECT * FROM map WHERE id=1", [$token]), 
                 'zones' => $this->execute("SELECT * FROM zones WHERE id=1", [$token]), 
                 'zones_types' => $this->execute("SELECT * FROM zones_types WHERE id=1", [$token])
+    public function getMap(){
+        //$mapId = $this->query->("SELECT map_id FROM game");
+        $mapId = 1;
+        return ['map' => $this->query("SELECT * FROM map WHERE id = ?", [$mapId]),
+                'map_zones' => $this->queryAll("SELECT 
+                name, x, y, width, height, type, element_id 
+                FROM map_zones WHERE map_id = ?", [$mapId])
         ];
-        //мб токен вообще не используется и удалить его нах
     }
         
     public function updateUserLocation($userId, $x, $y) {
-        $this->execute("UPDATE users SET x = ?, y = ? WHERE id = ?", [$x, $y, $userId]);
+        return $this->execute("UPDATE users SET x = ?, y = ? WHERE id = ?", [$x, $y, $userId]);
     }
 
-    public function getMontersByUser($userId, $status = null) {
+    public function getMonstersByUser($userId, $status = null) {
         if ($status === null) {
-            return $this->execute('SELECT * FROM monsters WHERE user_id = ?', [$userId]);
+            return $this->queryAll('SELECT * FROM monsters WHERE user_id = ?', [$userId]);
         } else {
-            return $this->execute('SELECT * FROM monsters WHERE user_id = ? AND status = ?', [$userId, $status]);
+            return $this->queryAll('SELECT * FROM monsters WHERE user_id = ? AND status = ?', [$userId, $status]);
         }
     }
 
     public function getInventoryByUser($userId){
-        return $this->execute('SELECT * FROM inventory WHERE user_id = ?', [$userId]);
+        return $this->query('SELECT * FROM inventory WHERE user_id = ?', [$userId]);
     }
     
     public function getMonsterLevelById($monsterId){
-        return $this->execute('SELECT level FROM monsters WHERE id = ?',[$monsterId]);
+        return $this->query('SELECT level FROM monsters WHERE id = ?',[$monsterId]);
     }
     
     public function upgradeLevelMonstersByUser($userId, $monsterId){
@@ -243,13 +253,13 @@ class DB {
     } 
     
     public function getElementByMonsters($monsterId){
-        $monsters_type_id = $this->execute('SELECT monster_type_id FROM monsters WHERE id = ?',[$monsterId]);
-        return $this->execute('SELECT element_id FROM monsters_types WHERE id = ?',[$monsters_type_id]);
+        $monsters_type_id = $this->query('SELECT monster_type_id FROM monsters WHERE id = ?',[$monsterId]);
+        return $this->query('SELECT element_id FROM monsters_types WHERE id = ?',[$monsters_type_id]);
     }
 
     //узнаем id стихии
     public function getIdByElement($element){
-        return $this->execute('SELECT id FROM elements WHERE name = ?', [$element]);
+        return $this->query('SELECT id FROM elements WHERE name = ?', [$element]);
     }
     
     //не уверена я в этом запросе
@@ -276,8 +286,7 @@ class DB {
     public function clearUserMoney($userId, $money){
         $this->execute('UPDATE users SET money = ? WHERE id = ?',[$money, $userId]);
     }
-
-    
+   
     public function clearUserResource($userId, $resourceType, $amount, $element_id ){
         $this-> execute('UPDATE inventory SET resource = resource - ? 
                         WHERE user_id = ? AND resource_type = ? AND element_id = ?', [$amount, $userId, $resourceType, $element_id]);

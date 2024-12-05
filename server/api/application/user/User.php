@@ -23,6 +23,8 @@ class User {
                     'coins' => $user->coins,
                     'crystals' => $user->crystals,
                     'eggFragments' => $user->egg_fragments,
+                    'x' => $user->x,
+                    'y'=> $user->y,
                 ];
             }
             return ['error' => 1002];
@@ -40,8 +42,6 @@ class User {
     }
 
     public function registration($login, $password, $name) {
-
-
         $user = $this->db->getUserByLogin($login, $password);
         if ($user) {
             return ['error' => 1001];
@@ -77,6 +77,9 @@ public function userInfo($token) {
     return ['error' => 404]; 
 }
 
+public function getUsersByStatus($status){
+    return $this->db->getUsersByStatus($status);
+}
 
 public function upgradePokemon($token, $monsterId) {
     // Получаем пользователя по токену

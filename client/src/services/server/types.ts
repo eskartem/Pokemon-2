@@ -15,6 +15,8 @@ export type TUser = {
     coins: number;
     crystals: number;
     eggFragments: number;
+    x: number;
+    y: number;
 }
 
 export type TMessage = {
@@ -92,7 +94,7 @@ export type TMarketCatalog = {
     resources: TMarketItem[]
 }
 
-export type TTraderCatalog = {
-    creatures: TMarketCreature[],
-    resources: TMarketItem[]
-}
+
+export type TTraderCatalog = TMarketCatalog;
+
+
