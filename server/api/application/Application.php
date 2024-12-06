@@ -224,4 +224,17 @@ class Application {
 
         return ['error' => 3001];
     }
+
+    public function getCatalog($params) {
+        if (!$params['token']) {
+            return ['error' => 242];
+        }
+
+        $user = $this->user->getUser($params['token']);
+        if (!$user) {
+            return ['error' => 705];
+        }
+
+        return $this->market->getCatalog($this->map->isUserInZone($user, "город"));
+    }
 }
