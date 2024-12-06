@@ -1,0 +1,32 @@
+.trader-tab {
+    padding: 20px;
+    font-family: Arial, sans-serif;
+}
+
+.trader-lots {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.trader-lot {
+    border: 1px solid #ccc;
+    padding: 10px;
+    width: 200px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.trader-lot h3 {
+    margin: 0;
+    font-size: 1.2em;
+}
+
+.trader-actions {
+    margin-top: 10px;
+}
+
+.error {
+    color: red;
+    font-weight: bold;
+}

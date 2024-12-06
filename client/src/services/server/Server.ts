@@ -106,8 +106,8 @@ class Server {
         }
     }
 
-    async getAllLots():Promise<TLots | null> {
-        const catalog = await this.request<TLots>('getAllLots');
+    async getAllLots():Promise<TLots[] | null> {
+        const catalog = await this.request<TLots[]>('getAllLots');
         if (catalog) {
             return catalog;
         }
@@ -119,8 +119,8 @@ class Server {
         return result;
     }
 
-    async sell(type: string, amount: string, objectId: string): Promise<TSell | null> {
-        const result = await this.request<TSell>('sell', {type, amount, objectId});
+    async sell(token: string,objectId: string, amount: string): Promise<TSell | null> {
+        const result = await this.request<TSell>('sell', { token,  type: 'merchant', amount, objectId });
         return result;
     }
     

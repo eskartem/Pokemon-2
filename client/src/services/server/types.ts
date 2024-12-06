@@ -128,9 +128,14 @@ export enum EStatus {
     cancel
 }
 
+
+
 export type TSell = {
     token: string,
     type: string,
     amount: string,
-    objectId: string | " "
+    resourceId: string,
+    objectId: string | ''
 }
+
+
