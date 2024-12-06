@@ -138,4 +138,12 @@ export type TSell = {
     objectId: string | ''
 }
 
+export type TResources = {
+    id: string,
+    name: string,
+    cost: number,
+    exchange_cost: number
+}
+
+
 

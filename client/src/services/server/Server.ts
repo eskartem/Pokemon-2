@@ -1,7 +1,7 @@
 import md5 from 'md5';
 import CONFIG, { EDIRECTION } from "../../config";
 import Store from "../store/Store";
-import { TAnswer, TError, TMessagesResponse, TUser, TLots, TMap, TMapZone, TUpdateSceneResponse, TSell } from "./types";
+import { TAnswer, TError, TMessagesResponse, TUser, TLots, TMap, TMapZone, TUpdateSceneResponse, TSell, TResources } from "./types";
 
 const { CHAT_TIMESTAMP, SCENE_TIMESTAMP, HOST } = CONFIG;
 
@@ -119,13 +119,13 @@ class Server {
         return result;
     }
 
-    async sell(token: string,objectId: string, amount: string): Promise<TSell | null> {
-        const result = await this.request<TSell>('sell', { token,  type: 'merchant', amount, objectId });
+    async sell(token: string,objectId: string, amount: string): Promise<{Sell: TSell, Resources: TResources} | null> {
+        const result = await this.request<{Sell: TSell, Resources: TResources}>('sell', { token,  type: 'merchant', amount, objectId });
         return result;
     }
     
-    async buyFromTrader(id: string): Promise<boolean | null> {
-        const result = await this.request<boolean>('buy', { id });
+    async getCatalog(token: string): Promise<boolean | null> {
+        const result = await this.request<boolean>('getCatalog', { token });
         return result;
     }
 
