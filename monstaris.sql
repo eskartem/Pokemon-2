@@ -102,7 +102,7 @@ CREATE TABLE `hashes` (
 --
 
 INSERT INTO `hashes` (`id`, `chat_hash`, `map_hash`, `market_hash`) VALUES
-(1, '853d7d057cda9930114b47ae3578f139', '', 0);
+(1, '853d7d057cda9930114b47ae3578f139', '853d7d057cda9930114b47ae3578f131', 0);
 
 -- --------------------------------------------------------
 
