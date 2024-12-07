@@ -119,8 +119,17 @@ class Server {
         return result;
     }
 
-    async sell(token: string,objectId: string, amount: string): Promise<{Sell: TSell, Resources: TResources} | null> {
-        const result = await this.request<{Sell: TSell, Resources: TResources}>('sell', { token,  type: 'merchant', amount, objectId });
+    async sell(token: string, objectId: string, amount: string): Promise<TSell | null> {
+        if (isNaN(Number(amount)) || Number(amount) <= 0) {
+            throw new Error('Некорректное количество для продажи'); 
+        }
+        const result = await this.request<TSell>('sell', {token, type: 'merchant', amount, objectId});
+        return result;
+    }
+    
+
+    async sellExchanger(token: string, amount: string): Promise<TSell | null> {
+        const result = await this.request<TSell>('sell', { token,  type: 'exchanger', amount });
         return result;
     }
     

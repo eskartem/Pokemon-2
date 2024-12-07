@@ -1,83 +1,63 @@
-import React, { useState, useContext, useEffect } from 'react'; 
-import ExchangerImage from '../../assets/ExchangerImage/Exchanger.jpg';
-import MeanExchangerImage from '../../assets/ExchangerImage/MeanExchangerImage.jpg'; 
+import React, { useContext, useEffect, useState } from 'react'; 
+import { ServerContext } from '../../App';
 import Button from '../../components/Button/Button';
-import { ServerContext, StoreContext } from '../../App';
+import ExchangerImage from '../../assets/ExchangerImage/Exchanger.jpg';
 import './ExchangerTab.scss';
 
+const TOKEN = 'user-token';
+
 const ExchangerTab: React.FC = () => {
-  const serverContext = useContext(ServerContext);
-  const storeContext = useContext(StoreContext);
-  
-  const user = storeContext.getUser(); // Получаем данные пользователя из store
+    const server = useContext(ServerContext);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState('');
+    const [resources, setResources] = useState<string[]>([]);
 
-  const [eggFragments, setEggFragments] = useState<number>(0); 
-  const [canExchange, setCanExchange] = useState<boolean>(false);
-  const [exchangeStatus, setExchangeStatus] = useState<string>('');
-  const [exchangerImage, setExchangerImage] = useState<string>(ExchangerImage);
-
-  // Проверка количества кусков яиц и обновление состояния
-  useEffect(() => {
-    const checkExchangeAvailability = () => {
-      if (eggFragments >= 50) {
-        setCanExchange(true);
-        setExchangeStatus('У вас достаточно кусков яиц для обмена.');
-        setExchangerImage(ExchangerImage); 
-      } else {
-        setCanExchange(false);
-        setExchangeStatus('Пошел отсюда, бомж. Приходи, когда соберешь необходимое количество кусков яиц!');
-        setExchangerImage(MeanExchangerImage); 
-      }
-    };
-    checkExchangeAvailability();
-  }, [eggFragments]);
-
-  // Функция для обработки обмена
-  const handleExchange = async () => {
-    if (canExchange) {
-      try {
-        const result = await serverContext.exchangeEggsForPokemon(); 
-        if (result.success) {
-          const newEggFragments = eggFragments - 50;
-          if (user) {
-            setEggFragments(newEggFragments);
-          
-            storeContext.setUser({
-              ...user,
-              // eggFragments: newEggFragments,
-              token: user.token ?? ''
-            });
-          }
-          setExchangeStatus('Поздравляем! Вы получили яйцо покемона.');
-        } else {
-          setExchangeStatus('Произошла ошибка при обмене. Попробуйте снова.');
+    const fetchResources = async () => {
+        try {
+            setLoading(true);
+            const response = await server.getCatalog(TOKEN);
+            if (Array.isArray(response)) setResources(response);
+            else throw new Error();
+        } catch {
+            setError('Ошибка при загрузке ресурсов');
+        } finally {
+            setLoading(false);
         }
-      } catch (error) {
-        setExchangeStatus('Ошибка сервера. Пожалуйста, попробуйте позже.');
-      }
-    }
-  };
+    };
 
-  return (
-    <div className="exchanger-container" id="test-exchanger-tab-container">      
-      <img 
-        src={exchangerImage} 
-        alt="Exchanger" 
-        className="exchanger-image" 
-        id="test-exchanger-image" 
-      />
-      <h2 className="exchange-status">{exchangeStatus}</h2>
-      <h3 className="fragments-status">
-        У вас доступно {eggFragments} кусков яиц из 50.
-      </h3>
-      <Button 
-        text="Обменять на яйцо"
-        isDisabled={!canExchange}  // Кнопка активна только если достаточно кусков
-        onClick={handleExchange}
-        className="exchange-button"
-      />
-    </div>
-  );
+    const handleExchange = async () => {
+        try {
+            const success = await server.sellExchanger(TOKEN, '50');
+            if (success) {
+                alert('Поздравляем! Вы получили яйцо покемона.');
+                fetchResources();
+            } else throw new Error();
+        } catch {
+            setError('Ошибка при обмене ресурсов');
+        }
+    };
+
+    useEffect(() => {
+        fetchResources();
+    }, []);
+
+    if (loading) return <div>Загрузка...</div>;
+    if (error) return <div className="error">{error}</div>;
+
+    return (
+        <div className="exchanger-container">
+            <img 
+                src={ExchangerImage} 
+                alt="Exchanger" 
+                className="exchanger-image" 
+            />
+            <Button 
+                text="Обменять на яйцо"
+                onClick={handleExchange}
+                className="exchange-button"
+            />
+        </div>
+    );
 };
 
 export default ExchangerTab;

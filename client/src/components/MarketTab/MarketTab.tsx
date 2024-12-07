@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from 'react'; 
+import React, { useContext, useState, useEffect } from 'react';
 import { ServerContext } from '../../App';
 import { TLots } from '../../services/server/types';
 import Button from '../../components/Button/Button';
@@ -6,7 +6,6 @@ import Button from '../../components/Button/Button';
 import './MarketTab.scss';
 
 const MarketTab: React.FC = () => {
-
     const server = useContext(ServerContext);
     const [catalog, setCatalog] = useState<TLots[] | null>(null);
 
@@ -14,7 +13,7 @@ const MarketTab: React.FC = () => {
         (async () => {
             const catalogData = await server.getAllLots();
             if (catalogData) {
-                setCatalog([catalogData]); 
+                setCatalog(catalogData); 
             } else {
                 setCatalog(null);
             }
@@ -28,7 +27,7 @@ const MarketTab: React.FC = () => {
             // Обновление каталога
             const updatedCatalog = await server.getAllLots();
             if (updatedCatalog) {
-                setCatalog([updatedCatalog]); 
+                setCatalog(updatedCatalog); 
             } else {
                 setCatalog(null);
             }
@@ -36,7 +35,7 @@ const MarketTab: React.FC = () => {
     };
 
     if (!catalog) {
-        return <div> рынок не загружен</div>;
+        return <div>Рынок не загружен</div>;
     }
 
     return (

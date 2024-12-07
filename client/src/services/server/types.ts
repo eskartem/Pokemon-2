@@ -139,7 +139,7 @@ export type TSell = {
 }
 
 export type TResources = {
-    id: string,
+    id: number,
     name: string,
     cost: number,
     exchange_cost: number

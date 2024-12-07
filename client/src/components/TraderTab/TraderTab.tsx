@@ -31,13 +31,20 @@ const TraderTab: React.FC = () => {
     };
 
     // Продажа ресурса
-    const sellResource = async (id: string) => {
+    const sellResource = async (id: string, name: string) => {
+        const amountToSell = prompt(`Введите количество ${name} для продажи:`); // Диалог для ввода количества
+
+        if (!amountToSell || isNaN(Number(amountToSell)) || Number(amountToSell) <= 0) {
+            alert('Введите корректное количество!');
+            return;
+        }
+
         try {
-            const response = await server.sell(TOKEN, id, '1');
+            const response = await server.sell(TOKEN, id, amountToSell); 
             if (!response) throw new Error('Ресурс не продан');
-            alert(`Успешно продан ресурс с ID: ${id}`);
+            alert(`Успешно продано ${amountToSell} ресурса`);
             fetchResources();
-        } catch {
+        } catch (err) {
             setError('Ошибка при продаже ресурса');
         }
     };
@@ -60,7 +67,7 @@ const TraderTab: React.FC = () => {
                         <p>Стоимость: {cost} монет</p>
                         <Button
                             text="Продать"
-                            onClick={() => sellResource(id)}
+                            onClick={() => sellResource(id.toString(), name)} 
                             isDisabled={false} 
                         />
                     </div>
