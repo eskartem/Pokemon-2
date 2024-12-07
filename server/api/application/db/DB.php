@@ -207,4 +207,12 @@ class DB {
     public function getAllLots(){
         return $this->queryAll('SELECT * from lots');
     }
+
+    public function getInventory($userId){
+        return ['monsters' => $this->queryAll('SELECT * FROM monsters WHERE user_id=?', [$userId]),
+                'monsterTypes' => $this->queryAll('SELECT * FROM monster_types'),
+                'inventory' => $this->queryAll('SELECT * FROM inventory WHERE user_id=?', [$userId]),
+                'balance' => $this->query('SELECT money FROM users WHERE id=?', [$userId])
+        ];
+    }
 }
