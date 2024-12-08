@@ -1,55 +1,112 @@
 
 .game-wrapper {
     display: flex;
-    flex-direction: row;
-}
+    flex-direction: column; /* Располагаем элементы в колонку */
+    height: 100vh; /* Высота на весь экран */
 
-.button-panel {
-    display: inline;
-    list-style-type: none;
-}
-
-.move-button {
-    min-width: 50px;
-    min-height: 50px;
-    &:hover {
-        cursor: pointer;
-    }
-}
-
-.clear-button {
-    &:hover {
-        cursor: pointer;
-    }
-}
-
-.user-panel-nick {
-    display: inline;
-}
-
-.user-resources-coins {
-    display: inline;
-}
-
-.user-resources {
-    display: inline;
-}
-
-.game-wrapper {
     color: #9fbef4;
     text-shadow: -1px -1px 0 #356eb4, 1px -1px 0 #356eb4, -1px 1px 0 #356eb4, 1px 1px 0 #356eb4;
+
+    .user-panel-nick {
+        display: inline;
+    }
+
+    .user-resources {
+        width: 45px; /* Задайте ширину изображения */
+        height: 45px; /* Задайте высоту изображения */
+        margin: 0 7px; /* Отступы вокруг изображения */
+    }
+
+    .user-resources-coins {
+        display: inline;
+    }
+
+    .user-resources {
+        display: inline;
+    }
+
+    .button-panel-test {
+        background-color: #333; /* Цвет фона панели */
+        color: white; /* Цвет текста */
+        padding: 10px; /* Отступы вокруг кнопок */
+        display: flex; /* Используем flexbox для выравнивания кнопок */
+        justify-content: space-between; /* Распределяем кнопки по краям */
+        position: absolute; /* Позволяет панели находиться над картой */
+        align-items: center; /* Выравниваем кнопки по центру по вертикали */
+        top: 0; /* Привязываем к верхней части контейнера */
+        left: 0; /* Привязываем к левому краю контейнера */
+        right: 0; /* Привязываем к правому краю контейнера */
+    }
+
+    .img-logout {
+        width: 45px; /* Задайте ширину изображения */
+        height: 45px; /* Задайте высоту изображения */
+        margin: 0 15px; /* Отступы вокруг изображения */
+        cursor: pointer;
+        filter: invert(1);
+    }
+
+    .button-panel-test-left {
+        display: flex;
+    }
+
+    .button-panel-test-centre {
+        display: flex;
+    }
+
+    .button-panel-test-right {
+        display: flex;
+    }
+
+    .button-panel-test button {
+        background-color: #555; /* Цвет фона кнопок */
+        border: none; /* Убираем рамку */
+        color: white; /* Цвет текста кнопок */
+        padding: 10px 20px; /* Отступы внутри кнопок */
+        cursor: pointer; /* Указываем, что кнопки кликабельные */
+    }
+
+    .button-panel-test button:hover {
+        background-color: #777; /* Изменяем цвет при наведении */
+    }
+
+    .map-container {
+        flex-grow: 1; /* Позволяет карте занимать оставшееся пространство */
+    }
 }
 
-.control-panel {
-    display: inline-flex;
-    align-items: flex-end;
-}
 
-.vertical-move-buttons {
-    display: inline-flex;
-    flex-direction: column;
-}
-
-.move-button {
-    max-width: 1px;
-}
+//.button-panel {
+//    display: inline;
+//    list-style-type: none;
+//}
+//
+//.move-button {
+//    min-width: 50px;
+//    min-height: 50px;
+//    &:hover {
+//        cursor: pointer;
+//    }
+//}
+//
+//.clear-button {
+//    &:hover {
+//        cursor: pointer;
+//    }
+//}
+//
+//.control-panel {
+//    display: inline-flex;
+//    align-items: flex-end;
+//    z-index: 1;
+//    position: relative;
+//}
+//
+//.vertical-move-buttons {
+//    display: inline-flex;
+//    flex-direction: column;
+//}
+//
+//.move-button {
+//    max-width: 1px;
+//}

@@ -5,6 +5,11 @@ import Chat from '../../components/Chat/Chat';
 import { StoreContext, ServerContext } from '../../App';
 import { IBasePage, PAGES } from '../PageManager';
 import CONFIG, { TPoint } from '../../config';
+import CoinImg from '../../assets/img/coin.png';
+import RubyImg from '../../assets/img/Ruby.png';
+import EggImg from '../../assets/img/Egg.png';
+import EggBreakImg from '../../assets/img/EggBreak.png';
+import ExitImg from '../../assets/img/ExitImg.png';
 
 import './Game.scss';
 
@@ -69,7 +74,37 @@ const Game: React.FC<IBasePage> = (props: IBasePage) => {
     
     if (!user) { return ( <div><h1> Что-то пошло не так. </h1></div> );} // закоментировать для работы без бекэнда
 
+    const panelHeight = '65px';
+
     return (
+        <div className="game-wrapper">
+            <div className="button-panel-test">
+                <div className='button-panel-test-left'>
+                    <h1 id='test-game-h1-name' className='user-panel-nick'> {user?.name} | </h1>
+                    <img src={CoinImg} alt="CoinImg" className='user-resources'/>
+                    <h1 id='test-game-h1-coins' className='user-resources-coins'> {user?.coins} </h1>
+                    <img src={RubyImg} alt="RubyImg" className='user-resources'/>
+                    <img src={EggImg} alt="EggImg" className='user-resources'/>
+                    <img src={EggBreakImg} alt="EggBreakImg" className='user-resources'/>
+                </div>
+                <div className='button-panel-test-centre'>
+                    <Button id='test-game-button-inventory' onClick={inventoryClickHandler} text='Инвентарь' />
+                    <Button id='test-game-button-market' onClick={marketClickHandler} text='Рынок' />
+                    <Button id='test-game-button-battle' onClick={battleClickHandler} text='Битва' />
+                </div>
+                <div className='button-panel-test-right'>
+                    <Button id='test-game-button-mute' onClick={muteButtonHandler} text='заглушить' />
+                    <Button id='test-game-button-logout' onClick={logoutClickHandler} text='Выйти' />
+                    <img id='test-game-img-logout' className='img-logout' src={ExitImg} alt="ExitImg" onClick={logoutClickHandler} />
+                </div>
+            </div>
+            <div className="map-container" style={{ paddingTop: panelHeight }}>
+                <Map userPosition={userPosition} />
+            </div>
+        </div>
+    );
+
+    /*return (
         <div className="game-wrapper" >
             <div>
                 <div className='user-panel'>
@@ -80,8 +115,8 @@ const Game: React.FC<IBasePage> = (props: IBasePage) => {
                     <Button id='test-game-button-inventory' onClick={inventoryClickHandler} text='Инвентарь' />
                     <Button id='test-game-button-market' onClick={marketClickHandler} text='Рынок' />
                     <Button id='test-game-button-battle' onClick={battleClickHandler} text='Битва' />
-                    <li><Button id='test-game-button-mute' onClick={muteButtonHandler} text='заглушить' />
-                    <Button id='test-game-button-logout' onClick={logoutClickHandler} text='Выйти' /></li>
+                    <Button id='test-game-button-mute' onClick={muteButtonHandler} text='заглушить' />
+                    <Button id='test-game-button-logout' onClick={logoutClickHandler} text='Выйти' />
                 </div>
                 <Chat />
             </div>
@@ -102,7 +137,7 @@ const Game: React.FC<IBasePage> = (props: IBasePage) => {
                 </div>
             </div>
         </div>
-    );
+    );*/
 }
 
 export default Game;

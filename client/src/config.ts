@@ -32,8 +32,8 @@ const CONFIG = {
     },
     
     winAspect: 16 / 9,
-    canvasWidth: 1000,
-    canvasHeight: 9/16 * 1000,
+    canvasWidth: window.innerWidth,
+    canvasHeight: window.innerHeight,
     tileSize: 1000 / 32,
     
     MAP: {
