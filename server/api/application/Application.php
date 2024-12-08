@@ -201,11 +201,27 @@ class Application {
         if ($params['token1']&& $params['token2']) {
             $user1 = $this->user->getUser($params['token1']);
             $user2 = $this->user->getUser($params['token2']);
-            if ($user1 or $user2) {
+            if ($user1 && $user2) {
                 return $this->battle->endBattle($params['token1'],$params['token2'] );
             }
             return ['error' => 705];
         }
         return ['error' => 404];
+    }
+
+    public function actionUser($params){
+        if ($params['monsterId1'] && $params['monsterId2'] && $params['action']){
+            $monster1 = $this->user->getMonster($params['monsterId1']);
+            $monster2 = $this->user->getMonster($params['monsterId2']);
+            if ($monster1 && $monster2){
+                if ($params['action'] == 'skill' or $params['action'] == 'attack' or $params['action'] == 'escape' ){
+                    return $this->battle->actionUser($params['monsterId1'], $params['monsterId2'], $params['action']);
+                }
+                return ['error' => 704];
+            }
+            return ['error' => 702];
+        }
+        return ['error' => 242];
+
     }
 }

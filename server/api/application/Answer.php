@@ -17,6 +17,7 @@ class Answer {
         '701' => 'Skin is not found',
         '702' => 'pokemon is not found',
         '703' => 'max level pokemon',
+        '704' => 'action is not found',
         '706' => 'text message is empty',
         '707' => 'could not send message', // e-mail;
         '708' => 'invalid code from E-mail',

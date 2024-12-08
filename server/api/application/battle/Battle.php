@@ -82,13 +82,60 @@ class Battle {
         }
 
     }
-    
-    public function  actionUser($token, $monsterId, $action){
-        $user = $this->db->getUserByToken($token);      
-        $monster = $this->db->getMonsterById($monsterId); 
+    public function  actionUser($monsterId1, $monsterId2, $action){
+        //$user = $this->db->getUserByToken($token);
+
+        //monsterId1 - атакующий монстр
+        $monster1 = $this->db->getMonsterById($monsterId1); 
+        $monster1_type_id = $this->db->getMonsterTypeByMonsters($monsterId1);
+        $userId =  isset($monster1->user_id) ? intval($monster1->user_id) : 0;
+
+        //monsterId2 - монстр, который защищается
+        $monster2 = $this->db->getMonsterById($monsterId2); 
+        $monster2_type_id = $this->db->getMonsterTypeByMonsters($monsterId2);
+        $hp = $this->db->getMonsterHpById($monsterId2);
+        $hp = isset($hp->hp) ? intval($hp->hp) : 0;
+
+        if ($action == 'skill'){
+            //как расписать скилы я не знаю
+        }elseif($action == 'attack'){
+
+            $level = $this->db->getMonsterLevelById($monsterId1);
+            $param = $this->db->getParametersMonsterByLevel($level);
+            $attack_param= isset($param['attack']->attack) ? intval($param['attack']->attack) : 0;
+            $monster1_data = $this->db->getMonsterTypeById($monster1_type_id);
+            $attack = isset($monster1_data['attack']->attack) ? intval($monster1_data['attack']->attack) : 0;
+            $attack = $attack + $attack_param;
+
+            $monster2_data = $this->db->getMonsterTypeById($monster2_type_id);
+            $defense = isset($monster2_data['defense']->defense) ? intval($monster2_data['defense']->defense) : 0;
+
+            
+            //нанесенный урон при атаке (атака - защита = урон)
+            $damageDone = $attack - $defense; 
+            if ($hp < $damageDone){
+                $this->db->upgradeHpMonstersByUser($monsterId2, -$hp);
+            }else{
+                $this->db->upgradeHpMonstersByUser($monsterId2, -$damageDone);
+            }
+
+            return false;
+
+        }elseif($action == 'escape'){
+
+            $escapeChance = rand(1, 100);
+            if ($escapeChance <= 10) {
+                $this->db->updateUserStatus($userId, 'scout');
+            }else{
+                return false;
+            }
+        }
+
+
 
 
 
     }
+
 
 }
