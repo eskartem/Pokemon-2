@@ -24,7 +24,8 @@ function result($params) {
              case 'userInfo': return $app-> userInfo($params);
              case 'upgradePokemon': return $app-> upgradePokemon($params);
             //inventory
-            case 'updradePokemon': return $app-> upgradePokemon($params); //
+            case 'getInventory': return $app->getInventory($params);
+            // ???? case 'updradePokemon': return $app-> upgradePokemon($params); //
             
             //battle
             // case 'updateBattle': return $app-> updateBattle($params); // loop //получаю данные по всем игрокам

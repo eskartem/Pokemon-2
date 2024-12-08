@@ -5,6 +5,7 @@ require_once ('chat/Chat.php');
 require_once ('market/Market.php');
 require_once ('map/Map.php');
 require_once ('battle/Battle.php');
+require_once ('inventory/Inventory.php');
 
 class Application {
     private $user;
@@ -20,6 +21,7 @@ class Application {
         $this->market = new Market($db);
         $this->map = new Map($db);
         $this->battle = new Battle($db);
+        $this->inventory = new Inventory($db);
     }
 
     public function login($params) {
@@ -194,6 +196,10 @@ class Application {
             return ['error' => 242];
         }
 
+        if (!is_null($params['amount']) && (!filter_var($params['amount'], FILTER_VALIDATE_INT) || $params['amount'] <= 0)) {
+            return ['error' => 'Некорректное значение amount. Оно должно быть null или положительным целым числом.'];
+        }
+
         $user = $this->user->getUser($params['token']);
         if (!$user) {
             return ['error' => 705];
@@ -205,27 +211,49 @@ class Application {
         }
 
         if ($params['type'] !== 'pokemon' && $params['type'] !== 'item'){
-            return ['error' => 's'];
+            return ['error' => 's3'];
         }
 
-        if ($params['startCost'] <= 0 || $params['stepCost'] <= 0){
-            return ['error' => 's'];
+        if (!filter_var($params['startCost'], FILTER_VALIDATE_INT) || !filter_var($params['stepCost'], FILTER_VALIDATE_INT)) {
+            return ['error' => 's2'];
         }
 
-        $zalog = (int)$params['startCost'] / 100 * 5; // 5%
-        if ($user->money < $zalog){
-            return ['error' => 's'];
-        }
-
+        $inventory = $this->inventory->getInventory($user->id);
         if ($params['type'] === 'pokemon'){
-            $pokemon = $this->db->getMonsterById($params['id']);
-            if (!$pokemon){
-                return ['error' => 's'];
+            foreach ($inventory['monsters'] as $monsters){
+                if ($monsters['id'] == $params['id']){
+                    if (count($inventory['monsters']) > 3){
+                        return $this->market->makeLotMonster($user, $params['id'], $params['startCost'], $params['stepCost']);
+                    }
+                    return ['error' => 'вы не можете продать монстра, если у вас их останется менеьше, чем 3'];
+                }
             }
+            return ['error' => 'sex'];
+        }
+
+        if ($params['type'] === 'item'){
+            foreach ($inventory['inventory'] as $items){
+                if ($items['id'] == $params['id']){
+                    if ($items['resource_amount'] >= $params['amount']){
+                        return $this->market->makeLotItem($user, $params['id'], $params['startCost'], $params['stepCost'], $params['amount']);
+                    }
+                    return ['error' => 'недостаточно ресурсов для продажи данного количества'];
+                }
+            }
+            return ['error' => 'ресурс с таким айди не был найден'];
         }
 
 
     }
 
-
+    public function getInventory($params) {
+        if ($params['token']) {
+            $user = $this->user->getUser($params['token']);
+            if ($user) {
+                return $this->inventory->getInventory($user->id);
+            }
+            return ['error' => 705];
+        }
+        return ['error' => 242];
+    }
 }

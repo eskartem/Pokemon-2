@@ -14,4 +14,13 @@ class Market {
         return ['error' => 2999];
     }
 
+    public function makeLotMonster($user, $sellingItemId, $startCost, $stepCost) {
+        $zalog = (int)$params['startCost'] / 100 * 5; // 5%
+        if ($user->money < $zalog){
+            return ['error' => 's'];
+        } 
+
+        return $this->db->makeLotMonster($user->id, $sellingItemId, $startCost, $stepCost);
+    }
+
 }
