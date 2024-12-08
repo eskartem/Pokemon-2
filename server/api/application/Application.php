@@ -132,28 +132,6 @@ class Application {
         return ['error' => 242];
     }
 
-    /*public function startGame($params){
-        if($params['token']){
-            $user = $this->user->getUser($params['token']);
-            if ($user) {
-                return $this->map->startGame($params['token']);
-            }
-            return ['error' => 705];
-        }
-        return ['error' => 242];
-    }
-
-    public function endGame($params){
-        if($params['token']){
-            $user = $this->user->getUser($params['token']);
-            if ($user) {
-                return $this->map->endGame($params['token']);
-            }
-            return ['error' => 705];
-        }
-        return ['error' => 242];
-    }*/
-
     public function moveUser($params) {
         if (!isset($params['token'])) {
             return ['error' => 242];
@@ -218,5 +196,16 @@ class Application {
         ];
     }
 
-
+    //Боевка
+    public function endBattle($params) {
+        if ($params['token1']&& $params['token2']) {
+            $user1 = $this->user->getUser($params['token1']);
+            $user2 = $this->user->getUser($params['token2']);
+            if ($user1 or $user2) {
+                return $this->battle->endBattle($params['token1'],$params['token2'] );
+            }
+            return ['error' => 705];
+        }
+        return ['error' => 404];
+    }
 }

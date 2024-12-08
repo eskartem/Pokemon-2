@@ -182,24 +182,39 @@ class DB {
     }
     
     public function getAmountCrystalByUser($userId){
-        return $this-> query('SELECT resource_amount FROM inventory WHERE user_id = ? AND resource_id = 1 ',[$userId]);
-        
+        return $this-> query('SELECT resource_amount FROM inventory WHERE user_id = ? AND resource_id = 1 ',[$userId]); 
+    }
+    
+    public function getAmountEggsByUser($userId){
+        return $this-> query('SELECT resource_amount FROM inventory WHERE user_id = ? AND resource_id = 2 ',[$userId]);   
+    }
+    
+    public function getAmountEggsFragmentByUser($userId){
+        return $this-> query('SELECT resource_amount FROM inventory WHERE user_id = ? AND resource_id = 3 ',[$userId]);   
     }
     
     public function getMoneyByUser($userId){
         return $this-> query('SELECT money FROM users WHERE id = ?',[$userId]);
     }
+
    
     public function clearUserResource($userId, $resourceTypeId, $amount ){
-        $this-> execute('UPDATE inventory SET resource_amount = resource_amount - ? 
+        $this-> execute('UPDATE inventory SET resource_amount = resource_amount	 - ? 
                         WHERE user_id = ? AND resource_id = ?', [$amount, $userId, $resourceTypeId]);
     }
     
+    public function updateMonsterStatus($monsterId, $status){
+        $this->execute('UPDATE monsters SET status = ? WHERE id =?', [$status, $monsterId]);
+    }
     public function updateUserStatus($userId, $status){
         $this->execute('UPDATE users SET status = ? WHERE id =?', [$status, $userId]);
     }
 
     public function getAllLots(){
         return $this->queryAll('SELECT * from lots');
+    }
+
+    public function addResultFight($userId1, $userId2, $result){
+        $this->execute('INSERT INTO fight (user1_id, user2_id, turn, status, result) VALUES (?,?, 1, "close", ?)', [$userId1, $userId2, $result]);
     }
 }
