@@ -310,6 +310,18 @@ class MathPvp {
         return (1 - (baseDefence / (130 + baseDefence)))
     }
 
+    calculateParam(baseAttack: number, baseHealthPoint: number, baseDefense: number, level: number) {
+        let attack = baseAttack;
+        let healthPoint = baseHealthPoint;
+        let defense = baseDefense;
+        for (let i = 1; i <= level; i++) {
+            attack *= 1.2;  
+            healthPoint *= 1.2;
+            defense *= 1.2;
+        }
+        return [Math.round(attack), Math.round(healthPoint), Math.round(defense)];
+    }
+
 }
 
 export default MathPvp

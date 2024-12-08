@@ -4,7 +4,8 @@ import { PAGES } from '../PageManager';
 
 import {FirstAnemoMonster, SecondAnemoMonster, ThirdAnemoMonster, FirstGeoMonster, 
   ThirdGeoMonster, FirstHydroMonster, SecondHydroMonster, ThirdHydroMonster, 
-  FirstPyroMonster, SecondPyroMonster, ThirdPyroMonster} from '../../assets/Monsters/AllMoster'
+  FirstPyroMonster, SecondPyroMonster, ThirdPyroMonster,
+  SecondGeoMonster} from '../../assets/Monsters/AllMoster'
 
 import Buttons from '../../components/ButtonsPvp/Buttons';
 import HpBars from '../../components/Graphics/hpBars/hpBars';
@@ -22,15 +23,15 @@ import './Battle.scss';
 import MathPvp from '../../services/MathPvp/MathPvp';
 
 const Battle = (props: any) => {
-  //const enemy = new easyBot() /*lvl = 1 */
+  const enemy = new easyBot() /*lvl = 1 */
   //const enemy = new mediumBot() /*lvl = 3 */
-  const enemy = new hardBot() /*lvl = 5 */
+  //const enemy = new hardBot() /*lvl = 5 */
 
   const enemyType: string = 'bot'
 
-  let firstSelectedMonster: Monsters = new ThirdGeoMonster("yourSide", 1);
-  let secondSelectedMonster: Monsters = new FirstGeoMonster("yourSide", 1);
-  let thirdSelectedMonster: Monsters = new FirstHydroMonster("yourSide", 1);
+  let firstSelectedMonster: Monsters = new FirstAnemoMonster("yourSide", 5);
+  let secondSelectedMonster: Monsters = new SecondAnemoMonster("yourSide", 5);
+  let thirdSelectedMonster: Monsters = new ThirdAnemoMonster("yourSide", 5);
   let firstSelectedEnemyMonster: Monsters = enemy.selectedMonsters[0]
   let secondSelectedEnemyMonster: Monsters =  enemy.selectedMonsters[1]
   let thirdSelectedEnemyMonster: Monsters =   enemy.selectedMonsters[2]

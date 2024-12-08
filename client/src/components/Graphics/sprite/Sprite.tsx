@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react"
 import { Sprite, Text} from "@pixi/react"
-import {firstAnemoMoster, secondAnemoMonster, thirdAnemoMonster, fourthAnemoMonster,
-    firstGeoMonster, secondGeoMonster, thirdGeoMonster, fourthGeoMonster,
-    firstHydroMonster, secondHydroMonster, thirdHydroMonster, fourthHydroMonster,
-    firstPyroMonster, secondPyroMonster, thirdPyroMonster, fourthPyroMonster, empty
+import {firstAnemoMoster, secondAnemoMonster, thirdAnemoMonster, 
+    firstGeoMonster, secondGeoMonster, thirdGeoMonster, 
+    firstHydroMonster, secondHydroMonster, thirdHydroMonster, 
+    firstPyroMonster, secondPyroMonster, thirdPyroMonster, empty
 } from '../../../assets/img_monster/AllSprites';
 
 import { Monsters } from "../../../assets/Monsters/Monster"
@@ -63,7 +63,7 @@ const Sprites: React.FC<spritesProps> = (props: spritesProps) => {
     const selectSprite = (activeMonster: Monsters, thisSprite: string) => {
         let thisMonster: string
         switch (activeMonster.name) {
-            case 'Pidgey':
+            case "Farfetch'd":
                 thisMonster = firstAnemoMoster;
                 return thisSprite = thisMonster;
             case 'Butterfree':
@@ -72,20 +72,14 @@ const Sprites: React.FC<spritesProps> = (props: spritesProps) => {
             case 'Zubat':
                 thisMonster = thirdAnemoMonster;
                 return thisSprite = thisMonster;
-            case "Farfetch'd":
-                thisMonster = fourthAnemoMonster;
-                return thisSprite = thisMonster;
             case 'Bulbasaur':
                 thisMonster = firstGeoMonster;
                 return thisSprite = thisMonster;
-            case 'Ratata':
+            case 'Dugtrio':
                 thisMonster = secondGeoMonster;
                 return thisSprite = thisMonster;
             case 'Sandshrew':
                 thisMonster = thirdGeoMonster;
-                return thisSprite = thisMonster;
-            case 'Dugtrio':
-                thisMonster = fourthGeoMonster;
                 return thisSprite = thisMonster;
             case 'Magikarp':
                 thisMonster = firstHydroMonster;
@@ -96,20 +90,14 @@ const Sprites: React.FC<spritesProps> = (props: spritesProps) => {
             case 'Poliwhirl':
                 thisMonster = thirdHydroMonster;
                 return thisSprite = thisMonster;
-            case 'Squirtle':
-                thisMonster = fourthHydroMonster;
-                return thisSprite = thisMonster;
             case 'Flareon':
                 thisMonster = firstPyroMonster;
                 return thisSprite = thisMonster;
-            case 'Charmander':
+            case 'Growlithe':
                 thisMonster = secondPyroMonster;
                 return thisSprite = thisMonster;
             case 'Ponyta':
                 thisMonster = thirdPyroMonster;
-                return thisSprite = thisMonster;
-            case 'Growlithe':
-                thisMonster = fourthPyroMonster;
                 return thisSprite = thisMonster;
             default: 
                 thisMonster = empty;

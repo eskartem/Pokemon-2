@@ -15,7 +15,7 @@ import FirstPyroMonster from "./Pyro/FirstPyroMonster";
 import SecondPyroMonster from "./Pyro/SecondPyroMonster";
 import ThirdPyroMonster from "./Pyro/ThirdPyroMonster";
 
-export {FirstAnemoMonster, SecondAnemoMonster, ThirdAnemoMonster, FirstGeoMonster, 
+export {FirstAnemoMonster, SecondAnemoMonster, ThirdAnemoMonster, FirstGeoMonster, SecondGeoMonster, 
     ThirdGeoMonster, FirstHydroMonster, SecondHydroMonster, ThirdHydroMonster,  
     FirstPyroMonster, SecondPyroMonster, ThirdPyroMonster
 }

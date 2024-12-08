@@ -3,11 +3,14 @@ interface skill {
     scale: number
 }
 
-interface weakening {
-    whirlpoolWeakening: boolean;
+interface baseParam {
+    baseAttack: number,
+    baseHealthPoint: number,
+    baseDefense: number,
 }
 
 export type Monsters = {
+    baseParam: baseParam
     name: string,
     attack: number,
     healthPoint: number,
@@ -17,10 +20,14 @@ export type Monsters = {
     skill: skill,
     isAlive: boolean
     side: string
-    weakening: weakening
 }
 
 class Monster {
+    baseParam: baseParam = {
+        baseAttack: 1,
+        baseHealthPoint: 1,
+        baseDefense: 1
+    }
     name: string = '';
     attack: number = 100;
     healthPoint: number = 150;
@@ -31,9 +38,6 @@ class Monster {
     skill: skill = {
         name: "",
         scale: 1
-    }
-    weakening: weakening = {
-        whirlpoolWeakening: false
     }
     isAlive: boolean = true;
 }
