@@ -207,4 +207,12 @@ class DB {
     public function getAllLots(){
         return $this->queryAll('SELECT * from lots');
     }
+
+    public function makeBet($userId, $lotId, $newBet) {
+        return ['ableToMakeBet' =>  $this->execute('UPDATE lots SET buyer_id = ?, timestamp_cost = UNIX_TIMESTAMP(), current_cost = ? WHERE id = ?', 
+                                    [$userId, $newBet, $lotId]),
+                'ableToTakeMoney' => $this->execute('UPDATE users SET money=money-? WHERE id=?',
+                                    [$newBet, $userId])
+                ];
+    }
 }

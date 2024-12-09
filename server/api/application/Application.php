@@ -187,4 +187,26 @@ class Application {
         }
         return ['error' => 242];
     }
+
+    public function makeBet($params) {
+        if (!$params['token'] || !$params['lotId'] || !$params['bet']){
+            return ['error' => 242]; 
+        }
+
+        $newBet = $params['bet'];
+        $user = $this->user->getUser($params['token']);
+
+        if (!$user) {
+            return ['error' => 705];
+        }
+
+        $lots = $this->market->getAllLots($params['token']); //объект
+        foreach ($lots as $lot){
+            if ($lot['id'] == $params['lotId']){
+                return $this->market->makeBet($user->id, $user->money, $lot, $newBet);
+            }
+        }
+        return ['fg' => $lot['id']];
+        return ['error' => 3016];
+    }
 }

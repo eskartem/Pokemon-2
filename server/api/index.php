@@ -42,6 +42,7 @@ function result($params) {
             case 'getAllLots': return $app->getAllLots($params); // новое название getAllLots, вместо getCatalog
             // case 'buy': return $app-> buy($params);
             // case 'sale': return $app-> sale($params);
+            case 'makeBet': return $app->makeBet($params);
 
             default: return ['error' => 102];
         }
