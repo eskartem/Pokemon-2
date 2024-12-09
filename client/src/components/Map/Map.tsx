@@ -12,7 +12,7 @@ import { TextStyle } from 'pixi.js';
 
 
 const Map: React.FC = () => {
-    const { WINV, tileSize} = CONFIG;
+    const { WINV, tileSize, fovDistance} = CONFIG;
     const server = useContext(ServerContext);
     const store = useContext(StoreContext);
     const user = store.getUser();
@@ -46,17 +46,26 @@ const Map: React.FC = () => {
 
         const updateSceneHandler = (result: TUpdateSceneResponse) => { // получаю массив игроков и выдергиваю себя из него
             if (!result.gamers) return;
+            if (!user) return;
 
             let gamers = result.gamers;
-            
-            if (!user) return;
-            
             const userIngame = gamers.find(item => item.id === user?.id);
+            if (!userIngame) return;
+            
             const index = gamers.findIndex(item => item.id === user?.id);
             if (index === -1) return;
+
             gamers.splice(index, 1);
+
+            const gamersAround = gamers.filter(gamer => { // выбираю пользователей только в поле зрения
+                return ( 
+                    (Math.abs(userIngame.x - gamer.x) < (fovDistance+1)) && 
+                    (Math.abs(userIngame.y - gamer.y) < (fovDistance+1)) 
+                )
+            });
+
             setUserIngame(userIngame);
-            setGamers(gamers);
+            setGamers(gamersAround);
         }
 
         if (user) {
@@ -133,7 +142,7 @@ const Map: React.FC = () => {
                             let color: string = '0x111111';
                             if (zone.type === EZones.town) color = '0xAAAAAA';
                             else color = '0x111111';
-                            g.beginFill(color);
+                            g.beginFill(color, 0.7);
                             g.drawRect(
                                 mapPosition.x + zone.x * tileSize,
                                 mapPosition.y + zone.y * tileSize,
@@ -168,6 +177,19 @@ const Map: React.FC = () => {
                     </Container>)
                 })}
                 <Container>
+                    <Graphics // поле зрения игрока
+                        draw={(g) => {
+                            g.clear();
+                                g.beginFill('0xffffff', 0.4);
+                                g.drawRect(
+                                    (userGamer.x - (fovDistance)) * tileSize + mapPosition.x,
+                                    (userGamer.y - (fovDistance)) * tileSize + mapPosition.y,
+                                    (fovDistance*2+1)*tileSize,
+                                    (fovDistance*2+1)*tileSize
+                                );
+                                g.endFill();
+                        }}
+                    />
                     <Sprite // гг картинка
                         image={characterImage}
                         width={tileSize}
