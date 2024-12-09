@@ -24,7 +24,7 @@ class Market {
                 return ['error' => 3013]; // можно сделать ставку на лот, на котором уже есть твоя ставка, только если новая ставка будет больше
             }
 
-            if ($lotInfo['current_cost'] < $userBalance){
+            if ($lotInfo['current_cost'] < $userBalance && $newBet <= $userBalance){
                 if ($newBet - $lotInfo['step_cost'] >= $lotInfo['current_cost'] || $lotInfo['start_cost'] == $lotInfo['current_cost']){
                     return $this->db->makeBet($userId, $lotInfo['id'], $newBet);
                 }

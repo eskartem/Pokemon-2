@@ -206,7 +206,6 @@ class Application {
                 return $this->market->makeBet($user->id, $user->money, $lot, $newBet);
             }
         }
-        return ['fg' => $lot['id']];
         return ['error' => 3016];
     }
 }
