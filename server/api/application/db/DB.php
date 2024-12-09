@@ -227,4 +227,8 @@ class DB {
     public function getAllLots(){
         return $this->queryAll('SELECT * from lots');
     }
+
+    public function getCatalog(){
+        return $this->queryAll('SELECT * from resources');
+    }
 }

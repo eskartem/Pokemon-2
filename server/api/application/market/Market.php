@@ -14,6 +14,13 @@ class Market {
         return ['error' => 2999];
     }
 
+    public function getCatalog($isInTown) {
+        if ($isInTown) {
+            return $this->db->getCatalog();
+        }
+        return ['error' => 2999];
+    }
+
     public function sell($userId, $inventoryInfo, $objectId, $resourceAmount){
         $sellingResource = $this->db->getResourcesById($objectId);
         if (!$sellingResource){
