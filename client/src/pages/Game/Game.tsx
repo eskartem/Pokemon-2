@@ -94,7 +94,6 @@ const Game: React.FC<IBasePage> = (props: IBasePage) => {
                 </div>
                 <div className='button-panel-test-right'>
                     <Button id='test-game-button-mute' onClick={muteButtonHandler} text='заглушить' />
-                    <Button id='test-game-button-logout' onClick={logoutClickHandler} text='Выйти' />
                     <img id='test-game-img-logout' className='img-logout' src={ExitImg} alt="ExitImg" onClick={logoutClickHandler} />
                 </div>
             </div>
