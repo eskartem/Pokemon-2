@@ -204,10 +204,6 @@ class DB {
         return $this->queryAll('SELECT id, name, x, y FROM users WHERE token<>"" AND status<>"offline"');
     }
 
-    public function getInventoryById($userId) {
-        return $this->queryAll('SELECT * FROM inventory WHERE user_id=?', [$userId]);
-    }
-
     public function getResources(){
         return $this->queryAll('SELECT * FROM resources');
     }
