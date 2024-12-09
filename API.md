@@ -24,6 +24,7 @@
     * 4.7. upgradePokemon
     * 4.8. startGame
     * 4.9. endGame
+    * 4.15. makeLot
 
 
 ## 1. Общее
@@ -351,15 +352,27 @@ Inventory: {
 {
     token: string; - токен
     type: string; - тип лота
-    id: string; - айди продаваемого объекта
-    startCost: string; - начальная стоимость
-    stepCost: string; - минимальный шаг ставки
+    id: number; - айди продаваемого объекта
+    startCost: number; - начальная стоимость
+    stepCost: number; - минимальный шаг ставки
+    amount: number || null; - количество продажи, может не передаваться, если указан тип monster
 
 }
 ```
 **Успешный ответ**
 ```
-    Answer<true>
+    Answer<{
+        ableToWithdrawResources:true || ableToWithdrawMonster:true,
+        ableToCreateLot:true,
+        ableToTakeMoney:true
+        }>
 ```
 **Ошибки**
 * `705` - невалидный токен. Пользователь не авторизован
+* `2999` - пользователь находится не в городе
+* `3001` - некорректный параметр "type"
+* `3002` - некорректный параметр "amount"
+* `3003` - некорректные параметры "startCost" и/или "stepCost"
+* `3004` - невозможно продать монстрика, если в результате их окажется меньше, чем 3
+* `3007` - инвентарь пользователя с данным ID не был найден
+* `3008` - продаваемый объект с данным ID не был найден

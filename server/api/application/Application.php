@@ -191,13 +191,8 @@ class Application {
     }
 
     public function makeLot($params){
-        // некоторые ошибки на другой ветке, я потом  их сюда подсосу
         if (!isset($params['token'], $params['type'], $params['startCost'], $params['stepCost'], $params['id'])){
             return ['error' => 242];
-        }
-
-        if (!is_null($params['amount']) && (!filter_var($params['amount'], FILTER_VALIDATE_INT) || $params['amount'] <= 0)) {
-            return ['error' => 'Некорректное значение amount. Оно должно быть null или положительным целым числом.'];
         }
 
         $user = $this->user->getUser($params['token']);
@@ -210,40 +205,51 @@ class Application {
             return ['error' => 2999];
         }
 
-        if ($params['type'] !== 'pokemon' && $params['type'] !== 'item'){
-            return ['error' => 's3'];
+        if ($params['type'] !== 'monster' && $params['type'] !== 'item'){
+            return ['error' => 3001];
         }
 
-        if (!filter_var($params['startCost'], FILTER_VALIDATE_INT) || !filter_var($params['stepCost'], FILTER_VALIDATE_INT)) {
-            return ['error' => 's2'];
+        if (!filter_var($params['startCost'], FILTER_VALIDATE_INT) || $params['startCost'] <= 0 ||
+            !filter_var($params['stepCost'], FILTER_VALIDATE_INT) || $params['stepCost'] <= 0){
+            return ['error' => 3003];
         }
-
+        
         $inventory = $this->inventory->getInventory($user->id);
-        if ($params['type'] === 'pokemon'){
+        if (!$inventory){
+            return ['error' => 3007];
+        }
+
+        if ($params['type'] === 'monster'){
             foreach ($inventory['monsters'] as $monsters){
                 if ($monsters['id'] == $params['id']){
                     if (count($inventory['monsters']) > 3){
                         return $this->market->makeLotMonster($user, $params['id'], $params['startCost'], $params['stepCost']);
                     }
-                    return ['error' => 'вы не можете продать монстра, если у вас их останется менеьше, чем 3'];
+                    return ['error' => 3004];
                 }
             }
-            return ['error' => 'sex'];
+            return ['error' => 3008];
         }
 
         if ($params['type'] === 'item'){
+            if (!$params['amount']){
+                return ['error' => 242];
+            }
+
+            if (!filter_var($params['amount'], FILTER_VALIDATE_INT) || $params['amount'] <= 0){
+                return ['error' => 3002];
+            }
+
             foreach ($inventory['inventory'] as $items){
-                if ($items['id'] == $params['id']){
+                if ($items['resource_id'] == $params['id']){
                     if ($items['resource_amount'] >= $params['amount']){
                         return $this->market->makeLotItem($user, $params['id'], $params['startCost'], $params['stepCost'], $params['amount']);
                     }
-                    return ['error' => 'недостаточно ресурсов для продажи данного количества'];
+                    return ['error' => 3009];
                 }
             }
-            return ['error' => 'ресурс с таким айди не был найден'];
+            return ['error' => 3008];
         }
-
-
     }
 
     public function getInventory($params) {
