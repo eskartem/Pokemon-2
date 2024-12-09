@@ -8,9 +8,242 @@
 	"item": [
 		{
 			"name": "MT_006.6",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Проверяем статус ответа\r",
+							"pm.test(\"Status is 200\", () => {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Always true\", () => {\r",
+							"    pm.expect(true).to.be.true;\r",
+							"});\r",
+							"\r",
+							"console.log(\"Response JSON:\", pm.response.json());"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
 			"request": {
 				"method": "GET",
-				"header": []
+				"header": [
+					{
+						"key": "GET /api/?method=logout&token=014f03ff5ac19fc80913629fdde9e46a HTTP/1.1",
+						"value": "",
+						"type": "text",
+						"disabled": true
+					},
+					{
+						"key": "Accept",
+						"value": " */*",
+						"type": "text"
+					},
+					{
+						"key": "Accept-Encoding",
+						"value": " gzip, deflate",
+						"type": "text"
+					},
+					{
+						"key": "Accept-Language",
+						"value": " ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7",
+						"type": "text"
+					},
+					{
+						"key": "Connection",
+						"value": " keep-alive",
+						"type": "text"
+					},
+					{
+						"key": "Host",
+						"value": " server",
+						"type": "text"
+					},
+					{
+						"key": "Origin",
+						"value": " http://localhost:3000",
+						"type": "text"
+					},
+					{
+						"key": "Referer",
+						"value": " http://localhost:3000/",
+						"type": "text"
+					},
+					{
+						"key": "User-Agent",
+						"value": " Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "method",
+							"value": " logout",
+							"type": "text"
+						},
+						{
+							"key": "token",
+							"value": " 014f03ff5ac19fc80913629fdde9e46a",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://server/api/?method=logout&token=be7f6b10d8db3de89200c256021af87d",
+					"protocol": "http",
+					"host": [
+						"server"
+					],
+					"path": [
+						"api",
+						""
+					],
+					"query": [
+						{
+							"key": "method",
+							"value": "logout"
+						},
+						{
+							"key": "token",
+							"value": "be7f6b10d8db3de89200c256021af87d"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "MT_006.13",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Проверяем статус ответа\r",
+							"pm.test(\"Status is 200\", () => {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response contains error for wrong password\", () => {\r",
+							"    const responseJson = pm.response.json();\r",
+							"\r",
+							"    pm.expect(responseJson).to.be.an(\"object\");\r",
+							"    pm.expect(responseJson).to.have.property(\"result\", \"error\");\r",
+							"\r",
+							"\r",
+							"    pm.expect(responseJson).to.have.property(\"error\").that.is.an(\"object\");\r",
+							"    const error = responseJson.error;\r",
+							"\r",
+							"    pm.expect(error).to.have.property(\"code\", 1003);\r",
+							"    pm.expect(error).to.have.property(\"text\", \"Wrong password\");\r",
+							"pm.collectionVariables.get(\"variable_key\");\r",
+							"});\r",
+							"\r",
+							"console.log(\"Response JSON:\", pm.response.json());"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "GET /api/?method=logout&token=014f03ff5ac19fc80913629fdde9e46a HTTP/1.1",
+						"value": "",
+						"type": "text",
+						"disabled": true
+					},
+					{
+						"key": "Accept",
+						"value": " */*",
+						"type": "text"
+					},
+					{
+						"key": "Accept-Encoding",
+						"value": " gzip, deflate",
+						"type": "text"
+					},
+					{
+						"key": "Accept-Language",
+						"value": " ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7",
+						"type": "text"
+					},
+					{
+						"key": "Connection",
+						"value": " keep-alive",
+						"type": "text"
+					},
+					{
+						"key": "Host",
+						"value": " server",
+						"type": "text"
+					},
+					{
+						"key": "Origin",
+						"value": " http://localhost:3000",
+						"type": "text"
+					},
+					{
+						"key": "Referer",
+						"value": " http://localhost:3000/",
+						"type": "text"
+					},
+					{
+						"key": "User-Agent",
+						"value": " Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "method",
+							"value": " logout",
+							"type": "text"
+						},
+						{
+							"key": "token",
+							"value": " 014f03ff5ac19fc80913629fdde9e46a",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://server/api/?method=logout&token=014f03ff5ac19fc80913629fdde9e46a",
+					"protocol": "http",
+					"host": [
+						"server"
+					],
+					"path": [
+						"api",
+						""
+					],
+					"query": [
+						{
+							"key": "method",
+							"value": "logout"
+						},
+						{
+							"key": "token",
+							"value": "014f03ff5ac19fc80913629fdde9e46a"
+						}
+					]
+				}
 			},
 			"response": []
 		}

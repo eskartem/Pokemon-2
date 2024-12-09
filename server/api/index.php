@@ -42,10 +42,11 @@ function result($params) {
             case 'getCatalog': return $app->getCatalog($params); // для торговца
             case 'getAllLots': return $app->getAllLots($params); // для рынка
             // case 'buy': return $app-> buy($params);
-            // case 'sale': return $app-> sale($params);
+            case 'sell': return $app->sell($params);
 
             default: return ['error' => 102];
         }
+        
     }
     return ['error' => 101];
 }
