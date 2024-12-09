@@ -16,7 +16,7 @@ const MarketTab: React.FC = () => {
     const [catalog, setCatalog] = useState<TMarketCatalog | null>(null);
     useEffect(() => {
         (async () => {
-            setCatalog(await server.getMarketCatalog());
+            //setCatalog(await server.getMarketCatalog()); //не работает с актуальным методом getCatalog, исправить
        })();
     }, []);
 
