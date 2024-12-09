@@ -171,12 +171,14 @@ class Server {
         }
     }
 
-    async getInventory():Promise<TInventory | null> {
-        const catalog = await this.request<TInventory>('getInventory');
-        if (catalog) {
+    async getInventory(token: string): Promise<TInventory | null> {
+        try {
+            const catalog = await this.request<TInventory>('getInventory', { token });
             return catalog;
+        } catch (error) {
+            console.error('Error fetching inventory:', error);
+            return null;
         }
-        return null;
     }
 
     async upgradePokemon(token: string, monsterId: number): Promise<TCreature | null> {
