@@ -1,7 +1,7 @@
 import md5 from 'md5';
 import CONFIG, { EDIRECTION } from "../../config";
 import Store from "../store/Store";
-import { TAnswer, TError, TMessagesResponse, TUser, TMarketCatalog, TMap, TMapZone, TUpdateSceneResponse } from "./types";
+import { TAnswer, TError, TMessagesResponse, TUser, TMarketCatalog, TMap, TMapZone, TUpdateSceneResponse, TInventory, TCreature } from "./types";
 
 const { CHAT_TIMESTAMP, SCENE_TIMESTAMP, HOST } = CONFIG;
 
@@ -171,7 +171,18 @@ class Server {
         }
     }
 
+    async getInventory():Promise<TInventory | null> {
+        const catalog = await this.request<TInventory>('getInventory');
+        if (catalog) {
+            return catalog;
+        }
+        return null;
+    }
 
+    async upgradePokemon(token: string, monsterId: number): Promise<TCreature | null> {
+        const result = await this.request<TCreature>('upgradePokemon', { token, monsterId: monsterId.toString() });
+        return result;
+    }    
 }
 
 export default Server;

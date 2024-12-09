@@ -109,3 +109,12 @@ export enum EZones {
     safe = 'safe',
     dungeon = 'dungeon  '
 }
+
+export type TInventory = {
+    resoure_type: string,
+    user_id: number,
+    resoure: number,
+    id: number,
+    monsters: number,
+    element_id: number
+}
