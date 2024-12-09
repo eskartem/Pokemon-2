@@ -41,10 +41,11 @@ function result($params) {
             //market
             case 'getAllLots': return $app->getAllLots($params); // новое название getAllLots, вместо getCatalog
             // case 'buy': return $app-> buy($params);
-            // case 'sale': return $app-> sale($params);
+            case 'sell': return $app->sell($params);
 
             default: return ['error' => 102];
         }
+        
     }
     return ['error' => 101];
 }
