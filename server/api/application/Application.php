@@ -191,6 +191,17 @@ class Application {
         return ['error' => 242];
     }
 
+    public function getInventory($params) {
+        if ($params['token']) {
+            $user = $this->user->getUser($params['token']);
+            if ($user) {
+                return $this->inventory->getInventory($user->id);
+            }
+            return ['error' => 705];
+        }
+        return ['error' => 242];
+    }
+
     public function getCatalog($params) {
         if (!$params['token']) {
             return ['error' => 242];
@@ -238,3 +249,4 @@ class Application {
         return ['error' => 3001];
     }
 }
+
