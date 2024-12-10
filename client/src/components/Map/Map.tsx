@@ -13,7 +13,7 @@ import './Map.scss';
 
 
 const Map: React.FC = () => {
-    const { WINV, tileSize} = CONFIG;
+    const { WINV, tileSize, fovDistance} = CONFIG;
     const server = useContext(ServerContext);
     const store = useContext(StoreContext);
     const user = store.getUser();
@@ -274,6 +274,19 @@ const Map: React.FC = () => {
                     })
                 }
                 <Container>
+                    <Graphics // поле зрения игрока
+                        draw={(g) => {
+                            g.clear();
+                                g.beginFill('0xffffff', 0.4);
+                                g.drawRect(
+                                    (userOnMap.x - (fovDistance)) * tileSize + mapPosition.x,
+                                    (userOnMap.y - (fovDistance)) * tileSize + mapPosition.y,
+                                    (fovDistance*2+1)*tileSize,
+                                    (fovDistance*2+1)*tileSize
+                                );
+                                g.endFill();
+                        }}
+                    />
                     <Sprite // гг картинка
                         image={characterImage}
                         width={tileSize}

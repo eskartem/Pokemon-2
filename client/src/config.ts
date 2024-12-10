@@ -36,6 +36,8 @@ const CONFIG = {
         WIDTH: 160,
         HEIGHT: 90,
     },
+
+    fovDistance: 4, // дальность поля зрения игрока
     
     winAspect: 16 / 9,
     tileSize: 40, // размер клетки в пикселях 
