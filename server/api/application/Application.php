@@ -237,4 +237,39 @@ class Application {
 
         return $this->market->getCatalog($this->map->isUserInZone($user, "город"));
     }
+  
+    public function sell($params){
+        if (!isset($params['token'], $params['type'], $params['amount'])){
+            return ['error' => 242];
+        }
+
+        $user = $this->user->getUser($params['token']);
+        if (!$user){
+            return ['error' => 705];
+        }
+
+        $inventory = $this->inventory->getInventory($user->id);
+        if (!$inventory){
+            return ['error' => 3007];
+        }
+
+        if (!filter_var($params['amount'], FILTER_VALIDATE_INT) || $params['amount'] <= 0) {
+            return ['error' => 3002];
+        }
+
+        if ($params['type'] === 'merchant') {
+            if (!isset($params['objectId']) || !filter_var($params['objectId'], FILTER_VALIDATE_INT)) {
+                return ['error' => 3002];
+            }
+    
+            return $this->market->sell($user->id, $inventory, $params['objectId'], $params['amount']);
+        }
+
+        if ($params['type'] === 'exchanger'){
+            return $this->market->exchange($user->id, $inventory, $params['amount']);
+        }
+
+        return ['error' => 3001];
+    }
 }
+
