@@ -22,12 +22,12 @@ class Market {
     }
 
     public function sell($userId, $inventoryInfo, $objectId, $resourceAmount){
-        $sellingResource = $this->db->getResourcesById($objectId);
+        $sellingResource = $this->db->getResourcesById($objectId); //надо удалить запрос и использовать getResources
         if (!$sellingResource){
             return ['error' => 3008];
         }
 
-        foreach ($inventoryInfo as $item){
+        foreach ($inventoryInfo['inventory'] as $item){
             if ($item['resource_id'] === (int)$objectId){
                 if ($resourceAmount <= $item['resource_amount']){
                     return ['resDecrease' => $this->db->sellResources($sellingResource->id, $resourceAmount, $userId),
@@ -46,6 +46,7 @@ class Market {
         foreach ($sellingResource as $resource){
             if ($resource['name'] === 'Скорлупа'){
                 $shellsId = $resource['id'];
+                $exchangeRate = $resource['exchange_cost'];
             }
 
             if ($resource['name'] === 'Яйцо'){
@@ -54,8 +55,7 @@ class Market {
         }
         //чето бред какой-то вышел, лучше не придумал
         
-        $exchangeRate = 50; // курс 50 осколков к 1 яйцу, в идеале доставать этот курс тоже из бд (нет таблицы пока)
-        foreach ($inventoryInfo as $item){
+        foreach ($inventoryInfo['inventory'] as $item){
             if ($item['resource_id'] === (int)$shellsId){
                 if ($resourceAmount <= $item['resource_amount']){
                     if ($resourceAmount % $exchangeRate === 0){ 
