@@ -24,6 +24,7 @@ class DB {
         // $user = 'postgres';
         // $pass = '---';
         // $db = 'cockstaris';
+        // $db = 'cockstaris';
         // $connect = "pgsql:host=$host;port=$port;dbname=$db;";
         // $this->pdo = new PDO($connect, $user, $pass, [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]);
 
@@ -204,10 +205,6 @@ class DB {
         return $this->queryAll('SELECT id, name, x, y FROM users WHERE token<>"" AND status<>"offline"');
     }
 
-    public function getInventoryById($userId) {
-        return $this->queryAll('SELECT * FROM inventory WHERE user_id=?', [$userId]);
-    }
-
     public function getResources(){
         return $this->queryAll('SELECT * FROM resources');
     }
@@ -228,7 +225,16 @@ class DB {
         return $this->queryAll('SELECT * from lots');
     }
 
+    public function getInventory($userId){
+        return ['monsters' => $this->queryAll('SELECT * FROM monsters WHERE user_id=?', [$userId]),
+                'monsterTypes' => $this->queryAll('SELECT * FROM monster_types'),
+                'inventory' => $this->queryAll('SELECT * FROM inventory WHERE user_id=?', [$userId]),
+                'balance' => $this->query('SELECT money FROM users WHERE id=?', [$userId])
+        ];
+    }
+
     public function getCatalog(){
         return $this->queryAll('SELECT * from resources');
+
     }
 }
