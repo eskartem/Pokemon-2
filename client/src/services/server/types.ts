@@ -106,6 +106,6 @@ export type TMapZone = {
 
 export enum EZones {
     town = 'town',
-    safe = 'safe',
-    dungeon = 'dungeon  '
+    chillzone = 'chillzone',
+    dungeon = 'dungeon'
 }

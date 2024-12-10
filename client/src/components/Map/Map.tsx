@@ -1,14 +1,14 @@
 import React, { MouseEvent, useContext, useEffect, useState } from 'react';
-import { Sprite, Stage, Graphics, Text, Container } from '@pixi/react';
 import { StoreContext, ServerContext } from '../../App';
-import mapImage from '../../assets/img/mapImage.jpg';
+import { TMap, TMapZone, TUpdateSceneResponse, TGamer, EZones } from '../../services/server/types';
+import { Sprite, Stage, Graphics, Text, Container } from '@pixi/react';
+import { TextStyle } from 'pixi.js';
+import CONFIG, { TPoint } from '../../config';
+import mapImage from '../../assets/img/map.jpg';
 import playerImage from '../../assets/img/player_map_icon.png';
 import characterImage from '../../assets/img/player.png';
-import CONFIG, { TPoint } from '../../config';
-import { TMap, TMapZone, TUpdateSceneResponse, TGamer, EZones } from '../../services/server/types';
 
 import './Map.scss';
-import { TextStyle } from 'pixi.js';
 
 
 const Map: React.FC = () => {
@@ -24,9 +24,18 @@ const Map: React.FC = () => {
     const [mapPosition, setMapPosition] = useState<TPoint>({ x: 0, y: 0 });
     const [isCanMove, setCanMove] = useState<boolean>(false);
     const [lastMousePosition, setLastMousePosition] = useState<TPoint>({ x: 0, y: 0 });
+    let currentZone: string;
 
     const canvasHeight = WINV.HEIGHT * tileSize;
     const canvasWidth = WINV.WIDTH * tileSize;
+
+    const getCurrentZone = () => {
+        
+        
+
+        console.log();
+        return '';
+    }
 
     useEffect(() => {
         
@@ -52,12 +61,16 @@ const Map: React.FC = () => {
             if (!user) return;
             
             const userIngame = gamers.find(item => item.id === user?.id);
+            if (!userIngame) return;
+            
             const index = gamers.findIndex(item => item.id === user?.id);
             if (index === -1) return;
+            currentZone = getCurrentZone();
             gamers.splice(index, 1);
             setUserIngame(userIngame);
             setGamers(gamers);
         }
+        
 
         if (user) {
             server.startSceneUpdate(updateSceneHandler);
@@ -68,7 +81,6 @@ const Map: React.FC = () => {
         }
         
     }, [server, store, user]);
-
 
     if (!user || !userGamer) {
         return (<>Карта не загружена. Что-то пошло не так.</>)
@@ -103,14 +115,15 @@ const Map: React.FC = () => {
         return {
             x: Math.max(minX, Math.min(maxX, newX)),
             y: Math.max(minY, Math.min(maxY, newY))
-        };
-    });
-    setLastMousePosition({ x: event.clientX, y: event.clientY });
-}
+            };
+        });
+        setLastMousePosition({ x: event.clientX, y: event.clientY });
+    }
+
 
     return (
         <div className='map'>
-            <Stage // канвас
+            <Stage // само окно-канвас
                 className='stage'
                 width={canvasWidth}
                 height={canvasHeight}
@@ -130,10 +143,11 @@ const Map: React.FC = () => {
                     draw={(g) => {
                         g.clear();
                         mapZones.forEach(zone => {
-                            let color: string = '0x111111';
+                            if (zone.type === EZones.dungeon) return;
+                            let color = '0xff0000';
                             if (zone.type === EZones.town) color = '0xAAAAAA';
-                            else color = '0x111111';
-                            g.beginFill(color);
+                            if (zone.type === EZones.chillzone) color = '0xf49ff0';
+                            g.beginFill(color, 0.5);
                             g.drawRect(
                                 mapPosition.x + zone.x * tileSize,
                                 mapPosition.y + zone.y * tileSize,
@@ -146,27 +160,29 @@ const Map: React.FC = () => {
                 />
                 {gamers.map( (gamer, index) => { // другие пользователи
                     return (
-                    <Container  key={index} >
-                        <Sprite // иконки на карте других пользователей
-                        image={playerImage} // надо добавить путь к картинке в базу данных к каждому пользователю
-                        width={tileSize}
-                        height={tileSize}
-                        x={mapPosition.x + gamer.x * tileSize}
-                        y={mapPosition.y + gamer.y * tileSize}
-                        />
-                        <Text // ник 
-                            text={gamer.name}
-                            x={mapPosition.x + gamer.x * tileSize - tileSize/2}
-                            y={mapPosition.y + gamer.y * tileSize - tileSize/2}
-                            style={
-                                new TextStyle({
-                                  align: 'center',
-                                  fontSize: 10,
-                                })
-                            }
-                        />
-                    </Container>)
-                })}
+                        <Container  key={index} >
+                            <Sprite // иконки на карте других пользователей
+                            image={playerImage} // надо добавить путь к картинке в базу данных к каждому пользователю
+                            width={tileSize}
+                            height={tileSize}
+                            x={mapPosition.x + gamer.x * tileSize}
+                            y={mapPosition.y + gamer.y * tileSize}
+                            />
+                            <Text // ник 
+                                text={gamer.name}
+                                x={mapPosition.x + gamer.x * tileSize - tileSize/2}
+                                y={mapPosition.y + gamer.y * tileSize - tileSize/2}
+                                style={
+                                    new TextStyle({
+                                        align: 'center',
+                                        fontSize: 12,
+                                        fill: ['#222222'],
+                                    })
+                                }
+                            />
+                        </Container>)
+                    })
+                }
                 <Container>
                     <Sprite // гг картинка
                         image={characterImage}
@@ -181,12 +197,25 @@ const Map: React.FC = () => {
                         y={mapPosition.y + userGamer.y * tileSize - tileSize/2}
                         style={
                             new TextStyle({
-                              fontSize: 10,
-                              fill: ['#ff0000'],
+                                align: 'center',
+                                fontSize: 12,
+                                fill: ['#ff0000'],  
                             })
                         }
                     />
                 </Container>
+                <Text // зона нахождения игрока
+                    text={`Вы находитесь `}
+                    x={tileSize/2}
+                    y={tileSize/2}
+                    style={
+                        new TextStyle({
+                            fontSize: 16,
+                            strokeThickness: 1,
+                            fill: ['#000000'],  
+                        })
+                    }
+                />
             </Stage>
         </div>
     )
