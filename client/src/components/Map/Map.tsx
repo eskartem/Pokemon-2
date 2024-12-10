@@ -1,9 +1,9 @@
 import React, { MouseEvent, useContext, useEffect, useState } from 'react';
 import { Sprite, Stage, Graphics, Text, Container } from '@pixi/react';
 import { TextStyle } from 'pixi.js';
+import { TMap, TMapZone, TUpdateSceneResponse, TGamer, EZones, EStatus } from '../../services/server/types';
 import { StoreContext, ServerContext } from '../../App';
 import CONFIG, { EDIRECTION, TPoint } from '../../config';
-import { TMap, TMapZone, TUpdateSceneResponse, TGamer, EZones, EStatus } from '../../services/server/types';
 import Button from '../Button/Button';
 import mapImage from '../../assets/img/map.jpg';
 import playerImage from '../../assets/img/player_map_icon.png';
@@ -18,7 +18,7 @@ const Map: React.FC = () => {
     const store = useContext(StoreContext);
     const user = store.getUser();
 
-    const [userGamer, setUserIngame] = useState<TGamer>();
+    const [userOnMap, setUserOnMap] = useState<TGamer>();
     const [gamers, setGamers] = useState<TGamer[]>([]);
     const [MAP, setMAP] = useState<TMap>({ WIDTH: 0, HEIGHT: 0, IMAGE: '' });
     const [mapZones, setMapZones] = useState<TMapZone[]>([]);
@@ -30,9 +30,9 @@ const Map: React.FC = () => {
     const canvasWidth = WINV.WIDTH * tileSize;
 
     const goToUser = () => {
-        if (!userGamer) return;
-        let x = -(userGamer.x - WINV.WIDTH / 2) * tileSize;
-        let y = -(userGamer.y - WINV.HEIGHT / 2) * tileSize;
+        if (!userOnMap) return;
+        let x = -(userOnMap.x - WINV.WIDTH / 2) * tileSize;
+        let y = -(userOnMap.y - WINV.HEIGHT / 2) * tileSize;
 
         // Ограничение по горизонтали
         const maxX = 0;
@@ -47,40 +47,78 @@ const Map: React.FC = () => {
         setMapPosition({x, y});
     }
 
+    const keyDown = (event: KeyboardEvent) => {
+        switch (event.key) {
+            case 'ArrowUp':
+                moveUser(EDIRECTION.UP);
+                break;
+            case 'ArrowDown':
+                moveUser(EDIRECTION.DOWN);
+                break;
+            case 'ArrowLeft':
+                moveUser(EDIRECTION.LEFT);    
+                break;
+            case 'ArrowRight':
+                moveUser(EDIRECTION.RIGHT);
+                break;
+            case 'w':
+                moveUser(EDIRECTION.UP);
+                break;
+            case 's':
+                moveUser(EDIRECTION.DOWN);
+                break;
+            case 'a':
+                moveUser(EDIRECTION.LEFT);    
+                break;
+            case 'd':
+                moveUser(EDIRECTION.RIGHT);
+                break;
+            default:
+                break;
+        }
+    };
+
+    const moveUser = async (direction: EDIRECTION) => {
+        server.moveUser(direction);
+    }
+
+    const mousedown = (event: MouseEvent) => {
+        setCanMove(true);
+        setLastMousePosition({ x: event.clientX, y: event.clientY });
+    }
+
+    const mouseup = () => setCanMove(false);
+    const mouseleave = () => setCanMove(false);
+
+    const mousemove = (event: MouseEvent) => {
+        if (!isCanMove) return;
+
+        const deltaX = event.clientX - lastMousePosition.x;
+        const deltaY = event.clientY - lastMousePosition.y;
+
+        setMapPosition(prevPosition => {
+            const newX = prevPosition.x + deltaX;
+            const newY = prevPosition.y + deltaY;
+        
+            // Ограничение по горизонтали
+            const maxX = 0;
+            const minX = canvasWidth - MAP.WIDTH * tileSize;
+        
+            // Ограничение по вертикали
+            const maxY = 0;
+            const minY = canvasHeight - MAP.HEIGHT * tileSize;
+        
+            return {
+                x: Math.max(minX, Math.min(maxX, newX)),
+                y: Math.max(minY, Math.min(maxY, newY))
+                };
+            });
+        setLastMousePosition({ x: event.clientX, y: event.clientY });
+    }
+
     useEffect(() => {
 
-        const keyDownHandler = (event: KeyboardEvent) => {
-            switch (event.key) {
-                case 'ArrowUp':
-                    moveUser(EDIRECTION.UP);
-                    break;
-                case 'ArrowDown':
-                    moveUser(EDIRECTION.DOWN);
-                    break;
-                case 'ArrowLeft':
-                    moveUser(EDIRECTION.LEFT);    
-                    break;
-                case 'ArrowRight':
-                    moveUser(EDIRECTION.RIGHT);
-                    break;
-                case 'w':
-                    moveUser(EDIRECTION.UP);
-                    break;
-                case 's':
-                    moveUser(EDIRECTION.DOWN);
-                    break;
-                case 'a':
-                    moveUser(EDIRECTION.LEFT);    
-                    break;
-                case 'd':
-                    moveUser(EDIRECTION.RIGHT);
-                    break;
-                default:
-                    break;
-            }
-        };
-
-        window.addEventListener('keydown', keyDownHandler);
+        window.addEventListener('keydown', keyDown);
         
         (async () => { // получаем карту, зоны и центрируем карты по игроку
             const result = await server.getMap();
@@ -100,13 +138,13 @@ const Map: React.FC = () => {
             
             if (!user) return;
             
-            const userIngame = gamers.find(item => item.id === user?.id);
-            if (!userIngame) return;
+            const userHimself = gamers.find(item => item.id === user?.id);
+            if (!userHimself) return;
             
             const index = gamers.findIndex(item => item.id === user?.id);
             if (index === -1) return;
             gamers.splice(index, 1);
-            setUserIngame(userIngame);
+            setUserOnMap(userHimself);
             setGamers(gamers);
         }
         
@@ -116,50 +154,12 @@ const Map: React.FC = () => {
 
         return () => {
             server.stopSceneUpdate();
-            window.removeEventListener('keydown', keyDownHandler);
+            window.removeEventListener('keydown', keyDown);
         }
         
     }, [server, store, user]);
 
-    const moveUser = async (direction: EDIRECTION) => {
-        server.moveUser(direction);
-    }
-
-    const mousedown = (event: MouseEvent) => {
-        setCanMove(true);
-        setLastMousePosition({ x: event.clientX, y: event.clientY });
-    }
-
-    const mouseup = () => setCanMove(false);
-    const mouseleave = () => setCanMove(false);
-
-    const mousemove = (event: MouseEvent) => {
-    if (!isCanMove) return;
-
-    const deltaX = event.clientX - lastMousePosition.x;
-    const deltaY = event.clientY - lastMousePosition.y;
-
-    setMapPosition(prevPosition => {
-        const newX = prevPosition.x + deltaX;
-        const newY = prevPosition.y + deltaY;
-
-        // Ограничение по горизонтали
-        const maxX = 0;
-        const minX = canvasWidth - MAP.WIDTH * tileSize;
-
-        // Ограничение по вертикали
-        const maxY = 0;
-        const minY = canvasHeight - MAP.HEIGHT * tileSize;
-
-        return {
-            x: Math.max(minX, Math.min(maxX, newX)),
-            y: Math.max(minY, Math.min(maxY, newY))
-            };
-        });
-        setLastMousePosition({ x: event.clientX, y: event.clientY });
-    }
-
-    if (!user || !userGamer) {
+    if (!user || !userOnMap) {
         return (<>Карта не загружена. Что-то пошло не так.</>)
     }
 
@@ -224,15 +224,14 @@ const Map: React.FC = () => {
                             />
                             <Text // ник 
                                 text={gamer.name}
-                                x={mapPosition.x + gamer.x * tileSize - tileSize/2}
+                                x={mapPosition.x + gamer.x * tileSize - (gamer.name.length * 3.5)}
                                 y={mapPosition.y + gamer.y * tileSize - tileSize/2}
                                 style={
                                     new TextStyle({
-                                        align: 'center',
-                                        fontSize: 12,
+                                        fontSize: 16,
                                         fill: [color],
-                                        stroke: 3,
-                                        strokeThickness: 2
+                                        stroke: 1,
+                                        strokeThickness: 3
                                     })
                                 }
                             />
@@ -244,20 +243,19 @@ const Map: React.FC = () => {
                         image={characterImage}
                         width={tileSize}
                         height={tileSize}
-                        x={mapPosition.x + userGamer.x * tileSize}
-                        y={mapPosition.y + userGamer.y * tileSize}
+                        x={mapPosition.x + userOnMap.x * tileSize}
+                        y={mapPosition.y + userOnMap.y * tileSize}
                     />
                     <Text // ник гг
-                        text={userGamer.name}
-                        x={mapPosition.x + userGamer.x * tileSize - tileSize/2}
-                        y={mapPosition.y + userGamer.y * tileSize - tileSize/2}
+                        text={userOnMap.name}
+                        x={mapPosition.x + userOnMap.x * tileSize - (userOnMap.name.length * 3)}
+                        y={mapPosition.y + userOnMap.y * tileSize - tileSize/2}
                         style={
                             new TextStyle({
-                                align: 'center',
-                                fontSize: 12, 
+                                fontSize: 16, 
                                 fill: ['#00ff00'], 
-                                stroke: 3, 
-                                strokeThickness: 2
+                                stroke: 1, 
+                                strokeThickness: 3
                             })
                         }
                     />
@@ -279,10 +277,13 @@ const Map: React.FC = () => {
                 <Button id='test-game-button-arrowleft' className="move-button" 
                 onClick={() => moveUser(EDIRECTION.LEFT)} text={'←'} />
                 <div className='vertical-move-buttons'>
-                    <Button id='test-game-button-arrowup' className="move-button" onClick={() => moveUser(EDIRECTION.UP)} text={'↑'} />
-                    <Button id='test-game-button-arrowdown' className="move-button" onClick={() => moveUser(EDIRECTION.DOWN)} text={'↓'} />
+                    <Button id='test-game-button-arrowup' className="move-button" 
+                    onClick={() => moveUser(EDIRECTION.UP)} text={'↑'} />
+                    <Button id='test-game-button-arrowdown' className="move-button" 
+                    onClick={() => moveUser(EDIRECTION.DOWN)} text={'↓'} />
                 </div>
-                <Button id='test-game-button-arrowright' className="move-button" onClick={() => moveUser(EDIRECTION.RIGHT)} text={'→'} />
+                <Button id='test-game-button-arrowright' className="move-button" 
+                onClick={() => moveUser(EDIRECTION.RIGHT)} text={'→'} />
                 <div >
                     <Button className='' onClick={goToUser} text={"к себе"}/>
                 </div>
