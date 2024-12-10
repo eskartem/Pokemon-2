@@ -32,8 +32,8 @@ const Game: React.FC<IBasePage> = (props: IBasePage) => {
         <div className="game-wrapper" >
             <div>
                 <div className='user-panel'>
-                    <h1 className='user-panel-nick'> Ник:</h1>
-                    <h1 id='test-game-h1-name' className='user-panel-nick'> {user?.name} | </h1>
+                    <h1 className='user-panel-nick'> Пользователь: </h1>
+                    <h1 id='test-game-h1-name' className='user-panel-nick'> {user?.name} </h1>
                 </div>
                 <div className='button-panel'>
                     <Button id='test-game-button-inventory' onClick={inventoryClickHandler} text='Инвентарь' />

@@ -18,7 +18,7 @@ const Map: React.FC = () => {
     const store = useContext(StoreContext);
     const user = store.getUser();
 
-    const [userOnMap, setUserOnMap] = useState<TGamer>();
+    const [userOnMap, setUserOnMap] = useState<TGamer | null>(null);
     const [gamers, setGamers] = useState<TGamer[]>([]);
     const [MAP, setMAP] = useState<TMap>({ WIDTH: 0, HEIGHT: 0, IMAGE: '' });
     const [mapZones, setMapZones] = useState<TMapZone[]>([]);
@@ -29,11 +29,32 @@ const Map: React.FC = () => {
     const canvasHeight = WINV.HEIGHT * tileSize;
     const canvasWidth = WINV.WIDTH * tileSize;
 
+    const getCurrentZone = () => {
+        if (!userOnMap) return 'пользователя нету';
+        for (let i=0; i <= mapZones.length; i++) {
+            const zone = mapZones[i];
+            const result = (userOnMap.x >= zone.x && userOnMap.y >= zone.y
+                && userOnMap.x < (zone.x + zone.width)
+                && userOnMap.y < (zone.y + zone.height)
+            );
+            if (zone.type === EZones.town && result) {
+                return zone.name;
+            }
+            if (zone.type === EZones.chillzone && result) {
+                return zone.name;
+            }
+            if (result) return zone.name;
+        }
+        return 'не найдено';
+    }
+
     const goToUser = () => {
+
         if (!userOnMap) return;
+        
         let x = -(userOnMap.x - WINV.WIDTH / 2) * tileSize;
         let y = -(userOnMap.y - WINV.HEIGHT / 2) * tileSize;
-
+        console.log(x, y)
         // Ограничение по горизонтали
         const maxX = 0;
         const minX = canvasWidth - MAP.WIDTH * tileSize;
@@ -119,21 +140,10 @@ const Map: React.FC = () => {
     useEffect(() => {
 
         window.addEventListener('keydown', keyDown);
-        
-        (async () => { // получаем карту, зоны и центрируем карты по игроку
-            const result = await server.getMap();
-            if (result) {
-                const { MAP: map, mapZones: zones } = result;
-                setMAP(map);
-                setMapZones(zones);
-                if (!user) return;
-                goToUser();
-            }
-        })();
 
         const updateSceneHandler = (result: TUpdateSceneResponse) => { // получаю массив игроков и выдергиваю себя из него
             if (!result.gamers) return;
-
+            
             let gamers = result.gamers;
             
             if (!user) return;
@@ -147,11 +157,21 @@ const Map: React.FC = () => {
             setUserOnMap(userHimself);
             setGamers(gamers);
         }
+
+        (async () => { // получаем карту, зоны и центрируем ее
+            const result = await server.getMap();
+            if (result) {
+                const { MAP: map, mapZones: zones } = result;
+                setMAP(map);
+                setMapZones(zones);
+                setMapPosition({x: -map.WIDTH/2.6 * tileSize, y: -map.HEIGHT/2.2  * tileSize});
+            }
+        })();
         
         if (user) {
             server.startSceneUpdate(updateSceneHandler);
         }
-
+        
         return () => {
             server.stopSceneUpdate();
             window.removeEventListener('keydown', keyDown);
@@ -181,15 +201,30 @@ const Map: React.FC = () => {
                     width={MAP.WIDTH * tileSize}
                     height={MAP.HEIGHT * tileSize}
                 />
+                <Graphics // сетка на карте
+                    draw={(g) => {
+                            g.clear();
+                            g.lineStyle(1, 0x444444, 0.5);
+                            for (let x = 0; x <= MAP.WIDTH; x++) {
+                                g.moveTo(mapPosition.x + x * tileSize, mapPosition.y);
+                                g.lineTo(mapPosition.x + x * tileSize, mapPosition.y + MAP.HEIGHT * tileSize);
+                            }
+                            for (let y = 0; y <= MAP.HEIGHT; y++) {
+                                g.moveTo(mapPosition.x, mapPosition.y + y * tileSize);
+                                g.lineTo(mapPosition.x + MAP.WIDTH * tileSize, mapPosition.y + y * tileSize);
+                            }
+                        }
+                    }
+                />
                 <Graphics // зоны на карте
                     draw={(g) => {
                         g.clear();
                         mapZones.forEach(zone => {
                             if (zone.type === EZones.dungeon) return;
                             let color = '0xff0000';
-                            if (zone.type === EZones.town) color = '0xAAAAAA';
-                            if (zone.type === EZones.chillzone) color = '0xf49ff0';
-                            g.beginFill(color, 0.5);
+                            if (zone.type === EZones.town) color = '0xFFFFFF';
+                            if (zone.type === EZones.chillzone) color = '0x3fe047';
+                            g.beginFill(color, 0.2);
                             g.drawRect(
                                 mapPosition.x + zone.x * tileSize,
                                 mapPosition.y + zone.y * tileSize,
@@ -198,20 +233,6 @@ const Map: React.FC = () => {
                             );
                             g.endFill();
                         });
-                    }}
-                />
-                <Graphics
-                    draw={(g) => {
-                        g.clear();
-                        g.lineStyle(1, 0x444444, 0.5);
-                        for (let x = 0; x <= MAP.WIDTH; x++) {
-                            g.moveTo(mapPosition.x + x * tileSize, mapPosition.y);
-                            g.lineTo(mapPosition.x + x * tileSize, mapPosition.y + MAP.HEIGHT * tileSize);
-                        }
-                        for (let y = 0; y <= MAP.HEIGHT; y++) {
-                            g.moveTo(mapPosition.x, mapPosition.y + y * tileSize);
-                            g.lineTo(mapPosition.x + MAP.WIDTH * tileSize, mapPosition.y + y * tileSize);
-                        }
                     }}
                 />
                 {gamers.map( (gamer, index) => { // другие пользователи
@@ -238,7 +259,7 @@ const Map: React.FC = () => {
                             />
                             <Text // ник 
                                 text={gamer.name}
-                                x={mapPosition.x + gamer.x * tileSize - (gamer.name.length * 3.5)}
+                                x={mapPosition.x + gamer.x * tileSize - (gamer.name.length * tileSize/11.42)}
                                 y={mapPosition.y + gamer.y * tileSize - tileSize/2}
                                 style={
                                     new TextStyle({
@@ -275,12 +296,12 @@ const Map: React.FC = () => {
                     />
                 </Container>
                 <Text // зона нахождения игрока
-                    text={`Вы находитесь `}
+                    text={`Вы находитесь в зоне: ${getCurrentZone()}`}
                     x={tileSize/2}
                     y={tileSize/2}
                     style={
                         new TextStyle({
-                            fontSize: 16,
+                            fontSize: 20,
                             strokeThickness: 1,
                             fill: ['#000000'],  
                         })
