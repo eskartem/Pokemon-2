@@ -1,9 +1,10 @@
 import React, { MouseEvent, useContext, useEffect, useState } from 'react';
-import { StoreContext, ServerContext } from '../../App';
-import { TMap, TMapZone, TUpdateSceneResponse, TGamer, EZones } from '../../services/server/types';
 import { Sprite, Stage, Graphics, Text, Container } from '@pixi/react';
 import { TextStyle } from 'pixi.js';
-import CONFIG, { TPoint } from '../../config';
+import { StoreContext, ServerContext } from '../../App';
+import CONFIG, { EDIRECTION, TPoint } from '../../config';
+import { TMap, TMapZone, TUpdateSceneResponse, TGamer, EZones, EStatus } from '../../services/server/types';
+import Button from '../Button/Button';
 import mapImage from '../../assets/img/map.jpg';
 import playerImage from '../../assets/img/player_map_icon.png';
 import characterImage from '../../assets/img/player.png';
@@ -24,20 +25,62 @@ const Map: React.FC = () => {
     const [mapPosition, setMapPosition] = useState<TPoint>({ x: 0, y: 0 });
     const [isCanMove, setCanMove] = useState<boolean>(false);
     const [lastMousePosition, setLastMousePosition] = useState<TPoint>({ x: 0, y: 0 });
-    let currentZone: string;
 
     const canvasHeight = WINV.HEIGHT * tileSize;
     const canvasWidth = WINV.WIDTH * tileSize;
 
-    const getCurrentZone = () => {
-        
-        
+    const goToUser = () => {
+        if (!userGamer) return;
+        let x = -(userGamer.x - WINV.WIDTH / 2) * tileSize;
+        let y = -(userGamer.y - WINV.HEIGHT / 2) * tileSize;
 
-        console.log();
-        return '';
+        // Ограничение по горизонтали
+        const maxX = 0;
+        const minX = canvasWidth - MAP.WIDTH * tileSize;
+
+        // Ограничение по вертикали
+        const maxY = 0;
+        const minY = canvasHeight - MAP.HEIGHT * tileSize;
+
+        x = Math.max(minX, Math.min(maxX, x));
+        y = Math.max(minY, Math.min(maxY, y));
+        setMapPosition({x, y});
     }
 
     useEffect(() => {
+
+        const keyDownHandler = (event: KeyboardEvent) => {
+            switch (event.key) {
+                case 'ArrowUp':
+                    moveUser(EDIRECTION.UP);
+                    break;
+                case 'ArrowDown':
+                    moveUser(EDIRECTION.DOWN);
+                    break;
+                case 'ArrowLeft':
+                    moveUser(EDIRECTION.LEFT);    
+                    break;
+                case 'ArrowRight':
+                    moveUser(EDIRECTION.RIGHT);
+                    break;
+                case 'w':
+                    moveUser(EDIRECTION.UP);
+                    break;
+                case 's':
+                    moveUser(EDIRECTION.DOWN);
+                    break;
+                case 'a':
+                    moveUser(EDIRECTION.LEFT);    
+                    break;
+                case 'd':
+                    moveUser(EDIRECTION.RIGHT);
+                    break;
+                default:
+                    break;
+            }
+        };
+
+        window.addEventListener('keydown', keyDownHandler);
         
         (async () => { // получаем карту, зоны и центрируем карты по игроку
             const result = await server.getMap();
@@ -46,10 +89,7 @@ const Map: React.FC = () => {
                 setMAP(map);
                 setMapZones(zones);
                 if (!user) return;
-                setMapPosition({
-                    x: -(user.x - WINV.WIDTH / 2) * tileSize,
-                    y: -(user.y - WINV.HEIGHT / 2) * tileSize
-                });
+                goToUser();
             }
         })();
 
@@ -65,25 +105,24 @@ const Map: React.FC = () => {
             
             const index = gamers.findIndex(item => item.id === user?.id);
             if (index === -1) return;
-            currentZone = getCurrentZone();
             gamers.splice(index, 1);
             setUserIngame(userIngame);
             setGamers(gamers);
         }
         
-
         if (user) {
             server.startSceneUpdate(updateSceneHandler);
         }
 
         return () => {
             server.stopSceneUpdate();
+            window.removeEventListener('keydown', keyDownHandler);
         }
         
     }, [server, store, user]);
 
-    if (!user || !userGamer) {
-        return (<>Карта не загружена. Что-то пошло не так.</>)
+    const moveUser = async (direction: EDIRECTION) => {
+        server.moveUser(direction);
     }
 
     const mousedown = (event: MouseEvent) => {
@@ -120,6 +159,9 @@ const Map: React.FC = () => {
         setLastMousePosition({ x: event.clientX, y: event.clientY });
     }
 
+    if (!user || !userGamer) {
+        return (<>Карта не загружена. Что-то пошло не так.</>)
+    }
 
     return (
         <div className='map'>
@@ -132,7 +174,7 @@ const Map: React.FC = () => {
                 onMouseUp={mouseup}
                 onMouseLeave={mouseleave}
             >
-                <Sprite  // карта
+                <Sprite // карта
                     image={mapImage}
                     x={mapPosition.x}
                     y={mapPosition.y}
@@ -159,6 +201,18 @@ const Map: React.FC = () => {
                     }}
                 />
                 {gamers.map( (gamer, index) => { // другие пользователи
+                    let color = '#0000ff';
+                    switch (gamer.status){
+                        case EStatus.offline:
+                            color = '#ffffff';
+                            break;
+                        case EStatus.scout:
+                            color = '#00ff00';
+                            break;
+                        case EStatus.fight:
+                            color = '#ff0000';
+                            break;
+                    }
                     return (
                         <Container  key={index} >
                             <Sprite // иконки на карте других пользователей
@@ -176,7 +230,9 @@ const Map: React.FC = () => {
                                     new TextStyle({
                                         align: 'center',
                                         fontSize: 12,
-                                        fill: ['#222222'],
+                                        fill: [color],
+                                        stroke: 3,
+                                        strokeThickness: 2
                                     })
                                 }
                             />
@@ -198,8 +254,10 @@ const Map: React.FC = () => {
                         style={
                             new TextStyle({
                                 align: 'center',
-                                fontSize: 12,
-                                fill: ['#ff0000'],  
+                                fontSize: 12, 
+                                fill: ['#00ff00'], 
+                                stroke: 3, 
+                                strokeThickness: 2
                             })
                         }
                     />
@@ -217,6 +275,18 @@ const Map: React.FC = () => {
                     }
                 />
             </Stage>
+            <div className="control-panel">
+                <Button id='test-game-button-arrowleft' className="move-button" 
+                onClick={() => moveUser(EDIRECTION.LEFT)} text={'←'} />
+                <div className='vertical-move-buttons'>
+                    <Button id='test-game-button-arrowup' className="move-button" onClick={() => moveUser(EDIRECTION.UP)} text={'↑'} />
+                    <Button id='test-game-button-arrowdown' className="move-button" onClick={() => moveUser(EDIRECTION.DOWN)} text={'↓'} />
+                </div>
+                <Button id='test-game-button-arrowright' className="move-button" onClick={() => moveUser(EDIRECTION.RIGHT)} text={'→'} />
+                <div >
+                    <Button className='' onClick={goToUser} text={"к себе"}/>
+                </div>
+            </div>
         </div>
     )
 }

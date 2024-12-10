@@ -10,9 +10,9 @@ export type TAnswer<T> = {
 }
 
 export enum EStatus {
-    scout,
-    fight,
-    offline
+    scout = 'scout',
+    fight = 'fight', 
+    offline = 'offline'
 }
 
 export type TGamer = {
@@ -20,7 +20,7 @@ export type TGamer = {
     name: string;
     status: EStatus;
     x: number;
-    y: number;    
+    y: number;
 }
 
 export type TUser = TGamer & {
