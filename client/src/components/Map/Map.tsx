@@ -200,6 +200,20 @@ const Map: React.FC = () => {
                         });
                     }}
                 />
+                <Graphics
+                    draw={(g) => {
+                        g.clear();
+                        g.lineStyle(1, 0x444444, 0.5);
+                        for (let x = 0; x <= MAP.WIDTH; x++) {
+                            g.moveTo(mapPosition.x + x * tileSize, mapPosition.y);
+                            g.lineTo(mapPosition.x + x * tileSize, mapPosition.y + MAP.HEIGHT * tileSize);
+                        }
+                        for (let y = 0; y <= MAP.HEIGHT; y++) {
+                            g.moveTo(mapPosition.x, mapPosition.y + y * tileSize);
+                            g.lineTo(mapPosition.x + MAP.WIDTH * tileSize, mapPosition.y + y * tileSize);
+                        }
+                    }}
+                />
                 {gamers.map( (gamer, index) => { // другие пользователи
                     let color = '#0000ff';
                     switch (gamer.status){
