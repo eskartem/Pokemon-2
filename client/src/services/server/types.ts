@@ -9,9 +9,16 @@ export type TAnswer<T> = {
     error?: TError;
 }
 
+export enum EStatus {
+    scout,
+    fight,
+    offline
+}
+
 export type TGamer = {
     id: number;
     name: string;
+    status: EStatus;
     x: number;
     y: number;    
 }

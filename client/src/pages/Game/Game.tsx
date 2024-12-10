@@ -33,6 +33,7 @@ const Game: React.FC<IBasePage> = (props: IBasePage) => {
 
     useEffect(() => {
         const keyDownHandler = (event: KeyboardEvent) => {
+            console.log(event.key);
             switch (event.key) {
                 case 'ArrowUp':
                     moveUser(EDIRECTION.UP);
@@ -44,6 +45,18 @@ const Game: React.FC<IBasePage> = (props: IBasePage) => {
                     moveUser(EDIRECTION.LEFT);    
                     break;
                 case 'ArrowRight':
+                    moveUser(EDIRECTION.RIGHT);
+                    break;
+                case 'w':
+                    moveUser(EDIRECTION.UP);
+                    break;
+                case 's':
+                    moveUser(EDIRECTION.DOWN);
+                    break;
+                case 'a':
+                    moveUser(EDIRECTION.LEFT);    
+                    break;
+                case 'd':
                     moveUser(EDIRECTION.RIGHT);
                     break;
                 default:
