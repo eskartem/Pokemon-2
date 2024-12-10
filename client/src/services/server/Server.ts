@@ -1,7 +1,7 @@
 import md5 from 'md5';
 import CONFIG, { EDIRECTION } from "../../config";
 import Store from "../store/Store";
-import { TAnswer, TError, TMessagesResponse, TUser, TMarketCatalog, TMap, TMapZone, TUpdateSceneResponse } from "./types";
+import { TAnswer, TError, TMessagesResponse, TUser, TMarketCatalog, TMap, TMapZone, TUpdateSceneResponse, TSell, TResources, TInventory, TCreature } from "./types";
 
 const { CHAT_TIMESTAMP, SCENE_TIMESTAMP, HOST } = CONFIG;
 
@@ -126,6 +126,25 @@ class Server {
         }
         return null;
     }
+
+    async sell(token: string, objectId: string, amount: string): Promise<TSell | null> {
+        if (isNaN(Number(amount)) || Number(amount) <= 0) {
+            throw new Error('Некорректное количество для продажи'); 
+        }
+        const result = await this.request<TSell>('sell', {token, type: 'merchant', amount, objectId});
+        return result;
+    }
+    
+
+    async sellExchanger(token: string, amount: string): Promise<TSell | null> {
+        const result = await this.request<TSell>('sell', { token,  type: 'exchanger', amount });
+        return result;
+    }
+    
+    async getCatalog(token: string): Promise<boolean | null> {
+        const result = await this.request<boolean>('getCatalog', { token });
+        return result;
+    }
     
     async buyFromTrader(id: string): Promise<boolean | null> {
         const result = await this.request<boolean>('buy', { id });
@@ -153,6 +172,16 @@ class Server {
             return result;
         }
         return null;
+    }
+
+    async getInventory(token: string): Promise<TInventory | null> {
+        try {
+            const catalog = await this.request<TInventory>('getInventory', { token });
+            return catalog;
+        } catch (error) {
+            console.error('Error fetching inventory:', error);
+            return null;
+        }
     }
 
     startSceneUpdate(cb: (result: TUpdateSceneResponse) => void): void {
