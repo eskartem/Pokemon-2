@@ -11,18 +11,19 @@ class Battle {
         //loser
         $this->db->updateUserLocation($loserId, 80, 45);
 
-        /* 30% монет, 10% покемонов (забираются имеющиеся куски яиц покемонов 
-        или понижаются уровни самих покемон) и 20% кристаллов стихий*/
+        /*20% кристаллов стихий*/
         $amountCrystal1 = $this->db->getAmountCrystalByUser($loserId);
         $amountCrystal1 = isset($amountCrystal1->resource_amount) ? intval($amountCrystal1->resource_amount) : 0;
         $amountCrystal = $amountCrystal1 * 0.2;
         $this->db->clearUserResource($loserId, 1, $amountCrystal);
-        
+
+        /*10% покемонов (забираются имеющиеся куски яиц покемонов */
         $amountEggsFragm1 = $this->db->getAmountEggsFragmentByUser($loserId);
         $amountEggsFragm1 = isset($amountEggsFragm1->resource_amount) ? intval($amountEggsFragm1->resource_amount) : 0;
         $amountEggsFragm = $amountEggsFragm1 * 0.1;
         $this->db->clearUserResource($loserId, 3, $amountEggsFragm);
         
+        /*30% монет*/
         $money1 = $this->db->getMoneyByUser($loserId);
         $money1 = isset($money1->money) ? intval($money1->money) : 0;
         $money = $money1 * 0.3;
@@ -40,9 +41,21 @@ class Battle {
         $this->db->updateUserStatus($winnerId, 'scout');
     }
 
+    public function skills($monster_type_id){}
 
-    public function updateBattle(){// loop //получаю данные по всем игрокам
 
+    public function updateBattle($hash){// loop //получаю данные по всем игрокам
+        $currentHash = $this->db->getHash();
+        if ($hash === $currentHash->battle_hash) {
+            return [
+                'hash' => $hash
+            ];
+        }
+        $playersInBattle = $this->db->getPlayersInBattle();
+        return [
+            'gamers' => $playersInBattle,
+            'hash' => $currentHash->battle_hash
+        ];
     } 
 
     public function endBattle($token1, $token2){
@@ -73,14 +86,14 @@ class Battle {
 
         if ($allDead1) {
             $this->updateResourcesOnVictoryAndLoss($user2->id, $user1->id);
-            $this->db->addResultFight($user1->id, $user2->id, $user2->id);
+            $this->db->addResultFight($user2->id, $user1->id, $user2->id);
             return [
                 'tokenWinner' => $token2,
                 'tokenLoser' => $token1
             ];
         }elseif($allDead2) {
             $this->updateResourcesOnVictoryAndLoss($user1->id, $user2->id);
-            $this->db->addResultFight($user1->id, $user2->id, $user1->id);
+            $this->db->addResultFight($user1->id, $user1->id, $user2->id);
             return [
                 'tokenWinner' => $token1,
                 'tokenLoser' => $token2
@@ -133,17 +146,22 @@ class Battle {
 
             $escapeChance = rand(1, 100);
             if ($escapeChance <= 10) {
+                //теряет 5% монет
+                $money1 = $this->db->getMoneyByUser($userId);
+                $money1 = isset($money1->money) ? intval($money1->money) : 0;
+                $money = $money1 * 0.05;
+                $this->db->updateMoneyByUser($userId, $money1 - $money);
+                //теряет 5% кристаллов  
+                $amountCrystal1 = $this->db->getAmountCrystalByUser($userId);
+                $amountCrystal1 = isset($amountCrystal1->resource_amount) ? intval($amountCrystal1->resource_amount) : 0;
+                $amountCrystal = $amountCrystal1 * 0.05;
+                $this->db->clearUserResource($userId, 1, $amountCrystal);
+
                 $this->db->updateUserStatus($userId, 'scout');
             }else{
+
                 return false;
             }
         }
-
-
-
-
-
     }
-
-
 }
