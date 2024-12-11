@@ -7,6 +7,9 @@ class User {
     }
 
     public function getUser($token) {
+        // проверять активность игроков и 
+        // менять им статус на offline в случае отсутствия оной
+        //...
         return $this->db->getUserByToken($token);
     }
 
@@ -20,6 +23,7 @@ class User {
             if (md5($user->password . $rnd) === $hash) {
                 $token = md5(rand());
                 $this->db->updateToken($user->id, $token);
+                $this->db->updateMapHash(md5(rand()));
                 $this->db->updateUserStatus($user->id, 'scout'); 
                 return [
                     'id' => $user->id,
@@ -27,8 +31,6 @@ class User {
                     'token' => $token,
                     'x' => $user->x,
                     'y'=> $user->y,
-                    'team' => $this->db->getMonstersByUser($user->id),
-                    'inventory' => $this->db->getInventoryByUser($user->id)
                 ];
             }
             return ['error' => 1002];
@@ -40,6 +42,7 @@ class User {
         $user = $this->db->getUserByToken($token);
         if ($user) {
             $this->db->updateToken($user->id, null);
+            $this->db->updateMapHash(md5(rand()));
             $this->db->updateUserStatus($user->id, 'offline');
             return true;
         }
@@ -63,8 +66,6 @@ class User {
                 'id' => $user->id,
                 'name' => $user->name,
                 'token' => $token,
-                'team' => $this->db->getMonstersByUser($user->id),
-                'inventory' => $this->db->getInventoryByUser($user->id)
             ];
         }
         return ['error' => 1004];
@@ -93,10 +94,6 @@ class User {
       //узнаем id типа монстра
         $monster_type_id = $this->db->getMonsterTypeByMonsters($monsterId);
         $monster_type_id = isset($monster_type_id->monster_type_id) ? intval($monster_type_id->monster_type_id) : 0;
-    
-        //Получаем id стихии, которая принадлежит покемону
-        //$element_id = $this->db->getElementByMonsters($monster_type_id);
-        //$element_id = isset($element_id->element_id) ? intval($element_id->element_id) : 0;
     
         //узнаем скок кристалов у пользака определенной стихии 
         $resources = $this->db->getAmountCrystalByUser($user->id);    

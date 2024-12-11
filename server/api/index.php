@@ -24,7 +24,9 @@ function result($params) {
              case 'userInfo': return $app-> userInfo($params);
              case 'upgradePokemon': return $app-> upgradePokemon($params);
             //inventory
-
+            case 'getInventory': return $app->getInventory($params);
+            // ???? case 'updradePokemon': return $app-> upgradePokemon($params); //
+            
             //battle
             // case 'startBattle': return $app-> startBattle($params);
             // case 'updateBattle': return $app-> updateBattle($params); // loop //получаю данные по всем игрокам
@@ -35,16 +37,18 @@ function result($params) {
             //case 'startGame': return $app-> startGame($params);
             //case 'endGame': return $app-> endGame($params);
 
-            case 'updateScene': return $app-> updateScene($params); //loop
-            case 'moveUser': return $app-> moveUser($params);//надо уметь бросать энд гейм
+            case 'updateScene': return $app-> updateScene($params);
+            case 'moveUser': return $app-> moveUser($params);
 
             //market
-            case 'getAllLots': return $app->getAllLots($params); // новое название getAllLots, вместо getCatalog
+            case 'getCatalog': return $app->getCatalog($params); // для торговца
+            case 'getAllLots': return $app->getAllLots($params); // для рынка
             // case 'buy': return $app-> buy($params);
-            // case 'sale': return $app-> sale($params);
+            case 'sell': return $app->sell($params);
 
             default: return ['error' => 102];
         }
+        
     }
     return ['error' => 101];
 }
