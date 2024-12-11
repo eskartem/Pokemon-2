@@ -47,7 +47,7 @@ class Store {
         this.messages = [];
     }
 
-    getChatHash(): string {
+    getHash(): string {
         return this.chatHash;
     }
 

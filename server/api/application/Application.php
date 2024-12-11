@@ -197,6 +197,18 @@ class Application {
     }
 
     //Боевка
+
+    public function updateBattle($params) {
+        if ($params['token'] && $params['hash']) {
+            $user = $this->user->getUser($params['token']);
+            if ($user) {
+                return $this->battle->updateBattle($params['hash']);
+            }
+            return ['error' => 705];
+        }
+        return ['error' => 242];
+    }
+    
     public function endBattle($params) {
         if ($params['token1']&& $params['token2']) {
             $user1 = $this->user->getUser($params['token1']);

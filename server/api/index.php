@@ -26,6 +26,7 @@ function result($params) {
             //inventory
 
             //battle
+            // case 'startBattle': return $app-> startBattle($params);
             // case 'updateBattle': return $app-> updateBattle($params); // loop //получаю данные по всем игрокам
             case 'endBattle': return $app-> endBattle($params);
             case 'actionUser': return $app-> actionUser($params); //действие игрока в бою во время ход
