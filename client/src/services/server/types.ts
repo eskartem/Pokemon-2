@@ -9,11 +9,18 @@ export type TAnswer<T> = {
     error?: TError;
 }
 
+export enum EStatus {
+    scout = 'scout',
+    fight = 'fight', 
+    offline = 'offline'
+}
+
 export type TGamer = {
     id: number;
     name: string;
+    status: EStatus;
     x: number;
-    y: number;    
+    y: number;
 }
 
 export type TUser = TGamer & {
@@ -106,8 +113,45 @@ export type TMapZone = {
 
 export enum EZones {
     town = 'town',
-    safe = 'safe',
-    dungeon = 'dungeon  '
+    chillzone = 'chillzone',
+    dungeon = 'dungeon'
+}
+ 
+
+export type TInventory = {
+    monsters: TCr[];
+    monsterTypes: TMonsterType[];
+    inventory: TResource[];
+    balance: TBalance;
+}
+
+export type TCr = {
+    id: number;
+    user_id: number;
+    monster_type_id: number;
+    level: number;
+    hp: number;
+    status: string;
+};
+
+export type TMonsterType = {
+    id: number;
+    element_id: number;
+    name: string;
+    hp: number;
+    attack: number;
+    defense: number;
+}
+
+export type TResource = {
+    id: number;
+    user_id: number;
+    resource_id: number;
+    resource_amount: number;
+}
+
+export type TBalance = {
+    money: number;
 }
  
 
