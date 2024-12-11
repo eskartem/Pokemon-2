@@ -44,6 +44,18 @@ class Battle {
     public function skills($monster_type_id){}
 
 
+    public function startBattle($token1, $token2){
+        $user1 = $this->db->getUserByToken($token1);
+        $user2 =  $this->db->getUserByToken($token2);
+                
+        if ($user1->x === $user2->x && $user1->y === $user2->y){
+            $this->db->updateUserStatus($user1->id, 'fight');
+            $this->db->updateUserStatus($user2->id, 'fight');
+            $this->db->addFight($user1->id, $user2->id);
+        }
+        return true;
+    }
+    
     public function updateBattle($hash){// loop //получаю данные по всем игрокам
         $currentHash = $this->db->getHash();
         if ($hash === $currentHash->battle_hash) {
@@ -103,6 +115,7 @@ class Battle {
         }
 
     }
+
     public function  actionUser($monsterId1, $monsterId2, $action){
         //$user = $this->db->getUserByToken($token);
 
