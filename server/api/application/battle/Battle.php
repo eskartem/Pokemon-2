@@ -86,14 +86,14 @@ class Battle {
 
         if ($allDead1) {
             $this->updateResourcesOnVictoryAndLoss($user2->id, $user1->id);
-            $this->db->addResultFight($user2->id, $user1->id, $user2->id);
+            $this->db->addResultFight($user1->id, $user2->id, $user2->id);
             return [
                 'tokenWinner' => $token2,
                 'tokenLoser' => $token1
             ];
         }elseif($allDead2) {
             $this->updateResourcesOnVictoryAndLoss($user1->id, $user2->id);
-            $this->db->addResultFight($user1->id, $user1->id, $user2->id);
+            $this->db->addResultFight($user1->id, $user2->id, $user1->id);
             return [
                 'tokenWinner' => $token1,
                 'tokenLoser' => $token2

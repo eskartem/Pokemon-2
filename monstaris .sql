@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.1:3306
--- Время создания: Дек 11 2024 г., 03:02
+-- Время создания: Дек 11 2024 г., 23:06
 -- Версия сервера: 8.0.30
 -- Версия PHP: 8.1.9
 
@@ -64,7 +64,8 @@ CREATE TABLE `fight` (
 --
 
 INSERT INTO `fight` (`id`, `user1_id`, `user2_id`, `turn`, `status`, `result`) VALUES
-(1, 1, 3, 1, 'close', 1);
+(1, 1, 2, 1, 'close', 2),
+(2, 1, 2, 0, 'open', 0);
 
 -- --------------------------------------------------------
 
@@ -94,6 +95,7 @@ CREATE TABLE `hashes` (
   `id` int NOT NULL,
   `chat_hash` varchar(256) NOT NULL,
   `map_hash` varchar(32) NOT NULL,
+  `battle_hash` varchar(256) NOT NULL,
   `market_hash` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
@@ -101,8 +103,8 @@ CREATE TABLE `hashes` (
 -- Дамп данных таблицы `hashes`
 --
 
-INSERT INTO `hashes` (`id`, `chat_hash`, `map_hash`, `market_hash`) VALUES
-(1, '853d7d057cda9930114b47ae3578f139', 'fd684aa796bb2d13b8f6ca5b68f63b6c', 0);
+INSERT INTO `hashes` (`id`, `chat_hash`, `map_hash`, `battle_hash`, `market_hash`) VALUES
+(1, '853d7d057cda9930114b47ae3578f139', '', '0', 0);
 
 -- --------------------------------------------------------
 
@@ -122,10 +124,12 @@ CREATE TABLE `inventory` (
 --
 
 INSERT INTO `inventory` (`id`, `user_id`, `resource_id`, `resource_amount`) VALUES
-(1, 2, 1, 25),
-(2, 2, 2, 0),
-(3, 2, 3, 44),
-(4, 1, 1, 22);
+(1, 2, 1, 100),
+(2, 2, 2, 100),
+(3, 2, 3, 100),
+(4, 1, 1, 100),
+(13, 1, 2, 100),
+(14, 1, 3, 100);
 
 -- --------------------------------------------------------
 
@@ -197,15 +201,7 @@ CREATE TABLE `map_zones` (
 --
 
 INSERT INTO `map_zones` (`id`, `map_id`, `name`, `x`, `y`, `width`, `height`, `type`, `element_id`) VALUES
-(1, 1, 'город', 57, 43, 34, 9, 'town', NULL),
-(2, 1, 'перекати-поле', 26, 18, 8, 8, 'chillzone', NULL),
-(3, 1, 'куст', 24, 78, 11, 7, 'chillzone', NULL),
-(4, 1, 'корабль', 95, 58, 12, 6, 'chillzone', NULL),
-(5, 1, 'пещера', 142, 20, 6, 4, 'chillzone', NULL),
-(6, 1, 'пустыня', 0, 0, 73, 46, 'dungeon', 2),
-(7, 1, 'горы', 73, 0, 87, 46, 'dungeon', 3),
-(8, 1, 'лес', 0, 46, 80, 45, 'dungeon', 4),
-(9, 1, 'озеро', 80, 46, 80, 44, 'dungeon', 1);
+(1, 1, 'город', 80, 45, 12, 12, 'town', NULL);
 
 -- --------------------------------------------------------
 
@@ -252,9 +248,12 @@ CREATE TABLE `monsters` (
 --
 
 INSERT INTO `monsters` (`id`, `user_id`, `monster_type_id`, `level`, `hp`, `status`) VALUES
-(1, 2, 1, 2, 350, 'in team'),
-(2, 1, 2, 4, 750, 'in team'),
-(3, 2, 2, 5, 305, 'in team');
+(1, 2, 1, 2, 0, 'in team'),
+(2, 1, 2, 5, 23, 'in team'),
+(3, 2, 2, 5, 0, 'in team'),
+(4, 1, 3, 3, 0, 'in team'),
+(5, 1, 2, 3, 0, 'in team'),
+(6, 2, 3, 2, 0, 'in team');
 
 -- --------------------------------------------------------
 
@@ -299,8 +298,18 @@ CREATE TABLE `monster_types` (
 --
 
 INSERT INTO `monster_types` (`id`, `element_id`, `name`, `hp`, `attack`, `defense`) VALUES
-(1, 1, 'Рыба капля', 450, 100, 40),
-(2, 2, 'Эмобойчик', 510, 140, 45);
+(1, 1, 'Magikarp ', 450, 100, 40),
+(2, 1, 'Omanyte ', 460, 110, 45),
+(3, 1, 'Poliwhirl ', 500, 120, 55),
+(4, 2, 'Flareon', 510, 140, 45),
+(5, 2, 'Growlithe', 550, 150, 65),
+(6, 2, 'Ponyta ', 530, 120, 60),
+(7, 3, 'Dugtrio ', 520, 70, 55),
+(8, 3, 'Sandshrew ', 550, 90, 65),
+(9, 3, 'Bulbasaur ', 500, 150, 60),
+(10, 4, 'Farfetch\'d', 450, 100, 40),
+(11, 4, 'Zubat ', 490, 120, 55),
+(12, 4, 'Butterfree', 510, 140, 45);
 
 -- --------------------------------------------------------
 
@@ -335,9 +344,7 @@ CREATE TABLE `users` (
   `password` varchar(256) NOT NULL,
   `token` varchar(256) DEFAULT NULL,
   `name` varchar(256) NOT NULL,
-  `coins` int DEFAULT '0',
-  `crystals` int NOT NULL,
-  `egg_fragments` int NOT NULL DEFAULT '0',
+  `money` int DEFAULT '0',
   `rating` int NOT NULL DEFAULT '0',
   `x` int NOT NULL DEFAULT '80',
   `y` int NOT NULL DEFAULT '45',
@@ -348,10 +355,11 @@ CREATE TABLE `users` (
 -- Дамп данных таблицы `users`
 --
 
-INSERT INTO `users` (`id`, `login`, `password`, `token`, `name`, `coins`, `crystals`, `egg_fragments`, `rating`, `x`, `y`, `status`) VALUES
-(1, 'vasya', 'fcb03559c0317682f5d65a88aca50012', NULL, 'Вася Пупкин', 506, 0, 0, 0, 70, 61, 'offline'),
-(2, 'petya', 'bcb209cf0d43e198e6467f8b0ac3387a', NULL, 'Пётр Петрович', 0, 0, 0, 0, 80, 34, 'scout'),
-(3, 'masha', 'e213995da574de722a416f65b43d8314', NULL, 'Маша Сергеевна', 0, 0, 0, 0, 92, 51, 'offline');
+INSERT INTO `users` (`id`, `login`, `password`, `token`, `name`, `money`, `rating`, `x`, `y`, `status`) VALUES
+(1, 'vasya', 'fcb03559c0317682f5d65a88aca50012', '4fcf529e134fdda1a82c49f838e647a0', 'Вася Пупкин', 83, 0, 80, 45, 'scout'),
+(2, 'petya', 'bcb209cf0d43e198e6467f8b0ac3387a', 'bbb3c25e58da6532b19de0acb594f6c1', 'Пётр Петрович', 118, 0, 80, 45, 'scout'),
+(3, 'masha', 'e213995da574de722a416f65b43d8314', '1916666aacbb8732bf2d12238b2cd5db', 'Маша Сергеевна', 0, 0, 80, 45, 'offline'),
+(5, 'test', 'df72c1ad71c8243e5f16675a02371c3e', NULL, 'test', 500, 0, 80, 45, 'offline');
 
 --
 -- Индексы сохранённых таблиц
@@ -456,7 +464,7 @@ ALTER TABLE `elements`
 -- AUTO_INCREMENT для таблицы `fight`
 --
 ALTER TABLE `fight`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT для таблицы `game`
@@ -474,7 +482,7 @@ ALTER TABLE `hashes`
 -- AUTO_INCREMENT для таблицы `inventory`
 --
 ALTER TABLE `inventory`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT для таблицы `lots`
@@ -492,7 +500,7 @@ ALTER TABLE `map`
 -- AUTO_INCREMENT для таблицы `map_zones`
 --
 ALTER TABLE `map_zones`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT для таблицы `messages`
@@ -504,7 +512,7 @@ ALTER TABLE `messages`
 -- AUTO_INCREMENT для таблицы `monsters`
 --
 ALTER TABLE `monsters`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT для таблицы `monster_level`
@@ -516,7 +524,7 @@ ALTER TABLE `monster_level`
 -- AUTO_INCREMENT для таблицы `monster_types`
 --
 ALTER TABLE `monster_types`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT для таблицы `resources`
@@ -528,7 +536,7 @@ ALTER TABLE `resources`
 -- AUTO_INCREMENT для таблицы `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
