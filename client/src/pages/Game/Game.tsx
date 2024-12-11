@@ -10,6 +10,8 @@ import RubyImg from '../../assets/img/Ruby.png';
 import EggImg from '../../assets/img/Egg.png';
 import EggBreakImg from '../../assets/img/EggBreak.png';
 import ExitImg from '../../assets/img/ExitImg.png';
+import ChatImg from '../../assets/img/chat.png';
+import ChatCloseImg from '../../assets/img/chatclose.png';
 
 import './Game.scss';
 
@@ -23,6 +25,11 @@ const Game: React.FC<IBasePage> = (props: IBasePage) => {
     let user = store.getUser();
 
     const [userPosition, setUserPosition] = useState<TPoint>({x: (user?.x ?? 0) * tileSize, y: (user?.y ?? 0) * tileSize});
+    const [isChatVisible, setIsChatVisible] = useState(false); // Состояние для управления видимостью чата
+
+    const toggleChatVisibility = () => {
+        setIsChatVisible(prevState => !prevState); // Переключаем состояние видимости
+    };
 
     const moveUser = async (dx: number, dy: number) => {
         if (!user) return;
@@ -74,7 +81,16 @@ const Game: React.FC<IBasePage> = (props: IBasePage) => {
     
     if (!user) { return ( <div><h1> Что-то пошло не так. </h1></div> );} // закоментировать для работы без бекэнда
 
+
+    //Моя херь (потом профильтровать код)-----------------------------------------------------------------------
+
     const panelHeight = '65px';
+    
+
+    
+    
+    //----------------------------------------------------------------------------------------------------------
+
 
     return (
         <div className="game-wrapper">
@@ -97,6 +113,12 @@ const Game: React.FC<IBasePage> = (props: IBasePage) => {
                     <img id='test-game-img-logout' className='img-logout' src={ExitImg} alt="ExitImg" onClick={logoutClickHandler} />
                 </div>
             </div>
+            {isChatVisible && (
+                <div className='game-chat'>
+                    <Chat />
+                </div>
+            )}
+            <img className='chat-button' onClick={toggleChatVisibility} src={isChatVisible ? ChatCloseImg : ChatImg } />
             <div className="map-container" style={{ paddingTop: panelHeight }}>
                 <Map userPosition={userPosition} />
             </div>

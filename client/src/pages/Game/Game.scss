@@ -1,4 +1,5 @@
 
+
 .game-wrapper {
     display: flex;
     flex-direction: column; /* Располагаем элементы в колонку */
@@ -72,6 +73,24 @@
 
     .map-container {
         flex-grow: 1; /* Позволяет карте занимать оставшееся пространство */
+    }
+
+    .game-chat {
+        position: absolute;
+        max-width: 30vw;
+        max-height: 35vw;
+        bottom: 90px;
+        left: 5px;
+    }
+
+    .chat-button {
+        position: absolute;
+        bottom: 10px;
+        left: 0;
+        width: 65px; /* Задайте ширину изображения */
+        height: 65px; /* Задайте высоту изображения */
+        margin: 0 15px; /* Отступы вокруг изображения */
+        cursor: pointer;
     }
 }
 
