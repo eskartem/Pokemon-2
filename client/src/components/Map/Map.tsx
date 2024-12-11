@@ -5,9 +5,10 @@ import { TMap, TMapZone, TUpdateSceneResponse, TGamer, EZones, EStatus } from '.
 import { StoreContext, ServerContext } from '../../App';
 import CONFIG, { EDIRECTION, TPoint } from '../../config';
 import Button from '../Button/Button';
-import mapImage from '../../assets/img/map.jpg';
+import mapImage from '../../assets/img/map_tined.png';
 import playerImage from '../../assets/img/player_map_icon.png';
 import characterImage from '../../assets/img/player.png';
+import boatImage from '../../assets/img/boat.png';
 
 import './Map.scss';
 
@@ -29,13 +30,13 @@ const Map: React.FC = () => {
     const canvasHeight = WINV.HEIGHT * tileSize;
     const canvasWidth = WINV.WIDTH * tileSize;
 
-    const getCurrentZone = () => {
+    const getCurrentZone = (currenGamer: TGamer) => {
         if (!userOnMap) return 'пользователя нету';
         for (let i=0; i <= mapZones.length; i++) {
             const zone = mapZones[i];
-            const result = (userOnMap.x >= zone.x && userOnMap.y >= zone.y
-                && userOnMap.x < (zone.x + zone.width)
-                && userOnMap.y < (zone.y + zone.height)
+            const result = (currenGamer.x >= zone.x && currenGamer.y >= zone.y
+                && currenGamer.x < (zone.x + zone.width)
+                && currenGamer.y < (zone.y + zone.height)
             );
             if (zone.type === EZones.town && result) {
                 return zone.name;
@@ -153,9 +154,16 @@ const Map: React.FC = () => {
             
             const index = gamers.findIndex(item => item.id === user?.id);
             if (index === -1) return;
+
             gamers.splice(index, 1);
             setUserOnMap(userHimself);
-            setGamers(gamers);
+            const gamersAround = gamers.filter(gamer => { // выбираю пользователей только в поле зрения
+                return ( 
+                    (Math.abs(userHimself.x - gamer.x) < (fovDistance+1)) && 
+                    (Math.abs(userHimself.y - gamer.y) < (fovDistance+1)) 
+                )
+            });
+            setGamers(gamersAround);
         }
 
         (async () => { // получаем карту, зоны и центрируем ее
@@ -204,7 +212,7 @@ const Map: React.FC = () => {
                 <Graphics // сетка на карте
                     draw={(g) => {
                             g.clear();
-                            g.lineStyle(1, 0x444444, 0.5);
+                            g.lineStyle(1, 0x333333, 0.3);
                             for (let x = 0; x <= MAP.WIDTH; x++) {
                                 g.moveTo(mapPosition.x + x * tileSize, mapPosition.y);
                                 g.lineTo(mapPosition.x + x * tileSize, mapPosition.y + MAP.HEIGHT * tileSize);
@@ -257,6 +265,15 @@ const Map: React.FC = () => {
                             x={mapPosition.x + gamer.x * tileSize}
                             y={mapPosition.y + gamer.y * tileSize}
                             />
+                            { (getCurrentZone(gamer) === 'озеро' && // лодка, если пользователь в озере
+                                <Sprite 
+                                    image={boatImage}
+                                    width={tileSize*1.5}
+                                    height={tileSize}
+                                    x={mapPosition.x + gamer.x * tileSize - tileSize/3}
+                                    y={mapPosition.y + gamer.y * tileSize + tileSize/2}
+                                />
+                            ) }
                             <Text // ник 
                                 text={gamer.name}
                                 x={mapPosition.x + gamer.x * tileSize - (gamer.name.length * tileSize/11.42)}
@@ -277,7 +294,7 @@ const Map: React.FC = () => {
                     <Graphics // поле зрения игрока
                         draw={(g) => {
                             g.clear();
-                                g.beginFill('0xffffff', 0.4);
+                                g.beginFill('0xffffff', 0.2);
                                 g.drawRect(
                                     (userOnMap.x - (fovDistance)) * tileSize + mapPosition.x,
                                     (userOnMap.y - (fovDistance)) * tileSize + mapPosition.y,
@@ -294,6 +311,15 @@ const Map: React.FC = () => {
                         x={mapPosition.x + userOnMap.x * tileSize}
                         y={mapPosition.y + userOnMap.y * tileSize}
                     />
+                    { (getCurrentZone(userOnMap) === 'озеро' && // лодка, если пользователь в озере
+                    <Sprite 
+                        image={boatImage}
+                        width={tileSize*1.5}
+                        height={tileSize}
+                        x={mapPosition.x + userOnMap.x * tileSize - tileSize/3}
+                        y={mapPosition.y + userOnMap.y * tileSize + tileSize/2}
+                    />
+                    ) }
                     <Text // ник гг
                         text={userOnMap.name}
                         x={mapPosition.x + userOnMap.x * tileSize - (userOnMap.name.length * 3)}
@@ -309,14 +335,14 @@ const Map: React.FC = () => {
                     />
                 </Container>
                 <Text // зона нахождения игрока
-                    text={`Вы находитесь в зоне: ${getCurrentZone()}`}
+                    text={`Вы находитесь в зоне: ${getCurrentZone(userOnMap)}`}
                     x={tileSize/2}
                     y={tileSize/2}
                     style={
                         new TextStyle({
                             fontSize: 20,
                             strokeThickness: 1,
-                            fill: ['#000000'],  
+                            fill: ['#000000'], 
                         })
                     }
                 />
