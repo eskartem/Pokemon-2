@@ -5,7 +5,7 @@ import TraderTab from '../../components/TraderTab/TraderTab';
 import ExchangerTab from '../../components/ExchangerTab/ExchangerTab';
 import { IBasePage, PAGES } from '../PageManager';
 import { ServerContext, StoreContext } from '../../App';
-import { TInventory, TBalance } from '../../services/server/types';
+import { TInventory } from '../../services/server/types';
 
 import './Market.scss';
 
@@ -26,12 +26,23 @@ const Market: React.FC<IBasePage> = (props: IBasePage) => {
 
     useEffect(() => {
         if (user) {
+            // Запускаем обновление инвентаря
+            server.startInventoryUpdate((updatedInventory) => {
+                setInventory(updatedInventory);
+            });
+
+            // Получаем начальные данные инвентаря
             server.getInventory(user.token).then(inv => {
                 setInventory(inv);
                 if (inv && inv.balance) {
                     console.log('Количество монет:', inv.balance.money);
                 }
             });
+
+            // Очищаем интервал при размонтировании компонента
+            return () => {
+                server.stopInventoryUpdate();
+            };
         }
     }, [user, server]);
 

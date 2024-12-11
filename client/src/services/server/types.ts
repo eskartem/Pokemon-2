@@ -39,14 +39,13 @@ export type TUpdateSceneResponse = {
     hash: string;
 }
 
-
 // элементы стихии
 export enum EElement {
     fire,
     water,
     earth,
     air,
-    nonElement  // для нейтральных элементов карты (не знаю, есть ли смысл делать отедльный ETileElement, чтобы такого не было)
+    nonElement  // для нейтральных элементов карты
 }
 
 // статы существа
@@ -130,6 +129,7 @@ export type TInventory = {
     monsterTypes: TMonsterType[];
     inventory: TResource[];
     balance: TBalance;
+    hash: string; // Добавляем хеш для инвентаря
 }
 
 export type TCr = {

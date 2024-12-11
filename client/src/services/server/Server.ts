@@ -10,6 +10,7 @@ class Server {
     store: Store;
     chatInterval: NodeJS.Timer | null = null;
     sceneInterval: NodeJS.Timer | null = null;
+    inventoryInterval: NodeJS.Timer | null = null; // Добавляем интервал для инвентаря
     showErrorCb: (error: TError) => void = () => {};
 
     constructor(store: Store) {
@@ -184,6 +185,18 @@ class Server {
         }
     }
 
+    
+    async updateInventory(): Promise<TInventory | null> {
+        const hash = this.store.getInventoryHash();
+        const result = await this.request<TInventory>('updateInventory', { hash });
+        if (result) {
+            this.store.setInventory(result); 
+            this.store.setInventoryHash(result.hash); 
+            return result;
+        }
+        return null;
+    }
+
     startSceneUpdate(cb: (result: TUpdateSceneResponse) => void): void {
         this.sceneInterval = setInterval(async () => {
             const result = await this.updateScene();
@@ -200,7 +213,21 @@ class Server {
         }
     }
 
+    startInventoryUpdate(cb: (result: TInventory) => void): void {
+        this.inventoryInterval = setInterval(async () => {
+            const result = await this.updateInventory();
+            if (result) {
+                cb(result);
+            }
+        }, SCENE_TIMESTAMP); 
+    }
 
+    stopInventoryUpdate(): void {
+        if (this.inventoryInterval) {
+            clearInterval(this.inventoryInterval);
+            this.inventoryInterval = null;
+        }
+    }
 }
 
 export default Server;
