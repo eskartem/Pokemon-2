@@ -201,7 +201,7 @@ class DB {
     }
 
     public function getPlayersIngame() {
-        return $this->queryAll('SELECT id, name, x, y FROM users WHERE token<>"" AND status<>"offline"');
+        return $this->queryAll('SELECT id, name, status, x, y FROM users');
     }
 
     public function getResources(){

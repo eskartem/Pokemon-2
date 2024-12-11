@@ -17,6 +17,7 @@
 | - | - | - |
 | id | integer | PK |
 | chat_hash | string |  |
+| map_hash | string |  |
 
 **Таблица game**
 
@@ -43,7 +44,7 @@
 | rating | | |
 | x | integer | |
 | y | integer | |
-| status | string | fight, scout, offline, ...  |
+| status | string | fight, scout, offline |
 
 **Таблица elements** (стихии)
 | Название | Тип | Комментарий |
