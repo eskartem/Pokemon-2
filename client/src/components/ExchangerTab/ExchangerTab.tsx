@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { ServerContext } from '../../App';
 import Button from '../../components/Button/Button';
 import ExchangerImage from '../../assets/ExchangerImage/Exchanger.jpg';
+import MeanExchangerImage from '../../assets/ExchangerImage/MeanExchangerImage.jpg'; 
 import './ExchangerTab.scss';
 
 const TOKEN = 'user-token';
@@ -44,17 +45,20 @@ const ExchangerTab: React.FC = () => {
     if (loading) return <div>Загрузка...</div>;
     if (error) return <div className="error">{error}</div>;
 
+    const hasSufficientResources = resources.includes('50');
+
     return (
         <div className="exchanger-container">
             <img 
-                src={ExchangerImage} 
+                src={hasSufficientResources ? ExchangerImage : MeanExchangerImage} 
                 alt="Exchanger" 
                 className="exchanger-image" 
             />
             <Button 
-                text="Обменять на яйцо"
+                text={hasSufficientResources ? "Обменять на яйцо" : "Пошел отсюда, бомж. Приходи, когда соберешь необходимое количество кусков яиц!"} // Меняем текст на кнопке
                 onClick={handleExchange}
                 className="exchange-button"
+                isDisabled={!hasSufficientResources}  
             />
         </div>
     );

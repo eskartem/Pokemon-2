@@ -25,7 +25,7 @@ function result($params) {
              case 'upgradePokemon': return $app-> upgradePokemon($params);
             //inventory
             case 'getInventory': return $app->getInventory($params);
-            case 'updateInventory': return $app->updateInventory($params);
+            //case 'updateInventory': return $app->updateInventory($params);
             // ???? case 'updradePokemon': return $app-> upgradePokemon($params); //
             
             //battle
