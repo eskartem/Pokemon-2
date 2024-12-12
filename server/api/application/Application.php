@@ -6,6 +6,7 @@ require_once ('market/Market.php');
 require_once ('map/Map.php');
 require_once ('battle/Battle.php');
 require_once ('inventory/Inventory.php');
+require_once ('inventory/Inventory.php');
 
 class Application {
     private $user;
@@ -22,6 +23,7 @@ class Application {
         $this->market = new Market($db);
         $this->map = new Map($db);
         $this->battle = new Battle($db);
+        $this->inventory = new Inventory($db);
         $this->inventory = new Inventory($db);
     }
 
@@ -223,6 +225,18 @@ class Application {
         }
 
         return ['error' => 3001];
+
+    }
+
+    public function getInventory($params) {
+        if ($params['token']) {
+            $user = $this->user->getUser($params['token']);
+            if ($user) {
+                return $this->inventory->getInventory($user->id);
+            }
+            return ['error' => 705];
+        }
+        return ['error' => 242];
     }
 
     public function getCatalog($params) {
