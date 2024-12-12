@@ -10,7 +10,7 @@ class Inventory {
         return $this->db->getInventory($userId);
     }
 
-    public function updateInventory($hash, $userId) {
+    /*public function updateInventory($hash, $userId) {
         $currentHash = $this->db->getHash();
         if ($hash === $currentHash->inventory_hash) {
             return [
@@ -22,5 +22,5 @@ class Inventory {
             'inventory' => $inventoryData,
             'hash' => $currentHash->inventory_hash
         ];
-    }
+    }*/
 }

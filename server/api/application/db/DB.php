@@ -87,9 +87,9 @@ class DB {
         $this->execute("UPDATE hashes SET map_hash=? WHERE id=1", [$hash]);
     }
 
-    public function updateInventoryHash($hash) {
+    /*public function updateInventoryHash($hash) {
         $this->execute("UPDATE hashes SET inventory_hash=? WHERE id=1", [$hash]);
-    }
+    }*/
 
     public function updateMarketHash($hash) {
         $this->execute("UPDATE hashes SET market_hash=? WHERE id=1", [$hash]);

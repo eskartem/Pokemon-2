@@ -74,26 +74,6 @@ class Store {
     getGamers(): TGamer[] {
         return this.gamers;
     }
-
-    setInventory(inventory: TInventory): void {
-        this.inventory = inventory;
-    }
-
-    getInventory(): TInventory | null {
-        return this.inventory;
-    }
-
-    clearInventory(): void {
-        this.inventory = null;
-    }
-
-    getInventoryHash(): string {
-        return this.inventoryHash;
-    }
-    
-    setInventoryHash(hash: string): void {
-        this.inventoryHash = hash;
-    }
 }
 
 export default Store;
