@@ -65,6 +65,7 @@ export type TStats = {
 
 // само существо
 export type TCreature = {
+    id: number,
     name: string;
     lvl: number;
     element: EElement,

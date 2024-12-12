@@ -11,23 +11,21 @@ const Inventory: React.FC<IBasePage> = (props: IBasePage) => {
     const { setPage } = props;
     const server = useContext(ServerContext);
 
-    const backClickHandler = () => setPage(PAGES.GAME);
-
     const [allPokemons, setAllPokemons] = useState<TCreature[]>([]);
     const [userResources, setUserResources] = useState<TResource[]>([]);
+    const [showResources, setShowResources] = useState(false);
+
+    const backClickHandler = () => setPage(PAGES.GAME);
 
     useEffect(() => {
         const fetchInventory = async () => {
             try {
-                // Получение данных об инвентаре
                 const inventory = await server.getInventory(TOKEN);
                 if (!inventory) return;
 
-                // Преобразование данных для соответствия TCreature
                 const transformedPokemons: TCreature[] = inventory.monsters.map((monster) => {
                     const monsterType = inventory.monsterTypes.find(mt => mt.id === monster.monster_type_id);
-                    if (!monsterType) 
-                    return null;
+                    if (!monsterType) return null;
 
                     const stats: TStats = {
                         hp: monster.hp,
@@ -46,12 +44,31 @@ const Inventory: React.FC<IBasePage> = (props: IBasePage) => {
                 setAllPokemons(transformedPokemons);
                 setUserResources(inventory.inventory);
             } catch (error) {
-                console.error('Error fetching inventory:', error);
+                console.error('Ошибка при получении инвентаря:', error);
             }
         };
 
         fetchInventory();
     }, [server]);
+
+    const toggleResources = () => setShowResources((prev) => !prev);
+
+    const upgradePokemonHandler = async (pokemonIndex: number) => {
+        try {
+            const pokemonToUpgrade = allPokemons[pokemonIndex];
+            const upgradedPokemon = await server.upgradePokemon(TOKEN, pokemonIndex);
+
+            if (upgradedPokemon) {
+                setAllPokemons((prev) => {
+                    const updatedPokemons = [...prev];
+                    updatedPokemons[pokemonIndex] = upgradedPokemon;
+                    return updatedPokemons;
+                });
+            }
+        } catch (error) {
+            console.error('Ошибка обновления покемонов:', error);
+        }
+    };
 
     return (
         <div className="inventory">
@@ -66,13 +83,29 @@ const Inventory: React.FC<IBasePage> = (props: IBasePage) => {
                         <p>AD: {pokemon.stats.ad}</p>
                         <p>DF: {pokemon.stats.df}</p>
                         <Button
-                            text="Выбрать"
-                            onClick={() => console.log(`Выбран покемон: ${pokemon.name}`)}
+                            text="Улучшить"
+                            onClick={() => upgradePokemonHandler(index)}
                         />
-                        <Button onClick={backClickHandler} text='назад' />
+                        <Button
+                            text="Статистика"
+                            onClick={toggleResources}
+                        />
+                        <Button onClick={backClickHandler} text='Назад' />
                     </div>
                 ))}
             </div>
+            {showResources && (
+                <div className="resources-section">
+                    <h2>Ресурсы игрока</h2>
+                    <ul>
+                        {userResources.map((res) => (
+                            <li key={res.resource_id}>
+                                Ресурс ID: {res.resource_id}, Количество: {res.resource_amount}
+                            </li>
+                        ))}
+                    </ul>
+                </div>
+            )}
         </div>
     );
 };
