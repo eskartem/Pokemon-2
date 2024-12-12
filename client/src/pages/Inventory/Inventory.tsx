@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import Button from '../../components/Button/Button';
-import { TCreature, TResource, TStats } from '../../services/server/types';
+import { TCreature, TResource, TStats, TMonsters_level } from '../../services/server/types';
 import { ServerContext } from '../../App';
 import { IBasePage, PAGES } from '../PageManager';
 import './Inventory.scss';
@@ -34,6 +34,7 @@ const Inventory: React.FC<IBasePage> = (props: IBasePage) => {
                     };
 
                     return {
+                        id: monster.id, // Добавляем id для идентификации покемона
                         name: monsterType.name,
                         lvl: monster.level,
                         element: monsterType.element_id, 
@@ -56,12 +57,21 @@ const Inventory: React.FC<IBasePage> = (props: IBasePage) => {
     const upgradePokemonHandler = async (pokemonIndex: number) => {
         try {
             const pokemonToUpgrade = allPokemons[pokemonIndex];
-            const upgradedPokemon = await server.upgradePokemon(TOKEN, pokemonIndex);
+            if (!pokemonToUpgrade) {
+                console.error('Покемон для улучшения не найден');
+                return;
+            }
+
+            const upgradedPokemon = await server.upgradePokemon(TOKEN, pokemonToUpgrade.id);
 
             if (upgradedPokemon) {
                 setAllPokemons((prev) => {
                     const updatedPokemons = [...prev];
-                    updatedPokemons[pokemonIndex] = upgradedPokemon;
+                    updatedPokemons[pokemonIndex] = {
+                        ...pokemonToUpgrade,
+                        lvl: upgradedPokemon.level,
+                        stats: upgradedPokemon.stats, // Обновляем статистику
+                    };
                     return updatedPokemons;
                 });
             }
@@ -74,25 +84,29 @@ const Inventory: React.FC<IBasePage> = (props: IBasePage) => {
         <div className="inventory">
             <h1>Инвентарь</h1>
             <div className="pokemon-list">
-                {allPokemons.map((pokemon, index) => (
-                    <div key={index} className="pokemon-card">
-                        <h2>{pokemon.name}</h2>
-                        <p>Уровень: {pokemon.lvl}</p>
-                        <p>Элемент: {pokemon.element}</p>
-                        <p>HP: {pokemon.stats.hp}</p>
-                        <p>AD: {pokemon.stats.ad}</p>
-                        <p>DF: {pokemon.stats.df}</p>
-                        <Button
-                            text="Улучшить"
-                            onClick={() => upgradePokemonHandler(index)}
-                        />
-                        <Button
-                            text="Статистика"
-                            onClick={toggleResources}
-                        />
-                        <Button onClick={backClickHandler} text='Назад' />
-                    </div>
-                ))}
+                {allPokemons.map((pokemon, index) => {
+                    if (!pokemon) return null; // Проверка на undefined
+
+                    return (
+                        <div key={index} className="pokemon-card">
+                            <h2>{pokemon.name}</h2>
+                            <p>Уровень: {pokemon.lvl}</p>
+                            <p>Элемент: {pokemon.element}</p>
+                            <p>HP: {pokemon.stats?.hp || 'N/A'}</p> {/* Проверка на undefined */}
+                            <p>AD: {pokemon.stats?.ad || 'N/A'}</p> 
+                            <p>DF: {pokemon.stats?.df || 'N/A'}</p> 
+                            <Button
+                                text="Улучшить"
+                                onClick={() => upgradePokemonHandler(index)}
+                            />
+                            <Button
+                                text="Статистика"
+                                onClick={toggleResources}
+                            />
+                            <Button onClick={backClickHandler} text='Назад' />
+                        </div>
+                    );
+                })}
             </div>
             {showResources && (
                 <div className="resources-section">

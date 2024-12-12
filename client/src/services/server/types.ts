@@ -154,6 +154,11 @@ export type TBalance = {
     money: number;
 }
 
+export type TMonsters_level = {
+    id: number,
+    level: number,
+    stats: TStats
+}
 
 
 
