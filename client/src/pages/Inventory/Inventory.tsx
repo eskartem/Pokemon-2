@@ -1,7 +1,9 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext } from 'react';  
 import Button from '../../components/Button/Button';
 import { TCreature, TResource, TStats, TMonsters_level } from '../../services/server/types';
 import { ServerContext } from '../../App';
+import firstHydroMonster from '../../assets/img_monster/firstHydroMonster.png';
+import fourthHydroMonster from '../../assets/img_monster/fourthHydroMonster.png';
 import { IBasePage, PAGES } from '../PageManager';
 import './Inventory.scss';
 
@@ -13,7 +15,8 @@ const Inventory: React.FC<IBasePage> = (props: IBasePage) => {
 
     const [allPokemons, setAllPokemons] = useState<TCreature[]>([]);
     const [userResources, setUserResources] = useState<TResource[]>([]);
-    const [showResources, setShowResources] = useState(false);
+    const [selectedPokemon, setSelectedPokemon] = useState<TCreature | null>(null);
+    const [battleTeam, setBattleTeam] = useState<TCreature[]>([]);
 
     const backClickHandler = () => setPage(PAGES.GAME);
 
@@ -34,7 +37,7 @@ const Inventory: React.FC<IBasePage> = (props: IBasePage) => {
                     };
 
                     return {
-                        id: monster.id, // Добавляем id для идентификации покемона
+                        id: monster.id, 
                         name: monsterType.name,
                         lvl: monster.level,
                         element: monsterType.element_id, 
@@ -52,8 +55,6 @@ const Inventory: React.FC<IBasePage> = (props: IBasePage) => {
         fetchInventory();
     }, [server]);
 
-    const toggleResources = () => setShowResources((prev) => !prev);
-
     const upgradePokemonHandler = async (pokemonIndex: number) => {
         try {
             const pokemonToUpgrade = allPokemons[pokemonIndex];
@@ -70,7 +71,7 @@ const Inventory: React.FC<IBasePage> = (props: IBasePage) => {
                     updatedPokemons[pokemonIndex] = {
                         ...pokemonToUpgrade,
                         lvl: upgradedPokemon.level,
-                        stats: upgradedPokemon.stats, // Обновляем статистику
+                        stats: upgradedPokemon.stats, 
                     };
                     return updatedPokemons;
                 });
@@ -80,46 +81,82 @@ const Inventory: React.FC<IBasePage> = (props: IBasePage) => {
         }
     };
 
+    const selectPokemonHandler = (pokemon: TCreature) => {
+        setSelectedPokemon(pokemon);
+    };
+
+    const addToBattleTeam = (pokemon: TCreature) => {
+        if (battleTeam.length < 3) {
+            setBattleTeam([...battleTeam, pokemon]);
+        }
+    };
+
+    const replaceInBattleTeam = (index: number, newPokemon: TCreature) => {
+        const updatedTeam = [...battleTeam];
+        updatedTeam[index] = newPokemon;
+        setBattleTeam(updatedTeam);
+    };
+    
     return (
         <div className="inventory">
             <h1>Инвентарь</h1>
+            <div className="battle-team">
+                <h2>Команда для боя</h2>
+                {battleTeam.map((pokemon, index) => (
+                    <div key={index} className="pokemon-card">
+                        <h2>{pokemon.name}</h2>
+                        <p>Уровень: {pokemon.lvl}</p>
+                        <p>Элемент: {pokemon.element}</p>
+                        <p>HP: {pokemon.stats?.hp || 'N/A'}</p>
+                        <Button
+                            text="Заменить"
+                            onClick={() => replaceInBattleTeam(index, selectedPokemon!)}
+                        />
+                    </div>
+                ))}
+            </div>
             <div className="pokemon-list">
                 {allPokemons.map((pokemon, index) => {
-                    if (!pokemon) return null; // Проверка на undefined
-
+                    if (!pokemon) return null;
+    
                     return (
                         <div key={index} className="pokemon-card">
                             <h2>{pokemon.name}</h2>
                             <p>Уровень: {pokemon.lvl}</p>
                             <p>Элемент: {pokemon.element}</p>
-                            <p>HP: {pokemon.stats?.hp || 'N/A'}</p> {/* Проверка на undefined */}
-                            <p>AD: {pokemon.stats?.ad || 'N/A'}</p> 
-                            <p>DF: {pokemon.stats?.df || 'N/A'}</p> 
+                            <p>HP: {pokemon.stats?.hp || 'N/A'}</p>
+                            <p>AD: {pokemon.stats?.ad || 'N/A'}</p>
+                            <p>DF: {pokemon.stats?.df || 'N/A'}</p>
                             <Button
                                 text="Улучшить"
                                 onClick={() => upgradePokemonHandler(index)}
                             />
                             <Button
-                                text="Статистика"
-                                onClick={toggleResources}
+                                text={selectedPokemon?.id === pokemon.id ? "Выбран" : "Выбрать"} 
+                                onClick={() => selectPokemonHandler(pokemon)} 
                             />
-                            <Button onClick={backClickHandler} text='Назад' />
+                            <Button
+                                text="Добавить в команду"
+                                onClick={() => addToBattleTeam(pokemon)}
+                            />
                         </div>
                     );
                 })}
             </div>
-            {showResources && (
-                <div className="resources-section">
-                    <h2>Ресурсы игрока</h2>
-                    <ul>
-                        {userResources.map((res) => (
-                            <li key={res.resource_id}>
-                                Ресурс ID: {res.resource_id}, Количество: {res.resource_amount}
-                            </li>
-                        ))}
-                    </ul>
+            {selectedPokemon && (
+                <div className="selected-pokemon">
+                    <h2>Выбранный покемон:</h2>
+                    <p>Имя: {selectedPokemon.name}</p>
+                    <p>Уровень: {selectedPokemon.lvl}</p>
+                    <p>Элемент: {selectedPokemon.element}</p>
+                    <p>HP: {selectedPokemon.stats?.hp || 'N/A'}</p>
+                    <p>AD: {selectedPokemon.stats?.ad || 'N/A'}</p>
+                    <p>DF: {selectedPokemon.stats?.df || 'N/A'}</p>
                 </div>
             )}
+            <div className="back-button-container">
+                <Button onClick={backClickHandler} text='Назад' />
+            </div>
         </div>
     );
 };
