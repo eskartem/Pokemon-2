@@ -22,10 +22,15 @@ class Market {
 
             if ($lotInfo['buyer_id'] == $userId && $lotInfo['current_cost'] == $newBet){
                 return ['error' => 3013]; // можно сделать ставку на лот, на котором уже есть твоя ставка, только если новая ставка будет больше
+                
+                //нахуя я это написал, если оно в любом случае не будет проходить, т.к. step_cost не собдлюден ???
             }
 
             if ($lotInfo['current_cost'] < $userBalance && $newBet <= $userBalance){
                 if ($newBet - $lotInfo['step_cost'] >= $lotInfo['current_cost'] || $lotInfo['start_cost'] == $lotInfo['current_cost']){
+                    if ($lotInfo['buyer_id'] != NULL){
+                        $this->db->changeMoney($lotInfo['buyer_id'], $lotInfo['current_cost']);
+                    }
                     return $this->db->makeBet($userId, $lotInfo['id'], $newBet);
                 }
                 return ['error' => 3014];
