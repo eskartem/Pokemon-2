@@ -41,9 +41,9 @@ function result($params) {
 
             //market
             case 'getCatalog': return $app->getCatalog($params); // для торговца
-            case 'getAllLots': return $app->getAllLots($params); // для рынка
             // case 'buy': return $app-> buy($params);
             case 'sell': return $app->sell($params);
+            case 'updateLots': return $app->updateLots($params);
 
             default: return ['error' => 102];
         }
