@@ -1,9 +1,7 @@
-import React, { useState, useEffect, useContext } from 'react';  
+import React, { useState, useEffect, useContext } from 'react';
 import Button from '../../components/Button/Button';
-import { TCreature, TResource, TStats, TMonsters_level } from '../../services/server/types';
+import { TCreature, TResource, TStats } from '../../services/server/types';
 import { ServerContext } from '../../App';
-import firstHydroMonster from '../../assets/img_monster/firstHydroMonster.png';
-import fourthHydroMonster from '../../assets/img_monster/fourthHydroMonster.png';
 import { IBasePage, PAGES } from '../PageManager';
 import './Inventory.scss';
 
@@ -14,9 +12,11 @@ const Inventory: React.FC<IBasePage> = (props: IBasePage) => {
     const server = useContext(ServerContext);
 
     const [allPokemons, setAllPokemons] = useState<TCreature[]>([]);
-    const [userResources, setUserResources] = useState<TResource[]>([]);
+    const [availableMonsterTypes, setAvailableMonsterTypes] = useState<any[]>([]); 
+    const [userResources, setUserResources] = useState<TResource[]>([]); 
     const [selectedPokemon, setSelectedPokemon] = useState<TCreature | null>(null);
-    const [battleTeam, setBattleTeam] = useState<TCreature[]>([]);
+    const [battleTeam, setBattleTeam] = useState<TCreature[]>([]); 
+    const [showResources, setShowResources] = useState<boolean>(false); 
 
     const backClickHandler = () => setPage(PAGES.GAME);
 
@@ -42,11 +42,42 @@ const Inventory: React.FC<IBasePage> = (props: IBasePage) => {
                         lvl: monster.level,
                         element: monsterType.element_id, 
                         stats,
+                        status: monster.status || 'not in team', // Устанавливаем статус по умолчанию
                     };
-                }).filter((pokemon): pokemon is TCreature => pokemon !== null); 
+                }).filter((pokemon): pokemon is TCreature => pokemon !== null);
 
-                setAllPokemons(transformedPokemons);
+                const uniquePokemons = transformedPokemons.reduce((acc, pokemon) => {
+                    if (!acc.some(p => p.id === pokemon.id)) {
+                        acc.push(pokemon);
+                    }
+                    return acc;
+                }, [] as TCreature[]);
+
+                const userMonsterTypeIds = uniquePokemons.map(pokemon => pokemon.id);
+                const missingMonsterTypes = inventory.monsterTypes.filter(mt => !userMonsterTypeIds.includes(mt.id));
+
+                const missingPokemons: TCreature[] = missingMonsterTypes.map(mt => ({
+                    id: mt.id,
+                    name: mt.name,
+                    lvl: mt.lvl, 
+                    element: mt.element_id,
+                    stats: {
+                        hp: mt.hp,
+                        ad: mt.attack,
+                        df: mt.defense,
+                    },
+                    status: 'not in team',
+                }));
+
+                const allPokemons = [...uniquePokemons, ...missingPokemons];
+
+                setAllPokemons(allPokemons);
+                setAvailableMonsterTypes(inventory.monsterTypes);
                 setUserResources(inventory.inventory);
+
+                const team = allPokemons.filter(pokemon => pokemon.status === 'in team');
+                setBattleTeam(team);
+
             } catch (error) {
                 console.error('Ошибка при получении инвентаря:', error);
             }
@@ -82,81 +113,121 @@ const Inventory: React.FC<IBasePage> = (props: IBasePage) => {
     };
 
     const selectPokemonHandler = (pokemon: TCreature) => {
+        if (!pokemon) return;
         setSelectedPokemon(pokemon);
     };
 
     const addToBattleTeam = (pokemon: TCreature) => {
-        if (battleTeam.length < 3) {
-            setBattleTeam([...battleTeam, pokemon]);
-        }
+        if (!pokemon || battleTeam.length >= 3 || battleTeam.some(p => p.id === pokemon.id)) return;
+        setBattleTeam([...battleTeam, pokemon]);
     };
 
-    const replaceInBattleTeam = (index: number, newPokemon: TCreature) => {
+    const replaceInBattleTeam = (index: number, newPokemon: TCreature | null) => {
+        if (!newPokemon) return;
         const updatedTeam = [...battleTeam];
         updatedTeam[index] = newPokemon;
         setBattleTeam(updatedTeam);
     };
-    
+
+    const addMonsterToTeamFromType = (monsterType: any) => {
+        const newPokemon: TCreature = {
+            id: monsterType.id,
+            name: monsterType.name,
+            lvl: 1, 
+            element: monsterType.element_id,
+            stats: {
+                hp: monsterType.hp,
+                ad: monsterType.attack,
+                df: monsterType.defense,
+            },
+            status: 'in team', 
+        };
+
+        addToBattleTeam(newPokemon);
+    };
+
+    const toggleResources = () => {
+        setShowResources(prevState => !prevState);
+    };
+
+    const getResourceName = (resourceId: number) => {
+        switch (resourceId) {
+            case 1:
+                return "Кристаллы";
+            case 2:
+                return "Яйца";
+            case 3:
+                return "Скорлупа";
+            default:
+                return "Неизвестный ресурс";
+        }
+    };
+
+    const pokemonsInTeam = allPokemons.filter(pokemon => pokemon.status === 'in team');
+    const pokemonsNotInTeam = allPokemons.filter(pokemon => pokemon.status !== 'in team');
+
     return (
         <div className="inventory">
             <h1>Инвентарь</h1>
             <div className="battle-team">
                 <h2>Команда для боя</h2>
                 {battleTeam.map((pokemon, index) => (
-                    <div key={index} className="pokemon-card">
-                        <h2>{pokemon.name}</h2>
-                        <p>Уровень: {pokemon.lvl}</p>
-                        <p>Элемент: {pokemon.element}</p>
-                        <p>HP: {pokemon.stats?.hp || 'N/A'}</p>
+                    <div key={pokemon.id} className="pokemon-card">
+                        <h2>{pokemon?.name}</h2>
+                        <p>Уровень: {pokemon?.lvl}</p>
+                        <p>Элемент: {pokemon?.element}</p>
+                        <p>HP: {pokemon?.stats?.hp || 'N/A'}</p>
                         <Button
                             text="Заменить"
-                            onClick={() => replaceInBattleTeam(index, selectedPokemon!)}
+                            onClick={() => replaceInBattleTeam(index, selectedPokemon)}
                         />
                     </div>
                 ))}
             </div>
             <div className="pokemon-list">
-                {allPokemons.map((pokemon, index) => {
-                    if (!pokemon) return null;
-    
-                    return (
-                        <div key={index} className="pokemon-card">
-                            <h2>{pokemon.name}</h2>
-                            <p>Уровень: {pokemon.lvl}</p>
-                            <p>Элемент: {pokemon.element}</p>
-                            <p>HP: {pokemon.stats?.hp || 'N/A'}</p>
-                            <p>AD: {pokemon.stats?.ad || 'N/A'}</p>
-                            <p>DF: {pokemon.stats?.df || 'N/A'}</p>
-                            <Button
-                                text="Улучшить"
-                                onClick={() => upgradePokemonHandler(index)}
-                            />
-                            <Button
-                                text={selectedPokemon?.id === pokemon.id ? "Выбран" : "Выбрать"} 
-                                onClick={() => selectPokemonHandler(pokemon)} 
-                            />
-                            <Button
-                                text="Добавить в команду"
-                                onClick={() => addToBattleTeam(pokemon)}
-                            />
-                        </div>
-                    );
-                })}
+                {pokemonsNotInTeam.length > 0 && (
+                    <div>
+                        <h2>Покемоны не в команде</h2>
+                        {pokemonsNotInTeam.map((pokemon, index) => (
+                            <div key={pokemon.id} className="pokemon-card">
+                                <h2>{pokemon.name}</h2>
+                                <p>Уровень: {pokemon.lvl}</p>
+                                <p>Элемент: {pokemon.element}</p>
+                                <p>HP: {pokemon.stats?.hp || 'N/A'}</p>
+                                <p>AD: {pokemon.stats?.ad || 'N/A'}</p>
+                                <p>DF: {pokemon.stats?.df || 'N/A'}</p>
+                                <Button
+                                    text="Улучшить"
+                                    onClick={() => upgradePokemonHandler(index)}
+                                />
+                                <Button
+                                    text="Добавить в команду"
+                                    onClick={() => addToBattleTeam(pokemon)}
+                                />
+                                <Button
+                                    text="Выбрать"
+                                    onClick={() => selectPokemonHandler(pokemon)}
+                                />
+                            </div>
+                        ))}
+                    </div>
+                )}
             </div>
-            {selectedPokemon && (
-                <div className="selected-pokemon">
-                    <h2>Выбранный покемон:</h2>
-                    <p>Имя: {selectedPokemon.name}</p>
-                    <p>Уровень: {selectedPokemon.lvl}</p>
-                    <p>Элемент: {selectedPokemon.element}</p>
-                    <p>HP: {selectedPokemon.stats?.hp || 'N/A'}</p>
-                    <p>AD: {selectedPokemon.stats?.ad || 'N/A'}</p>
-                    <p>DF: {selectedPokemon.stats?.df || 'N/A'}</p>
+
+            <Button text="Статистика" onClick={toggleResources} />
+            {showResources && (
+                <div className="resources-section">
+                    <h2>Ресурсы игрока</h2>
+                    <ul>
+                        {userResources.map((res) => (
+                            <li key={res.resource_id}>
+                                {getResourceName(res.resource_id)}: {res.resource_amount}
+                            </li>
+                        ))}
+                    </ul>
                 </div>
             )}
-            <div className="back-button-container">
-                <Button onClick={backClickHandler} text='Назад' />
-            </div>
+            <Button onClick={backClickHandler} text='назад' />
         </div>
     );
 };

@@ -70,6 +70,7 @@ export type TCreature = {
     lvl: number;
     element: EElement,
     stats: TStats,
+    status: string
 }
 
 //существо на рынке
@@ -137,6 +138,7 @@ export type TCr = {
 export type TMonsterType = {
     id: number;
     element_id: number;
+    lvl: number;
     name: string;
     hp: number;
     attack: number;
@@ -159,6 +161,9 @@ export type TMonsters_level = {
     level: number,
     stats: TStats
 }
+
+export type TMonsters = TCreature;
+
 
 
 
