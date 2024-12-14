@@ -248,5 +248,23 @@ class Application {
 
         return ['error' => 3001];
     }
+
+    public function addToTeam($params) {
+        if (!isset($params['token'], $params['monsterId'])){
+            return ['error' => 242];
+        }
+
+        $user = $this->user->getUser($params['token']);
+        if (!$user){
+            return ['error' => 705];
+        }
+
+        $inventory = $this->inventory->getInventory($user->id);
+        if (!$inventory){
+            return ['error' => 3007];
+        }
+
+        return $this->inventory->addToTeam($params['monsterId'], $inventory, $user->id);
+    }
 }
 
