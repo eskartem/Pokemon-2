@@ -44,6 +44,7 @@ function result($params) {
             // case 'buy': return $app-> buy($params);
             case 'sell': return $app->sell($params);
             case 'updateLots': return $app->updateLots($params);
+            case 'cancelLot': return $app->cancelLot($params);
 
             default: return ['error' => 102];
         }
