@@ -236,4 +236,8 @@ class DB {
         return $this->queryAll('SELECT * from resources');
 
     }
+
+    public function changeMonsterStatus($monsterId, $status){
+        return $this->execute('UPDATE monsters SET status=? WHERE id=?', [$status, $monsterId]);
+    }
 }
