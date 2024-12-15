@@ -17,11 +17,13 @@ const Inventory: React.FC<IBasePage> = (props: IBasePage) => {
     const [selectedPokemon, setSelectedPokemon] = useState<TCreature | null>(null);
     const [battleTeam, setBattleTeam] = useState<TCreature[]>([]); 
     const [showResources, setShowResources] = useState<boolean>(false); 
+    const [loading, setLoading] = useState<boolean>(false);
 
     const backClickHandler = () => setPage(PAGES.GAME);
 
     useEffect(() => {
         const fetchInventory = async () => {
+            setLoading(true);
             try {
                 const inventory = await server.getInventory(TOKEN);
                 if (!inventory) return;
@@ -42,7 +44,7 @@ const Inventory: React.FC<IBasePage> = (props: IBasePage) => {
                         lvl: monster.level,
                         element: monsterType.element_id, 
                         stats,
-                        status: monster.status || 'not in team', // Устанавливаем статус по умолчанию
+                        status: monster.status || 'not in team', 
                     };
                 }).filter((pokemon): pokemon is TCreature => pokemon !== null);
 
@@ -80,6 +82,8 @@ const Inventory: React.FC<IBasePage> = (props: IBasePage) => {
 
             } catch (error) {
                 console.error('Ошибка при получении инвентаря:', error);
+            } finally {
+                setLoading(false);
             }
         };
 
@@ -117,34 +121,35 @@ const Inventory: React.FC<IBasePage> = (props: IBasePage) => {
         setSelectedPokemon(pokemon);
     };
 
-    const addToBattleTeam = (pokemon: TCreature) => {
+    const addToBattleTeam = async (pokemon: TCreature) => {
         if (!pokemon || battleTeam.length >= 3 || battleTeam.some(p => p.id === pokemon.id)) return;
-        setBattleTeam([...battleTeam, pokemon]);
+    
+        console.log(`Добавляем монстра с id: ${pokemon.id}`);
+    
+        try {
+            const result = await server.addToTeam(TOKEN, pokemon.id);
+            if (result) {
+                setBattleTeam([...battleTeam, result]);
+            }
+        } catch (error) {
+            console.error('Ошибка добавления покемона в команду:', error);
+        }
     };
 
-    const replaceInBattleTeam = (index: number, newPokemon: TCreature | null) => {
+    const replaceInBattleTeam = async (index: number, newPokemon: TCreature | null) => {
         if (!newPokemon) return;
-        const updatedTeam = [...battleTeam];
-        updatedTeam[index] = newPokemon;
-        setBattleTeam(updatedTeam);
+        try {
+            const result = await server.addToTeam(TOKEN, newPokemon.id);
+            if (result) {
+                const updatedTeam = [...battleTeam];
+                updatedTeam[index] = result;
+                setBattleTeam(updatedTeam);
+            }
+        } catch (error) {
+            console.error('Ошибка замены покемона в команде:', error);
+        }
     };
 
-    const addMonsterToTeamFromType = (monsterType: any) => {
-        const newPokemon: TCreature = {
-            id: monsterType.id,
-            name: monsterType.name,
-            lvl: 1, 
-            element: monsterType.element_id,
-            stats: {
-                hp: monsterType.hp,
-                ad: monsterType.attack,
-                df: monsterType.defense,
-            },
-            status: 'in team', 
-        };
-
-        addToBattleTeam(newPokemon);
-    };
 
     const toggleResources = () => {
         setShowResources(prevState => !prevState);
@@ -163,12 +168,12 @@ const Inventory: React.FC<IBasePage> = (props: IBasePage) => {
         }
     };
 
-    const pokemonsInTeam = allPokemons.filter(pokemon => pokemon.status === 'in team');
     const pokemonsNotInTeam = allPokemons.filter(pokemon => pokemon.status !== 'in team');
 
     return (
         <div className="inventory">
             <h1>Инвентарь</h1>
+            {loading && <p>Загрузка...</p>}
             <div className="battle-team">
                 <h2>Команда для боя</h2>
                 {battleTeam.map((pokemon, index) => (
@@ -213,6 +218,7 @@ const Inventory: React.FC<IBasePage> = (props: IBasePage) => {
                     </div>
                 )}
             </div>
+            
 
             <Button text="Статистика" onClick={toggleResources} />
             {showResources && (

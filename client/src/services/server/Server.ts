@@ -1,7 +1,7 @@
 import md5 from 'md5';
 import CONFIG, { EDIRECTION } from "../../config";
 import Store from "../store/Store";
-import { TAnswer, TError, TMessagesResponse, TUser, TMarketCatalog, TMap, TMapZone, TUpdateSceneResponse, TInventory, TMonsters_level } from "./types";
+import { TAnswer, TError, TMessagesResponse, TUser, TMarketCatalog, TMap, TMapZone, TUpdateSceneResponse, TInventory, TMonsters_level, TCreature } from "./types";
 
 const { CHAT_TIMESTAMP, SCENE_TIMESTAMP, HOST } = CONFIG;
 
@@ -183,6 +183,11 @@ class Server {
 
     async upgradePokemon(token: string, monsterId: number): Promise<TMonsters_level | null> {
         const result = await this.request<TMonsters_level>('upgradePokemon', { token, monsterId: monsterId.toString() });
+        return result;
+    }    
+
+    async addToTeam(token: string, monsterId: number): Promise<TCreature | null> {
+        const result = await this.request<TCreature>('addToTeam', { token, monsterId: monsterId.toString() });
         return result;
     }    
 }
