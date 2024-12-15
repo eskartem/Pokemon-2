@@ -10,6 +10,7 @@ import RubyImg from '../../assets/img/Ruby.png';
 import EggImg from '../../assets/img/Egg.png';
 import EggBreakImg from '../../assets/img/EggBreak.png';
 import ExitImg from '../../assets/img/ExitImg.png';
+import VolumeImg from '../../assets/img/volume.png';
 import ChatImg from '../../assets/img/chat.png';
 import ChatCloseImg from '../../assets/img/chatclose.png';
 
@@ -109,9 +110,17 @@ const Game: React.FC<IBasePage> = (props: IBasePage) => {
                     <Button id='test-game-button-battle' onClick={battleClickHandler} text='Битва' />
                 </div>
                 <div className='button-panel-test-right'>
-                    <Button id='test-game-button-mute' onClick={muteButtonHandler} text='заглушить' />
+                    <img id='test-game-img-mute' className='img-volume' src={VolumeImg} alt='VolumeImg' onClick={muteButtonHandler} />
                     <img id='test-game-img-logout' className='img-logout' src={ExitImg} alt="ExitImg" onClick={logoutClickHandler} />
                 </div>
+            </div>
+            <div className="control-panel">
+                <Button id='test-game-button-arrowleft' className="move-button" onClick={() => moveUser(-1, 0)} text={'←'} />
+                <div className='vertical-move-buttons'>
+                    <Button id='test-game-button-arrowup' className="move-button" onClick={() => moveUser(0, -1)} text={'↑'} />
+                    <Button id='test-game-button-arrowdown' className="move-button" onClick={() => moveUser(0, 1)} text={'↓'} />
+                </div>
+                <Button id='test-game-button-arrowright' className="move-button" onClick={() => moveUser(1, 0)} text={'→'} />
             </div>
             {isChatVisible && (
                 <div className='game-chat'>

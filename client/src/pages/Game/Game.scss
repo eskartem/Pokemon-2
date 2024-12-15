@@ -16,6 +16,7 @@
         width: 45px; /* Задайте ширину изображения */
         height: 45px; /* Задайте высоту изображения */
         margin: 0 7px; /* Отступы вокруг изображения */
+        border: 5px #9fbef4;
     }
 
     .user-resources-coins {
@@ -47,6 +48,14 @@
         filter: invert(1);
     }
 
+    .img-volume {
+        width: 45px; /* Задайте ширину изображения */
+        height: 45px; /* Задайте высоту изображения */
+        margin: 0 15px; /* Отступы вокруг изображения */
+        cursor: pointer;
+        filter: invert(1);
+    }
+
     .button-panel-test-left {
         display: flex;
     }
@@ -60,15 +69,10 @@
     }
 
     .button-panel-test button {
-        background-color: #555; /* Цвет фона кнопок */
-        border: none; /* Убираем рамку */
-        color: white; /* Цвет текста кнопок */
-        padding: 10px 20px; /* Отступы внутри кнопок */
-        cursor: pointer; /* Указываем, что кнопки кликабельные */
+        padding: 7px 10px;
     }
 
     .button-panel-test button:hover {
-        background-color: #777; /* Изменяем цвет при наведении */
     }
 
     .map-container {
@@ -80,17 +84,38 @@
         max-width: 30vw;
         max-height: 35vw;
         bottom: 90px;
-        left: 5px;
+        right: 5px;
     }
 
     .chat-button {
         position: absolute;
         bottom: 10px;
-        left: 0;
+        right: 0;
         width: 65px; /* Задайте ширину изображения */
         height: 65px; /* Задайте высоту изображения */
         margin: 0 15px; /* Отступы вокруг изображения */
         cursor: pointer;
+    }
+
+    .control-panel {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        display: inline-flex;
+        align-items: flex-end;
+    }
+
+    .vertical-move-buttons {
+        display: inline-flex;
+        flex-direction: column;
+    }
+
+    .move-button {
+        min-width: 60px;
+        min-height: 60px;
+        &:hover {
+            cursor: pointer;
+        }
     }
 }
 
