@@ -143,6 +143,8 @@ export type TMonsterType = {
     hp: number;
     attack: number;
     defense: number;
+    stats: TStats;
+    status: string;
 }
 
 export type TResource = {

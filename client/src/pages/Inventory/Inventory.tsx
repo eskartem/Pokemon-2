@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import Button from '../../components/Button/Button';
-import { TCreature, TResource, TStats } from '../../services/server/types';
+import { TResource, TStats, TMonsterType } from '../../services/server/types';
 import { ServerContext } from '../../App';
 import { IBasePage, PAGES } from '../PageManager';
 import './Inventory.scss';
@@ -11,11 +11,11 @@ const Inventory: React.FC<IBasePage> = (props: IBasePage) => {
     const { setPage } = props;
     const server = useContext(ServerContext);
 
-    const [allPokemons, setAllPokemons] = useState<TCreature[]>([]);
+    const [allPokemons, setAllPokemons] = useState<TMonsterType[]>([]);
     const [availableMonsterTypes, setAvailableMonsterTypes] = useState<any[]>([]); 
     const [userResources, setUserResources] = useState<TResource[]>([]); 
-    const [selectedPokemon, setSelectedPokemon] = useState<TCreature | null>(null);
-    const [battleTeam, setBattleTeam] = useState<TCreature[]>([]); 
+    const [selectedPokemon, setSelectedPokemon] = useState<TMonsterType | null>(null);
+    const [battleTeam, setBattleTeam] = useState<TMonsterType[]>([]); 
     const [showResources, setShowResources] = useState<boolean>(false); 
     const [loading, setLoading] = useState<boolean>(false);
 
@@ -28,7 +28,7 @@ const Inventory: React.FC<IBasePage> = (props: IBasePage) => {
                 const inventory = await server.getInventory(TOKEN);
                 if (!inventory) return;
 
-                const transformedPokemons: TCreature[] = inventory.monsters.map((monster) => {
+                const transformedPokemons: TMonsterType[] = inventory.monsters.map((monster) => {
                     const monsterType = inventory.monsterTypes.find(mt => mt.id === monster.monster_type_id);
                     if (!monsterType) return null;
 
@@ -42,33 +42,39 @@ const Inventory: React.FC<IBasePage> = (props: IBasePage) => {
                         id: monster.id, 
                         name: monsterType.name,
                         lvl: monster.level,
-                        element: monsterType.element_id, 
+                        element_id: monsterType.element_id, 
                         stats,
                         status: monster.status || 'not in team', 
+                        hp: monsterType.hp,
+                        attack: monsterType.attack,
+                        defense: monsterType.defense,
                     };
-                }).filter((pokemon): pokemon is TCreature => pokemon !== null);
+                }).filter((pokemon): pokemon is TMonsterType => pokemon !== null);
 
                 const uniquePokemons = transformedPokemons.reduce((acc, pokemon) => {
                     if (!acc.some(p => p.id === pokemon.id)) {
                         acc.push(pokemon);
                     }
                     return acc;
-                }, [] as TCreature[]);
+                }, [] as TMonsterType[]);
 
                 const userMonsterTypeIds = uniquePokemons.map(pokemon => pokemon.id);
                 const missingMonsterTypes = inventory.monsterTypes.filter(mt => !userMonsterTypeIds.includes(mt.id));
 
-                const missingPokemons: TCreature[] = missingMonsterTypes.map(mt => ({
+                const missingPokemons: TMonsterType[] = missingMonsterTypes.map(mt => ({
                     id: mt.id,
                     name: mt.name,
                     lvl: mt.lvl, 
-                    element: mt.element_id,
+                    element_id: mt.element_id,
                     stats: {
                         hp: mt.hp,
                         ad: mt.attack,
                         df: mt.defense,
                     },
                     status: 'not in team',
+                    hp: mt.hp,
+                    attack: mt.attack,
+                    defense: mt.defense,
                 }));
 
                 const allPokemons = [...uniquePokemons, ...missingPokemons];
@@ -116,12 +122,12 @@ const Inventory: React.FC<IBasePage> = (props: IBasePage) => {
         }
     };
 
-    const selectPokemonHandler = (pokemon: TCreature) => {
+    const selectPokemonHandler = (pokemon: TMonsterType) => {
         if (!pokemon) return;
         setSelectedPokemon(pokemon);
     };
 
-    const addToBattleTeam = async (pokemon: TCreature) => {
+    const addToBattleTeam = async (pokemon: TMonsterType) => {
         if (!pokemon || battleTeam.length >= 3 || battleTeam.some(p => p.id === pokemon.id)) return;
     
         console.log(`Добавляем монстра с id: ${pokemon.id}`);
@@ -136,7 +142,7 @@ const Inventory: React.FC<IBasePage> = (props: IBasePage) => {
         }
     };
 
-    const replaceInBattleTeam = async (index: number, newPokemon: TCreature | null) => {
+    const replaceInBattleTeam = async (index: number, newPokemon: TMonsterType | null) => {
         if (!newPokemon) return;
         try {
             const result = await server.addToTeam(TOKEN, newPokemon.id);
@@ -180,7 +186,7 @@ const Inventory: React.FC<IBasePage> = (props: IBasePage) => {
                     <div key={pokemon.id} className="pokemon-card">
                         <h2>{pokemon?.name}</h2>
                         <p>Уровень: {pokemon?.lvl}</p>
-                        <p>Элемент: {pokemon?.element}</p>
+                        <p>Элемент: {pokemon?.element_id}</p>
                         <p>HP: {pokemon?.stats?.hp || 'N/A'}</p>
                         <Button
                             text="Заменить"
@@ -197,7 +203,7 @@ const Inventory: React.FC<IBasePage> = (props: IBasePage) => {
                             <div key={pokemon.id} className="pokemon-card">
                                 <h2>{pokemon.name}</h2>
                                 <p>Уровень: {pokemon.lvl}</p>
-                                <p>Элемент: {pokemon.element}</p>
+                                <p>Элемент: {pokemon.element_id}</p>
                                 <p>HP: {pokemon.stats?.hp || 'N/A'}</p>
                                 <p>AD: {pokemon.stats?.ad || 'N/A'}</p>
                                 <p>DF: {pokemon.stats?.df || 'N/A'}</p>
