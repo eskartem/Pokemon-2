@@ -44,33 +44,30 @@ const Registration: React.FC<IBasePage> = (props: IBasePage) => {
         <div className='regist-wrapper'>
             <div className='regist-inputs'>
                 <input 
-                ref={nameRef}
-                id='test-registration-input_name'
+                ref={nameRef} 
                 placeholder ='никнейм' 
                 onKeyDown={(event) => {if (event.key === "Enter") loginRef.current?.focus()}}
                 />
                 <input 
-                ref={loginRef}
-                id='test-registration-input_login'
+                ref={loginRef} 
                 placeholder='логин' 
                 onKeyDown={(event) => {if (event.key === "Enter") passwordRef.current?.focus()}}
                 />
                 <input 
                 onKeyDown={(event) => {if (event.key === "Enter") registClickHandler()}}
-                ref={passwordRef}
-                id='test-registration-input_pass'
-                placeholder='пароль' 
+                ref={passwordRef} 
+                placeholder='пароль' id='test-registration-input_pass'
                 type='password' 
                 />
             </div>
             <div className='regist-buttons'>
-                <img className='registrClick' id='test-registration-button_auth' src={RegistrImg} alt='' onClick={registClickHandler}></img>
+                <img className='registrClick' id='test-registration-img_auth' src={RegistrImg} alt='' onClick={registClickHandler}></img>
                 <span className='login-link' onClick={backClickHandler}>
                 У меня уже есть аккаунт
                 </span>
             </div>
         </div>
-    </div>);
+        </div>);
 
 }
 

@@ -9,23 +9,14 @@ export type TAnswer<T> = {
     error?: TError;
 }
 
-export enum EStatus {
-    scout = 'scout',
-    fight = 'fight', 
-    offline = 'offline'
-}
-
-export type TGamer = {
-    id: number;
+export type TUser = {
+    token: string;
     name: string;
-    status: EStatus;
+    coins: number;
+    crystals: number;
+    eggFragments: number;
     x: number;
     y: number;
-}
-
-export type TUser = TGamer & {
-    token: string;
-    coins: number;
 }
 
 export type TMessage = {
@@ -41,12 +32,6 @@ export type TMessagesResponse = {
     hash: string;
 }
 
-export type TUpdateSceneResponse = {
-    gamers: TGamer[];
-    hash: string;
-}
-
-
 // элементы стихии
 export enum EElement {
     fire,
@@ -54,6 +39,13 @@ export enum EElement {
     earth,
     air,
     nonElement  // для нейтральных элементов карты (не знаю, есть ли смысл делать отедльный ETileElement, чтобы такого не было)
+}
+
+// редкость существ
+export enum ERarity {
+    common,
+    rare,
+    legendary
 }
 
 // статы существа
@@ -68,7 +60,15 @@ export type TCreature = {
     name: string;
     lvl: number;
     element: EElement,
+    rarity: ERarity,
     stats: TStats,
+}
+
+// ресы пользователя
+export type TUserResources = {
+    coins: number,
+    crystals: number,
+    eggFragments: number,
 }
 
 //существо на рынке
@@ -109,10 +109,4 @@ export type TMapZone = {
     height: number,
     type: string,
     element_id: number // надо название с помощью сложного запроса выдавать, а не само id, наругать бэкендеров.
-}
-
-export enum EZones {
-    town = 'town',
-    chillzone = 'chillzone',
-    dungeon = 'dungeon'
 }

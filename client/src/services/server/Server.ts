@@ -1,15 +1,14 @@
 import md5 from 'md5';
-import CONFIG, { EDIRECTION } from "../../config";
+import CONFIG, { TPoint } from "../../config";
 import Store from "../store/Store";
-import { TAnswer, TError, TMessagesResponse, TUser, TMarketCatalog, TMap, TMapZone, TUpdateSceneResponse } from "./types";
+import { TAnswer, TError, TMessagesResponse, TUser, TMarketCatalog, TUserResources, TMap, TMapZone } from "./types";
 
-const { CHAT_TIMESTAMP, SCENE_TIMESTAMP, HOST } = CONFIG;
+const { CHAT_TIMESTAMP, HOST } = CONFIG;
 
 class Server {
     HOST = HOST;
     store: Store;
     chatInterval: NodeJS.Timer | null = null;
-    sceneInterval: NodeJS.Timer | null = null;
     showErrorCb: (error: TError) => void = () => {};
 
     constructor(store: Store) {
@@ -106,6 +105,14 @@ class Server {
         }
     }
 
+    async getUserResources(): Promise<TUserResources | null> {
+        const resources = await this.request<TUserResources>('getResources');
+        if (resources) {
+            return resources;
+        }
+        return null;
+    }
+
     async getMarketCatalog():Promise<TMarketCatalog | null> {
         const catalog = await this.request<TMarketCatalog>('getCatalog');
         if (catalog) {
@@ -141,36 +148,9 @@ class Server {
         return await this.request<{MAP: TMap, mapZones: TMapZone[]}>('getMap');
     }
 
-    async moveUser(direction: EDIRECTION): Promise<boolean | null> {
-        return await this.request<boolean>('moveUser', { direction });
+    async moveUser(x: number, y: number): Promise<boolean | null> {
+        return await this.request<boolean>('moveUser', { x: `${x}` , y: `${y}`});
     }
-
-    async updateScene(): Promise<TUpdateSceneResponse | null> {
-        const hash = this.store.getSceneHash();
-        const result = await this.request<TUpdateSceneResponse>('updateScene', { hash });
-        if (result) {
-            this.store.setSceneHash(result.hash);
-            return result;
-        }
-        return null;
-    }
-
-    startSceneUpdate(cb: (result: TUpdateSceneResponse) => void): void {
-        this.sceneInterval = setInterval(async () => {
-            const result = await this.updateScene();
-            if (result) {
-                cb(result);
-            }
-        }, SCENE_TIMESTAMP);
-    }
-
-    stopSceneUpdate(): void {
-        if (this.sceneInterval) {
-            clearInterval(this.sceneInterval);
-            this.sceneInterval = null;
-        }
-    }
-
 
 }
 
