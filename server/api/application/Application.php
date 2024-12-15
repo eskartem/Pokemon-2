@@ -5,6 +5,7 @@ require_once ('chat/Chat.php');
 require_once ('market/Market.php');
 require_once ('map/Map.php');
 require_once ('battle/Battle.php');
+require_once ('inventory/Inventory.php');
 
 class Application {
     private $user;
@@ -12,6 +13,7 @@ class Application {
     private $market;
     private $map;
     private $battle;
+    private $inventory;
     
     function __construct() {
         $db = new DB();
@@ -20,6 +22,7 @@ class Application {
         $this->market = new Market($db);
         $this->map = new Map($db);
         $this->battle = new Battle($db);
+        $this->inventory = new Inventory($db);
     }
 
     public function login($params) {
@@ -71,35 +74,59 @@ class Application {
 
     public function userInfo($params) {
         if ($params['token']) {
-            return $this->user->userInfo($params['token']);
+            $user = $this->user->getUser($params['token']);
+            if ($user) {
+                return $this->user->userInfo($params['token']);
+            }
+            return ['error' => 705];
         }
         return ['error' => 404];
     }
     
-    //немного недоделано
     public function upgradePokemon($params) {
         if ($params['token'] && $params['monsterId']) {
-            return $this->user->upgradePokemon($params['token'], $params['monsterId']);
+            $user = $this->user->getUser($params['token']);
+            $monsters = $this->user->getMonster($params['monsterId']);
+            if ($user) {
+                if ($monsters->user_id === $user->id) {
+                    return $this->user->upgradePokemon($params['token'], $params['monsterId']);
+                }
+              
+                return ['error' => 702];
+            }
+            return ['error' => 705];
+
         }
         return ['error' => 404];
     }
 
 
-    public function getCatalog($params) {
+    public function getAllLots($params) {
+        if (!$params['token']) {
+            return ['error' => 242];
+        }
+
+        $user = $this->user->getUser($params['token']);
+        if (!$user) {
+            return ['error' => 705];
+        }
+
+        return $this->market->getAllLots($this->map->isUserInZone($user, "город"));
+    }
+
+    public function getResources($params) {
         if ($params['token']) {
             $user = $this->user->getUser($params['token']);
             if ($user) {
-                return $this->market->getCatalog($this->map->isUserInTown($user));
+                return $this->user->getResources($params['token']);
             }
             return ['error' => 705];
         }
-        return ['error' => 242];
     }
 
     public function startGame($params){
         if($params['token']){
             return $this->map->startGame($params['token']);
-
         }
         return ['error' => 242];
     }
@@ -116,15 +143,67 @@ class Application {
         return ['error' => 242];
     }
 
-    public function endGame($params){
+    /*public function startGame($params){
         if($params['token']){
-            return $this->map->endGame($params['token']);
+            $user = $this->user->getUser($params['token']);
+            if ($user) {
+                return $this->map->startGame($params['token']);
+            }
+            return ['error' => 705];
         }
         return ['error' => 242];
     }
 
+    public function endGame($params){
+        if($params['token']){
+            $user = $this->user->getUser($params['token']);
+            if ($user) {
+                return $this->map->endGame($params['token']);
+            }
+            return ['error' => 705];
+        }
+        return ['error' => 242];
+    }*/
+
     public function moveUser($params) {
         if (!isset($params['token'])) {
+            return ['error' => 242];
+        }
+        $user = $this->user->getUser($params['token']);
+        if (!$user) {
+            return ['error' => 705];
+        }
+        if (!isset($params['direction'])) {
+            return ['error' => 2001];
+        }
+        $direction = $params['direction'];
+        return $this->map->moveUser($user->id, $direction, $user->x, $user->y);
+    }
+
+    public function updateScene($params) {
+        if ($params['token'] && $params['hash']) {
+            $user = $this->user->getUser($params['token']);
+            if ($user) {
+                return $this->map->updateScene($params['hash']);
+            }
+            return ['error' => 705];
+        }
+        return ['error' => 242];
+    }
+
+    public function getInventory($params) {
+        if ($params['token']) {
+            $user = $this->user->getUser($params['token']);
+            if ($user) {
+                return $this->inventory->getInventory($user->id);
+            }
+            return ['error' => 705];
+        }
+        return ['error' => 242];
+    }
+
+    public function getCatalog($params) {
+        if (!$params['token']) {
             return ['error' => 242];
         }
 
@@ -133,59 +212,41 @@ class Application {
             return ['error' => 705];
         }
 
-        if (!isset($params['x'], $params['y'])) {
-            return ['error' => 2001];
-        }
-
-        if (!filter_var($params['x'], FILTER_VALIDATE_INT) || !filter_var($params['y'], FILTER_VALIDATE_INT)) {
-            return ['error' => 2002];
-        }
-
-        $x = (int)$params['x'];
-        $y = (int)$params['y'];
-        $mapData = $this->map->getMap();
-        $borders = [
-            'width' => $mapData['MAP']['WIDTH'],
-            'height' => $mapData['MAP']['HEIGHT']
-        ];
-    
-        if (!isset($mapData['MAP']['WIDTH'], $mapData['MAP']['HEIGHT']) || !is_array($mapData)) {
-            return ['error' => 850];
-        }
-
-        if ($x < 0 || $x > $borders['width'] || $y < 0 || $y > $borders['height']) {
-            return ['error' => 2003];
-        }
-
-        if ($x == $user->x && $y == $user->y) {
-            return ['error' => 2004];
-        } 
-
-        /*if ($user->status != 'scout'){
-            return ['error' => 2005];
-        }*/
-
-        return $this->map->moveUser($user->id, $x, $y);
+        return $this->market->getCatalog($this->map->isUserInZone($user, "город"));
     }
-
-    
-    public function updateScene(){
-        /*
-        мы не поняли что должен делать этот метод
-        отправка каких-то данных о карте и ее пользователях, чтобы на клиенте могли рендерить это в цикле??
-        */
-        $mapData = $this->map->getMap();
-        if (!$mapData) {
-            return ['error' => 101];
+  
+    public function sell($params){
+        if (!isset($params['token'], $params['type'], $params['amount'])){
+            return ['error' => 242];
         }
 
-        $players = array_merge($this->user->getUsersByStatus('fight') ?? [], $this->user->getUsersByStatus('scout') ?? []);
+        $user = $this->user->getUser($params['token']);
+        if (!$user){
+            return ['error' => 705];
+        }
 
-        return [
-            'map' => $mapData,
-            'playersIngame' => $players,
-        ];
+        $inventory = $this->inventory->getInventory($user->id);
+        if (!$inventory){
+            return ['error' => 3007];
+        }
+
+        if (!filter_var($params['amount'], FILTER_VALIDATE_INT) || $params['amount'] <= 0) {
+            return ['error' => 3002];
+        }
+
+        if ($params['type'] === 'merchant') {
+            if (!isset($params['objectId']) || !filter_var($params['objectId'], FILTER_VALIDATE_INT)) {
+                return ['error' => 3002];
+            }
+    
+            return $this->market->sell($user->id, $inventory, $params['objectId'], $params['amount']);
+        }
+
+        if ($params['type'] === 'exchanger'){
+            return $this->market->exchange($user->id, $inventory, $params['amount']);
+        }
+
+        return ['error' => 3001];
     }
-
-
 }
+
