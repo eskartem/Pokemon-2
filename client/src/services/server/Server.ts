@@ -190,6 +190,11 @@ class Server {
         const result = await this.request<TMonsterType>('addToTeam', { token, monsterId: monsterId.toString() });
         return result;
     }    
+
+    async removeFromTeam(token: string, monsterId: number): Promise<TMonsterType | null> {
+        const result = await this.request<TMonsterType>('addToTeam', { token, monsterId: monsterId.toString() });
+        return result;
+    }   
 }
 
 export default Server;

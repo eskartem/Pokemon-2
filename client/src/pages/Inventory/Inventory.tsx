@@ -21,78 +21,78 @@ const Inventory: React.FC<IBasePage> = (props: IBasePage) => {
 
     const backClickHandler = () => setPage(PAGES.GAME);
 
-    useEffect(() => {
-        const fetchInventory = async () => {
-            setLoading(true);
-            try {
-                const inventory = await server.getInventory(TOKEN);
-                if (!inventory) return;
+    const fetchInventory = async () => {
+        setLoading(true);
+        try {
+            const inventory = await server.getInventory(TOKEN);
+            if (!inventory) return;
 
-                const transformedPokemons: TMonsterType[] = inventory.monsters.map((monster) => {
-                    const monsterType = inventory.monsterTypes.find(mt => mt.id === monster.monster_type_id);
-                    if (!monsterType) return null;
+            const transformedPokemons: TMonsterType[] = inventory.monsters.map((monster) => {
+                const monsterType = inventory.monsterTypes.find(mt => mt.id === monster.monster_type_id);
+                if (!monsterType) return null;
 
-                    const stats: TStats = {
-                        hp: monster.hp,
-                        ad: monsterType.attack,
-                        df: monsterType.defense,
-                    };
+                const stats: TStats = {
+                    hp: monster.hp,
+                    ad: monsterType.attack,
+                    df: monsterType.defense,
+                };
 
-                    return {
-                        id: monster.id, 
-                        name: monsterType.name,
-                        lvl: monster.level,
-                        element_id: monsterType.element_id, 
-                        stats,
-                        status: monster.status || 'not in team', 
-                        hp: monsterType.hp,
-                        attack: monsterType.attack,
-                        defense: monsterType.defense,
-                    };
-                }).filter((pokemon): pokemon is TMonsterType => pokemon !== null);
+                return {
+                    id: monster.id, 
+                    name: monsterType.name,
+                    lvl: monster.level,
+                    element_id: monsterType.element_id, 
+                    stats,
+                    status: monster.status || 'not in team', 
+                    hp: monsterType.hp,
+                    attack: monsterType.attack,
+                    defense: monsterType.defense,
+                };
+            }).filter((pokemon): pokemon is TMonsterType => pokemon !== null);
 
-                const uniquePokemons = transformedPokemons.reduce((acc, pokemon) => {
-                    if (!acc.some(p => p.id === pokemon.id)) {
-                        acc.push(pokemon);
-                    }
-                    return acc;
-                }, [] as TMonsterType[]);
+            const uniquePokemons = transformedPokemons.reduce((acc, pokemon) => {
+                if (!acc.some(p => p.id === pokemon.id)) {
+                    acc.push(pokemon);
+                }
+                return acc;
+            }, [] as TMonsterType[]);
 
-                const userMonsterTypeIds = uniquePokemons.map(pokemon => pokemon.id);
-                const missingMonsterTypes = inventory.monsterTypes.filter(mt => !userMonsterTypeIds.includes(mt.id));
+            const userMonsterTypeIds = uniquePokemons.map(pokemon => pokemon.id);
+            const missingMonsterTypes = inventory.monsterTypes.filter(mt => !userMonsterTypeIds.includes(mt.id));
 
-                const missingPokemons: TMonsterType[] = missingMonsterTypes.map(mt => ({
-                    id: mt.id,
-                    name: mt.name,
-                    lvl: mt.lvl, 
-                    element_id: mt.element_id,
-                    stats: {
-                        hp: mt.hp,
-                        ad: mt.attack,
-                        df: mt.defense,
-                    },
-                    status: 'not in team',
+            const missingPokemons: TMonsterType[] = missingMonsterTypes.map(mt => ({
+                id: mt.id,
+                name: mt.name,
+                lvl: mt.lvl, 
+                element_id: mt.element_id,
+                stats: {
                     hp: mt.hp,
-                    attack: mt.attack,
-                    defense: mt.defense,
-                }));
+                    ad: mt.attack,
+                    df: mt.defense,
+                },
+                status: 'not in team',
+                hp: mt.hp,
+                attack: mt.attack,
+                defense: mt.defense,
+            }));
 
-                const allPokemons = [...uniquePokemons, ...missingPokemons];
+            const allPokemons = [...uniquePokemons, ...missingPokemons];
 
-                setAllPokemons(allPokemons);
-                setAvailableMonsterTypes(inventory.monsterTypes);
-                setUserResources(inventory.inventory);
+            setAllPokemons(allPokemons);
+            setAvailableMonsterTypes(inventory.monsterTypes);
+            setUserResources(inventory.inventory);
 
-                const team = allPokemons.filter(pokemon => pokemon.status === 'in team');
-                setBattleTeam(team);
+            const team = allPokemons.filter(pokemon => pokemon.status === 'in team');
+            setBattleTeam(team);
 
-            } catch (error) {
-                console.error('Ошибка при получении инвентаря:', error);
-            } finally {
-                setLoading(false);
-            }
-        };
+        } catch (error) {
+            console.error('Ошибка при получении инвентаря:', error);
+        } finally {
+            setLoading(false);
+        }
+    };
 
+    useEffect(() => {
         fetchInventory();
     }, [server]);
 
@@ -129,16 +129,33 @@ const Inventory: React.FC<IBasePage> = (props: IBasePage) => {
 
     const addToBattleTeam = async (pokemon: TMonsterType) => {
         if (!pokemon || battleTeam.length >= 3 || battleTeam.some(p => p.id === pokemon.id)) return;
-    
+
         console.log(`Добавляем монстра с id: ${pokemon.id}`);
-    
+
         try {
             const result = await server.addToTeam(TOKEN, pokemon.id);
             if (result) {
                 setBattleTeam([...battleTeam, result]);
+                fetchInventory();
             }
         } catch (error) {
             console.error('Ошибка добавления покемона в команду:', error);
+        }
+    };
+
+    const removeFromBattleTeam = async (pokemon: TMonsterType) => {
+        if (!pokemon) return;
+
+        console.log(`Убираем монстра с id: ${pokemon.id}`);
+
+        try {
+            const result = await server.removeFromTeam(TOKEN, pokemon.id);
+            if (result) {
+                setBattleTeam(battleTeam.filter(p => p.id !== pokemon.id));
+                fetchInventory(); 
+            }
+        } catch (error) {
+            console.error('Ошибка удаления покемона из команды:', error);
         }
     };
 
@@ -150,12 +167,12 @@ const Inventory: React.FC<IBasePage> = (props: IBasePage) => {
                 const updatedTeam = [...battleTeam];
                 updatedTeam[index] = result;
                 setBattleTeam(updatedTeam);
+                fetchInventory(); 
             }
         } catch (error) {
             console.error('Ошибка замены покемона в команде:', error);
         }
     };
-
 
     const toggleResources = () => {
         setShowResources(prevState => !prevState);
@@ -191,6 +208,10 @@ const Inventory: React.FC<IBasePage> = (props: IBasePage) => {
                         <Button
                             text="Заменить"
                             onClick={() => replaceInBattleTeam(index, selectedPokemon)}
+                        />
+                        <Button
+                            text="Убрать из команды"
+                            onClick={() => removeFromBattleTeam(pokemon)}
                         />
                     </div>
                 ))}
