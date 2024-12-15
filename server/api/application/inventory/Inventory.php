@@ -14,7 +14,7 @@ class Inventory {
         foreach ($inventory['monsters'] as $monster){
             if ($monster['id'] == $monsterId){               
                 if ($monster['status'] == 'in team'){
-                    return ['error' => 1449];
+                    return $this->db->changeMonsterStatus($monsterId, 'in pocket');
                 }
                 
                 if ($monster['status'] == 'on sale'){
