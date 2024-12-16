@@ -123,7 +123,7 @@ CREATE TABLE `hashes` (
 --
 
 INSERT INTO `hashes` (`id`, `chat_hash`, `map_hash`, `market_hash`) VALUES
-(1, 'd54549bb2c64c7c0472a1b627d150dcf', 'fabceea19fc9e3671afa4c9ff11ba175', '324234');
+(1, 'd54549bb2c64c7c0472a1b627d150dcf', 'fabceea19fc9e3671afa4c9ff11ba175', 0);
 
 -- --------------------------------------------------------
 
@@ -229,7 +229,15 @@ CREATE TABLE `map_zones` (
 --
 
 INSERT INTO `map_zones` (`id`, `map_id`, `name`, `x`, `y`, `width`, `height`, `type`, `element_id`) VALUES
-(1, 1, 'город', 75, 40, 11, 11, 'town', NULL);
+(1, 1, 'город', 57, 43, 34, 9, 'town', NULL),
+(2, 1, 'перекати-поле', 26, 18, 8, 8, 'chillzone', NULL),
+(3, 1, 'куст', 24, 78, 11, 7, 'chillzone', NULL),
+(4, 1, 'корабль', 95, 58, 12, 6, 'chillzone', NULL),
+(5, 1, 'пещера', 142, 20, 6, 4, 'chillzone', NULL),
+(6, 1, 'пустыня', 0, 0, 73, 46, 'dungeon', 2),
+(7, 1, 'горы', 73, 0, 87, 46, 'dungeon', 3),
+(8, 1, 'лес', 0, 46, 80, 45, 'dungeon', 4),
+(9, 1, 'озеро', 80, 46, 80, 44, 'dungeon', 1);
 
 -- --------------------------------------------------------
 
@@ -393,6 +401,7 @@ INSERT INTO `users` (`id`, `login`, `password`, `token`, `name`, `money`, `ratin
 ALTER TABLE `bots`
   ADD PRIMARY KEY (`id`);
 
+
 --
 -- Индексы таблицы `elements`
 --
@@ -522,7 +531,7 @@ ALTER TABLE `inventory`
 -- AUTO_INCREMENT для таблицы `lots`
 --
 ALTER TABLE `lots`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT для таблицы `map`
