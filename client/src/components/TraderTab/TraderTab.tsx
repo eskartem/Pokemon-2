@@ -12,7 +12,6 @@ const TraderTab: React.FC = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string>("");
 
-    // Получение списка ресурсов
     const fetchResources = async () => {
         try {
             setLoading(true);

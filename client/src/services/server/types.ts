@@ -178,42 +178,6 @@ export type TResources = {
     exchange_cost: number
 }
 
-export type TInventory = {
-    monsters: TCr[];
-    monsterTypes: TMonsterType[];
-    inventory: TResource[];
-    balance: TBalance;
-    hash: string; // Добавляем хеш для инвентаря
-}
-
-export type TCr = {
-    id: number;
-    user_id: number;
-    monster_type_id: number;
-    level: number;
-    hp: number;
-    status: string;
-};
-
-export type TMonsterType = {
-    id: number;
-    element_id: number;
-    name: string;
-    hp: number;
-    attack: number;
-    defense: number;
-}
-
-export type TResource = {
-    id: number;
-    user_id: number;
-    resource_id: number;
-    resource_amount: number;
-}
-
-export type TBalance = {
-    money: number;
-}
 
 export type TMonsters = TCreature;
 

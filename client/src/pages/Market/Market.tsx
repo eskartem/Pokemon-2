@@ -5,7 +5,7 @@ import TraderTab from '../../components/TraderTab/TraderTab';
 import ExchangerTab from '../../components/ExchangerTab/ExchangerTab';
 import { IBasePage, PAGES } from '../PageManager';
 import { ServerContext, StoreContext } from '../../App';
-import { TInventory, TBalance } from '../../services/server/types';
+import { TInventory } from '../../services/server/types';
 
 import './Market.scss';
 
@@ -26,12 +26,20 @@ const Market: React.FC<IBasePage> = (props: IBasePage) => {
 
     useEffect(() => {
         if (user) {
-            server.getInventory(user.token).then(inv => {
-                setInventory(inv);
-                if (inv && inv.balance) {
-                    console.log('Количество монет:', inv.balance.money);
-                }
-            });
+            const fetchInventory = () => {
+                server.getInventory(user.token).then(inv => {
+                    setInventory(inv);
+                    if (inv && inv.balance) {
+                        console.log('Обновлено количество монет:', inv.balance.money);
+                    }
+                });
+            };
+
+            fetchInventory();
+
+            const intervalId = setInterval(fetchInventory, 1000);
+
+            return () => clearInterval(intervalId);
         }
     }, [user, server]);
 
@@ -43,16 +51,25 @@ const Market: React.FC<IBasePage> = (props: IBasePage) => {
                 <div>ошибка</div>
                 <Button onClick={backClickHandler} text='назад' />
             </div>
-        )
+        );
     }
+
+    const crystals = inventory?.inventory?.find(item => item.resource_id === 1)?.resource_amount || 0;
+    const eggs = inventory?.inventory?.find(item => item.resource_id === 2)?.resource_amount || 0;
+    const shells = inventory?.inventory?.find(item => item.resource_id === 3)?.resource_amount || 0;
 
     return (
         <div id='market'>
             <div className='user-resources'>
-                <h1 className='resources-text'>монеты: {inventory?.balance?.money || 0} |</h1>
+                <h1 className='resources-text'>
+                    монеты: {inventory?.balance?.money || 0} | 
+                    кристаллы: {crystals} | 
+                    яйца: {eggs} | 
+                    скорлупа: {shells}
+                </h1>
             </div>
             <div className='button-panel'>
-                <button onClick={() => setTab(TABS.MARKET)} className='market-button'>рынок</button>
+                <button onClick={() => setTab(TABS.MARKET)} className='market-button'> рынок</button>
                 <button onClick={() => setTab(TABS.TRADER)} className='market-button'>торговец</button>
                 <button onClick={() => setTab(TABS.EXCHANGER)} className='market-button'>обменник</button>
             </div>
@@ -63,7 +80,7 @@ const Market: React.FC<IBasePage> = (props: IBasePage) => {
             </div>
             <Button onClick={backClickHandler} text='назад' />
         </div>
-    )
-}
+    );
+};
 
 export default Market;

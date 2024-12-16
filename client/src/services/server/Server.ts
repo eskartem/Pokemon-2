@@ -1,7 +1,7 @@
 import md5 from 'md5';
 import CONFIG, { EDIRECTION } from "../../config";
 import Store from "../store/Store";
-import { TAnswer, TError, TMessagesResponse, TUser, TMarketCatalog, TMap, TMapZone, TUpdateSceneResponse, TSell, TResources, TInventory, TCreature, TInventory, TMonsters_level, TMonsterType } from "./types";
+import { TAnswer, TError, TMessagesResponse, TUser, TMarketCatalog, TMap, TMapZone, TUpdateSceneResponse, TSell, TResources, TCreature, TInventory, TMonsters_level, TMonsterType } from "./types";
 
 const { CHAT_TIMESTAMP, SCENE_TIMESTAMP, HOST } = CONFIG;
 
@@ -115,19 +115,6 @@ class Server {
         return null;
     }
 
-    async buyItem(itemId: string): Promise<boolean | null> {
-        const result = await this.request<boolean>('buyItem', { itemId });
-        return result;
-    }
-
-    async getTraderCatalog(): Promise<TMarketCatalog | null> {
-        const catalog = await this.request<TMarketCatalog>('getTraderCatalog');
-        if (catalog) {
-            return catalog;
-        }
-        return null;
-    }
-
     async sell(token: string, objectId: string, amount: string): Promise<TSell | null> {
         if (isNaN(Number(amount)) || Number(amount) <= 0) {
             throw new Error('Некорректное количество для продажи'); 
@@ -147,10 +134,6 @@ class Server {
         return result;
     }
     
-    async buyFromTrader(id: string): Promise<boolean | null> {
-        const result = await this.request<boolean>('buy', { id });
-        return result;
-    }
 
     async exchangeEggsForPokemon(): Promise<{ success: boolean }> {
         // Здесь должна быть логика для запроса на сервер
@@ -198,16 +181,6 @@ class Server {
         if (this.sceneInterval) {
             clearInterval(this.sceneInterval);
             this.sceneInterval = null;
-        }
-    }
-
-    async getInventory(token: string): Promise<TInventory | null> {
-        try {
-            const catalog = await this.request<TInventory>('getInventory', { token });
-            return catalog;
-        } catch (error) {
-            console.error('Error fetching inventory:', error);
-            return null;
         }
     }
 
