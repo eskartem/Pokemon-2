@@ -9,11 +9,18 @@ export type TAnswer<T> = {
     error?: TError;
 }
 
+export enum EStatus {
+    scout = 'scout',
+    fight = 'fight', 
+    offline = 'offline'
+}
+
 export type TGamer = {
     id: number;
     name: string;
+    status: EStatus;
     x: number;
-    y: number;    
+    y: number;
 }
 
 export type TUser = TGamer & {
@@ -57,10 +64,12 @@ export type TStats = {
 
 // само существо
 export type TCreature = {
+    id: number,
     name: string;
     lvl: number;
     element: EElement,
     stats: TStats,
+    status: string
 }
 
 //существо на рынке
@@ -105,8 +114,53 @@ export type TMapZone = {
 
 export enum EZones {
     town = 'town',
-    safe = 'safe',
-    dungeon = 'dungeon  '
+    chillzone = 'chillzone',
+    dungeon = 'dungeon'
+}
+ 
+export type TInventory = {
+    monsters: TCr[];
+    monsterTypes: TMonsterType[];
+    inventory: TResource[];
+    balance: TBalance;
+}
+
+export type TCr = {
+    id: number;
+    user_id: number;
+    monster_type_id: number;
+    level: number;
+    hp: number;
+    status: string;
+};
+
+export type TMonsterType = {
+    id: number;
+    element_id: number;
+    lvl: number;
+    name: string;
+    hp: number;
+    attack: number;
+    defense: number;
+    stats: TStats;
+    status: string;
+}
+
+export type TResource = {
+    id: number;
+    user_id: number;
+    resource_id: number;
+    resource_amount: number;
+}
+
+export type TBalance = {
+    money: number;
+}
+
+export type TMonsters_level = {
+    id: number,
+    level: number,
+    stats: TStats
 }
 
 export type TSell = {
@@ -160,3 +214,26 @@ export type TResource = {
 export type TBalance = {
     money: number;
 }
+
+export type TMonsters = TCreature;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

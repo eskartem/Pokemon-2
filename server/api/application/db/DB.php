@@ -209,7 +209,7 @@ class DB {
     }
 
     public function getPlayersIngame() {
-        return $this->queryAll('SELECT id, name, x, y FROM users WHERE token<>"" AND status<>"offline"');
+        return $this->queryAll('SELECT id, name, status, x, y FROM users');
     }
 
     public function getResources(){
@@ -243,5 +243,9 @@ class DB {
     public function getCatalog(){
         return $this->queryAll('SELECT * from resources');
 
+    }
+
+    public function changeMonsterStatus($monsterId, $status){
+        return $this->execute('UPDATE monsters SET status=? WHERE id=?', [$status, $monsterId]);
     }
 }

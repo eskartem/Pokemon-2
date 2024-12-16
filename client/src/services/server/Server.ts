@@ -1,7 +1,7 @@
 import md5 from 'md5';
 import CONFIG, { EDIRECTION } from "../../config";
 import Store from "../store/Store";
-import { TAnswer, TError, TMessagesResponse, TUser, TMarketCatalog, TMap, TMapZone, TUpdateSceneResponse, TSell, TResources, TInventory, TCreature } from "./types";
+import { TAnswer, TError, TMessagesResponse, TUser, TMarketCatalog, TMap, TMapZone, TUpdateSceneResponse, TSell, TResources, TInventory, TCreature, TInventory, TMonsters_level, TMonsterType } from "./types";
 
 const { CHAT_TIMESTAMP, SCENE_TIMESTAMP, HOST } = CONFIG;
 
@@ -200,6 +200,31 @@ class Server {
             this.sceneInterval = null;
         }
     }
+
+    async getInventory(token: string): Promise<TInventory | null> {
+        try {
+            const catalog = await this.request<TInventory>('getInventory', { token });
+            return catalog;
+        } catch (error) {
+            console.error('Error fetching inventory:', error);
+            return null;
+        }
+    }
+
+    async upgradePokemon(token: string, monsterId: number): Promise<TMonsters_level | null> {
+        const result = await this.request<TMonsters_level>('upgradePokemon', { token, monsterId: monsterId.toString() });
+        return result;
+    }    
+
+    async addToTeam(token: string, monsterId: number): Promise<TMonsterType | null> {
+        const result = await this.request<TMonsterType>('addToTeam', { token, monsterId: monsterId.toString() });
+        return result;
+    }    
+
+    async removeFromTeam(token: string, monsterId: number): Promise<TMonsterType | null> {
+        const result = await this.request<TMonsterType>('addToTeam', { token, monsterId: monsterId.toString() });
+        return result;
+    }   
 }
 
 export default Server;

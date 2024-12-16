@@ -73,7 +73,7 @@ class Map {
         $newX = $currentX + $dx;
         $newY = $currentY + $dy;
 
-        if ($newX < 0 || $newX > $borders['width'] || $newY < 0 || $newY > $borders['height']) {
+        if ($newX < 0 || $newX >= $borders['width'] || $newY < 0 || $newY >= $borders['height']) {
             return ['error' => 2003];
         }
 
