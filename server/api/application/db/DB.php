@@ -268,8 +268,13 @@ class DB {
         return $this->execute('UPDATE lots SET status=? WHERE id=?', [$status, $lotId]);
     }
 
+    public function changeMonsterStatus($monsterId, $status){
+        return $this->execute('UPDATE monsters SET status=? WHERE id=?', [$status, $monsterId]);
+    }
+
     public function changeMonsterOwner($monsterId, $newOwnerId){
         return $this->execute('UPDATE monsters SET user_id=?, status="in pocket" WHERE id=?', [$newOwnerId, $monsterId]);
     }
+    //объединить в один метод?
 
 }

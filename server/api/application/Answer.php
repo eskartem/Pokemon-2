@@ -26,6 +26,10 @@ class Answer {
         '802' => 'lack of funds', //не хватает средств
         '850' => 'incorrect array output',
         '1006' => 'user with this email is already registered',
+        '1449' => 'this monster is already in your team',
+        '1450' => 'this monster is on sale, cannot be put in the team',
+        '1460' => 'monster with that ID has not been found',
+        '1461' => 'you do not own that monster',
         '2001' => 'coordinates to move are not set',
         '2002' => 'coordinates to move are not correct',
         '2003' => 'coordinates to move are out of map borders',
