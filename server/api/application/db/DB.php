@@ -23,7 +23,7 @@ class DB {
         // $port = '5432';
         // $user = 'postgres';
         // $pass = '---';
-        // $db = 'nopainnogame';
+        // $db = 'cockstaris';
         // $connect = "pgsql:host=$host;port=$port;dbname=$db;";
         // $this->pdo = new PDO($connect, $user, $pass, [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]);
 
@@ -201,7 +201,23 @@ class DB {
     }
 
     public function getPlayersIngame() {
-        return $this->queryAll('SELECT id, name, x, y FROM users WHERE token<>"" AND status<>"offline"');
+        return $this->queryAll('SELECT id, name, status, x, y FROM users');
+    }
+
+    public function getResources(){
+        return $this->queryAll('SELECT * FROM resources');
+    }
+
+    public function getResourcesById($objectId){
+        return $this->query('SELECT * FROM resources WHERE id=?', [$objectId]);
+    }
+
+    public function sellResources($sellingResourceId, $resourceAmount, $userId){
+        return $this->execute('UPDATE inventory SET resource_amount=resource_amount-? WHERE resource_id=? AND user_id=?', [$resourceAmount, $sellingResourceId, $userId]);
+    }
+
+    public function changeMoney($userId, $balanceIncrease){
+        return $this->execute('UPDATE users SET money=money+? WHERE id=?', [$balanceIncrease, $userId]);
     }
     
     public function getAllLots(){
@@ -234,5 +250,10 @@ class DB {
                                     [$userId, $startCost, $stepCost, $startCost, $sellingItemId, $amount]),
                 'ableToTakeMoney' => $this->execute('UPDATE users SET money=money-? WHERE id=?', [$zalog, $userId])
         ];
+    }
+  
+    public function getCatalog(){
+        return $this->queryAll('SELECT * from resources');
+
     }
 }

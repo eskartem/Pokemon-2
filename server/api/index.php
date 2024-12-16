@@ -40,13 +40,14 @@ function result($params) {
             case 'moveUser': return $app-> moveUser($params);
 
             //market
-            case 'getAllLots': return $app->getAllLots($params); // новое название getAllLots, вместо getCatalog
-            // case 'buy': return $app-> buy($params);
-            // case 'sale': return $app-> sale($params);
+            case 'getCatalog': return $app->getCatalog($params); // для торговца
+            case 'getAllLots': return $app->getAllLots($params); // для рынка
             case 'makeLot': return $app->makeLot($params);
+            case 'sell': return $app->sell($params);
 
             default: return ['error' => 102];
         }
+        
     }
     return ['error' => 101];
 }

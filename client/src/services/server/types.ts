@@ -9,11 +9,18 @@ export type TAnswer<T> = {
     error?: TError;
 }
 
+export enum EStatus {
+    scout = 'scout',
+    fight = 'fight', 
+    offline = 'offline'
+}
+
 export type TGamer = {
     id: number;
     name: string;
+    status: EStatus;
     x: number;
-    y: number;    
+    y: number;
 }
 
 export type TUser = TGamer & {
@@ -106,6 +113,6 @@ export type TMapZone = {
 
 export enum EZones {
     town = 'town',
-    safe = 'safe',
-    dungeon = 'dungeon  '
+    chillzone = 'chillzone',
+    dungeon = 'dungeon'
 }
