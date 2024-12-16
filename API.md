@@ -10,9 +10,11 @@
     * 2.1. Общий формат ответа
     * 2.2. Пользователь
     * 2.3. Сообщение
-    * 2.4. Покемоны
+    * 2.4. Монстры
     * 2.5. Инвентарь
-    * 2.6. Карта
+    * 2.6. Лоты
+    * 2.7. Ресурсы
+    * 2.8. Карта
 3. Список запросов
     * 3.1. Общие ошибки
 4. Подробно
@@ -24,7 +26,11 @@
     * 4.6. userInfo
     * 4.7. upgradePokemon
     * 4.8. startGame
-    * 4.9. endGame
+    * 4.9. getInventory
+    * 4.10. moveUser
+    * 4.11. getMap
+    * 4.12. updateScene
+    * 4.13. getCatalog
     * 4.14. sell
     * 4.15. makeLot
     * 4.16. makeBet
@@ -65,10 +71,18 @@ Answer<T>: {
 ```
 User: {
     id: number;
+    login: string;
+    password: string;
     token: string;
     name: string;
+    money: integer;
+    rating: integer;
+    x: integer;
+    y: integer;
+    status: string;
 }
-```
+
+``` 
 
 ### 2.3. Сообщение
 ```
@@ -79,15 +93,24 @@ Message: {
 }
 ```
 
-### 2.4. Покемоны
+### 2.4. Монстры
 ```
 Monsters: {
     id: number; - ID покемона
-    name: string; - Имя покемона
+    user_id: number;
     level: number; - Уровень покемона
-    mosters_type_id: integer; - ID типа монстра
-    hp: ineger; - Уровень здоровья покемона
-    status: string; - Статус покемона (в команде, в кармане)
+    monster_type_id: integer; - ID типа монстра
+    hp: integer; - Уровень здоровья покемона
+    status: string; - Статус покемона
+}
+
+MonsterTypes: {
+    id: number;
+    element_id: number;
+    name: string;
+    hp: number;
+    attack: number;
+    defense: number;
 }
 ```
 
@@ -96,26 +119,15 @@ Monsters: {
 Inventory: {
     id: integer; - ID инвентаря
     user_id: integer; - ID пользователя
-    resoure: integer; - количество ресурса
-    resoure_type: string; - тип ресурса (кристаллы, яйца, осколки) 
-    element_id: integer; - ID стихии
+    resoure_id: integer; - ID ресурса
+    resoure_amount: integer; - количество ресурса
 }
 ```
 
-### 2.5. Инвентарь
-```
-PlayerIngame: {
-    id: integer; - ID игрока
-    name: integer; - имя игрока
-    status: string; - статус игрока на карте ('scout' - на карте, 'fight' - в бою, 'offline' - не в игре) // надо сделать отдельно таблицу словарь для статусов
-    x: integer; - текущая координата х
-    y: integer; - текущая координата y
-}
-```
 
- ### 2.6. Активные лоты
+### 2.6. Лоты
 ```
-ActiveLots: {
+Lots: {
     id: integer; - ID лота
     seller_id: integer; - ID создателя лота / продавца
     datetime: datetime; - время создания лота
@@ -130,6 +142,40 @@ ActiveLots: {
 }
 ```
 
+### 2.7. Ресурсы
+```
+Resources: {
+    id: integer; - ID ресурса
+    name: string; - название ресурса
+    cost: integer; - стоимость ресурса у торговца
+    exchange_cost: integer || NULL; - стоимость обмена у обменщика, указано только у скорлупы
+}
+```
+
+### 2.8. Карта
+```
+Map: {
+    id: integer; - ID карты
+    name: string; - название карты
+    width: integer; - ширина
+    height: integer; - высота
+    image: string; - картинка карты
+}
+
+MapZones: {
+    id: integer; - ID зоны
+    map_id: integer; - ID карты
+    name: string; - название зоны
+    x: integer; - координата X
+    y: integer; - координата Y
+    width: integer; - ширина
+    height: integer; - высота
+    type: string; - тип зоны
+    element_id: integer || NULL; - ID элемента зоны
+}
+```
+
+
 ## 3. Список запросов
 | Название | О чем |
 | - | - |
@@ -141,10 +187,15 @@ ActiveLots: {
 | userInfo | Получить информацию о пользователе и его наборе покемонов|
 | upgradePokemon | Улучшение покемонов |
 | startGame | Начало игры |
-| endGame | Конец игры на карте |
+| getInventory | Информация об инвентаре |
+| moveUser | Перемещает пользователя |
+| getMap | Информация о карте |
+| updateScene | Обновляет карту |
+| getCatalog | Предложения торговца |
 | sell | Продает предметы торговцу или обменивает скорлупу у обменника |
 | makeLot | Создает лот |
 | makeBet | Делает ставку на лот |
+| updateLots | Обновляет лоты |
 | addToTeam | Добавить монстра в отряд |
 
 ### 3.1. Общие ошибки
@@ -299,6 +350,28 @@ ActiveLots: {
 *`703` - Покемон максимального уровня
 *`802` - Не хватает средств
 
+
+### 4.9. getInventory
+возвращает информацию об инвентаре, балансе и монстрах пользователя
+
+**Параметры**
+```
+{
+    token: string; - токен
+}
+```
+**Успешный ответ**
+```
+    Answer<{
+        monsters: Monsters[]; - список всех монстров
+        monsterTypes: MonsterTypes[]; - список всех типов монстров
+        inventory: Inventory[]; - инвентарь пользователя
+        balance: User['money']; - деньги пользователя
+    }>
+```
+**Ошибки**
+* `705` - Невалидный токен. Пользователь не авторизован.
+
 ### 4.10. moveUser
 Изменить координаты игрока (перемещение)
 
@@ -356,14 +429,14 @@ ActiveLots: {
 **Успешный ответ**
 ```
     Answer<{
-        playerIngames: PlayerIngame[]; - список игроков в игре
+        gamers: User['id', 'name', 'status', 'x', 'y']; - список игроков в игре
         hash: string; - обновленный хэш
     }>
 ```
 **Ошибки**
 * `705` - невалидный токен. Пользователь не авторизован
 
-### 4. getCatalog <!---поменять номер в девелопе-->
+### 4.13. getCatalog
 возвращает список всех предложений торговца, если пользователь находится в городе
 
 **Параметры**
@@ -374,7 +447,7 @@ ActiveLots: {
 ```
 **Успешный ответ**
 ```
-    Answer<resources>
+    Answer<resources: Resources[];> список всех ресурсов и их стоимость продажи / обмена (обмен только для скорлупы)
 ```
 **Ошибки**
 * `705` - невалидный токен. Пользователь не авторизован
@@ -509,7 +582,7 @@ ActiveLots: {
 ```
 **Успешный ответ**
 ```
-    Answer<activeLots: ActiveLots[]>
+    Answer<activeLots: Lots[]>
 ```
 **Ошибки**
 * `705` - невалидный токен. Пользователь не авторизован
