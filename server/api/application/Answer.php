@@ -41,6 +41,12 @@ class Answer {
         '3009' => 'not enough resources to sell that amount',
         '3010' => 'that amount of shells cannot be exchanged',
         '3011' => 'not enough shells to exchange that amount',
+        '3012' => 'cannot make bet to the your own lot',
+        '3013' => 'you have to increase your bet to make a new one',
+        '3014' => 'new bet is lesser than the step',
+        '3015' => 'this lot has been closed already',
+        '3016' => 'this lot does not exist',
+        '3017' => 'you do not have enough currency to buy this',
         '9000' => 'unknown error'
     );
 

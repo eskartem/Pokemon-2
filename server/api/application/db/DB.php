@@ -224,6 +224,14 @@ class DB {
         return $this->queryAll('SELECT * from lots');
     }
 
+    public function makeBet($userId, $lotId, $newBet) {
+        return ['ableToMakeBet' =>  $this->execute('UPDATE lots SET buyer_id = ?, timestamp_cost = UNIX_TIMESTAMP(), current_cost = ? WHERE id = ?', 
+                                    [$userId, $newBet, $lotId]),
+                'ableToTakeMoney' => $this->execute('UPDATE users SET money=money-? WHERE id=?',
+                                    [$newBet, $userId])
+                ];
+    }
+
     public function getInventory($userId){
         return ['monsters' => $this->queryAll('SELECT * FROM monsters WHERE user_id=?', [$userId]),
                 'monsterTypes' => $this->queryAll('SELECT * FROM monster_types'),
@@ -254,6 +262,5 @@ class DB {
   
     public function getCatalog(){
         return $this->queryAll('SELECT * from resources');
-
     }
 }
