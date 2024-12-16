@@ -26,4 +26,3 @@ class Inventory {
         return ['error' => 1460];
     }
 }
-
