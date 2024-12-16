@@ -1,6 +1,6 @@
 .chat {
-    max-width: 27vw;
-    max-height: 33vw;
+    max-width: 35vw;
+    max-height: 35vw;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -46,8 +46,6 @@
 .chat-input {
 
     input {
-        text-align: center;
-
         color: #ffffff;
         text-shadow: -1px -1px 0 #000000, 1px -1px 0 #000000, -1px 1px 0 #000000, 1px 1px 0 #000000;
 

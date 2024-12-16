@@ -72,7 +72,7 @@ const Pvp = (props: any) => {
 
     const backClickHandler = () => setPage(PAGES.GAME);
   
-  return (
+  return (<>
     <div className='Battle'>
       <Stage {...stageProps} className='pvpArea'>
         <Sprites stageProps={stageProps}
@@ -146,7 +146,7 @@ const Pvp = (props: any) => {
       />
       <Button onClick={backClickHandler} text='назад' />
     </div>
-  )
+  </>)
 };
 
 

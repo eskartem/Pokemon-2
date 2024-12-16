@@ -1,5 +1,3 @@
-
-
 .game-wrapper {
     display: flex;
     flex-direction: column; /* Располагаем элементы в колонку */
@@ -97,14 +95,6 @@
         cursor: pointer;
     }
 
-    .control-panel {
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        display: inline-flex;
-        align-items: flex-end;
-    }
-
     .vertical-move-buttons {
         display: inline-flex;
         flex-direction: column;
@@ -118,39 +108,3 @@
         }
     }
 }
-
-
-//.button-panel {
-//    display: inline;
-//    list-style-type: none;
-//}
-//
-//.move-button {
-//    min-width: 50px;
-//    min-height: 50px;
-//    &:hover {
-//        cursor: pointer;
-//    }
-//}
-//
-//.clear-button {
-//    &:hover {
-//        cursor: pointer;
-//    }
-//}
-//
-//.control-panel {
-//    display: inline-flex;
-//    align-items: flex-end;
-//    z-index: 1;
-//    position: relative;
-//}
-//
-//.vertical-move-buttons {
-//    display: inline-flex;
-//    flex-direction: column;
-//}
-//
-//.move-button {
-//    max-width: 1px;
-//}

@@ -25,23 +25,25 @@ const Login: React.FC<IBasePage> = (props: IBasePage) => {
 
     return (<div className='login' id='test-login-page'>
         <div>Логин</div>
-        <div className='login-wrapper' >
+        <div className='login-wrapper'>
             <div className='login-inputs'>
                 <input ref={loginRef} 
+                id='test-login-input_login'
                 placeholder='логин'
                 onKeyDown={(event) => {if (event.key === "Enter") passwordRef.current?.focus()}}  
                 />
                 <input 
-                ref={passwordRef} 
+                ref={passwordRef}
+                id='test-login-input_pass'
                 onKeyDown={(event) => {if (event.key === "Enter") loginClickHandler()}}  
                 placeholder='пароль' 
                 type='password' 
                 />
             </div>
             <div className='login-buttons'>
-                <img className='loginClick' id='test-login-img_auth' src={LoginImg} alt='' onClick={loginClickHandler}></img>
+                <img className='loginClick' id='test-login-button_auth' src={LoginImg} alt='' onClick={loginClickHandler}></img>
             </div>
-            <span className='register-link' onClick={registerClickHandler}>
+            <span className='register-link' id='test-login-register_label' onClick={registerClickHandler}>
                 У меня нет аккаунта
             </span>
         </div>

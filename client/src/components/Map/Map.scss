@@ -1,8 +1,8 @@
 
-.map {
-    //border: 5px solid #9fbef4;
-}
-
-.stage {
-    flex: 1;
+.control-panel {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    display: inline-flex;
+    align-items: flex-end;
 }

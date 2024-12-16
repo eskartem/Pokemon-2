@@ -13,7 +13,7 @@ class Chat{
     }
 
     public function getMessages($hash) {
-        $currentHash = $this->db->getChatHash();
+        $currentHash = $this->db->getHash();
         if ($hash === $currentHash->chat_hash) {
             return [
                 'hash' => $hash

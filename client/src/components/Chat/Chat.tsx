@@ -29,7 +29,7 @@ const Chat: React.FC = () => {
         return () => {
             server.stopChatMessages();
         }
-    });
+    }, [server, store, user]);
 
     const input = useMemo(() => <input 
     ref={messageRef} 

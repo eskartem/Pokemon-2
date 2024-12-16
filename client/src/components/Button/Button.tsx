@@ -15,6 +15,7 @@ export type TButton = {
 
 const Button: React.FC<TButton> = (props: TButton) => {
     const {
+        id,
         variant = 'main',
         isHover = false,
         className,
@@ -24,6 +25,7 @@ const Button: React.FC<TButton> = (props: TButton) => {
     } = props;
 
     return (<button
+        id = {id}
         className={cn('button', `button-${variant}`, className, { 'hover': isHover, 'disabled': isDisabled })}
         onClick={onClick}
     >
