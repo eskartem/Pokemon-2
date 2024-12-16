@@ -20,8 +20,13 @@
 
 ## chat
 - [ ] FR_024.1 - Selenium
-- [ ] FR_024.2 - Selenium
-- [ ] FR_024.3 - Selenium
+- [x] FR_024.2 - Selenium
+- [x] FR_024.3 - Selenium
+- [x] FR_024.4 - Selenium
+- [ ] FR_024.5 - Selenium
+- [x] FR_024.6 - Selenium
+- [x] FR_024.7 - Selenium
+
 
 ## chatMethods
 - [x] BC_051.2.1 - Postman
@@ -33,6 +38,14 @@
 - [x] BC_051.2.7 - Postman
 - [x] BC_051.2.8 - Postman
 - [x] BC_051.2.9 - Postman
+- [x] BC_061.1 - Postman
+- [x] BC_061.2 - Postman
+- [x] BC_061.3 - Postman
+- [x] BC_061.4 - Postman
+- [x] BC_061.5 - Postman
+- [ ] BC_061.6 - Postman
+- [ ] BC_061.7 - Postman
+- [x] BC_061.8 - Postman
 
 ## inventoryMethods
 - [x] BC_061.1 - Postman
