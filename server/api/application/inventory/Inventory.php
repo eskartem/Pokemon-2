@@ -10,4 +10,3 @@ class Inventory {
         return $this->db->getInventory($userId);
     }
 }
-

@@ -33,7 +33,9 @@ class Answer {
         '2005' => 'cannot move during the combat or offline',
         '2999' => 'user is not in town',
         '3001' => 'incorrect "type" parameter',
-        '3002' => 'incorrect amount or objectId parameter',
+        '3002' => 'incorrect "amount" parameter',
+        '3003' => 'incorrect "startCost" or "stepCost" parameter', 
+        '3004' => 'unable to sell monster if you will have less than 3 monsters', //3005, 3006 свободны
         '3007' => 'inventory of that user has not been found',
         '3008' => 'selling object with that ID has not been found',
         '3009' => 'not enough resources to sell that amount',
