@@ -43,7 +43,7 @@ function result($params) {
             case 'getAllLots': return $app->getAllLots($params); // новое название getAllLots, вместо getCatalog              
             case 'makeBet': return $app->makeBet($params);
             case 'getCatalog': return $app->getCatalog($params); // для торговца
-            case 'getAllLots': return $app->getAllLots($params); // для рынка
+            case 'updateLots': return $app->updateLots($params);
             case 'makeLot': return $app->makeLot($params);
             case 'sell': return $app->sell($params);
             // удалить лишнее потом

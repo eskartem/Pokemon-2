@@ -100,20 +100,6 @@ class Application {
         return ['error' => 404];
     }
 
-
-    public function getAllLots($params) {
-        if (!$params['token']) {
-            return ['error' => 242];
-        }
-
-        $user = $this->user->getUser($params['token']);
-        if (!$user) {
-            return ['error' => 705];
-        }
-
-        return $this->market->getAllLots($this->map->isUserInZone($user, "город"));
-    }
-
     public function getResources($params) {
         if ($params['token']) {
             $user = $this->user->getUser($params['token']);
@@ -330,5 +316,20 @@ class Application {
 
         return ['error' => 3001];
     }
-}
 
+    public function updateLots($params) {
+        if ($params['token'] && $params['hash']) {
+            $user = $this->user->getUser($params['token']);
+            if ($user) {
+                $lots = $this->market->getAllLots($this->map->isUserInZone($user, "город"));
+                if (!$lots){
+                    return ['error' => 2999];
+                }
+                return $this->market->updateLots($params['hash'], $lots);
+            }
+            return ['error' => 705];
+        }
+        return ['error' => 242];
+    }
+
+}

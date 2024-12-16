@@ -263,4 +263,13 @@ class DB {
     public function getCatalog(){
         return $this->queryAll('SELECT * from resources');
     }
+
+    public function changeLotStatus($status, $lotId){
+        return $this->execute('UPDATE lots SET status=? WHERE id=?', [$status, $lotId]);
+    }
+
+    public function changeMonsterOwner($monsterId, $newOwnerId){
+        return $this->execute('UPDATE monsters SET user_id=?, status="in pocket" WHERE id=?', [$newOwnerId, $monsterId]);
+    }
+
 }
