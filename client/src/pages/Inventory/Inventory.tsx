@@ -57,32 +57,11 @@ const Inventory: React.FC<IBasePage> = (props: IBasePage) => {
                 return acc;
             }, [] as TMonsterType[]);
 
-            const userMonsterTypeIds = uniquePokemons.map(pokemon => pokemon.id);
-            const missingMonsterTypes = inventory.monsterTypes.filter(mt => !userMonsterTypeIds.includes(mt.id));
-
-            const missingPokemons: TMonsterType[] = missingMonsterTypes.map(mt => ({
-                id: mt.id,
-                name: mt.name,
-                lvl: mt.lvl, 
-                element_id: mt.element_id,
-                stats: {
-                    hp: mt.hp,
-                    ad: mt.attack,
-                    df: mt.defense,
-                },
-                status: 'not in team',
-                hp: mt.hp,
-                attack: mt.attack,
-                defense: mt.defense,
-            }));
-
-            const allPokemons = [...uniquePokemons, ...missingPokemons];
-
-            setAllPokemons(allPokemons);
+            setAllPokemons(uniquePokemons);
             setAvailableMonsterTypes(inventory.monsterTypes);
             setUserResources(inventory.inventory);
 
-            const team = allPokemons.filter(pokemon => pokemon.status === 'in team');
+            const team = uniquePokemons.filter(pokemon => pokemon.status === 'in team');
             setBattleTeam(team);
 
         } catch (error) {
@@ -96,9 +75,9 @@ const Inventory: React.FC<IBasePage> = (props: IBasePage) => {
         fetchInventory();
     }, [server]);
 
-    const upgradePokemonHandler = async (pokemonIndex: number) => {
+    const upgradePokemonHandler = async (pokemonId: number) => {
         try {
-            const pokemonToUpgrade = allPokemons[pokemonIndex];
+            const pokemonToUpgrade = allPokemons.find(pokemon => pokemon.id === pokemonId);
             if (!pokemonToUpgrade) {
                 console.error('Покемон для улучшения не найден');
                 return;
@@ -107,15 +86,14 @@ const Inventory: React.FC<IBasePage> = (props: IBasePage) => {
             const upgradedPokemon = await server.upgradePokemon(TOKEN, pokemonToUpgrade.id);
 
             if (upgradedPokemon) {
-                setAllPokemons((prev) => {
-                    const updatedPokemons = [...prev];
-                    updatedPokemons[pokemonIndex] = {
-                        ...pokemonToUpgrade,
-                        lvl: upgradedPokemon.level,
-                        stats: upgradedPokemon.stats, 
-                    };
-                    return updatedPokemons;
-                });
+                setAllPokemons((prev) => 
+                    prev.map(pokemon => 
+                        pokemon.id === pokemonToUpgrade.id 
+                            ? { ...pokemon, lvl: upgradedPokemon.level, stats: upgradedPokemon.stats } 
+                            : pokemon
+                    )
+                );
+                fetchInventory(); 
             }
         } catch (error) {
             console.error('Ошибка обновления покемонов:', error);
@@ -135,8 +113,13 @@ const Inventory: React.FC<IBasePage> = (props: IBasePage) => {
         try {
             const result = await server.addToTeam(TOKEN, pokemon.id);
             if (result) {
+                setAllPokemons((prev) => 
+                    prev.map(p => 
+                        p.id === pokemon.id ? { ...p, status: 'in team' } : p
+                    )
+                );
                 setBattleTeam([...battleTeam, result]);
-                fetchInventory();
+                fetchInventory(); 
             }
         } catch (error) {
             console.error('Ошибка добавления покемона в команду:', error);
@@ -151,6 +134,11 @@ const Inventory: React.FC<IBasePage> = (props: IBasePage) => {
         try {
             const result = await server.removeFromTeam(TOKEN, pokemon.id);
             if (result) {
+                setAllPokemons((prev) => 
+                    prev.map(p => 
+                        p.id === pokemon.id ? { ...p, status: 'not in team' } : p
+                    )
+                );
                 setBattleTeam(battleTeam.filter(p => p.id !== pokemon.id));
                 fetchInventory(); 
             }
@@ -161,13 +149,27 @@ const Inventory: React.FC<IBasePage> = (props: IBasePage) => {
 
     const replaceInBattleTeam = async (index: number, newPokemon: TMonsterType | null) => {
         if (!newPokemon) return;
+    
         try {
+            const oldPokemon = battleTeam[index];
+            if (oldPokemon) {
+                await server.removeFromTeam(TOKEN, oldPokemon.id);
+            }
+    
             const result = await server.addToTeam(TOKEN, newPokemon.id);
             if (result) {
                 const updatedTeam = [...battleTeam];
                 updatedTeam[index] = result;
                 setBattleTeam(updatedTeam);
-                fetchInventory(); 
+    
+                setAllPokemons((prev) =>
+                    prev.map((pokemon) =>
+                        pokemon.id === newPokemon.id ? { ...pokemon, status: 'in team' } :
+                        pokemon.id === oldPokemon?.id ? { ...pokemon, status: 'not in team' } : pokemon
+                    )
+                );
+    
+                fetchInventory(); // Обновляем инвентарь
             }
         } catch (error) {
             console.error('Ошибка замены покемона в команде:', error);
@@ -194,73 +196,77 @@ const Inventory: React.FC<IBasePage> = (props: IBasePage) => {
     const pokemonsNotInTeam = allPokemons.filter(pokemon => pokemon.status !== 'in team');
 
     return (
-        <div className="inventory">
-            <h1>Инвентарь</h1>
-            {loading && <p>Загрузка...</p>}
-            <div className="battle-team">
-                <h2>Команда для боя</h2>
+        <div className="inventory" id="test-inventory-page">
+            <h1 id="test-inventory-title">Инвентарь</h1>
+            {loading && <p id="test-loading-indicator">Загрузка...</p>}
+            <div className="battle-team" id="test-battle-team-section">
+                <h2 id="test-battle-team-title">Команда для боя</h2>
                 {battleTeam.map((pokemon, index) => (
-                    <div key={pokemon.id} className="pokemon-card">
-                        <h2>{pokemon?.name}</h2>
-                        <p>Уровень: {pokemon?.lvl}</p>
-                        <p>Элемент: {pokemon?.element_id}</p>
-                        <p>HP: {pokemon?.stats?.hp || 'N/A'}</p>
+                    <div key={pokemon.id} className="pokemon-card" id={`test-battle-team-pokemon-${index}`}>
+                        <h2 id="test-pokemon-name">{pokemon?.name}</h2>
+                        <p id="test-pokemon-level">Уровень: {pokemon?.lvl}</p>
+                        <p id="test-pokemon-element">Элемент: {pokemon?.element_id}</p>
+                        <p id="test-pokemon-hp">HP: {pokemon?.stats?.hp || 'N/A'}</p>
                         <Button
+                            id="test-replace-button"
                             text="Заменить"
                             onClick={() => replaceInBattleTeam(index, selectedPokemon)}
                         />
                         <Button
+                            id="test-remove-from-team-button"
                             text="Убрать из команды"
                             onClick={() => removeFromBattleTeam(pokemon)}
+                        />
+                        <Button
+                            id="test-upgrade-button"
+                            text="Улучшить"
+                            onClick={() => upgradePokemonHandler(pokemon.id)}
                         />
                     </div>
                 ))}
             </div>
-            <div className="pokemon-list">
-                {pokemonsNotInTeam.length > 0 && (
-                    <div>
-                        <h2>Покемоны не в команде</h2>
-                        {pokemonsNotInTeam.map((pokemon, index) => (
-                            <div key={pokemon.id} className="pokemon-card">
-                                <h2>{pokemon.name}</h2>
-                                <p>Уровень: {pokemon.lvl}</p>
-                                <p>Элемент: {pokemon.element_id}</p>
-                                <p>HP: {pokemon.stats?.hp || 'N/A'}</p>
-                                <p>AD: {pokemon.stats?.ad || 'N/A'}</p>
-                                <p>DF: {pokemon.stats?.df || 'N/A'}</p>
-                                <Button
-                                    text="Улучшить"
-                                    onClick={() => upgradePokemonHandler(index)}
-                                />
-                                <Button
-                                    text="Добавить в команду"
-                                    onClick={() => addToBattleTeam(pokemon)}
-                                />
-                                <Button
-                                    text="Выбрать"
-                                    onClick={() => selectPokemonHandler(pokemon)}
-                                />
-                            </div>
-                        ))}
+            <div className="pokemon-list" id="test-pokemon-list-section">
+                <h2 id="test-pokemon-list-title">Покемоны не в команде</h2>
+                {pokemonsNotInTeam.map((pokemon, index) => (
+                    <div key={pokemon.id} className="pokemon-card" id={`test-pokemon-card-${index}`}>
+                        <h2 id="test-pokemon-name">{pokemon.name}</h2>
+                        <p id="test-pokemon-level">Уровень: {pokemon.lvl}</p>
+                        <p id="test-pokemon-element">Элемент: {pokemon.element_id}</p>
+                        <p id="test-pokemon-hp">HP: {pokemon.stats?.hp || 'N/A'}</p>
+                        <p id="test-pokemon-ad">AD: {pokemon.stats?.ad || 'N/A'}</p>
+                        <p id="test-pokemon-df">DF: {pokemon.stats?.df || 'N/A'}</p>
+                        <Button
+                            id="test-upgrade-button"
+                            text="Улучшить"
+                            onClick={() => upgradePokemonHandler(pokemon.id)}
+                        />
+                        <Button
+                            id="test-add-to-team-button"
+                            text="Добавить в команду"
+                            onClick={() => addToBattleTeam(pokemon)}
+                        />
+                        <Button
+                            id="test-select-button"
+                            text="Выбрать"
+                            onClick={() => selectPokemonHandler(pokemon)}
+                        />
                     </div>
-                )}
+                ))}
             </div>
-            
-
-            <Button text="Статистика" onClick={toggleResources} />
+            <Button id="test-resources-button" text="Статистика" onClick={toggleResources} />
             {showResources && (
-                <div className="resources-section">
-                    <h2>Ресурсы игрока</h2>
+                <div className="resources-section" id="test-resources-section">
+                    <h2 id="test-resources-title">Ресурсы игрока</h2>
                     <ul>
                         {userResources.map((res) => (
-                            <li key={res.resource_id}>
+                            <li key={res.resource_id} id={`test-resource-${res.resource_id}`}>
                                 {getResourceName(res.resource_id)}: {res.resource_amount}
                             </li>
                         ))}
                     </ul>
                 </div>
             )}
-            <Button onClick={backClickHandler} text='назад' />
+            <Button id="test-back-button" onClick={backClickHandler} text='назад' />
         </div>
     );
 };
