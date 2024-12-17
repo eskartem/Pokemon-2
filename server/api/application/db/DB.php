@@ -224,6 +224,14 @@ class DB {
         return $this->queryAll('SELECT * from lots');
     }
 
+    public function makeBet($userId, $lotId, $newBet) {
+        return ['ableToMakeBet' =>  $this->execute('UPDATE lots SET buyer_id = ?, timestamp_cost = UNIX_TIMESTAMP(), current_cost = ? WHERE id = ?', 
+                                    [$userId, $newBet, $lotId]),
+                'ableToTakeMoney' => $this->execute('UPDATE users SET money=money-? WHERE id=?',
+                                    [$newBet, $userId])
+                ];
+    }
+
     public function getInventory($userId){
         return ['monsters' => $this->queryAll('SELECT * FROM monsters WHERE user_id=?', [$userId]),
                 'monsterTypes' => $this->queryAll('SELECT * FROM monster_types'),
@@ -232,8 +240,41 @@ class DB {
         ];
     }
 
+    public function makeLotMonster($userId, $sellingItemId, $startCost, $stepCost, $zalog){
+        return ['ableToWithdrawMonster' => $this->execute('UPDATE monsters SET user_id=?, status="on sale" WHERE id=?', [-1, $sellingItemId]),
+                'ableToCreateLot' => $this->execute('INSERT INTO lots 
+                                    (seller_id, datetime, start_cost, step_cost, current_cost, timestamp_cost, buyer_id, type, selling_id, status) 
+                                    VALUES (?, now(), ?, ?, ?, NULL, NULL, "monster", ?, "open")', 
+                                    [$userId, $startCost, $stepCost, $startCost, $sellingItemId]),
+                'ableToTakeMoney' => $this->execute('UPDATE users SET money=money-? WHERE id=?', [$zalog, $userId])
+        ];
+    }
+
+    public function makeLotItem($userId, $sellingItemId, $startCost, $stepCost, $amount, $zalog){
+        return ['ableToWithdrawResources' => $this->execute('UPDATE inventory SET resource_amount=resource_amount-? WHERE user_id=? AND resource_id=?', [$amount, $userId, $sellingItemId]),
+                'ableToCreateLot' => $this->execute('INSERT INTO lots 
+                                    (seller_id, datetime, start_cost, step_cost, current_cost, timestamp_cost, buyer_id, type, selling_id, amount, status) 
+                                    VALUES (?, now(), ?, ?, ?, NULL, NULL, "item", ?, ?, "open")', 
+                                    [$userId, $startCost, $stepCost, $startCost, $sellingItemId, $amount]),
+                'ableToTakeMoney' => $this->execute('UPDATE users SET money=money-? WHERE id=?', [$zalog, $userId])
+        ];
+    }
+  
     public function getCatalog(){
         return $this->queryAll('SELECT * from resources');
-
     }
+
+    public function changeLotStatus($status, $lotId){
+        return $this->execute('UPDATE lots SET status=? WHERE id=?', [$status, $lotId]);
+    }
+
+    public function changeMonsterStatus($monsterId, $status){
+        return $this->execute('UPDATE monsters SET status=? WHERE id=?', [$status, $monsterId]);
+    }
+
+    public function changeMonsterOwner($monsterId, $newOwnerId){
+        return $this->execute('UPDATE monsters SET user_id=?, status="in pocket" WHERE id=?', [$newOwnerId, $monsterId]);
+    }
+    //объединить в один метод?
+
 }
