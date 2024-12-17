@@ -1,38 +1,28 @@
-import  {useEffect, useRef, useState} from "react"
+import  {useEffect, useRef, useContext} from "react"
 
 import './Buttons.css'
 import MathPvp from "../../services/MathPvp/MathPvp";
 
 import { Monsters } from "../../assets/Monsters/Monster";
+import { stageContext } from "../../assets/context/stage";
 
 interface buttonsProps {
-        activeMonster: Monsters, 
-        firstSelectedMonster: Monsters,
-        secondSelectedMonster: Monsters,
-        thirdSelectedMonster: Monsters,
-        firstSelectedEnemyMonster: Monsters,
-        secondSelectedEnemyMonster: Monsters,
-        thirdSelectedEnemyMonster: Monsters,
-        setSQueue: (sQueue: Monsters[]) => void,
-        sQueue: Monsters[],
-        setActiveMonster: (activeMonster: Monsters) => void,
-        hpBarFirstMonster: number,
-        hpBarSecondMonster: number,
-        hpBarThirdMonster: number,
-        hpBarFirstEnemyMonster: number,
-        hpBarSecondEnemyMonster: number,
-        hpBarThirdEnemyMonster: number,
-        setHpBarFirstEnemyMonster: (hpBarFirstMonsterumber: number) => void,
-        setHpBarFirstMonster: (hpBarSecondMonster: number) => void,
-        setHpBarSecondEnemyMonster: (hpBarThirdMonster: number) => void,
-        setHpBarSecondMonster: (hpBarFirstEnemyMonster: number) => void,
-        setHpBarThirdEnemyMonster: (hpBarSecondEnemyMonster: number) => void,
-        setHpBarThirdMonster: (hpBarThirdEnemyMonster: number) => void,
         enemyType: string
+        animation: boolean
+        setAnimation: (Animation: boolean) => void
+        attackedPosition: string
+        setAttackedPosition: (attackedPosition: string) => void,
 }
 
 const Buttons: React.FC<buttonsProps> = (props: buttonsProps) => {
     const mathPvp = new MathPvp();
+
+    let {enemyType,
+        animation,
+        setAnimation,
+        attackedPosition,
+        setAttackedPosition,
+    } = props;
 
     let {activeMonster, 
         firstSelectedMonster,
@@ -56,8 +46,8 @@ const Buttons: React.FC<buttonsProps> = (props: buttonsProps) => {
         setHpBarSecondMonster,
         setHpBarThirdEnemyMonster,
         setHpBarThirdMonster,
-        enemyType
-    } = props;
+    } = useContext(stageContext)
+
 
     let action: string = '';
     let values = [firstSelectedMonster, secondSelectedMonster, thirdSelectedMonster]
@@ -78,7 +68,9 @@ const Buttons: React.FC<buttonsProps> = (props: buttonsProps) => {
     const setNewSQueue = (attacked: Monsters) => {
         setSQueue(sQueue = mathPvp.nextMove(sQueue, attacked, activeMonster, action))
         setActiveMonster(sQueue[0])
+        ActiveButtonMenu()
     }
+    
 
     const ActiveButtonMenu = () => {
         if(activeMonster.side === 'yourSide') {
@@ -110,12 +102,12 @@ const Buttons: React.FC<buttonsProps> = (props: buttonsProps) => {
                                 action,
                                 firstSelectedEnemyMonster
                             )
+                            setAnimation(animation = mathPvp.animation(action))
                             setHpBarFirstEnemyMonster(hpBarFirstEnemyMonster = healthPoint[0])
                             setHpBarSecondEnemyMonster(hpBarSecondEnemyMonster = healthPoint[1])
                             setHpBarThirdEnemyMonster(hpBarThirdEnemyMonster = healthPoint[2])
                             setNewSQueue(firstSelectedEnemyMonster)
-                            hideOrShowButonns(yourChoose)
-                            ActiveButtonMenu()
+                            setAttackedPosition(attackedPosition = 'firstEnemy')
                         }}>Ударить {firstSelectedEnemyMonster.name}</button>
                     )}
                     {hpBarSecondEnemyMonster > 0 && (
@@ -131,12 +123,12 @@ const Buttons: React.FC<buttonsProps> = (props: buttonsProps) => {
                                 action,
                                 secondSelectedEnemyMonster
                             )
+                            setAnimation(animation = mathPvp.animation(action))
                             setHpBarFirstEnemyMonster(hpBarFirstEnemyMonster = healthPoint[0])
                             setHpBarSecondEnemyMonster(hpBarSecondEnemyMonster = healthPoint[1])
                             setHpBarThirdEnemyMonster(hpBarThirdEnemyMonster = healthPoint[2])
                             setNewSQueue(secondSelectedEnemyMonster)
-                            hideOrShowButonns(yourChoose)
-                            ActiveButtonMenu()
+                            setAttackedPosition(attackedPosition = 'secondEnemy')
                         }}>Ударить {secondSelectedEnemyMonster.name}</button>
                     )}
                     {hpBarThirdEnemyMonster > 0 &&(
@@ -152,12 +144,12 @@ const Buttons: React.FC<buttonsProps> = (props: buttonsProps) => {
                                 action,
                                 thirdSelectedEnemyMonster
                             )
+                            setAnimation(animation = mathPvp.animation(action))
                             setHpBarFirstEnemyMonster(hpBarFirstEnemyMonster = healthPoint[0])
                             setHpBarSecondEnemyMonster(hpBarSecondEnemyMonster = healthPoint[1])
                             setHpBarThirdEnemyMonster(hpBarThirdEnemyMonster = healthPoint[2])
                             setNewSQueue(thirdSelectedEnemyMonster)
-                            hideOrShowButonns(yourChoose)
-                            ActiveButtonMenu()
+                            setAttackedPosition(attackedPosition = 'thirdEnemy')
                         }}>Ударить {thirdSelectedEnemyMonster.name}</button>
                     )}
                     <button id="test-battle-button-backToFirstCombatMenu" onClick={() => {

@@ -1,11 +1,13 @@
-import {useEffect, useState} from 'react';
+import {useEffect, useState, createContext} from 'react';
 import {Stage} from '@pixi/react';
-import { PAGES } from '../PageManager';
+import { IBasePage, PAGES } from '../PageManager';
 
 import {FirstAnemoMonster, SecondAnemoMonster, ThirdAnemoMonster, FirstGeoMonster, 
   ThirdGeoMonster, FirstHydroMonster, SecondHydroMonster, ThirdHydroMonster, 
-  FirstPyroMonster, SecondPyroMonster, ThirdPyroMonster,
-  SecondGeoMonster} from '../../assets/Monsters/AllMoster'
+  FirstPyroMonster, SecondPyroMonster, ThirdPyroMonster, SecondGeoMonster
+} from '../../assets/Monsters/AllMoster'
+
+import { stageContext } from '../../assets/context/stage';
 
 import Buttons from '../../components/ButtonsPvp/Buttons';
 import HpBars from '../../components/Graphics/hpBars/hpBars';
@@ -14,27 +16,30 @@ import Texts from '../../components/Graphics/text'
 import FinalScreen from '../../components/finalScreen/finalScreen';
 import Button from '../../components/Button/Button';
 import BattleTimer from '../../components/Graphics/battleTimer/battleTimer';
+import Animation from '../../components/Graphics/animation/animation';
 
 import {easyBot, mediumBot, hardBot} from '../../assets/Bots/bots';
 
 import { Monsters } from "../../assets/Monsters/Monster"
 
+
 import './Battle.scss';
 import MathPvp from '../../services/MathPvp/MathPvp';
 
-const Battle = (props: any) => {
+const Battle: React.FC<IBasePage> = (props: IBasePage) => {
+  
   const enemy = new easyBot() /*lvl = 1 */
   //const enemy = new mediumBot() /*lvl = 3 */
   //const enemy = new hardBot() /*lvl = 5 */
 
   const enemyType: string = 'bot'
 
-  let firstSelectedMonster: Monsters = new FirstAnemoMonster("yourSide", 5);
-  let secondSelectedMonster: Monsters = new SecondAnemoMonster("yourSide", 5);
-  let thirdSelectedMonster: Monsters = new ThirdAnemoMonster("yourSide", 5);
-  let firstSelectedEnemyMonster: Monsters = enemy.selectedMonsters[0]
-  let secondSelectedEnemyMonster: Monsters =  enemy.selectedMonsters[1]
-  let thirdSelectedEnemyMonster: Monsters =   enemy.selectedMonsters[2]
+  let firstSelectedMonster: Monsters = new FirstPyroMonster("yourSide", 5);
+  let secondSelectedMonster: Monsters = new FirstPyroMonster("yourSide", 5);
+  let thirdSelectedMonster: Monsters = new FirstPyroMonster("yourSide", 5);
+  let firstSelectedEnemyMonster: Monsters = enemy.selectedMonsters[0];
+  let secondSelectedEnemyMonster: Monsters =  enemy.selectedMonsters[1];
+  let thirdSelectedEnemyMonster: Monsters =   enemy.selectedMonsters[2];
   
   const mathPvp = new MathPvp();
 
@@ -46,12 +51,17 @@ const Battle = (props: any) => {
     thirdSelectedMonster,
     firstSelectedEnemyMonster,
     secondSelectedEnemyMonster,
-    thirdSelectedEnemyMonster))
+    thirdSelectedEnemyMonster
+  ));
 
   let [activeMonster, setActiveMonster] = useState<Monsters>(sQueue[0]); 
 
+  let [animation, setAnimation] = useState<boolean>(false);
+
+  let [attackedPosition, setAttackedPosition] = useState<string>('');
+
   const [hpBarFirstMonster, setHpBarFirstMonster] = useState<number>(firstSelectedMonster.healthPoint);
-  const [hpBarSecondMonster, setHpBarSecondMonster] = useState<number>(secondSelectedMonster.healthPoint)
+  const [hpBarSecondMonster, setHpBarSecondMonster] = useState<number>(secondSelectedMonster.healthPoint);
   const [hpBarThirdMonster, setHpBarThirdMonster] = useState<number>(thirdSelectedMonster.healthPoint);
   const [hpBarFirstEnemyMonster, setHpBarFirstEnemyMonster] = useState<number>(firstSelectedEnemyMonster.healthPoint);
   const [hpBarSecondEnemyMonster, setHpBarSecondEnemyMonster] = useState<number>(secondSelectedEnemyMonster.healthPoint);
@@ -68,6 +78,32 @@ const Battle = (props: any) => {
       backgroundAlpha: 0
     }
   };
+
+  const stage = {
+    stageProps,
+    hpBarFirstEnemyMonster,
+    hpBarFirstMonster,
+    hpBarSecondEnemyMonster,
+    hpBarSecondMonster,
+    hpBarThirdEnemyMonster,
+    hpBarThirdMonster,
+    firstSelectedMonster,
+    secondSelectedMonster,
+    thirdSelectedMonster,
+    firstSelectedEnemyMonster,
+    secondSelectedEnemyMonster,
+    thirdSelectedEnemyMonster,
+    sQueue,
+    activeMonster,
+    setSQueue,
+    setActiveMonster,
+    setHpBarFirstEnemyMonster,
+    setHpBarFirstMonster,
+    setHpBarSecondEnemyMonster,
+    setHpBarSecondMonster,
+    setHpBarThirdEnemyMonster,
+    setHpBarThirdMonster,
+  };
   
   const handleResize = () => {
     setWidth(window.innerWidth);
@@ -79,93 +115,30 @@ const Battle = (props: any) => {
     return () => {
       window.removeEventListener('resize', handleResize);
     };
-  })
-
+  });
+  
   const backClickHandler = () => setPage(PAGES.MAINMENU);
   
   return (<>
     <Stage {...stageProps} className='pvpArea'>
-      <Sprites stageProps={stageProps} //Монстры
-        firstSelectedMonster={firstSelectedMonster}
-        secondSelectedMonster={secondSelectedMonster}
-        thirdSelectedMonster={thirdSelectedMonster}
-        firstSelectedEnemyMonster={firstSelectedEnemyMonster}
-        secondSelectedEnemyMonster={secondSelectedEnemyMonster}      
-        thirdSelectedEnemyMonster={thirdSelectedEnemyMonster}
-        hpBarFirstMonster={hpBarFirstMonster}
-        hpBarSecondMonster={hpBarSecondMonster}
-        hpBarThirdMonster={hpBarThirdMonster}
-        hpBarFirstEnemyMonster={hpBarFirstEnemyMonster}
-        hpBarSecondEnemyMonster={hpBarSecondEnemyMonster}
-        hpBarThirdEnemyMonster={hpBarThirdEnemyMonster}
-        />
-      <HpBars stageProps={stageProps} //Полоски здоровья
-        hpBarFirstMonster={hpBarFirstMonster}
-        hpBarSecondMonster={hpBarSecondMonster}
-        hpBarThirdMonster={hpBarThirdMonster}
-        hpBarFirstEnemyMonster={hpBarFirstEnemyMonster}
-        hpBarSecondEnemyMonster={hpBarSecondEnemyMonster}
-        hpBarThirdEnemyMonster={hpBarThirdEnemyMonster}
-        firstSelectedMonster={firstSelectedMonster}
-        secondSelectedMonster={secondSelectedMonster}
-        thirdSelectedMonster={thirdSelectedMonster}
-        firstSelectedEnemyMonster={firstSelectedEnemyMonster}
-        secondSelectedEnemyMonster={secondSelectedEnemyMonster} 
-        thirdSelectedEnemyMonster={thirdSelectedEnemyMonster}
-      />
-      <Texts activeMonster={activeMonster} //Различный текст на сцене
-        stageProps={stageProps}
-        firstSelectedMonster={firstSelectedMonster}
-        secondSelectedMonster={secondSelectedMonster}
-        thirdSelectedMonster={thirdSelectedMonster}
-        firstSelectedEnemyMonster={firstSelectedEnemyMonster}
-        secondSelectedEnemyMonster={secondSelectedEnemyMonster}
-        thirdSelectedEnemyMonster={thirdSelectedEnemyMonster}
-        hpBarFirstMonster={hpBarFirstMonster}
-        hpBarSecondMonster={hpBarSecondMonster}
-        hpBarThirdMonster={hpBarThirdMonster}
-        hpBarFirstEnemyMonster={hpBarFirstEnemyMonster}
-        hpBarSecondEnemyMonster={hpBarSecondEnemyMonster}
-        hpBarThirdEnemyMonster={hpBarThirdEnemyMonster}
-        />
-      <BattleTimer stageProps={stageProps} //Таймер в игре
-        sQueue={sQueue}
-        setSQueue={setSQueue}
-        setActiveMonster={setActiveMonster}
-        activeMonster={activeMonster}
-      />
+      <stageContext.Provider value={stage}>
+        <Sprites />
+        <HpBars />
+        <Texts />
+        <BattleTimer />
+        <Animation animation={animation} attackedPosition={attackedPosition} />
+      </stageContext.Provider>
     </Stage>
-    <Buttons sQueue={sQueue} //Кнопки для боя
-      activeMonster={activeMonster}
-      firstSelectedMonster={firstSelectedMonster}
-      secondSelectedMonster={secondSelectedMonster}
-      thirdSelectedMonster={thirdSelectedMonster}
-      firstSelectedEnemyMonster={firstSelectedEnemyMonster}
-      secondSelectedEnemyMonster={secondSelectedEnemyMonster} 
-      thirdSelectedEnemyMonster={thirdSelectedEnemyMonster}
-      hpBarFirstMonster={hpBarFirstMonster}
-      hpBarSecondMonster={hpBarSecondMonster}
-      hpBarThirdMonster={hpBarThirdMonster}
-      hpBarFirstEnemyMonster={hpBarFirstEnemyMonster}
-      hpBarSecondEnemyMonster={hpBarSecondEnemyMonster}
-      hpBarThirdEnemyMonster={hpBarThirdEnemyMonster}
-      setSQueue={setSQueue}
-      setActiveMonster={setActiveMonster}
-      setHpBarFirstEnemyMonster={setHpBarFirstEnemyMonster}
-      setHpBarFirstMonster={setHpBarFirstMonster}
-      setHpBarSecondEnemyMonster={setHpBarSecondEnemyMonster}
-      setHpBarSecondMonster={setHpBarSecondMonster}
-      setHpBarThirdEnemyMonster={setHpBarThirdEnemyMonster}
-      setHpBarThirdMonster={setHpBarThirdMonster}
-      enemyType={enemyType}
-    />
-    <FinalScreen hpBarFirstMonster={hpBarFirstMonster} //Финальное окно
-      hpBarSecondMonster={hpBarSecondMonster}
-      hpBarThirdMonster={hpBarThirdMonster}
-      hpBarFirstEnemyMonster={hpBarFirstEnemyMonster}
-      hpBarSecondEnemyMonster={hpBarSecondEnemyMonster}
-      hpBarThirdEnemyMonster={hpBarThirdEnemyMonster}
-    />
+    <stageContext.Provider value={stage}>
+      <Buttons
+        enemyType={enemyType}
+        animation={animation}
+        setAnimation={setAnimation}
+        attackedPosition={attackedPosition}
+        setAttackedPosition={setAttackedPosition}
+      />
+      <FinalScreen/>
+    </stageContext.Provider>
     <Button onClick={backClickHandler} text='назад' />
   </>)
 };

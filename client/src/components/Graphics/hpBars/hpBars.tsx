@@ -1,57 +1,38 @@
-import {useCallback} from "react";
+import {useCallback, useContext} from "react";
 import { Graphics, Text, Container } from "@pixi/react";
 import { TextStyle } from "pixi.js";
 
-import { Monsters } from "../../../assets/Monsters/Monster";
+import { stageContext } from "../../../assets/context/stage";
 
-interface hpBarsProps {
-  stageProps: {
-    width: number,
-    height: number,
-  },
-  hpBarFirstMonster: number, 
-  hpBarSecondMonster: number, 
-  hpBarThirdMonster: number, 
-  hpBarFirstEnemyMonster: number, 
-  hpBarSecondEnemyMonster: number, 
-  hpBarThirdEnemyMonster: number ,
-  firstSelectedMonster: Monsters,
-  secondSelectedMonster: Monsters,
-  thirdSelectedMonster: Monsters,
-  firstSelectedEnemyMonster: Monsters,
-  secondSelectedEnemyMonster: Monsters,
-  thirdSelectedEnemyMonster: Monsters,
-}
+const HpBars: React.FC = () => {
 
-const HpBars: React.FC<hpBarsProps> = (props: hpBarsProps) => {
+  const {hpBarFirstMonster, 
+    hpBarSecondMonster, 
+    hpBarThirdMonster, 
+    hpBarFirstEnemyMonster, 
+    hpBarSecondEnemyMonster, 
+    hpBarThirdEnemyMonster,
+    stageProps, 
+    firstSelectedMonster,
+    secondSelectedMonster,
+    thirdSelectedMonster,
+    firstSelectedEnemyMonster,
+    secondSelectedEnemyMonster,
+    thirdSelectedEnemyMonster 
+  } = useContext(stageContext)
 
-      const {stageProps, 
-        hpBarFirstMonster, 
-        hpBarSecondMonster, 
-        hpBarThirdMonster, 
-        hpBarFirstEnemyMonster, 
-        hpBarSecondEnemyMonster, 
-        hpBarThirdEnemyMonster,
-        firstSelectedMonster,
-        secondSelectedMonster,
-        thirdSelectedMonster,
-        firstSelectedEnemyMonster,
-        secondSelectedEnemyMonster,
-        thirdSelectedEnemyMonster 
-      }  = props;
+  const hpBarLength = (healthPoint: number, maxHealthPoint: number) => {
+    let healthPercentage = (healthPoint / maxHealthPoint) * 100
+    return (healthPercentage / 100) * 200 
+  }
 
-      const hpBarLength = (healthPoint: number, maxHealthPoint: number) => {
-        let healthPercentage = (healthPoint / maxHealthPoint) * 100
-        return (healthPercentage / 100) * 200 
-      }
-
-      const textStyle = new TextStyle({
-        fill: '#ffffff', // Цвет текста
-        stroke: '#000000', // Цвет обводки
-        strokeThickness: 2,
-      });
+  const textStyle = new TextStyle({
+    fill: '#ffffff', // Цвет текста
+    stroke: '#000000', // Цвет обводки
+    strokeThickness: 2,
+  });
       
-      const hpBarFirstPlayer = useCallback((g: any) => {
+    const hpBarFirstPlayer = useCallback((g: any) => {
       g.clear();
       //FirstPoke
       g.beginFill(0x000000);

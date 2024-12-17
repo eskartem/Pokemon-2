@@ -1,42 +1,29 @@
 import { Container, Text } from "@pixi/react";
 
 import { Monsters } from "../../../assets/Monsters/Monster";
+import { useContext } from "react";
+import { stageContext } from "../../../assets/context/stage";
 
 interface StatsPanelProps {
-    stageProps: {
-        width: number,
-        height: number,
-    },
     isOpenFirstMonster: boolean
     isOpenSecondMonster: boolean
     isOpenThirdMonster: boolean
     isOpenFirstEnemyMonster: boolean
     isOpenSecondEnemyMonster: boolean
     isOpenThirdEnemyMonster: boolean
-    firstSelectedMonster: Monsters
-    secondSelectedMonster: Monsters
-    thirdSelectedMonster: Monsters
-    firstSelectedEnemyMonster: Monsters
-    secondSelectedEnemyMonster: Monsters
-    thirdSelectedEnemyMonster: Monsters
-    hpBarFirstMonster: number
-    hpBarSecondMonster: number
-    hpBarThirdMonster: number
-    hpBarFirstEnemyMonster: number
-    hpBarSecondEnemyMonster: number
-    hpBarThirdEnemyMonster: number
 }
 
 const StatsPanel: React.FC<StatsPanelProps> = (props: StatsPanelProps) => {
 
-    const {
-        stageProps,
-        isOpenFirstMonster,
+    const {isOpenFirstMonster,
         isOpenSecondMonster,
         isOpenThirdMonster,
         isOpenFirstEnemyMonster,
         isOpenSecondEnemyMonster,
         isOpenThirdEnemyMonster,
+    } = props
+
+    const {stageProps,
         firstSelectedMonster,
         secondSelectedMonster,
         thirdSelectedMonster,
@@ -49,7 +36,7 @@ const StatsPanel: React.FC<StatsPanelProps> = (props: StatsPanelProps) => {
         hpBarFirstEnemyMonster,
         hpBarSecondEnemyMonster,
         hpBarThirdEnemyMonster
-    } = props
+    } = useContext(stageContext)
 
     return (<>
         {(isOpenFirstMonster && hpBarFirstMonster > 0) && 

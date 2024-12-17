@@ -310,7 +310,7 @@ class MathPvp {
         return (1 - (baseDefence / (130 + baseDefence)))
     }
 
-    calculateParam(baseAttack: number, baseHealthPoint: number, baseDefense: number, level: number) {
+    calculateParam = (baseAttack: number, baseHealthPoint: number, baseDefense: number, level: number) => {
         let attack = baseAttack;
         let healthPoint = baseHealthPoint;
         let defense = baseDefense;
@@ -320,6 +320,10 @@ class MathPvp {
             defense *= 1.2;
         }
         return [Math.round(attack), Math.round(healthPoint), Math.round(defense)];
+    }
+
+    animation = (action: string) => {
+        return action === 'skill'
     }
 
 }

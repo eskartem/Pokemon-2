@@ -1,39 +1,33 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 
 import './finalScreen.css'
+import { stageContext } from "../../assets/context/stage";
 
-interface FinalScreenProps {
-    hpBarFirstMonster: number,
-    hpBarSecondMonster: number,
-    hpBarThirdMonster: number,
-    hpBarFirstEnemyMonster: number,
-    hpBarSecondEnemyMonster: number,
-    hpBarThirdEnemyMonster: number
-}
 
-const FinalScreen: React.FC<FinalScreenProps> = (props: FinalScreenProps) => {
-    const {
-        hpBarFirstMonster,
+const FinalScreen: React.FC = () => {
+
+    const {hpBarFirstMonster,
         hpBarSecondMonster,
         hpBarThirdMonster,
         hpBarFirstEnemyMonster,
         hpBarSecondEnemyMonster,
-        hpBarThirdEnemyMonster} = props;
+        hpBarThirdEnemyMonster
+    } = useContext(stageContext)
 
-        let [firstPlayerWin, setFirstPlayerWin] = useState(false);
-        let [secondPlayerWin, setSecondPlayerWin] = useState(false);
+    let [firstPlayerWin, setFirstPlayerWin] = useState(false);
+    let [secondPlayerWin, setSecondPlayerWin] = useState(false);
 
-        const updateScene = () => {
-            window.location.reload();
+    const updateScene = () => {
+        window.location.reload();
+    }
+
+    useEffect(() => {
+        if(hpBarFirstMonster <= 0 && hpBarSecondMonster <= 0 && hpBarThirdMonster <= 0) {
+            setSecondPlayerWin(true)
+        } else if (hpBarFirstEnemyMonster <= 0 && hpBarSecondEnemyMonster <= 0 && hpBarThirdEnemyMonster <= 0) {
+            setFirstPlayerWin(true)
         }
-
-        useEffect(() => {
-            if(hpBarFirstMonster <= 0 && hpBarSecondMonster <= 0 && hpBarThirdMonster <= 0) {
-                setSecondPlayerWin(true)
-            } else if (hpBarFirstEnemyMonster <= 0 && hpBarSecondEnemyMonster <= 0 && hpBarThirdEnemyMonster <= 0) {
-                setFirstPlayerWin(true)
-            }
-        }, [hpBarFirstMonster, hpBarSecondMonster, hpBarThirdMonster, hpBarFirstEnemyMonster, hpBarSecondEnemyMonster, hpBarThirdEnemyMonster])
+    }, [hpBarFirstMonster, hpBarSecondMonster, hpBarThirdMonster, hpBarFirstEnemyMonster, hpBarSecondEnemyMonster, hpBarThirdEnemyMonster])
 
     return (<>
         {firstPlayerWin && (

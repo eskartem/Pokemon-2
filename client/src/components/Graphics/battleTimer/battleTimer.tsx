@@ -1,27 +1,18 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect, useContext } from "react"
 import { Text, Container } from "@pixi/react";
 
 import { Monsters } from "../../../assets/Monsters/Monster";
 import MathPvp from "../../../services/MathPvp/MathPvp";
-interface BattleTimerProps {
-    stageProps: {
-        width: number,
-        height: number,
-    },
-    setSQueue: (sQueue: Monsters[]) => void,
-    sQueue: Monsters[],
-    setActiveMonster: (activeMonster: Monsters) => void,
-    activeMonster: Monsters,
-}
+import { stageContext } from "../../../assets/context/stage";
 
-const BattleTimer: React.FC<BattleTimerProps> = (props: BattleTimerProps) => {
+const BattleTimer: React.FC = () => {
 
-        let {stageProps,
+        let {stageProps, 
             activeMonster,
             setSQueue,
             sQueue,
             setActiveMonster,
-        } = props
+        } = useContext(stageContext)
 
         let [timer, setTimer] = useState<number>(30);
         let [Monster, setMonster] = useState<Monsters>(activeMonster)
