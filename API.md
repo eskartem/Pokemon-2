@@ -583,7 +583,7 @@ MapZones: {
 **Успешный ответ**
 ```
     Answer<{
-        allLots: Lots[]
+        all_lots: Lots[]
         hash: string;
     }>
 ```
