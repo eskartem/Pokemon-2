@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.1:3306
--- Время создания: Дек 17 2024 г., 20:05
+-- Время создания: Дек 17 2024 г., 20:10
 -- Версия сервера: 8.0.30
 -- Версия PHP: 8.1.9
 
@@ -305,18 +305,19 @@ CREATE TABLE `monster_level` (
   `id` int UNSIGNED NOT NULL,
   `level` int NOT NULL,
   `attack` int NOT NULL,
-  `hp` int NOT NULL
+  `hp` int NOT NULL,
+  `defense` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='Стандартное увеличение характеристик покемонов при улучшении';
 
 --
 -- Дамп данных таблицы `monster_level`
 --
 
-INSERT INTO `monster_level` (`id`, `level`, `attack`, `hp`) VALUES
-(1, 2, 40, 90),
-(2, 3, 70, 110),
-(3, 4, 120, 150),
-(4, 5, 200, 270);
+INSERT INTO `monster_level` (`id`, `level`, `attack`, `hp`, `defense`) VALUES
+(1, 2, 40, 90, 5),
+(2, 3, 70, 110, 10),
+(3, 4, 120, 150, 15),
+(4, 5, 200, 270, 20);
 
 -- --------------------------------------------------------
 
