@@ -52,19 +52,20 @@ const TraderTab: React.FC = () => {
         fetchResources();
     }, []);
 
-    if (loading) return <div>Загрузка...</div>;
-    if (error) return <div className="error">{error}</div>;
-    if (!resources.length) return <div>Ресурсы отсутствуют</div>;
+    if (loading) return <div id="test-loading-indicator">Загрузка...</div>;
+    if (error) return <div className="error" id="test-error-message">{error}</div>;
+    if (!resources.length) return <div id="test-no-resources-message">Ресурсы отсутствуют</div>;
 
     return (
-        <div className="trader-tab">
-            <h1>Торговец</h1>
-            <div className="trader-resources">
+        <div className="trader-tab" id="test-trader-tab">
+            <h1 id="test-trader-title">Торговец</h1>
+            <div className="trader-resources" id="test-trader-resources">
                 {resources.map(({ id, name, cost }) => (
-                    <div className="trader-resource" key={id}>
-                        <h3>Ресурс: {name}</h3>
-                        <p>Стоимость: {cost} монет</p>
+                    <div className="trader-resource" key={id} id={`test-resource-${id}`}>
+                        <h3 id={`test-resource-name-${id}`}>Ресурс: {name}</h3>
+                        <p id={`test-resource-cost-${id}`}>Стоимость: {cost} монет</p>
                         <Button
+                            id={`test-sell-button-${id}`}
                             text="Продать"
                             onClick={() => sellResource(id.toString(), name)} 
                             isDisabled={false} 

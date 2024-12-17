@@ -54,17 +54,18 @@ const ExchangerTab: React.FC = () => {
         fetchResources();
     }, []);
 
-    if (loading) return <div>Загрузка...</div>;
-    if (error) return <div className="error">{error}</div>;
+    if (loading) return <div id="test-loading-indicator">Загрузка...</div>;
+    if (error) return <div className="error" id="test-error-message">{error}</div>;
 
     const hasSufficientResources = eggFragments >= 50;
 
     return (
-        <div className="exchanger-container">
+        <div className="exchanger-container" id="test-exchanger-container">
             <img
                 src={hasSufficientResources ? ExchangerImage : MeanExchangerImage}
                 alt="Exchanger"
                 className="exchanger-image"
+                id="test-exchanger-image"
             />
             <Button
                 text={
@@ -75,6 +76,7 @@ const ExchangerTab: React.FC = () => {
                 onClick={handleExchange}
                 className="exchange-button"
                 isDisabled={!hasSufficientResources}
+                id={hasSufficientResources ? "test-exchange-button" : "test-exchange-button-disabled"}
             />
         </div>
     );
