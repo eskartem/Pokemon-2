@@ -164,7 +164,7 @@ class Market {
             }
             $allLots[] = $filteredLots;
         }
-        return ['allLots' => $allLots,
+        return ['lots' => $allLots,
                 'hash' => $currentHash->market_hash
         ];
     }

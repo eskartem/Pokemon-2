@@ -2,7 +2,7 @@ import md5 from 'md5';
 import CONFIG, { EDIRECTION } from "../../config";
 import Store from "../store/Store";
 import { TAnswer, TError, TMessagesResponse, TUser, TMarketCatalog, TMap, TMapZone, TUpdateSceneResponse, 
-    TUpdateMarketResponse } from "./types";
+    TUpdateMarketResponse, TMakeBet } from "./types";
 
 const { CHAT_TIMESTAMP, SCENE_TIMESTAMP, MARKET_TIMESTAMP, HOST } = CONFIG;
 
@@ -134,11 +134,6 @@ class Server {
         }
     }
 
-    async buyItem(itemId: string): Promise<boolean | null> {
-        const result = await this.request<boolean>('buyItem', { itemId });
-        return result;
-    }
-
     async getTraderCatalog(): Promise<TMarketCatalog | null> {
         const catalog = await this.request<TMarketCatalog>('getTraderCatalog');
         if (catalog) {
@@ -191,6 +186,9 @@ class Server {
         }
     }
 
+    makeBet(lotId: number, bet: string) {
+        return this.request<TMakeBet>('makeBet', { lotId: lotId.toString(), bet});
+    }
 
 }
 

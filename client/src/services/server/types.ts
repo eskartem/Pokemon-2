@@ -9,7 +9,7 @@ export type TAnswer<T> = {
     error?: TError;
 }
 
-export enum EStatus {
+export enum EUserStatus {
     scout = 'scout',
     fight = 'fight', 
     offline = 'offline'
@@ -18,7 +18,7 @@ export enum EStatus {
 export type TGamer = {
     id: number;
     name: string;
-    status: EStatus;
+    status: EUserStatus;
     x: number;
     y: number;
 }
@@ -89,15 +89,15 @@ export type TLot = {
     start_cost: number; // начальная стоимость
     step_cost: number; // шаг ставки
     current_cost: number; // текущая стоимость
-    buyer_id: number; // ID владельца ставки / покупателя
+    buyer_id: number | null; // ID владельца ставки / покупателя
     type: ETypeLot; // тип лота 
     selling_id: number; // ID продаваемого объекта
     amount: number | null; // количество продаваемого ресурса, обязателен при типе item, не нужен при типе monster
-    // status: ELotStatus;  // статус лота
+    status: ELotStatus;  // статус лота
 }
 
 export type TUpdateMarketResponse = {
-    activeLots: TLot[],
+    lots: TLot[],
     hash: string
 }
 
@@ -145,4 +145,9 @@ export enum EZones {
     town = 'town',
     chillzone = 'chillzone',
     dungeon = 'dungeon'
+}
+
+export type TMakeBet = {
+    ableToMakeBet: boolean,
+    ableToTakeMoney: boolean
 }
