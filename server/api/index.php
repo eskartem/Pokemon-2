@@ -41,7 +41,7 @@ function result($params) {
             case 'moveUser': return $app-> moveUser($params);
 
             //market
-            case 'getAllLots': return $app->getAllLots($params); // новое название getAllLots, вместо getCatalog              
+            // case 'getAllLots': return $app->getAllLots($params); // новое название getAllLots, вместо getCatalog              
             case 'makeBet': return $app->makeBet($params);
             case 'getCatalog': return $app->getCatalog($params); // для торговца
             case 'updateLots': return $app->updateLots($params);

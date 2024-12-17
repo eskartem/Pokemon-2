@@ -6,8 +6,9 @@ class Store {
     user: TUser | null = null;
     messages: TMessages = [];
     gamers: TGamer[] = [];
-    chatHash: string = 'empty chat hash';
-    sceneHash: string = 'empty scene hash';
+    chatHash: string = 'empty_chat_hash';
+    sceneHash: string = 'empty_scene_hash';
+    marketHash: string = 'empty_market_hash';
 
     setToken(token: string): void {
         localStorage.setItem(TOKEN, token);
@@ -64,6 +65,7 @@ class Store {
     setSceneHash(hash: string): void {
         this.sceneHash = hash;
     }
+    
 
     setGamers(gamers: TGamer[]) {
         this.gamers = gamers;
@@ -72,14 +74,15 @@ class Store {
     getGamers(): TGamer[] {
         return this.gamers;
     }
-
-    /*setMap(map: TGetMap): void {
-        this.map = map;
+    
+    getMarketHash(): string {
+        return this.marketHash;
     }
 
-    getMap(): TGetMap | null {
-        return this.getMap;
-    }*/
+    setMarketHash(hash: string): void {
+        this.marketHash = hash;
+    }
+
 }
 
 export default Store;

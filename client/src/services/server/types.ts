@@ -71,6 +71,36 @@ export type TCreature = {
     stats: TStats,
 }
 
+export enum ETypeLot {
+    monster = 'monster',
+    item = 'item'
+}
+
+export enum ELotStatus {
+    open = 'open',
+    closed = 'closed',
+    canceled = 'canceled'
+}
+
+export type TLot = {
+    id: number;
+    seller_id: number; // ID создателя лота / продавца
+    datetime: string; // время создания лота
+    start_cost: number; // начальная стоимость
+    step_cost: number; // шаг ставки
+    current_cost: number; // текущая стоимость
+    buyer_id: number; // ID владельца ставки / покупателя
+    type: ETypeLot; // тип лота 
+    selling_id: number; // ID продаваемого объекта
+    amount: number | null; // количество продаваемого ресурса, обязателен при типе item, не нужен при типе monster
+    // status: ELotStatus;  // статус лота
+}
+
+export type TUpdateMarketResponse = {
+    activeLots: TLot[],
+    hash: string
+}
+
 //существо на рынке
 export type TMarketCreature = TCreature & {
     id: number;

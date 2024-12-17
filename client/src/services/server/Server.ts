@@ -1,15 +1,17 @@
 import md5 from 'md5';
 import CONFIG, { EDIRECTION } from "../../config";
 import Store from "../store/Store";
-import { TAnswer, TError, TMessagesResponse, TUser, TMarketCatalog, TMap, TMapZone, TUpdateSceneResponse } from "./types";
+import { TAnswer, TError, TMessagesResponse, TUser, TMarketCatalog, TMap, TMapZone, TUpdateSceneResponse, 
+    TUpdateMarketResponse } from "./types";
 
-const { CHAT_TIMESTAMP, SCENE_TIMESTAMP, HOST } = CONFIG;
+const { CHAT_TIMESTAMP, SCENE_TIMESTAMP, MARKET_TIMESTAMP, HOST } = CONFIG;
 
 class Server {
     HOST = HOST;
     store: Store;
     chatInterval: NodeJS.Timer | null = null;
     sceneInterval: NodeJS.Timer | null = null;
+    marketInterval: NodeJS.Timer | null = null;
     showErrorCb: (error: TError) => void = () => {};
 
     constructor(store: Store) {
@@ -106,12 +108,30 @@ class Server {
         }
     }
 
-    async getMarketCatalog():Promise<TMarketCatalog | null> {
-        const catalog = await this.request<TMarketCatalog>('getCatalog');
-        if (catalog) {
-            return catalog;
+    async updateMarket(): Promise<TUpdateMarketResponse | null> {
+        const hash = this.store.getMarketHash();
+        const result = await this.request<TUpdateMarketResponse>('updateLots', { hash });
+        if (result) {
+            this.store.setMarketHash(result.hash);
+            return result;
         }
         return null;
+    }
+
+    startMarketUpdate(cb: (result: TUpdateMarketResponse) => void): void {
+        this.marketInterval = setInterval(async () => {
+            const result = await this.updateMarket();
+            if (result) {
+                cb(result);
+            }
+        }, MARKET_TIMESTAMP);
+    }
+
+    stopMarketUpdate(): void {
+        if (this.marketInterval) {
+            clearInterval(this.marketInterval);
+            this.marketInterval = null;
+        }
     }
 
     async buyItem(itemId: string): Promise<boolean | null> {

@@ -12,9 +12,8 @@ import boatImage from '../../assets/img/boat.png';
 
 import './Map.scss';
 
-
 const Map: React.FC = () => {
-    const { WINV, tileSize, fovDistance} = CONFIG;
+    const { WINV, tileSize, fovDistance } = CONFIG;
     const server = useContext(ServerContext);
     const store = useContext(StoreContext);
     const user = store.getUser();

@@ -164,6 +164,9 @@ class Market {
                 }
             }
         }
-        return ['active_lots' => $activeLots];
+        return [
+            'activeLots' => $activeLots, 
+            'hash' => $currentHash->market_hash
+        ];
     }
 }

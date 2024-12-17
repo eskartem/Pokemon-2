@@ -127,7 +127,7 @@ Inventory: {
 
 ### 2.6. Лоты
 ```
-Lots: {
+Lot: {
     id: integer; - ID лота
     seller_id: integer; - ID создателя лота / продавца
     datetime: datetime; - время создания лота
@@ -582,7 +582,10 @@ MapZones: {
 ```
 **Успешный ответ**
 ```
-    Answer<activeLots: Lots[]>
+    Answer<
+        activeLots: Lot[],
+        hash: string; - обновленный хэш    
+    >
 ```
 **Ошибки**
 * `705` - невалидный токен. Пользователь не авторизован
