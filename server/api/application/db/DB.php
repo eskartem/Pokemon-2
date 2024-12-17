@@ -232,13 +232,31 @@ class DB {
                 ];
     }
 
-    public function getInventory($userId){
-        return ['monsters' => $this->queryAll('SELECT * FROM monsters WHERE user_id=?', [$userId]),
-                'monsterTypes' => $this->queryAll('SELECT * FROM monster_types'),
-                'inventory' => $this->queryAll('SELECT * FROM inventory WHERE user_id=?', [$userId]),
-                'balance' => $this->query('SELECT money FROM users WHERE id=?', [$userId])
+    public function getInventory($userId) {
+        return [
+            'monsters' => $this->queryAll('
+                SELECT 
+                    m.id,
+                    mt.name,
+                    mt.element_id,
+                    m.status,
+                    m.level,
+                    m.hp AS current_hp,
+                    (mt.hp + COALESCE(SUM(ml.hp), 0)) AS max_HP,
+                    (mt.attack + COALESCE(SUM(ml.attack), 0)) AS ATK,
+                    (mt.defense + COALESCE(SUM(ml.defense), 0)) AS DEF
+                FROM monsters m
+                JOIN monster_types mt ON m.monster_type_id = mt.id
+                LEFT JOIN monster_level ml ON ml.level <= m.level
+                WHERE m.user_id = ?
+                GROUP BY m.id, m.user_id, m.level, m.hp, m.status, mt.element_id, mt.name, mt.hp, mt.attack, mt.defense
+            ', [$userId]),
+            'inventory' => $this->queryAll('SELECT * FROM inventory WHERE user_id=?', [$userId]),
+            'balance' => $this->query('SELECT money FROM users WHERE id=?', [$userId])->money
         ];
     }
+    
+    
 
     public function makeLotMonster($userId, $sellingItemId, $startCost, $stepCost, $zalog){
         return ['ableToWithdrawMonster' => $this->execute('UPDATE monsters SET user_id=?, status="on sale" WHERE id=?', [-1, $sellingItemId]),
