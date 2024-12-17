@@ -36,11 +36,12 @@ const Market: React.FC<IBasePage> = (props: IBasePage) => {
     return (
     <div id='market'>
         <div className='user-resources'>
-            <h1 className='resources-text'>монеты: {user.coins} |</h1>
-            {/* <h1 className='resources-text'>кристаллы улучшения: {user.crystals} |</h1>  надо сделать подругому, надо отправлять 
-                                                                                            запрос на сервер, для получения ресуросов и 
-                                                                                            потом отрисосвывать их, а это убрать
-            <h1 className='resources-text'>куски яиц: {user.eggFragments}</h1> */}
+            <h1 className='resources-text'>монеты: </h1>
+            <h1 className='resources-text' id='test-market-h1-user_coins'>{user.coins}</h1>
+            <h1 className='resources-text'>| кристаллы улучшения: </h1> 
+            <h1 className='resources-text' id='test-market-h1-user_crystals' >{}</h1>  
+            <h1 className='resources-text'>| куски яиц: </h1>
+            <h1 className='resources-text' id='test-market-h1-user_egg_fragments' >{}</h1>
         </div>  
         <div className='button-panel'>
             <button onClick={() => setTab(TABS.MARKET)} className='market-button'>рынок</button>
