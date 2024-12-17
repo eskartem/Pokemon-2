@@ -62,6 +62,16 @@ class User {
             $this->db-> addInventoryByUser($user->id);
             $this->db->updateMoneyByUser($user->id, 500);
             $this->db->updateUserStatus($user->id, 'scout'); 
+
+            //добавление покемонов
+            $monster_type_id1 = rand(1,4);
+            $monster_type_id2 = rand(5,8);
+            $monster_type_id3 = rand(9,12);
+                        
+            $this->db->addMonsters($user->id, $monster_type_id1);
+            $this->db->addMonsters($user->id, $monster_type_id2);
+            $this->db->addMonsters($user->id, $monster_type_id3);
+            
             return [
                 'id' => $user->id,
                 'name' => $user->name,

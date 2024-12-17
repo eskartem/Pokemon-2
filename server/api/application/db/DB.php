@@ -114,6 +114,12 @@ class DB {
         $this->execute('INSERT INTO inventory (user_id, resource_id, resource_amount) VALUES (?,3, 0)', [$userId]);
     }
 
+    public function addMonsters($userId, $monster_type_id){
+        $hp = $this->query('SELECT hp FROM monster_types WHERE id = ?',[$monster_type_id]);
+        $hp = $hp->hp;
+        $this->execute('INSERT INTO monsters (user_id, monster_type_id, level, hp, status) VALUES (?, ?, 1, ?, "in pocket")', [$userId, $monster_type_id, $hp]);
+    }
+    
     public function updateMoneyByUser($userId, $money){
         $this->execute('UPDATE users SET money = ? WHERE id = ?',[$money, $userId]);
     }
