@@ -135,14 +135,13 @@ class Market {
             ];
         }
 
-        $activeLots = [];
+        $allLots = [];
         foreach ($lots as $filteredLots){
             if ($filteredLots['status'] == 'open'){
                 $lotDatetime = new DateTime($filteredLots['datetime']);
                 $currentDatetime = new DateTime();
                 $interval = $lotDatetime->diff($currentDatetime);
                 if ($interval->days == 0 && $interval->h == 0 && $interval->i < 5) {
-                    $activeLots[] = $filteredLots;
                 } else {
                     $this->db->changeLotStatus('closed', $filteredLots['id']);
                     if ($filteredLots['buyer_id'] == NULL){
@@ -163,7 +162,10 @@ class Market {
                     }
                 }
             }
+            $allLots[] = $filteredLots;
         }
-        return ['active_lots' => $activeLots];
+        return ['all_lots' => $allLots,
+                'hash' => $hash
+        ];
     }
 }

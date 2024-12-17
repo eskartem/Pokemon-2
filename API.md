@@ -582,7 +582,10 @@ MapZones: {
 ```
 **Успешный ответ**
 ```
-    Answer<activeLots: Lots[]>
+    Answer<{
+        allLots: Lots[]
+        hash: string;
+    }>
 ```
 **Ошибки**
 * `705` - невалидный токен. Пользователь не авторизован
