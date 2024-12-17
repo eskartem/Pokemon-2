@@ -25,6 +25,7 @@ function result($params) {
              case 'upgradePokemon': return $app-> upgradePokemon($params);
             //inventory
             case 'getInventory': return $app->getInventory($params);
+            case 'addToTeam': return $app->addToTeam($params);
             // ???? case 'updradePokemon': return $app-> upgradePokemon($params); //
             
             //battle
@@ -41,11 +42,14 @@ function result($params) {
             case 'moveUser': return $app-> moveUser($params);
 
             //market
+            case 'getAllLots': return $app->getAllLots($params); // новое название getAllLots, вместо getCatalog              
+            case 'makeBet': return $app->makeBet($params);
             case 'getCatalog': return $app->getCatalog($params); // для торговца
-            case 'getAllLots': return $app->getAllLots($params); // для рынка
-            // case 'buy': return $app-> buy($params);
+            case 'updateLots': return $app->updateLots($params);
+            case 'makeLot': return $app->makeLot($params);
             case 'sell': return $app->sell($params);
-
+            // удалить лишнее потом
+            
             default: return ['error' => 102];
         }
         

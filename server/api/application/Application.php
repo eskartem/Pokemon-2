@@ -100,20 +100,6 @@ class Application {
         return ['error' => 404];
     }
 
-
-    public function getAllLots($params) {
-        if (!$params['token']) {
-            return ['error' => 242];
-        }
-
-        $user = $this->user->getUser($params['token']);
-        if (!$user) {
-            return ['error' => 705];
-        }
-
-        return $this->market->getAllLots($this->map->isUserInZone($user, "город"));
-    }
-
     public function getResources($params) {
         if ($params['token']) {
             $user = $this->user->getUser($params['token']);
@@ -159,6 +145,88 @@ class Application {
             return ['error' => 705];
         }
         return ['error' => 242];
+    }
+
+    public function makeBet($params) {
+        if (!$params['token'] || !$params['lotId'] || !$params['bet']){
+            return ['error' => 242]; 
+        }
+
+        $newBet = $params['bet'];
+        $user = $this->user->getUser($params['token']);
+        if (!$user) {
+            return ['error' => 705];
+        }
+
+        $lots = $this->market->getAllLots($params['token']); //объект
+        foreach ($lots as $lot){
+            if ($lot['id'] == $params['lotId']){
+                return $this->market->makeBet($user->id, $user->money, $lot, $newBet);
+            }
+        }
+        return ['error' => 3016];
+    }
+
+    public function makeLot($params){
+        if (!isset($params['token'], $params['type'], $params['startCost'], $params['stepCost'], $params['id'])){
+            return ['error' => 242];
+        }
+  
+        $user = $this->user->getUser($params['token']);
+        if (!$user) {
+            return ['error' => 705];
+        }
+  
+        $inTown = $this->map->isUserInZone($user, "город");
+        if (!$inTown){
+            return ['error' => 2999];
+        }
+
+        if ($params['type'] !== 'monster' && $params['type'] !== 'item'){
+            return ['error' => 3001];
+        }
+
+        if (!filter_var($params['startCost'], FILTER_VALIDATE_INT) || $params['startCost'] <= 0 ||
+            !filter_var($params['stepCost'], FILTER_VALIDATE_INT) || $params['stepCost'] <= 0){
+            return ['error' => 3003];
+        }
+        
+        $inventory = $this->inventory->getInventory($user->id);
+        if (!$inventory){
+            return ['error' => 3007];
+        }
+
+        if ($params['type'] === 'monster'){
+            foreach ($inventory['monsters'] as $monsters){
+                if ($monsters['id'] == $params['id']){
+                    if (count($inventory['monsters']) > 3){
+                        return $this->market->makeLotMonster($user, $params['id'], $params['startCost'], $params['stepCost']);
+                    }
+                    return ['error' => 3004];
+                }
+            }
+            return ['error' => 3008];
+        }
+
+        if ($params['type'] === 'item'){
+            if (!$params['amount']){
+                return ['error' => 242];
+            }
+
+            if (!filter_var($params['amount'], FILTER_VALIDATE_INT) || $params['amount'] <= 0){
+                return ['error' => 3002];
+            }
+
+            foreach ($inventory['inventory'] as $items){
+                if ($items['resource_id'] == $params['id']){
+                    if ($items['resource_amount'] >= $params['amount']){
+                        return $this->market->makeLotItem($user, $params['id'], $params['startCost'], $params['stepCost'], $params['amount']);
+                    }
+                    return ['error' => 3009];
+                }
+            }
+            return ['error' => 3008];
+        }
     }
 
     public function getInventory($params) {
@@ -271,5 +339,39 @@ class Application {
         return ['error' => 242];
 
     }
-}
 
+    public function addToTeam($params) {
+        if (!isset($params['token'], $params['monsterId'])){
+            return ['error' => 242];
+        }
+
+        $user = $this->user->getUser($params['token']);
+        if (!$user){
+            return ['error' => 705];
+        }
+
+        $inventory = $this->inventory->getInventory($user->id);
+        if (!$inventory){
+            return ['error' => 3007];
+        }
+
+        return $this->inventory->addToTeam($params['monsterId'], $inventory, $user->id);
+    }
+
+
+    public function updateLots($params) {
+        if ($params['token'] && $params['hash']) {
+            $user = $this->user->getUser($params['token']);
+            if ($user) {
+                $lots = $this->market->getAllLots($this->map->isUserInZone($user, "город"));
+                if (!$lots){
+                    return ['error' => 2999];
+                }
+                return $this->market->updateLots($params['hash'], $lots);
+            }
+            return ['error' => 705];
+        }
+        return ['error' => 242];
+    }
+
+}

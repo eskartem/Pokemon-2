@@ -123,8 +123,8 @@ CREATE TABLE `hashes` (
 -- Дамп данных таблицы `hashes`
 --
 
-INSERT INTO `hashes` (`id`, `chat_hash`, `map_hash`, `battle_hash`, `market_hash`) VALUES
-(1, 'd54549bb2c64c7c0472a1b627d150dcf', 'fabceea19fc9e3671afa4c9ff11ba175', '', 0);
+INSERT INTO `hashes` (`id`, `chat_hash`, `map_hash`, `market_hash`) VALUES
+(1, 'd54549bb2c64c7c0472a1b627d150dcf', 'fabceea19fc9e3671afa4c9ff11ba175', 0);
 
 -- --------------------------------------------------------
 
@@ -553,7 +553,7 @@ ALTER TABLE `map`
 -- AUTO_INCREMENT для таблицы `map_zones`
 --
 ALTER TABLE `map_zones`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT для таблицы `messages`
