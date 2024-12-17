@@ -78,7 +78,7 @@ class Server {
     }
 
     async getMessages(): Promise<TMessagesResponse | null> {
-        const hash = this.store.getHash();
+        const hash = this.store.getChatHash();
         const result = await this.request<TMessagesResponse>('getMessages', { hash });
         if (result) {
             this.store.setChatHash(result.hash);

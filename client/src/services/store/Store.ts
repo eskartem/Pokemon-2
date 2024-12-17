@@ -49,7 +49,7 @@ class Store {
         this.messages = [];
     }
 
-    getHash(): string {
+    getChatHash(): string {
         return this.chatHash;
     }
 
