@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.1:3306
--- Время создания: Дек 09 2024 г., 14:35
+-- Время создания: Дек 17 2024 г., 20:10
 -- Версия сервера: 8.0.30
 -- Версия PHP: 8.1.9
 
@@ -115,15 +115,16 @@ CREATE TABLE `hashes` (
   `id` int NOT NULL,
   `chat_hash` varchar(256) NOT NULL,
   `map_hash` varchar(32) NOT NULL,
-  `market_hash` int NOT NULL
+  `battle_hash` varchar(256) NOT NULL,
+  `market_hash` varchar(32) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Дамп данных таблицы `hashes`
 --
 
-INSERT INTO `hashes` (`id`, `chat_hash`, `map_hash`, `market_hash`) VALUES
-(1, 'd54549bb2c64c7c0472a1b627d150dcf', 'fabceea19fc9e3671afa4c9ff11ba175', 0);
+INSERT INTO `hashes` (`id`, `chat_hash`, `map_hash`, `battle_hash`, `market_hash`) VALUES
+(1, 'd54549bb2c64c7c0472a1b627d150dcf', 'fabceea19fc9e3671afa4c9ff11ba175', 'fabceea19fc9e3671afa4c9ff11ba176', 'fabceea19fc9e3671afa4c9ff11ba177');
 
 -- --------------------------------------------------------
 
@@ -304,18 +305,19 @@ CREATE TABLE `monster_level` (
   `id` int UNSIGNED NOT NULL,
   `level` int NOT NULL,
   `attack` int NOT NULL,
-  `hp` int NOT NULL
+  `hp` int NOT NULL,
+  `defense` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='Стандартное увеличение характеристик покемонов при улучшении';
 
 --
 -- Дамп данных таблицы `monster_level`
 --
 
-INSERT INTO `monster_level` (`id`, `level`, `attack`, `hp`) VALUES
-(1, 2, 40, 90),
-(2, 3, 70, 110),
-(3, 4, 120, 150),
-(4, 5, 200, 270);
+INSERT INTO `monster_level` (`id`, `level`, `attack`, `hp`, `defense`) VALUES
+(1, 2, 40, 90, 5),
+(2, 3, 70, 110, 10),
+(3, 4, 120, 150, 15),
+(4, 5, 200, 270, 20);
 
 -- --------------------------------------------------------
 
@@ -338,7 +340,17 @@ CREATE TABLE `monster_types` (
 
 INSERT INTO `monster_types` (`id`, `element_id`, `name`, `hp`, `attack`, `defense`) VALUES
 (1, 1, 'Рыба капля', 450, 100, 40),
-(2, 2, 'Эмобойчик', 510, 140, 45);
+(2, 1, 'Мотылек', 460, 110, 45),
+(3, 1, 'Лягушка', 500, 120, 55),
+(4, 2, 'Митбой', 510, 140, 45),
+(5, 2, 'Ящерица', 550, 150, 65),
+(6, 2, 'Эмобой', 530, 120, 60),
+(7, 3, 'Червь', 520, 70, 55),
+(8, 3, 'Пчела', 550, 90, 65),
+(9, 3, 'Гриб', 500, 150, 60),
+(10, 4, 'Кот Лит Энерджи', 450, 100, 40),
+(11, 4, 'Медведь', 490, 120, 55),
+(12, 4, 'Слон', 510, 140, 45);
 
 -- --------------------------------------------------------
 
@@ -400,7 +412,6 @@ INSERT INTO `users` (`id`, `login`, `password`, `token`, `name`, `money`, `ratin
 --
 ALTER TABLE `bots`
   ADD PRIMARY KEY (`id`);
-
 
 --
 -- Индексы таблицы `elements`
@@ -543,7 +554,7 @@ ALTER TABLE `map`
 -- AUTO_INCREMENT для таблицы `map_zones`
 --
 ALTER TABLE `map_zones`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT для таблицы `messages`
@@ -567,7 +578,7 @@ ALTER TABLE `monster_level`
 -- AUTO_INCREMENT для таблицы `monster_types`
 --
 ALTER TABLE `monster_types`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT для таблицы `resources`

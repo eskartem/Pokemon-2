@@ -1,0 +1,1166 @@
+{
+	"info": {
+		"_postman_id": "a68a1f3a-f10a-4f05-9fdb-69660ee727fa",
+		"name": "map",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "40283555"
+	},
+	"item": [
+		{
+			"name": "moveUser",
+			"item": [
+				{
+					"name": "BC_051.1.5",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('the response has all properties', () => {\r",
+									"    const responseJson = pm.response.json();\r",
+									"    pm.expect(responseJson.result).to.eql('ok');\r",
+									"    pm.expect(responseJson.data).to.eql(true);\r",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "d84449826c008cd79074d152e51bfb97",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://server/api/?method=moveUser&token=c9c55979a9ddc53b50997827668fbdb3&direction=up",
+							"protocol": "http",
+							"host": [
+								"server"
+							],
+							"path": [
+								"api",
+								""
+							],
+							"query": [
+								{
+									"key": "method",
+									"value": "moveUser"
+								},
+								{
+									"key": "token",
+									"value": "c9c55979a9ddc53b50997827668fbdb3"
+								},
+								{
+									"key": "direction",
+									"value": "up"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "BC_051.1.6",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('the error response has all properties', () => {\r",
+									"    const responseJson = pm.response.json();\r",
+									"    pm.expect(responseJson.result).to.eql('error');\r",
+									"    pm.expect(responseJson.error).to.be.a('object');\r",
+									"    pm.expect(responseJson.error.code).to.eql(705);\r",
+									"    pm.expect(responseJson.error.text).to.eql('User is not found');\r",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "20b1f475a1c7adaa69b4b348d0b440a4",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://server/api/?method=moveUser&token=d84449826c008cd79074d152e514444&direction=right",
+							"protocol": "http",
+							"host": [
+								"server"
+							],
+							"path": [
+								"api",
+								""
+							],
+							"query": [
+								{
+									"key": "method",
+									"value": "moveUser"
+								},
+								{
+									"key": "token",
+									"value": "d84449826c008cd79074d152e514444"
+								},
+								{
+									"key": "direction",
+									"value": "right"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "BC_051.1.7",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('the error response has all properties', () => {\r",
+									"    const responseJson = pm.response.json();\r",
+									"    pm.expect(responseJson.result).to.eql('error');\r",
+									"    pm.expect(responseJson.error).to.be.a('object');\r",
+									"    pm.expect(responseJson.error.code).to.eql(2001);\r",
+									"    pm.expect(responseJson.error.text).to.eql('coordinates to move are not set');\r",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "d84449826c008cd79074d152e51bfb97",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://server/api/?method=moveUser&token=d84449826c008cd79074d152e51bfb97",
+							"protocol": "http",
+							"host": [
+								"server"
+							],
+							"path": [
+								"api",
+								""
+							],
+							"query": [
+								{
+									"key": "method",
+									"value": "moveUser"
+								},
+								{
+									"key": "token",
+									"value": "d84449826c008cd79074d152e51bfb97"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "BC_051.1.10",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('the error response has all properties', () => {\r",
+									"    const responseJson = pm.response.json();\r",
+									"    pm.expect(responseJson.result).to.eql('error');\r",
+									"    pm.expect(responseJson.error).to.be.a('object');\r",
+									"    pm.expect(responseJson.error.code).to.eql(101);\r",
+									"    pm.expect(responseJson.error.text).to.eql('Param method not setted');\r",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const CryptoJS = require('crypto-js');\r",
+									"\r",
+									"const login = pm.collectionVariables.get('login');\r",
+									"const password = pm.collectionVariables.get('password');\r",
+									"\r",
+									"const rmd = Math.round(Math.random() * 100000);\r",
+									"const hash = CryptoJS.MD5(CryptoJS.MD5(login + password).toString() + rmd).toString();\r",
+									"\r",
+									"pm.collectionVariables.set('rmd', rmd);\r",
+									"pm.collectionVariables.set('hash', hash);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "d84449826c008cd79074d152e51bfb97",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://server/api/?=moveUser&token=1916666aacbb8732bf2d12238b2cd5db&direction=up",
+							"protocol": "http",
+							"host": [
+								"server"
+							],
+							"path": [
+								"api",
+								""
+							],
+							"query": [
+								{
+									"key": "",
+									"value": "moveUser"
+								},
+								{
+									"key": "token",
+									"value": "1916666aacbb8732bf2d12238b2cd5db"
+								},
+								{
+									"key": "direction",
+									"value": "up"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "BC_051.1.11",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('the error response has all properties', () => {\r",
+									"    const responseJson = pm.response.json();\r",
+									"    pm.expect(responseJson.result).to.eql('error');\r",
+									"    pm.expect(responseJson.error).to.be.a('object');\r",
+									"    pm.expect(responseJson.error.code).to.eql(102);\r",
+									"    pm.expect(responseJson.error.text).to.eql('Method not found');\r",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const CryptoJS = require('crypto-js');\r",
+									"\r",
+									"const login = pm.collectionVariables.get('login');\r",
+									"const password = pm.collectionVariables.get('password');\r",
+									"\r",
+									"const rmd = Math.round(Math.random() * 100000);\r",
+									"const hash = CryptoJS.MD5(CryptoJS.MD5(login + password).toString() + rmd).toString();\r",
+									"\r",
+									"pm.collectionVariables.set('rmd', rmd);\r",
+									"pm.collectionVariables.set('hash', hash);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "d84449826c008cd79074d152e51bfb97",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://server/api/?method=moveUser\\&token=1916666aacbb8732bf2d12238b2cd5db&direction=up",
+							"protocol": "http",
+							"host": [
+								"server"
+							],
+							"path": [
+								"api",
+								""
+							],
+							"query": [
+								{
+									"key": "method",
+									"value": "moveUser\\"
+								},
+								{
+									"key": "token",
+									"value": "1916666aacbb8732bf2d12238b2cd5db"
+								},
+								{
+									"key": "direction",
+									"value": "up"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "BC_051.1.12",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('the error response has all properties', () => {\r",
+									"    const responseJson = pm.response.json();\r",
+									"    pm.expect(responseJson.result).to.eql('error');\r",
+									"    pm.expect(responseJson.error).to.be.a('object');\r",
+									"    pm.expect(responseJson.error.code).to.eql(242);\r",
+									"    pm.expect(responseJson.error.text).to.eql('Params not set fully');\r",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const CryptoJS = require('crypto-js');\r",
+									"\r",
+									"const login = pm.collectionVariables.get('login');\r",
+									"const password = pm.collectionVariables.get('password');\r",
+									"\r",
+									"const rmd = Math.round(Math.random() * 100000);\r",
+									"const hash = CryptoJS.MD5(CryptoJS.MD5(login + password).toString() + rmd).toString();\r",
+									"\r",
+									"pm.collectionVariables.set('rmd', rmd);\r",
+									"pm.collectionVariables.set('hash', hash);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "d84449826c008cd79074d152e51bfb97",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://server/api/?method=moveUser&token=1916666aacbb8732bf2d12238b2cd5db&direction=",
+							"protocol": "http",
+							"host": [
+								"server"
+							],
+							"path": [
+								"api",
+								""
+							],
+							"query": [
+								{
+									"key": "method",
+									"value": "moveUser"
+								},
+								{
+									"key": "token",
+									"value": "1916666aacbb8732bf2d12238b2cd5db"
+								},
+								{
+									"key": "direction",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "getMap",
+			"item": [
+				{
+					"name": "BC_051.1.1",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('the response has all properties', () => {\r",
+									"    const responseJson = pm.response.json();\r",
+									"\r",
+									"    pm.expect(responseJson).to.have.property('result');\r",
+									"    pm.expect(responseJson.result).to.eql('ok');\r",
+									"\r",
+									"    pm.expect(responseJson).to.have.property('data');\r",
+									"    pm.expect(responseJson.data).to.be.an('object');\r",
+									"\r",
+									"    pm.expect(responseJson.data).to.have.property('MAP');\r",
+									"    pm.expect(responseJson.data.MAP).to.be.an('object');\r",
+									"\r",
+									"    const map = responseJson.data.MAP;\r",
+									"    pm.expect(map).to.have.property('WIDTH').that.is.a('number');\r",
+									"    pm.expect(map).to.have.property('HEIGHT').that.is.a('number');\r",
+									"    pm.expect(map).to.have.property('IMAGE').that.is.a('string');\r",
+									"\r",
+									"    pm.expect(responseJson.data).to.have.property('mapZones');\r",
+									"    pm.expect(responseJson.data.mapZones).to.be.an('array');\r",
+									"\r",
+									"    responseJson.data.mapZones.forEach((zone) => {\r",
+									"        pm.expect(zone).to.have.property('name').that.is.a('string');\r",
+									"        pm.expect(zone).to.have.property('x').that.is.a('number');\r",
+									"        pm.expect(zone).to.have.property('y').that.is.a('number');\r",
+									"        pm.expect(zone).to.have.property('width').that.is.a('number');\r",
+									"        pm.expect(zone).to.have.property('height').that.is.a('number');\r",
+									"        pm.expect(zone).to.have.property('type').that.is.a('string');\r",
+									"        pm.expect(zone).to.have.property('element_id'); \r",
+									"    });\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "d84449826c008cd79074d152e51bfb97",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://server/api/index.php?method=getMap&token=d84449826c008cd79074d152e51bfb97",
+							"protocol": "http",
+							"host": [
+								"server"
+							],
+							"path": [
+								"api",
+								"index.php"
+							],
+							"query": [
+								{
+									"key": "method",
+									"value": "getMap"
+								},
+								{
+									"key": "token",
+									"value": "d84449826c008cd79074d152e51bfb97"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "BC_051.1.2",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('the error response has all properties', () => {\r",
+									"    const responseJson = pm.response.json();\r",
+									"    pm.expect(responseJson.result).to.eql('error');\r",
+									"    pm.expect(responseJson.error).to.be.a('object');\r",
+									"    pm.expect(responseJson.error.code).to.eql(705);\r",
+									"    pm.expect(responseJson.error.text).to.eql('User is not found');\r",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "20b1f475a1c7adaa69b4b348d0b440a4",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://server/api/index.php?method=getMap&token=20b1f475a1c7adaa69b4b348d0b33333",
+							"protocol": "http",
+							"host": [
+								"server"
+							],
+							"path": [
+								"api",
+								"index.php"
+							],
+							"query": [
+								{
+									"key": "method",
+									"value": "getMap"
+								},
+								{
+									"key": "token",
+									"value": "20b1f475a1c7adaa69b4b348d0b33333"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "BC_051.1.8",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('the error response has all properties', () => {\r",
+									"    const responseJson = pm.response.json();\r",
+									"    pm.expect(responseJson.result).to.eql('error');\r",
+									"    pm.expect(responseJson.error).to.be.a('object');\r",
+									"    pm.expect(responseJson.error.code).to.eql(101);\r",
+									"    pm.expect(responseJson.error.text).to.eql('Param method not setted');\r",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const CryptoJS = require('crypto-js');\r",
+									"\r",
+									"const login = pm.collectionVariables.get('login');\r",
+									"const password = pm.collectionVariables.get('password');\r",
+									"\r",
+									"const rmd = Math.round(Math.random() * 100000);\r",
+									"const hash = CryptoJS.MD5(CryptoJS.MD5(login + password).toString() + rmd).toString();\r",
+									"\r",
+									"pm.collectionVariables.set('rmd', rmd);\r",
+									"pm.collectionVariables.set('hash', hash);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "d84449826c008cd79074d152e51bfb97",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://server/api/index.php?=getMap&token=1916666aacbb8732bf2d12238b2cd5db",
+							"protocol": "http",
+							"host": [
+								"server"
+							],
+							"path": [
+								"api",
+								"index.php"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": "getMap"
+								},
+								{
+									"key": "token",
+									"value": "1916666aacbb8732bf2d12238b2cd5db"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "BC_051.1.9",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('the error response has all properties', () => {\r",
+									"    const responseJson = pm.response.json();\r",
+									"    pm.expect(responseJson.result).to.eql('error');\r",
+									"    pm.expect(responseJson.error).to.be.a('object');\r",
+									"    pm.expect(responseJson.error.code).to.eql(102);\r",
+									"    pm.expect(responseJson.error.text).to.eql('Method not found');\r",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const CryptoJS = require('crypto-js');\r",
+									"\r",
+									"const login = pm.collectionVariables.get('login');\r",
+									"const password = pm.collectionVariables.get('password');\r",
+									"\r",
+									"const rmd = Math.round(Math.random() * 100000);\r",
+									"const hash = CryptoJS.MD5(CryptoJS.MD5(login + password).toString() + rmd).toString();\r",
+									"\r",
+									"pm.collectionVariables.set('rmd', rmd);\r",
+									"pm.collectionVariables.set('hash', hash);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "d84449826c008cd79074d152e51bfb97",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://server/api/index.php?method=getMa&token=1916666aacbb8732bf2d12238b2cd5db",
+							"protocol": "http",
+							"host": [
+								"server"
+							],
+							"path": [
+								"api",
+								"index.php"
+							],
+							"query": [
+								{
+									"key": "method",
+									"value": "getMa"
+								},
+								{
+									"key": "token",
+									"value": "1916666aacbb8732bf2d12238b2cd5db"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "updateScene",
+			"item": [
+				{
+					"name": "BC_051.1.3",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('the response has all  properties', () => {\r",
+									"    const responseJson = pm.response.json();\r",
+									"\r",
+									"    pm.expect(responseJson).to.have.property('result');\r",
+									"    pm.expect(responseJson.result).to.eql('ok');\r",
+									"\r",
+									"    pm.expect(responseJson).to.have.property('data');\r",
+									"    pm.expect(responseJson.data).to.be.an('object');\r",
+									"\r",
+									"    pm.expect(responseJson.data).to.have.property('gamers');\r",
+									"    pm.expect(responseJson.data.gamers).to.be.an('array');\r",
+									"\r",
+									"    responseJson.data.gamers.forEach((gamer, index) => {\r",
+									"        pm.expect(gamer).to.have.property('id').that.is.a('number');\r",
+									"        pm.expect(gamer).to.have.property('name').that.is.a('string');\r",
+									"        pm.expect(gamer).to.have.property('x').that.is.a('number');\r",
+									"        pm.expect(gamer).to.have.property('y').that.is.a('number');\r",
+									"    });\r",
+									"\r",
+									"    pm.expect(responseJson.data).to.have.property('hash');\r",
+									"    pm.expect(responseJson.data.hash).to.be.a('string');\r",
+									"    pm.expect(responseJson.data.hash).to.not.be.empty; \r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const CryptoJS = require('crypto-js');\r",
+									"\r",
+									"const login = pm.collectionVariables.get('login');\r",
+									"const password = pm.collectionVariables.get('password');\r",
+									"\r",
+									"const rmd = Math.round(Math.random() * 100000);\r",
+									"const hash = CryptoJS.MD5(CryptoJS.MD5(login + password).toString() + rmd).toString();\r",
+									"\r",
+									"pm.collectionVariables.set('rmd', rmd);\r",
+									"pm.collectionVariables.set('hash', hash);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "d84449826c008cd79074d152e51bfb97",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://server/api/index.php?method=updateScene&token=d84449826c008cd79074d152e51bfb97&hash={{hash}}",
+							"protocol": "http",
+							"host": [
+								"server"
+							],
+							"path": [
+								"api",
+								"index.php"
+							],
+							"query": [
+								{
+									"key": "method",
+									"value": "updateScene"
+								},
+								{
+									"key": "token",
+									"value": "d84449826c008cd79074d152e51bfb97"
+								},
+								{
+									"key": "hash",
+									"value": "{{hash}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "BC_051.1.4",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('the error response has all properties', () => {\r",
+									"    const responseJson = pm.response.json();\r",
+									"    pm.expect(responseJson.result).to.eql('error');\r",
+									"    pm.expect(responseJson.error).to.be.a('object');\r",
+									"    pm.expect(responseJson.error.code).to.eql(705);\r",
+									"    pm.expect(responseJson.error.text).to.eql('User is not found');\r",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const CryptoJS = require('crypto-js');\r",
+									"\r",
+									"const login = pm.collectionVariables.get('login');\r",
+									"const password = pm.collectionVariables.get('password');\r",
+									"\r",
+									"const rmd = Math.round(Math.random() * 100000);\r",
+									"const hash = CryptoJS.MD5(CryptoJS.MD5(login + password).toString() + rmd).toString();\r",
+									"\r",
+									"pm.collectionVariables.set('rmd', rmd);\r",
+									"pm.collectionVariables.set('hash', hash);\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "20b1f475a1c7adaa69b4b348d0b440a4",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://server/api/index.php?method=updateScene&token=20b1f475a1c7adaa69b4b348d0b33333&hash={{hash}}",
+							"protocol": "http",
+							"host": [
+								"server"
+							],
+							"path": [
+								"api",
+								"index.php"
+							],
+							"query": [
+								{
+									"key": "method",
+									"value": "updateScene"
+								},
+								{
+									"key": "token",
+									"value": "20b1f475a1c7adaa69b4b348d0b33333"
+								},
+								{
+									"key": "hash",
+									"value": "{{hash}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "BC_051.1.13",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('the error response has all properties', () => {\r",
+									"    const responseJson = pm.response.json();\r",
+									"    pm.expect(responseJson.result).to.eql('error');\r",
+									"    pm.expect(responseJson.error).to.be.a('object');\r",
+									"    pm.expect(responseJson.error.code).to.eql(101);\r",
+									"    pm.expect(responseJson.error.text).to.eql('Param method not setted');\r",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const CryptoJS = require('crypto-js');\r",
+									"\r",
+									"const login = pm.collectionVariables.get('login');\r",
+									"const password = pm.collectionVariables.get('password');\r",
+									"\r",
+									"const rmd = Math.round(Math.random() * 100000);\r",
+									"const hash = CryptoJS.MD5(CryptoJS.MD5(login + password).toString() + rmd).toString();\r",
+									"\r",
+									"pm.collectionVariables.set('rmd', rmd);\r",
+									"pm.collectionVariables.set('hash', hash);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "d84449826c008cd79074d152e51bfb97",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://server/api/index.php?=updateScene&token=1916666aacbb8732bf2d12238b2cd5db&hash={{hash}}",
+							"protocol": "http",
+							"host": [
+								"server"
+							],
+							"path": [
+								"api",
+								"index.php"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": "updateScene"
+								},
+								{
+									"key": "token",
+									"value": "1916666aacbb8732bf2d12238b2cd5db"
+								},
+								{
+									"key": "hash",
+									"value": "{{hash}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "BC_051.1.14",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('the error response has all properties', () => {\r",
+									"    const responseJson = pm.response.json();\r",
+									"    pm.expect(responseJson.result).to.eql('error');\r",
+									"    pm.expect(responseJson.error).to.be.a('object');\r",
+									"    pm.expect(responseJson.error.code).to.eql(102);\r",
+									"    pm.expect(responseJson.error.text).to.eql('Method not found');\r",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const CryptoJS = require('crypto-js');\r",
+									"\r",
+									"const login = pm.collectionVariables.get('login');\r",
+									"const password = pm.collectionVariables.get('password');\r",
+									"\r",
+									"const rmd = Math.round(Math.random() * 100000);\r",
+									"const hash = CryptoJS.MD5(CryptoJS.MD5(login + password).toString() + rmd).toString();\r",
+									"\r",
+									"pm.collectionVariables.set('rmd', rmd);\r",
+									"pm.collectionVariables.set('hash', hash);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "d84449826c008cd79074d152e51bfb97",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://server/api/index.php?method=updateScen&token=1916666aacbb8732bf2d12238b2cd5db&hash={{hash}}",
+							"protocol": "http",
+							"host": [
+								"server"
+							],
+							"path": [
+								"api",
+								"index.php"
+							],
+							"query": [
+								{
+									"key": "method",
+									"value": "updateScen"
+								},
+								{
+									"key": "token",
+									"value": "1916666aacbb8732bf2d12238b2cd5db"
+								},
+								{
+									"key": "hash",
+									"value": "{{hash}}"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "login",
+			"value": "petya",
+			"type": "string"
+		},
+		{
+			"key": "password",
+			"value": "222",
+			"type": "string"
+		},
+		{
+			"key": "rnd",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "hash",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "rmd",
+			"value": ""
+		}
+	]
+}
