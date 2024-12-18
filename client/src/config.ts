@@ -26,8 +26,8 @@ const CONFIG = {
 
     // игровое окно, видимое пользователю
     WINV: {
-        WIDTH: 24,
-        HEIGHT: 13.5,
+        WIDTH: 47,
+        HEIGHT: 22.5,
         LEFT: 0,
         BOTTOM: 0
     },

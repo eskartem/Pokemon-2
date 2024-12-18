@@ -46,14 +46,13 @@ export type TUpdateSceneResponse = {
     hash: string;
 }
 
-
 // элементы стихии
 export enum EElement {
     fire,
     water,
     earth,
     air,
-    nonElement  // для нейтральных элементов карты (не знаю, есть ли смысл делать отедльный ETileElement, чтобы такого не было)
+    nonElement  // для нейтральных элементов карты
 }
 
 // статы существа
@@ -65,10 +64,12 @@ export type TStats = {
 
 // само существо
 export type TCreature = {
+    id: number,
     name: string;
     lvl: number;
     element: EElement,
     stats: TStats,
+    status: string
 }
 
 export enum ETypeLot {
@@ -151,3 +152,87 @@ export type TMakeBet = {
     ableToMakeBet: boolean,
     ableToTakeMoney: boolean
 }
+ 
+export type TInventory = {
+    monsters: TCr[];
+    monsterTypes: TMonsterType[];
+    inventory: TResource[];
+    balance: TBalance;
+}
+
+export type TCr = {
+    id: number;
+    user_id: number;
+    monster_type_id: number;
+    level: number;
+    hp: number;
+    status: string;
+};
+
+export type TMonsterType = {
+    id: number;
+    element_id: number;
+    lvl: number;
+    name: string;
+    hp: number;
+    attack: number;
+    defense: number;
+    stats: TStats;
+    status: string;
+}
+
+export type TResource = {
+    id: number;
+    user_id: number;
+    resource_id: number;
+    resource_amount: number;
+}
+
+export type TBalance = {
+    money: number;
+}
+
+export type TMonsters_level = {
+    id: number,
+    level: number,
+    stats: TStats
+}
+
+export type TSell = {
+    token: string,
+    type: string,
+    amount: string,
+    resourceId: string,
+    objectId: string | ''
+}
+
+export type TResources = {
+    id: number,
+    name: string,
+    cost: number,
+    exchange_cost: number
+}
+
+
+export type TMonsters = TCreature;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

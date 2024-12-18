@@ -1,4 +1,4 @@
-import { TGamer, TMessages, TUser } from "../server/types";
+import { TGamer, TMessages, TUser, TInventory } from "../server/types";
 
 const TOKEN = 'token';
 
@@ -9,6 +9,8 @@ class Store {
     chatHash: string = 'empty_chat_hash';
     sceneHash: string = 'empty_scene_hash';
     marketHash: string = 'empty_market_hash';
+    inventory: TInventory | null = null; // Добавляем инвентарь
+    inventoryHash: string = 'empty inventory hash'; // Добавляем хеш инвентаря
 
     setToken(token: string): void {
         localStorage.setItem(TOKEN, token);

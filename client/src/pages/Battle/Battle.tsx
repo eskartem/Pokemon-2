@@ -73,36 +73,53 @@ const Pvp: React.FC<IBasePage> = (props: IBasePage) => {
     const backClickHandler = () => setPage(PAGES.GAME);
   
   return (<>
-    <Stage {...stageProps} className='pvpArea'>
-      <Sprites stageProps={stageProps}
-        firstSelectedMonster={firstSelectedMonster}
-        secondSelectedMonster={secondSelectedMonster}
-        thirdSelectedMonster={thirdSelectedMonster}
-        firstSelectedEnemyMonster={firstSelectedEnemyMonster}
-        secondSelectedEnemyMonster={secondSelectedEnemyMonster}      
-        thirdSelectedEnemyMonster={thirdSelectedEnemyMonster}
-        hpBarFirstMonster={hpBarFirstMonster}
-        hpBarSecondMonster={hpBarSecondMonster}
-        hpBarThirdMonster={hpBarThirdMonster}
-        hpBarFirstEnemyMonster={hpBarFirstEnemyMonster}
-        hpBarSecondEnemyMonster={hpBarSecondEnemyMonster}
-        hpBarThirdEnemyMonster={hpBarThirdEnemyMonster}
+    <div className='Battle'>
+      <Stage {...stageProps} className='pvpArea'>
+        <Sprites stageProps={stageProps}
+          firstSelectedMonster={firstSelectedMonster}
+          secondSelectedMonster={secondSelectedMonster}
+          thirdSelectedMonster={thirdSelectedMonster}
+          firstSelectedEnemyMonster={firstSelectedEnemyMonster}
+          secondSelectedEnemyMonster={secondSelectedEnemyMonster}      
+          thirdSelectedEnemyMonster={thirdSelectedEnemyMonster}
+          hpBarFirstMonster={hpBarFirstMonster}
+          hpBarSecondMonster={hpBarSecondMonster}
+          hpBarThirdMonster={hpBarThirdMonster}
+          hpBarFirstEnemyMonster={hpBarFirstEnemyMonster}
+          hpBarSecondEnemyMonster={hpBarSecondEnemyMonster}
+          hpBarThirdEnemyMonster={hpBarThirdEnemyMonster}
+          />
+        <HpBars stageProps={stageProps} 
+          hpBarFirstMonster={hpBarFirstMonster}
+          hpBarSecondMonster={hpBarSecondMonster}
+          hpBarThirdMonster={hpBarThirdMonster}
+          hpBarFirstEnemyMonster={hpBarFirstEnemyMonster}
+          hpBarSecondEnemyMonster={hpBarSecondEnemyMonster}
+          hpBarThirdEnemyMonster={hpBarThirdEnemyMonster}
         />
-      <HpBars stageProps={stageProps} 
-        hpBarFirstMonster={hpBarFirstMonster}
-        hpBarSecondMonster={hpBarSecondMonster}
-        hpBarThirdMonster={hpBarThirdMonster}
-        hpBarFirstEnemyMonster={hpBarFirstEnemyMonster}
-        hpBarSecondEnemyMonster={hpBarSecondEnemyMonster}
-        hpBarThirdEnemyMonster={hpBarThirdEnemyMonster}
-      />
-      <Texts activeMonster={activeMonster}
-        stageProps={stageProps}
+        <Texts activeMonster={activeMonster}
+          stageProps={stageProps}
+          firstSelectedMonster={firstSelectedMonster}
+          secondSelectedMonster={secondSelectedMonster}
+          thirdSelectedMonster={thirdSelectedMonster}
+          firstSelectedEnemyMonster={firstSelectedEnemyMonster}
+          secondSelectedEnemyMonster={secondSelectedEnemyMonster}
+          thirdSelectedEnemyMonster={thirdSelectedEnemyMonster}
+          hpBarFirstMonster={hpBarFirstMonster}
+          hpBarSecondMonster={hpBarSecondMonster}
+          hpBarThirdMonster={hpBarThirdMonster}
+          hpBarFirstEnemyMonster={hpBarFirstEnemyMonster}
+          hpBarSecondEnemyMonster={hpBarSecondEnemyMonster}
+          hpBarThirdEnemyMonster={hpBarThirdEnemyMonster}
+        />
+      </Stage>
+      <Buttons sQueue={sQueue}
+        activeMonster={activeMonster}
         firstSelectedMonster={firstSelectedMonster}
         secondSelectedMonster={secondSelectedMonster}
         thirdSelectedMonster={thirdSelectedMonster}
         firstSelectedEnemyMonster={firstSelectedEnemyMonster}
-        secondSelectedEnemyMonster={secondSelectedEnemyMonster}
+        secondSelectedEnemyMonster={secondSelectedEnemyMonster} 
         thirdSelectedEnemyMonster={thirdSelectedEnemyMonster}
         hpBarFirstMonster={hpBarFirstMonster}
         hpBarSecondMonster={hpBarSecondMonster}
@@ -110,40 +127,25 @@ const Pvp: React.FC<IBasePage> = (props: IBasePage) => {
         hpBarFirstEnemyMonster={hpBarFirstEnemyMonster}
         hpBarSecondEnemyMonster={hpBarSecondEnemyMonster}
         hpBarThirdEnemyMonster={hpBarThirdEnemyMonster}
+        setSQueue={setSQueue}
+        setActiveMonster={setActiveMonster}
+        setHpBarFirstEnemyMonster={setHpBarFirstEnemyMonster}
+        setHpBarFirstMonster={setHpBarFirstMonster}
+        setHpBarSecondEnemyMonster={setHpBarSecondEnemyMonster}
+        setHpBarSecondMonster={setHpBarSecondMonster}
+        setHpBarThirdEnemyMonster={setHpBarThirdEnemyMonster}
+        setHpBarThirdMonster={setHpBarThirdMonster}
       />
-    </Stage>
-    <Buttons sQueue={sQueue}
-      activeMonster={activeMonster}
-      firstSelectedMonster={firstSelectedMonster}
-      secondSelectedMonster={secondSelectedMonster}
-      thirdSelectedMonster={thirdSelectedMonster}
-      firstSelectedEnemyMonster={firstSelectedEnemyMonster}
-      secondSelectedEnemyMonster={secondSelectedEnemyMonster} 
-      thirdSelectedEnemyMonster={thirdSelectedEnemyMonster}
-      hpBarFirstMonster={hpBarFirstMonster}
-      hpBarSecondMonster={hpBarSecondMonster}
-      hpBarThirdMonster={hpBarThirdMonster}
-      hpBarFirstEnemyMonster={hpBarFirstEnemyMonster}
-      hpBarSecondEnemyMonster={hpBarSecondEnemyMonster}
-      hpBarThirdEnemyMonster={hpBarThirdEnemyMonster}
-      setSQueue={setSQueue}
-      setActiveMonster={setActiveMonster}
-      setHpBarFirstEnemyMonster={setHpBarFirstEnemyMonster}
-      setHpBarFirstMonster={setHpBarFirstMonster}
-      setHpBarSecondEnemyMonster={setHpBarSecondEnemyMonster}
-      setHpBarSecondMonster={setHpBarSecondMonster}
-      setHpBarThirdEnemyMonster={setHpBarThirdEnemyMonster}
-      setHpBarThirdMonster={setHpBarThirdMonster}
-    />
-    <FinalScreen 
-      hpBarFirstMonster={hpBarFirstMonster}
-      hpBarSecondMonster={hpBarSecondMonster}
-      hpBarThirdMonster={hpBarThirdMonster}
-      hpBarFirstEnemyMonster={hpBarFirstEnemyMonster}
-      hpBarSecondEnemyMonster={hpBarSecondEnemyMonster}
-      hpBarThirdEnemyMonster={hpBarThirdEnemyMonster}
-    />
-    <Button onClick={backClickHandler} text='назад' />
+      <FinalScreen 
+        hpBarFirstMonster={hpBarFirstMonster}
+        hpBarSecondMonster={hpBarSecondMonster}
+        hpBarThirdMonster={hpBarThirdMonster}
+        hpBarFirstEnemyMonster={hpBarFirstEnemyMonster}
+        hpBarSecondEnemyMonster={hpBarSecondEnemyMonster}
+        hpBarThirdEnemyMonster={hpBarThirdEnemyMonster}
+      />
+      <Button onClick={backClickHandler} text='назад' />
+    </div>
   </>)
 };
 

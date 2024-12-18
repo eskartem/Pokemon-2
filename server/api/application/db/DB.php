@@ -90,6 +90,10 @@ class DB {
     public function updateMarketHash($hash) {
         $this->execute("UPDATE hashes SET market_hash=? WHERE id=1", [$hash]);
     }
+    
+    public function updateBattleHash($hash) {
+        $this->execute("UPDATE hashes SET battle_hash=? WHERE id=1", [$hash]);
+    }
 
     public function addMessage($userId, $message) {
         $this->execute('INSERT INTO messages (user_id, message, created) VALUES (?,?, now())', [$userId, $message]);
@@ -107,6 +111,36 @@ class DB {
         );
     }
 
+    //user
+    public function addInventoryByUser($userId){//добавление инвентаря при регистрации
+        $this->execute('INSERT INTO inventory (user_id, resource_id, resource_amount) VALUES (?,1, 0)', [$userId]);
+        $this->execute('INSERT INTO inventory (user_id, resource_id, resource_amount) VALUES (?,2, 0)', [$userId]);
+        $this->execute('INSERT INTO inventory (user_id, resource_id, resource_amount) VALUES (?,3, 0)', [$userId]);
+    }
+
+    public function addMonsters($userId, $monster_type_id){
+        $hp = $this->query('SELECT hp FROM monster_types WHERE id = ?',[$monster_type_id]);
+        $hp = $hp->hp;
+        $this->execute('INSERT INTO monsters (user_id, monster_type_id, level, hp, status) VALUES (?, ?, 1, ?, "in team")', [$userId, $monster_type_id, $hp]);
+    }
+    
+    public function updateMoneyByUser($userId, $money){
+        $this->execute('UPDATE users SET money = ? WHERE id = ?',[$money, $userId]);
+    }
+
+    public function getMoneyByUser($userId){
+        return $this-> query('SELECT money FROM users WHERE id = ?',[$userId]);
+    }
+
+    public function updateUserLocation($userId, $x, $y) {
+        $this->execute("UPDATE users SET x = ?, y = ? WHERE id = ?", [$x, $y, $userId]);
+    }
+        
+    public function updateUserStatus($userId, $status){
+        $this->execute('UPDATE users SET status = ? WHERE id =?', [$status, $userId]);
+    }
+
+    //map
     public function getMap(){
         $game = $this->query("SELECT map_id FROM game");
         $mapId = $game->map_id;
@@ -124,6 +158,7 @@ class DB {
         );
     }
 
+    //monster
     public function getMonstersByUser($userId, $status = null) {
         if ($status === null) {
             return $this->queryAll('SELECT * FROM monsters WHERE user_id = ?', [$userId]);
@@ -135,75 +170,70 @@ class DB {
     public function getMonsterById($monsterId){
         return $this->query('SELECT * FROM monsters WHERE id = ?',[$monsterId]);
     }
-    
-    public function getInventoryByUser($userId){
-        return $this->queryAll('SELECT * FROM inventory WHERE user_id = ?', [$userId]);
-    }
-    
-    public function getMonsterLevelById($monsterId){
-        return $this->query('SELECT level FROM monsters WHERE id = ?',[$monsterId]);
-    }
-    
+
     public function getMonsterTypeById($monster_type_id){
         return $this->query('SELECT * FROM monster_types WHERE id = ?',[$monster_type_id]);
     }
-    
-    public function upgradeLevelMonstersByUser($userId, $monsterId){
-        $this->execute('UPDATE monsters SET level = level + 1 WHERE user_id = ? AND id = ?', [$userId, $monsterId]);
+
+    public function getMonsterTypeByMonsters($monsterId){//узнаем тип монстра
+        return $this->query('SELECT monster_type_id FROM monsters WHERE id = ?',[$monsterId]);
+    }
+        //status
+    public function updateMonsterStatus($monsterId, $status){
+        $this->execute('UPDATE monsters SET status = ? WHERE id =?', [$status, $monsterId]);
     }
 
-    public function upgradeHpMonstersByUser($userId, $monsterId, $hp){
-        $this->execute('UPDATE monsters SET hp = hp + ? WHERE user_id = ? AND id = ?', [$hp, $userId, $monsterId]);
+        //level
+    public function getMonsterLevelById($monsterId){
+        return $this->query('SELECT level FROM monsters WHERE id = ?',[$monsterId]);
+    }
+
+    public function upgradeLevelMonstersByUser($monsterId){
+        $this->execute('UPDATE monsters SET level = level + 1 WHERE id = ?', [ $monsterId]);
+    }
+        //hp
+    public function upgradeHpMonstersByUser($monsterId, $hp){
+        $this->execute('UPDATE monsters SET hp = hp + ? WHERE id = ?', [$hp, $monsterId]);
     }
 
     public function getMonsterHpById($monsterId){
         return $this->query('SELECT hp FROM monsters WHERE id = ?',[$monsterId]);
     }
 
-
-    //параметры покемона, которые прибавлются при улучшении
-    public function getParametersMonsterByLevel($level) {
-        return [ 
-            'attack' => $this->query("SELECT attack FROM monster_level WHERE level = ?", [$level]),
-            'hp' => $this->query("SELECT hp FROM monster_level WHERE level = ?", [$level])
-        ];
+        
+    public function getParametersMonsterByLevel($level) { 
+        return $this->query("SELECT attack, hp FROM monster_level WHERE level = ?", [$level]);
     } 
     
-    public function getMonsterTypeByMonsters($monsterId){
-        return $this->query('SELECT monster_type_id FROM monsters WHERE id = ?',[$monsterId]);
-    }
-
-    public function getElementByMonsters($monster_type_id){
+    public function getElementByMonsters($monster_type_id){ //стихия покемона по типу 
         return $this->query('SELECT element_id FROM monster_types WHERE id = ?',[$monster_type_id]);
     }
-
-    //узнаем id стихии
-    public function getIdByElement($element){
-        return $this->query('SELECT id FROM elements WHERE name = ?', [$element]);
-    }
     
+    //invetory
+    public function getInventoryByUser($userId){
+        return $this->queryAll('SELECT * FROM inventory WHERE user_id = ?', [$userId]);
+    }
     public function getAmountCrystalByUser($userId){
         return $this-> query('SELECT resource_amount FROM inventory WHERE user_id = ? AND resource_id = 1 ',[$userId]);
-        
+    }
+    public function getAmountEggsByUser($userId){
+        return $this-> query('SELECT resource_amount FROM inventory WHERE user_id = ? AND resource_id = 2 ',[$userId]);   
+    }
+    public function getAmountEggsFragmentByUser($userId){
+        return $this-> query('SELECT resource_amount FROM inventory WHERE user_id = ? AND resource_id = 3 ',[$userId]);   
     }
     
-    public function getMoneyByUser($userId){
-        return $this-> query('SELECT money FROM users WHERE id = ?',[$userId]);
+    public function clearUserResource($userId, $resourceTypeId, $amount ){
+        $this-> execute('UPDATE inventory SET resource_amount = resource_amount	 - ? 
+                        WHERE user_id = ? AND resource_id = ?', [$amount, $userId, $resourceTypeId]);
     }
+
+    //lots
 
     public function clearUserMoney($userId, $money){
         $this->execute('UPDATE users SET money = ? WHERE id = ?',[$money, $userId]);
     }
    
-    public function clearUserResource($userId, $resourceTypeId, $amount ){
-        $this-> execute('UPDATE inventory SET resource_amount = resource_amount	 - ? 
-                        WHERE user_id = ? AND resource_id = ?', [$amount, $userId, $resourceTypeId]);
-    }
-    
-    public function updateUserStatus($userId, $status){
-        $this->execute('UPDATE users SET status = ? WHERE id =?', [$status, $userId]);
-    }
-
     public function getPlayersIngame() {
         return $this->queryAll('SELECT id, name, status, x, y FROM users');
     }
@@ -224,10 +254,61 @@ class DB {
         return $this->execute('UPDATE users SET money=money+? WHERE id=?', [$balanceIncrease, $userId]);
     }
     
-    public function getAllLots(){
-        return $this->queryAll('SELECT * from lots');
+    public function getAllLots() {
+        return $this->queryAll('
+                                SELECT
+                                    l.id AS id,
+                                    l.seller_id AS seller_id,
+                                    l.datetime AS datetime,
+                                    l.start_cost AS start_cost,
+                                    l.step_cost AS step_cost,
+                                    l.current_cost AS current_cost,
+                                    l.buyer_id AS buyer_id,
+                                    l.type AS type,
+                                    l.selling_id AS selling_id,
+                                    l.amount AS amount,
+                                    l.status AS status,
+                                    seller.name AS seller_name,
+                                    buyer.name AS buyer_name,
+                                    r.name as resource,
+                                    m.level as monster_level,
+                                    mt.name as monster_name,
+                                    m.hp as current_monster_hp,
+                                    (mt.hp + COALESCE(SUM(ml.hp), 0)) AS max_HP,
+                                    (mt.attack + COALESCE(SUM(ml.attack), 0)) AS ATK,
+                                    (mt.defense + COALESCE(SUM(ml.defense), 0)) AS DEF
+                                FROM lots AS l
+                                LEFT JOIN users AS seller ON seller.id = l.seller_id
+                                LEFT JOIN users AS buyer ON buyer.id = l.buyer_id
+                                LEFT JOIN resources AS r ON r.id = l.selling_id AND l.type = "item"
+                                LEFT JOIN monsters AS m ON m.id = l.selling_id AND l.type = "monster"
+                                LEFT JOIN monster_types AS mt ON m.monster_type_id = mt.id AND l.type = "monster"
+                                LEFT JOIN monster_level AS ml ON ml.level <= m.level
+                                GROUP BY l.id, m.level, mt.id, m.hp, seller.name, buyer.name, r.name
+                                
+        ');
+    }
+    
+
+    //battle
+    //?
+    public function getPlayersInBattle() {
+        return $this->queryAll('SELECT id, name, x, y FROM users WHERE status = "fight"');
     }
 
+    public function addFight($userId1, $userId2){
+        $this->execute('INSERT INTO fight (user1_id, user2_id, turn, status, result) VALUES (?,?, 0, "open", 0)', [$userId1, $userId2]);
+    }
+
+    public function addResultFight($userId1, $userId2, $result){
+        $this->execute('UPDATE fight SET status = "close", turn = 1, result = ? WHERE user1_id = ? AND user2_id = ? AND turn = 0', [$result, $userId1, $userId2]);
+    }
+
+    //element
+    public function getIdByElement($element){//узнаем id стихии
+        return $this->query('SELECT id FROM elements WHERE name = ?', [$element]);
+    }
+    
     public function makeBet($userId, $lotId, $newBet) {
         return ['ableToMakeBet' =>  $this->execute('UPDATE lots SET buyer_id = ?, timestamp_cost = UNIX_TIMESTAMP(), current_cost = ? WHERE id = ?', 
                                     [$userId, $newBet, $lotId]),
