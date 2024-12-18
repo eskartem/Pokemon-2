@@ -99,4 +99,25 @@ body {
         font-size: 0.9rem; 
         color: $secondary-color;
     }
+
+    #test-resources-line {
+        display: flex;
+        align-items: center;
+        gap: 10px; 
+        margin-bottom: 10px;
+        font-size: 0.9rem;
+        color: $secondary-color;
+
+        span {
+            display: flex;
+            align-items: center;
+            gap: 5px; 
+        }
+
+        img {
+            width: 35px; 
+            height: 35x;
+            object-fit: contain; 
+        }
+    }
 }

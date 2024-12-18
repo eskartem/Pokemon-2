@@ -1,9 +1,14 @@
 import React, { useState, useEffect, useContext } from 'react';
 import Button from '../../components/Button/Button';
-import { TResource, TStats, TMonsterType } from '../../services/server/types';
+import { TResource, TStats, TMonsterType, TInventory } from '../../services/server/types';
 import { ServerContext } from '../../App';
 import { IBasePage, PAGES } from '../PageManager';
 import './Inventory.scss';
+
+// Импорт изображений
+import Crystals from '../../assets/img/Ruby.png';
+import Eggs from '../../assets/img/Egg.png';
+import Shells from '../../assets/img/EggBreak.png';
 
 const TOKEN = 'user-token';
 
@@ -16,8 +21,8 @@ const Inventory: React.FC<IBasePage> = (props: IBasePage) => {
     const [userResources, setUserResources] = useState<TResource[]>([]); 
     const [selectedPokemon, setSelectedPokemon] = useState<TMonsterType | null>(null);
     const [battleTeam, setBattleTeam] = useState<TMonsterType[]>([]); 
-    const [showResources, setShowResources] = useState<boolean>(false); 
     const [loading, setLoading] = useState<boolean>(false);
+    const [inventory, setInventory] = useState<TInventory | null>(null);
 
     const backClickHandler = () => setPage(PAGES.GAME);
 
@@ -105,48 +110,6 @@ const Inventory: React.FC<IBasePage> = (props: IBasePage) => {
         setSelectedPokemon(pokemon);
     };
 
-    const addToBattleTeam = async (pokemon: TMonsterType) => {
-        if (!pokemon || battleTeam.length >= 3 || battleTeam.some(p => p.id === pokemon.id)) return;
-
-        console.log(`Добавляем монстра с id: ${pokemon.id}`);
-
-        try {
-            const result = await server.addToTeam(TOKEN, pokemon.id);
-            if (result) {
-                setAllPokemons((prev) => 
-                    prev.map(p => 
-                        p.id === pokemon.id ? { ...p, status: 'in team' } : p
-                    )
-                );
-                setBattleTeam([...battleTeam, result]);
-                fetchInventory(); 
-            }
-        } catch (error) {
-            console.error('Ошибка добавления покемона в команду:', error);
-        }
-    };
-
-    const removeFromBattleTeam = async (pokemon: TMonsterType) => {
-        if (!pokemon) return;
-
-        console.log(`Убираем монстра с id: ${pokemon.id}`);
-
-        try {
-            const result = await server.removeFromTeam(TOKEN, pokemon.id);
-            if (result) {
-                setAllPokemons((prev) => 
-                    prev.map(p => 
-                        p.id === pokemon.id ? { ...p, status: 'not in team' } : p
-                    )
-                );
-                setBattleTeam(battleTeam.filter(p => p.id !== pokemon.id));
-                fetchInventory(); 
-            }
-        } catch (error) {
-            console.error('Ошибка удаления покемона из команды:', error);
-        }
-    };
-
     const replaceInBattleTeam = async (index: number, newPokemon: TMonsterType | null) => {
         if (!newPokemon) return;
     
@@ -176,10 +139,6 @@ const Inventory: React.FC<IBasePage> = (props: IBasePage) => {
         }
     };
 
-    const toggleResources = () => {
-        setShowResources(prevState => !prevState);
-    };
-
     const getResourceName = (resourceId: number) => {
         switch (resourceId) {
             case 1:
@@ -193,12 +152,36 @@ const Inventory: React.FC<IBasePage> = (props: IBasePage) => {
         }
     };
 
+    const getResourceImage = (resourceId: number) => {
+        switch (resourceId) {
+            case 1:
+                return Crystals;
+            case 2:
+                return Eggs;
+            case 3:
+                return Shells;
+            default:
+                return undefined;
+        }
+    };
+
     const pokemonsNotInTeam = allPokemons.filter(pokemon => pokemon.status !== 'in team');
 
     return (
         <div className="inventory" id="test-inventory-page">
             <h1 id="test-inventory-title">Инвентарь</h1>
             {loading && <p id="test-loading-indicator">Загрузка...</p>}
+
+            {/* Вывод ресурсов под заголовком "Инвентарь" */}
+            <div id="test-resources-line">
+                {userResources.map((res) => (
+                    <span key={res.resource_id} id={`test-resource-${res.resource_id}`}>
+                        <img src={getResourceImage(res.resource_id)} alt={getResourceName(res.resource_id)} />
+                        {getResourceName(res.resource_id)}: {res.resource_amount}
+                    </span>
+                ))}
+            </div>
+
             <div className="battle-team" id="test-battle-team-section">
                 <h2 id="test-battle-team-title">Команда для боя</h2>
                 {battleTeam.map((pokemon, index) => (
@@ -213,11 +196,6 @@ const Inventory: React.FC<IBasePage> = (props: IBasePage) => {
                             onClick={() => replaceInBattleTeam(index, selectedPokemon)}
                         />
                         <Button
-                            id="test-remove-from-team-button"
-                            text="Убрать из команды"
-                            onClick={() => removeFromBattleTeam(pokemon)}
-                        />
-                        <Button
                             id="test-upgrade-button"
                             text="Улучшить"
                             onClick={() => upgradePokemonHandler(pokemon.id)}
@@ -225,6 +203,7 @@ const Inventory: React.FC<IBasePage> = (props: IBasePage) => {
                     </div>
                 ))}
             </div>
+
             <div className="pokemon-list" id="test-pokemon-list-section">
                 <h2 id="test-pokemon-list-title">Покемоны не в команде</h2>
                 {pokemonsNotInTeam.map((pokemon, index) => (
@@ -241,11 +220,6 @@ const Inventory: React.FC<IBasePage> = (props: IBasePage) => {
                             onClick={() => upgradePokemonHandler(pokemon.id)}
                         />
                         <Button
-                            id="test-add-to-team-button"
-                            text="Добавить в команду"
-                            onClick={() => addToBattleTeam(pokemon)}
-                        />
-                        <Button
                             id="test-select-button"
                             text="Выбрать"
                             onClick={() => selectPokemonHandler(pokemon)}
@@ -253,19 +227,7 @@ const Inventory: React.FC<IBasePage> = (props: IBasePage) => {
                     </div>
                 ))}
             </div>
-            <Button id="test-resources-button" text="Статистика" onClick={toggleResources} />
-            {showResources && (
-                <div className="resources-section" id="test-resources-section">
-                    <h2 id="test-resources-title">Ресурсы игрока</h2>
-                    <ul>
-                        {userResources.map((res) => (
-                            <li key={res.resource_id} id={`test-resource-${res.resource_id}`}>
-                                {getResourceName(res.resource_id)}: {res.resource_amount}
-                            </li>
-                        ))}
-                    </ul>
-                </div>
-            )}
+
             <Button id="test-back-button" onClick={backClickHandler} text='назад' />
         </div>
     );
