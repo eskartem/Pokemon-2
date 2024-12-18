@@ -116,4 +116,64 @@ class Battle {
 
     }
 
+    public function actionUser($monsterId1, $monsterId2, $action){
+        //monsterId1 - атакующий монстр
+        $monster1 = $this->db->getMonsterById($monsterId1); 
+        $monster1_type_id = $monster1->monster_type_id;
+        $userId = $monster1->user_id;
+
+        //monsterId2 - монстр, который защищается
+        $monster2 = $this->db->getMonsterById($monsterId2); 
+        $monster2_type_id = $monster2->monster_type_id;
+        $hp = $monster2->hp;
+        
+        if ($action === 'skill'){
+            //$this->skills($monster_type_id);
+        }elseif($action === 'attack'){
+
+            $level = $monster1->level;
+            $param = $this->db->getParametersMonsterByLevel($level);
+            $attack_param= isset($param->attack) ? intval($param->attack) : 0;
+            
+            $monster1_data = $this->db->getMonsterTypeById($monster1_type_id);
+            $attack = $monster1_data->attack;
+            $attack = $attack + $attack_param;
+
+            $monster2_data = $this->db->getMonsterTypeById($monster2_type_id);
+            $defense = $monster2_data->defense;
+
+            
+            //нанесенный урон при атаке (атака - защита = урон)
+            $damageDone = $attack - $defense; 
+            if ($hp < $damageDone){
+                $this->db->upgradeHpMonstersByUser($monsterId2, -$hp);
+            }else{
+                $this->db->upgradeHpMonstersByUser($monsterId2, -$damageDone);
+            }
+
+            return true;
+
+        }elseif($action === 'escape'){
+
+            $escapeChance = rand(1, 100);
+            
+            if ($escapeChance <= 10) {
+                //теряет 5% монет
+                $money1 = $this->db->getMoneyByUser($userId);
+                $money1 = isset($money1->money) ? intval($money1->money) : 0;
+                $money = $money1 * 0.05;
+                $this->db->updateMoneyByUser($userId, $money1 - $money);
+                //теряет 5% кристаллов  
+                $amountCrystal1 = $this->db->getAmountCrystalByUser($userId);
+                $amountCrystal1 = isset($amountCrystal1->resource_amount) ? intval($amountCrystal1->resource_amount) : 0;
+                $amountCrystal = $amountCrystal1 * 0.05;
+                $this->db->clearUserResource($userId, 1, $amountCrystal);
+                $this->db->updateUserStatus($userId, 'scout');
+                return ['message'=>'убежал'];
+            }else{
+
+                return ['message'=>'не убежал'];
+            }
+        }
+    }
 }

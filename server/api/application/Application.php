@@ -329,7 +329,11 @@ class Application {
             $monster1 = $this->user->getMonster($params['monsterId1']);
             $monster2 = $this->user->getMonster($params['monsterId2']);
             if ($monster1 && $monster2){
-                if ($params['action'] == 'skill' or $params['action'] == 'attack' or $params['action'] == 'escape' ){
+                if ($params['action'] === 'skill') {
+                    return $this->battle->actionUser($params['monsterId1'], $params['monsterId2'], $params['action']);
+                }elseif($params['action'] === 'attack'){
+                    return $this->battle->actionUser($params['monsterId1'], $params['monsterId2'], $params['action']);  
+                }elseif($params['action'] === 'escape'){
                     return $this->battle->actionUser($params['monsterId1'], $params['monsterId2'], $params['action']);
                 }
                 return ['error' => 704];
@@ -337,7 +341,6 @@ class Application {
             return ['error' => 702];
         }
         return ['error' => 242];
-
     }
 
     public function addToTeam($params) {
