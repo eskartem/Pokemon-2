@@ -17,6 +17,7 @@ class Answer {
         '701' => 'Skin is not found',
         '702' => 'pokemon is not found',
         '703' => 'max level pokemon',
+        '704' => 'action is not found',
         '706' => 'text message is empty',
         '707' => 'could not send message', // e-mail;
         '708' => 'invalid code from E-mail',
@@ -37,12 +38,21 @@ class Answer {
         '2005' => 'cannot move during the combat or offline',
         '2999' => 'user is not in town',
         '3001' => 'incorrect "type" parameter',
-        '3002' => 'incorrect amount or objectId parameter',
+        '3002' => 'incorrect "amount" parameter',
+        '3003' => 'incorrect "startCost" or "stepCost" parameter', 
+        '3004' => 'unable to sell monster if you will have less than 3 monsters', // 3006 свободны
+        '3005' => 'this lot does not belong to you',
         '3007' => 'inventory of that user has not been found',
         '3008' => 'selling object with that ID has not been found',
         '3009' => 'not enough resources to sell that amount',
         '3010' => 'that amount of shells cannot be exchanged',
         '3011' => 'not enough shells to exchange that amount',
+        '3012' => 'cannot make bet to the your own lot',
+        '3013' => 'you have to increase your bet to make a new one',
+        '3014' => 'new bet is lesser than the step',
+        '3015' => 'this lot has been closed already',
+        '3016' => 'this lot does not exist',
+        '3017' => 'you do not have enough currency to buy this',
         '9000' => 'unknown error'
     );
 

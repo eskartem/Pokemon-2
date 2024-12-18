@@ -29,9 +29,10 @@ function result($params) {
             // ???? case 'updradePokemon': return $app-> upgradePokemon($params); //
             
             //battle
+            case 'startBattle': return $app-> startBattle($params);
             // case 'updateBattle': return $app-> updateBattle($params); // loop //получаю данные по всем игрокам
-            // case 'endBattle': return $app-> endBattle($params);
-            // case 'actionUser': return $app-> actionUser($params); //действие игрока в бою во время ход
+            case 'endBattle': return $app-> endBattle($params);
+            //case 'actionUser': return $app-> actionUser($params); //действие игрока в бою во время ход
             //map
             case 'getMap': return $app-> getMap($params);
             //case 'startGame': return $app-> startGame($params);
@@ -40,12 +41,14 @@ function result($params) {
             case 'updateScene': return $app-> updateScene($params);
             case 'moveUser': return $app-> moveUser($params);
 
-            //market
+            //market            
+            case 'makeBet': return $app->makeBet($params);
             case 'getCatalog': return $app->getCatalog($params); // для торговца
-            case 'getAllLots': return $app->getAllLots($params); // для рынка
-            // case 'buy': return $app-> buy($params);
+            case 'updateLots': return $app->updateLots($params);
+            case 'cancelLot': return $app->cancelLot($params);
+            case 'makeLot': return $app->makeLot($params);
             case 'sell': return $app->sell($params);
-
+            
             default: return ['error' => 102];
         }
         
