@@ -27,8 +27,10 @@ const Map: React.FC = () => {
     const [isCanMove, setCanMove] = useState<boolean>(false);
     const [lastMousePosition, setLastMousePosition] = useState<TPoint>({ x: 0, y: 0 });
 
-    const canvasHeight = WINV.HEIGHT * tileSize;
-    const canvasWidth = WINV.WIDTH * tileSize;
+    const canvasWidth = window.innerWidth;
+    const canvasHeight = window.innerHeight;
+    //const canvasWidth = WINV.WIDTH * tileSize;
+    //const canvasHeight = WINV.HEIGHT * tileSize;
 
     const getCurrentZone = (currenGamer: TGamer) => {
         if (!userOnMap) return 'пользователя нету';
