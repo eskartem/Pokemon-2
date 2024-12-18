@@ -42,7 +42,7 @@
 
 ## 1. Общее
 ### 1.1. Адрес сервера
-`http://nopainnogame.local/api`
+`http://monstaris.local/api`
 
 ### 1.2. Используемый протокол
 API полностью реализовано на http(s).
