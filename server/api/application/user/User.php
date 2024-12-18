@@ -23,6 +23,7 @@ class User {
             if (md5($user->password . $rnd) === $hash) {
                 $token = md5(rand());
                 $this->db->updateToken($user->id, $token);
+                $this->db->updateMapHash(md5(rand()));
                 $this->db->updateUserStatus($user->id, 'scout'); 
                 return [
                     'id' => $user->id,
@@ -32,9 +33,7 @@ class User {
                     'crystals' => $user->crystals,
                     'eggFragments' => $user->egg_fragments,
                     'x' => $user->x,
-                    'y'=> $user->y,
-                    $this->db->getMonstersByUser($user->id),
-                    $this->db->getInventoryByUser($user->id)
+                    'y'=> $user->y
                 ];
             }
             return ['error' => 1002];
@@ -46,6 +45,7 @@ class User {
         $user = $this->db->getUserByToken($token);
         if ($user) {
             $this->db->updateToken($user->id, null);
+            $this->db->updateMapHash(md5(rand()));
             $this->db->updateUserStatus($user->id, 'offline');
             return true;
         }

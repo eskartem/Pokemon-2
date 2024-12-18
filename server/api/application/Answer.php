@@ -26,6 +26,10 @@ class Answer {
         '802' => 'lack of funds', //не хватает средств
         '850' => 'incorrect array output',
         '1006' => 'user with this email is already registered',
+        '1449' => 'this monster is already in your team',
+        '1450' => 'this monster is on sale, cannot be put in the team',
+        '1460' => 'monster with that ID has not been found',
+        '1461' => 'you do not own that monster',
         '2001' => 'coordinates to move are not set',
         '2002' => 'coordinates to move are not correct',
         '2003' => 'coordinates to move are out of map borders',
@@ -33,12 +37,20 @@ class Answer {
         '2005' => 'cannot move during the combat or offline',
         '2999' => 'user is not in town',
         '3001' => 'incorrect "type" parameter',
-        '3002' => 'incorrect amount or objectId parameter',
+        '3002' => 'incorrect "amount" parameter',
+        '3003' => 'incorrect "startCost" or "stepCost" parameter', 
+        '3004' => 'unable to sell monster if you will have less than 3 monsters', //3005, 3006 свободны
         '3007' => 'inventory of that user has not been found',
         '3008' => 'selling object with that ID has not been found',
         '3009' => 'not enough resources to sell that amount',
         '3010' => 'that amount of shells cannot be exchanged',
         '3011' => 'not enough shells to exchange that amount',
+        '3012' => 'cannot make bet to the your own lot',
+        '3013' => 'you have to increase your bet to make a new one',
+        '3014' => 'new bet is lesser than the step',
+        '3015' => 'this lot has been closed already',
+        '3016' => 'this lot does not exist',
+        '3017' => 'you do not have enough currency to buy this',
         '9000' => 'unknown error'
     );
 

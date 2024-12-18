@@ -26,8 +26,8 @@ const CONFIG = {
 
     // игровое окно, видимое пользователю
     WINV: {
-        WIDTH: 32,
-        HEIGHT: 18,
+        WIDTH: 24,
+        HEIGHT: 13.5,
         LEFT: 0,
         BOTTOM: 0
     },
@@ -37,10 +37,11 @@ const CONFIG = {
         HEIGHT: 90,
     },
 
-    fovDistance: 4, // дальность поля зрения игрока
+    fovDistance: 5, // дальность поля зрения игрока
     
     winAspect: 16 / 9,
-    tileSize: 32, 
+    tileSize: 40, // размер клетки в пикселях 
+    nickFontSize: 16, // размер ника на карте в пикеслях
 
     CHAT_TIMESTAMP: 200, //ms
     SCENE_TIMESTAMP: 100, //ms
