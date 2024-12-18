@@ -110,14 +110,6 @@ class Application {
         }
     }
 
-    public function startGame($params){
-        if($params['token']){
-            return $this->map->startGame($params['token']);
-        }
-        return ['error' => 242];
-    }
-
-
     public function getMap($params) {
         if ($params['token']) {
             $user = $this->user->getUser($params['token']);
@@ -128,28 +120,6 @@ class Application {
         }
         return ['error' => 242];
     }
-
-    /*public function startGame($params){
-        if($params['token']){
-            $user = $this->user->getUser($params['token']);
-            if ($user) {
-                return $this->map->startGame($params['token']);
-            }
-            return ['error' => 705];
-        }
-        return ['error' => 242];
-    }
-
-    public function endGame($params){
-        if($params['token']){
-            $user = $this->user->getUser($params['token']);
-            if ($user) {
-                return $this->map->endGame($params['token']);
-            }
-            return ['error' => 705];
-        }
-        return ['error' => 242];
-    }*/
 
     public function moveUser($params) {
         if (!isset($params['token'])) {
@@ -315,6 +285,62 @@ class Application {
         }
 
         return ['error' => 3001];
+    }
+
+    //Боевка
+
+    public function startBattle($params) {
+        if ($params['token1']&& $params['token2']) {
+            $user1 = $this->user->getUser($params['token1']);
+            $user2 = $this->user->getUser($params['token2']);
+            if ($user1 && $user2) {
+                return $this->battle->startBattle($params['token1'],$params['token2'] );
+            }
+            return ['error' => 705];
+        }
+        return ['error' => 404];
+    }
+    
+    public function updateBattle($params) {
+        if ($params['token'] && $params['hash']) {
+            $user = $this->user->getUser($params['token']);
+            if ($user) {
+                return $this->battle->updateBattle($params['hash']);
+            }
+            return ['error' => 705];
+        }
+        return ['error' => 242];
+    }
+    
+    public function endBattle($params) {
+        if ($params['token1']&& $params['token2']) {
+            $user1 = $this->user->getUser($params['token1']);
+            $user2 = $this->user->getUser($params['token2']);
+            if ($user1 && $user2) {
+                return $this->battle->endBattle($params['token1'],$params['token2'] );
+            }
+            return ['error' => 705];
+        }
+        return ['error' => 404];
+    }
+
+    public function actionUser($params){
+        if ($params['monsterId1'] && $params['monsterId2'] && $params['action']){
+            $monster1 = $this->user->getMonster($params['monsterId1']);
+            $monster2 = $this->user->getMonster($params['monsterId2']);
+            if ($monster1 && $monster2){
+                if ($params['action'] === 'skill') {
+                    return $this->battle->actionUser($params['monsterId1'], $params['monsterId2'], $params['action']);
+                }elseif($params['action'] === 'attack'){
+                    return $this->battle->actionUser($params['monsterId1'], $params['monsterId2'], $params['action']);  
+                }elseif($params['action'] === 'escape'){
+                    return $this->battle->actionUser($params['monsterId1'], $params['monsterId2'], $params['action']);
+                }
+                return ['error' => 704];
+            }
+            return ['error' => 702];
+        }
+        return ['error' => 242];
     }
 
     public function addToTeam($params) {
