@@ -117,7 +117,7 @@ class DB {
     public function addMonsters($userId, $monster_type_id){
         $hp = $this->query('SELECT hp FROM monster_types WHERE id = ?',[$monster_type_id]);
         $hp = $hp->hp;
-        $this->execute('INSERT INTO monsters (user_id, monster_type_id, level, hp, status) VALUES (?, ?, 1, ?, "in pocket")', [$userId, $monster_type_id, $hp]);
+        $this->execute('INSERT INTO monsters (user_id, monster_type_id, level, hp, status) VALUES (?, ?, 1, ?, "in team")', [$userId, $monster_type_id, $hp]);
     }
     
     public function updateMoneyByUser($userId, $money){
