@@ -131,18 +131,12 @@ class User {
     
         $level = $levelMonster + 1;
         $param = $this->db->getParametersMonsterByLevel($level);
-        $hp_param = isset($param['hp']->hp) ? intval($param['hp']->hp) : 0;
-        //не знаю к чему прибавлять атаку из какой табл брать данные 
-        $attack_param= isset($param['attack']->attack) ? intval($param['attack']->attack) : 0;
-
+        $hp_param = $param->hp;
+        
         //увеличиваем hp 
         $this->db->upgradeHpMonstersByUser($user->id, $monsterId, $hp_param);
         $hp = $this->db->getMonsterHpById($monsterId);
         //$hp = isset($hp->hp) ? intval($hp->hp) : 0;
-        $parametersMonsterType = $this->db->getMonsterTypeById($monster_type_id);
-        $attack = isset($parametersMonsterType->attack) ? intval($parametersMonsterType->attack) : 0;
-        $attack = $attack + $attack_param;
-
 
         return[
             $this->db->getMonsterLevelById($monsterId),

@@ -197,11 +197,8 @@ class DB {
     }
 
         
-    public function getParametersMonsterByLevel($level) { //параметры покемона, которые прибавлются при улучшении
-        return [ 
-            'attack' => $this->query("SELECT attack FROM monster_level WHERE level = ?", [$level]),
-            'hp' => $this->query("SELECT hp FROM monster_level WHERE level = ?", [$level])
-        ];
+    public function getParametersMonsterByLevel($level) { 
+        return $this->query("SELECT attack, hp FROM monster_level WHERE level = ?", [$level]);
     } 
     
     public function getElementByMonsters($monster_type_id){ //стихия покемона по типу 
