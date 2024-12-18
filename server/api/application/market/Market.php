@@ -163,8 +163,30 @@ class Market {
                 }
             }
             $allLots[] = $filteredLots;
+            $frontendLots = [];
+            foreach ($allLots as $lot) {
+                $frontendLots[] = [
+                    'id' => $lot['id'],
+                    'datetime' => $lot['datetime'],
+                    'start_cost' => $lot['start_cost'],
+                    'step_cost' => $lot['step_cost'],
+                    'current_cost' => $lot['current_cost'],
+                    'type' => $lot['type'],
+                    'resource' => $lot['resource'],
+                    'amount' => $lot['amount'],
+                    'monster_level' => $lot['monster_level'],
+                    'monster_name' => $lot['monster_name'],
+                    'current_monster_hp' => $lot['current_monster_hp'],
+                    'max_HP' => $lot['max_HP'],
+                    'ATK' => $lot['ATK'],
+                    'DEF' => $lot['DEF'],
+                    'status' => $lot['status'],
+                ];
+            }
+
+
         }
-        return ['all_lots' => $allLots,
+        return ['all_lots' => $frontendLots,
                 'hash' => $hash
         ];
     }
