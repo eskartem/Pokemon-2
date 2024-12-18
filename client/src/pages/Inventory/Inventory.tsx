@@ -1,11 +1,9 @@
 import React, { useState, useEffect, useContext } from 'react';
 import Button from '../../components/Button/Button';
-import { TResource, TStats, TMonsterType, TInventory } from '../../services/server/types';
+import { TResource, TStats, TMonsterType } from '../../services/server/types';
 import { ServerContext } from '../../App';
 import { IBasePage, PAGES } from '../PageManager';
 import './Inventory.scss';
-
-// Импорт изображений
 import Crystals from '../../assets/img/Ruby.png';
 import Eggs from '../../assets/img/Egg.png';
 import Shells from '../../assets/img/EggBreak.png';
@@ -22,7 +20,6 @@ const Inventory: React.FC<IBasePage> = (props: IBasePage) => {
     const [selectedPokemon, setSelectedPokemon] = useState<TMonsterType | null>(null);
     const [battleTeam, setBattleTeam] = useState<TMonsterType[]>([]); 
     const [loading, setLoading] = useState<boolean>(false);
-    const [inventory, setInventory] = useState<TInventory | null>(null);
 
     const backClickHandler = () => setPage(PAGES.GAME);
 
@@ -132,7 +129,7 @@ const Inventory: React.FC<IBasePage> = (props: IBasePage) => {
                     )
                 );
     
-                fetchInventory(); // Обновляем инвентарь
+                fetchInventory();
             }
         } catch (error) {
             console.error('Ошибка замены покемона в команде:', error);
@@ -172,7 +169,6 @@ const Inventory: React.FC<IBasePage> = (props: IBasePage) => {
             <h1 id="test-inventory-title">Инвентарь</h1>
             {loading && <p id="test-loading-indicator">Загрузка...</p>}
 
-            {/* Вывод ресурсов под заголовком "Инвентарь" */}
             <div id="test-resources-line">
                 {userResources.map((res) => (
                     <span key={res.resource_id} id={`test-resource-${res.resource_id}`}>
