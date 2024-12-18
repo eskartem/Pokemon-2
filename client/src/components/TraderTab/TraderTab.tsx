@@ -11,40 +11,46 @@ const TraderTab: React.FC = () => {
     const [resources, setResources] = useState<TResources[]>([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string>("");
+    const [sellingResource, setSellingResource] = useState<{ id: string; name: string } | null>(null);
+    const [amountToSell, setAmountToSell] = useState<string>("");
+    const [sellError, setSellError] = useState<string>("");
 
     const fetchResources = async () => {
         try {
             setLoading(true);
             setError("");
-            const response = await server.getCatalog(TOKEN); 
-            console.log(response);
+            const response = await server.getCatalog(TOKEN);
             if (!response || !Array.isArray(response)) {
-                throw new Error('Не удалось загрузить данные с сервера');
+                throw new Error('');
             }
             setResources(response);
         } catch {
-            setError('Ошибка при загрузке ресурсов');
+            setError('');
         } finally {
             setLoading(false);
         }
     };
 
-    // Продажа ресурса
-    const sellResource = async (id: string, name: string) => {
-        const amountToSell = prompt(`Введите количество ${name} для продажи:`); // Диалог для ввода количества
+    const sellResource = async () => {
+        if (!sellingResource) return;
 
-        if (!amountToSell || isNaN(Number(amountToSell)) || Number(amountToSell) <= 0) {
-            alert('Введите корректное количество!');
+        const { id } = sellingResource;
+        const parsedAmount = Number(amountToSell);
+
+        if (!amountToSell || isNaN(parsedAmount) || parsedAmount <= 0) {
+            setSellError('Введите корректное количество!');
             return;
         }
 
         try {
-            const response = await server.sell(TOKEN, id, amountToSell); 
+            const response = await server.sell(TOKEN, id, amountToSell);
             if (!response) throw new Error('Ресурс не продан');
-            alert(`Успешно продано ${amountToSell} ресурса`);
+            setSellError('');
+            setSellingResource(null);
+            setAmountToSell('');
             fetchResources();
         } catch (err) {
-            setError('Ошибка при продаже ресурса');
+            setSellError('Ошибка при продаже ресурса');
         }
     };
 
@@ -67,12 +73,38 @@ const TraderTab: React.FC = () => {
                         <Button
                             id={`test-sell-button-${id}`}
                             text="Продать"
-                            onClick={() => sellResource(id.toString(), name)} 
-                            isDisabled={false} 
+                            onClick={() => setSellingResource({ id: id.toString(), name })}
+                            isDisabled={false}
                         />
                     </div>
                 ))}
             </div>
+
+            {sellingResource && (
+                <div className="sell-modal" id="test-sell-modal">
+                    <h2>Продажа ресурса: {sellingResource.name}</h2>
+                    <input
+                        type="number"
+                        placeholder="Введите количество"
+                        value={amountToSell}
+                        onChange={(e) => setAmountToSell(e.target.value)}
+                        id="test-sell-input"
+                    />
+                    {sellError && <p className="error" id="test-sell-error">{sellError}</p>}
+                    <Button
+                        id="test-confirm-sell-button"
+                        text="Подтвердить продажу"
+                        onClick={sellResource}
+                        isDisabled={false}
+                    />
+                    <Button
+                        id="test-cancel-sell-button"
+                        text="Отмена"
+                        onClick={() => setSellingResource(null)}
+                        isDisabled={false}
+                    />
+                </div>
+            )}
         </div>
     );
 };

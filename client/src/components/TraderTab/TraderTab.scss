@@ -62,3 +62,44 @@ button:disabled {
     background-color: #adb5bd;
     cursor: not-allowed;
 }
+
+.sell-modal {
+    margin-top: 20px;
+    padding: 20px;
+    background-color: #ffffff;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.sell-modal h2 {
+    color: #343a40;
+    font-size: 20px;
+    margin-bottom: 15px;
+}
+
+.sell-modal input[type="number"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    font-size: 14px;
+    color: #495057;
+    box-sizing: border-box;
+}
+
+.sell-modal input[type="number"]:focus {
+    border-color: #80bdff;
+    outline: none;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+.sell-modal .error {
+    margin-bottom: 15px;
+}
+
+.sell-modal button {
+    margin: 5px;
+}
