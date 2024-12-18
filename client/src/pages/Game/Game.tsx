@@ -25,7 +25,7 @@ const Game: React.FC<IBasePage> = (props: IBasePage) => {
     const muteButtonHandler = async () => {
         // сделать запрос на сервак по изменению поля is_mute в таблицe users
     }
-    
+
     if (!user) { return ( <div><h1> Что-то пошло не так. </h1></div> );} // закоментировать для работы без бекэнда
 
     return (

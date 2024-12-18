@@ -66,6 +66,7 @@ class Server {
         const result = await this.request<boolean>('logout');
         if (result) {
             this.store.clearUser();
+            this.store.clearAllHashes();
         }
         return result;
     }
@@ -105,6 +106,7 @@ class Server {
             clearInterval(this.chatInterval);
             this.chatInterval = null;
             this.store.clearMessages();
+            this.store.clearAllHashes();
         }
     }
 
@@ -131,6 +133,7 @@ class Server {
         if (this.marketInterval) {
             clearInterval(this.marketInterval);
             this.marketInterval = null;
+            this.store.clearAllHashes();
         }
     }
 
@@ -183,6 +186,7 @@ class Server {
         if (this.sceneInterval) {
             clearInterval(this.sceneInterval);
             this.sceneInterval = null;
+            this.store.clearAllHashes();
         }
     }
 

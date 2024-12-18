@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect, useRef } from 'react';
+import React, { useContext, useState, useEffect, useRef, useMemo } from 'react';
 import { ServerContext, StoreContext } from '../../App';
 import { TUpdateMarketResponse, TLot, ETypeLot } from '../../services/server/types';
 import Button from '../Button/Button';
@@ -15,24 +15,19 @@ const MarketTab: React.FC = () => {
     const inputBetRef = useRef<HTMLInputElement>(null)
 
     useEffect(() => {
-        (async () => {
-            const marketUpdateHandler = ( result: TUpdateMarketResponse ) => {
-                const lots = result.lots;
-                if (!lots) return;
-                console.log(lots);
-                setCatalog(lots);
-            }
-
-            if (user) {
-                server.startMarketUpdate(marketUpdateHandler);
-            }
-            
-            return () => {
-                server.stopMarketUpdate();
-            }
-
-       })();
-    }, []);
+        const marketUpdateHandler = ( result: TUpdateMarketResponse ) => {
+            const lots = result.lots;
+            if (!lots) return;
+            setCatalog(lots);
+        }
+        if (user) {
+            server.startMarketUpdate(marketUpdateHandler);
+        }
+        
+        return (() => {
+            server.stopMarketUpdate();
+        })
+    }, [server, store, user]);
 
     if (!catalog) {
         return (
@@ -41,9 +36,9 @@ const MarketTab: React.FC = () => {
             </div>
         )
     }
-
     const makeBet = (lotId: number) => {
-        const bet = inputBetRef?.current?.value;
+        const inputBet = document.getElementById(`${lotId}-bet-input`) as HTMLInputElement;
+        const bet = inputBet.value;
         if (!bet || !lotId) { return }
         server.makeBet(lotId, bet);
     }
@@ -57,7 +52,8 @@ const MarketTab: React.FC = () => {
         <div className='lots'>
             {catalog.map( (lot, index) => {
                 return <div className='market-lot' key={index}>
-                    <h1>{index+1}) [ {lot.datetime}]| {lot.selling_id} | {lot.type === ETypeLot.item? lot.amount: '1'} шт.| 
+                    <h1>
+                        {index+1}) [ {lot.datetime}]| {lot.selling_id} | {lot.type === ETypeLot.item? lot.amount: '1'} шт.| 
                         продавец: {lot.seller_id} | нач.цена: { lot.start_cost } | тек.цена: { lot.current_cost}|
                         шаг: { lot.step_cost}| {lot.buyer_id != null ? `${lot.buyer_id} |`: ''} {lot.status}|
                     </h1>
@@ -65,10 +61,14 @@ const MarketTab: React.FC = () => {
                         onClick={() => makeBet(lot.id)}
                         text='поставить'
                     />
-                    <input type="number" className='bet-input' ref={inputBetRef}
-                    placeholder={`${lot.current_cost+ lot.step_cost}`}
-                    min={lot.current_cost + lot.step_cost}
-                    required
+                    <input 
+                        key={index}
+                        type="number"
+                        className='bet-input'
+                        id={`${lot.id}-bet-input`}
+                        placeholder={`${lot.current_cost+ lot.step_cost}`}
+                        min={lot.current_cost + lot.step_cost}
+                        required
                     />
                 </div>
             })}

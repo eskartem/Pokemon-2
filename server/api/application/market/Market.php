@@ -31,6 +31,7 @@ class Market {
                     if ($lotInfo['buyer_id'] != NULL){
                         $this->db->changeMoney($lotInfo['buyer_id'], $lotInfo['current_cost']);
                     }
+                    $this->db->updateMarketHash(md5(rand()));
                     return $this->db->makeBet($userId, $lotInfo['id'], $newBet);
                 }
                 return ['error' => 3014];

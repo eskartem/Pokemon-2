@@ -83,6 +83,11 @@ class Store {
         this.marketHash = hash;
     }
 
+    clearAllHashes() {
+        this.chatHash = 'empty_chat_hash';
+        this.sceneHash = 'empty_scene_hash';
+        this.marketHash = 'empty_market_hash';
+    }
 }
 
 export default Store;

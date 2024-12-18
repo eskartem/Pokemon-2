@@ -87,6 +87,10 @@ class DB {
         $this->execute("UPDATE hashes SET map_hash=? WHERE id=1", [$hash]);
     }
 
+    public function updateMarketHash($hash) {
+        $this->execute("UPDATE hashes SET market_hash=? WHERE id=1", [$hash]);
+    }
+
     public function addMessage($userId, $message) {
         $this->execute('INSERT INTO messages (user_id, message, created) VALUES (?,?, now())', [$userId, $message]);
     }
