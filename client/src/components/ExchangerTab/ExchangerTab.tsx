@@ -28,9 +28,6 @@ const ExchangerTab: React.FC = () => {
             );
 
             setEggFragments(eggFragmentResource ? eggFragmentResource.resource_amount : 0);
-        } catch (error) {
-            console.error('Ошибка при загрузке ресурсов:', error);
-            setError('Ошибка при загрузке ресурсов');
         } finally {
             setLoading(false);
         }
@@ -45,8 +42,7 @@ const ExchangerTab: React.FC = () => {
                 throw new Error('Ошибка обмена');
             }
         } catch (error) {
-            console.error('Ошибка при обмене:', error);
-            setError('Ошибка при обмене ресурсов');
+            setError('');
         }
     };
 
