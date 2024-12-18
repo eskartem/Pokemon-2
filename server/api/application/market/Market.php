@@ -190,4 +190,28 @@ class Market {
                 'hash' => $hash
         ];
     }
+
+    public function cancelLot($lotId, $lots, $user){
+        foreach ($lots as $lot){
+            if ($lot['id'] == $lotId){                
+                if ($lot['status'] == 'open'){
+                    if ($lot['seller_id'] == $user->id){
+                        return ['ableToCancel' => $this->db->changeLotStatus('cancelled', $lot['id']),
+                                'ableToReturnToOwner' => match ($lot['type']) {
+                                    'item' => $this->db->sellResources($lot['selling_id'], -($lot['amount']), $lot['seller_id']),
+                                    'monster' => $this->db->changeMonsterOwner($lot['selling_id'], $lot['seller_id']),
+                                },
+                                'ableToReturnBet' => match (true) {
+                                    $lot['buyer_id'] !== null => $this->db->changeMoney($lot['buyer_id'], $lot['current_cost']),
+                                    default => 'нет ставок на этом лоте',
+                                }
+                        ];
+                    }
+                    return ['error' => 3005];    
+                }
+                return ['error' => 3015];
+            }
+        }
+        return ['error' => 3016];
+    }
 }
