@@ -250,9 +250,41 @@ class DB {
         return $this->execute('UPDATE users SET money=money+? WHERE id=?', [$balanceIncrease, $userId]);
     }
     
-    public function getAllLots(){
-        return $this->queryAll('SELECT * from lots');
+    public function getAllLots() {
+        return $this->queryAll('
+                                SELECT
+                                    l.id AS id,
+                                    l.seller_id AS seller_id,
+                                    l.datetime AS datetime,
+                                    l.start_cost AS start_cost,
+                                    l.step_cost AS step_cost,
+                                    l.current_cost AS current_cost,
+                                    l.buyer_id AS buyer_id,
+                                    l.type AS type,
+                                    l.selling_id AS selling_id,
+                                    l.amount AS amount,
+                                    l.status AS status,
+                                    seller.name AS seller_name,
+                                    buyer.name AS buyer_name,
+                                    r.name as resource,
+                                    m.level as monster_level,
+                                    mt.name as monster_name,
+                                    m.hp as current_monster_hp,
+                                    (mt.hp + COALESCE(SUM(ml.hp), 0)) AS max_HP,
+                                    (mt.attack + COALESCE(SUM(ml.attack), 0)) AS ATK,
+                                    (mt.defense + COALESCE(SUM(ml.defense), 0)) AS DEF
+                                FROM lots AS l
+                                LEFT JOIN users AS seller ON seller.id = l.seller_id
+                                LEFT JOIN users AS buyer ON buyer.id = l.buyer_id
+                                LEFT JOIN resources AS r ON r.id = l.selling_id AND l.type = "item"
+                                LEFT JOIN monsters AS m ON m.id = l.selling_id AND l.type = "monster"
+                                LEFT JOIN monster_types AS mt ON m.monster_type_id = mt.id AND l.type = "monster"
+                                LEFT JOIN monster_level AS ml ON ml.level <= m.level
+                                GROUP BY l.id, m.level, mt.id, m.hp, seller.name, buyer.name, r.name
+                                
+        ');
     }
+    
 
     //battle
     //?

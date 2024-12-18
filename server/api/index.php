@@ -41,14 +41,13 @@ function result($params) {
             case 'updateScene': return $app-> updateScene($params);
             case 'moveUser': return $app-> moveUser($params);
 
-            //market
-            case 'getAllLots': return $app->getAllLots($params); // новое название getAllLots, вместо getCatalog              
+            //market            
             case 'makeBet': return $app->makeBet($params);
             case 'getCatalog': return $app->getCatalog($params); // для торговца
             case 'updateLots': return $app->updateLots($params);
+            case 'cancelLot': return $app->cancelLot($params);
             case 'makeLot': return $app->makeLot($params);
             case 'sell': return $app->sell($params);
-            // удалить лишнее потом
             
             default: return ['error' => 102];
         }

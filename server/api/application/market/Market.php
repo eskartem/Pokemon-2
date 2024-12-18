@@ -163,9 +163,55 @@ class Market {
                 }
             }
             $allLots[] = $filteredLots;
+            $frontendLots = [];
+            foreach ($allLots as $lot) {
+                $frontendLots[] = [
+                    'id' => $lot['id'],
+                    'datetime' => $lot['datetime'],
+                    'start_cost' => $lot['start_cost'],
+                    'step_cost' => $lot['step_cost'],
+                    'current_cost' => $lot['current_cost'],
+                    'type' => $lot['type'],
+                    'resource' => $lot['resource'],
+                    'amount' => $lot['amount'],
+                    'monster_level' => $lot['monster_level'],
+                    'monster_name' => $lot['monster_name'],
+                    'current_monster_hp' => $lot['current_monster_hp'],
+                    'max_HP' => $lot['max_HP'],
+                    'ATK' => $lot['ATK'],
+                    'DEF' => $lot['DEF'],
+                    'status' => $lot['status'],
+                ];
+            }
+
+
         }
-        return ['all_lots' => $allLots,
+        return ['all_lots' => $frontendLots,
                 'hash' => $hash
         ];
+    }
+
+    public function cancelLot($lotId, $lots, $user){
+        foreach ($lots as $lot){
+            if ($lot['id'] == $lotId){                
+                if ($lot['status'] == 'open'){
+                    if ($lot['seller_id'] == $user->id){
+                        return ['ableToCancel' => $this->db->changeLotStatus('cancelled', $lot['id']),
+                                'ableToReturnToOwner' => match ($lot['type']) {
+                                    'item' => $this->db->sellResources($lot['selling_id'], -($lot['amount']), $lot['seller_id']),
+                                    'monster' => $this->db->changeMonsterOwner($lot['selling_id'], $lot['seller_id']),
+                                },
+                                'ableToReturnBet' => match (true) {
+                                    $lot['buyer_id'] !== null => $this->db->changeMoney($lot['buyer_id'], $lot['current_cost']),
+                                    default => 'нет ставок на этом лоте',
+                                }
+                        ];
+                    }
+                    return ['error' => 3005];    
+                }
+                return ['error' => 3015];
+            }
+        }
+        return ['error' => 3016];
     }
 }
