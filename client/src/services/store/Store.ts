@@ -1,4 +1,4 @@
-import { TGamer, TMessages, TUser } from "../server/types";
+import { TGamer, TMessages, TUser, TInventory } from "../server/types";
 
 const TOKEN = 'token';
 
@@ -8,6 +8,8 @@ class Store {
     gamers: TGamer[] = [];
     chatHash: string = 'empty chat hash';
     sceneHash: string = 'empty scene hash';
+    inventory: TInventory | null = null; // Добавляем инвентарь
+    inventoryHash: string = 'empty inventory hash'; // Добавляем хеш инвентаря
 
     setToken(token: string): void {
         localStorage.setItem(TOKEN, token);
@@ -72,14 +74,6 @@ class Store {
     getGamers(): TGamer[] {
         return this.gamers;
     }
-
-    /*setMap(map: TGetMap): void {
-        this.map = map;
-    }
-
-    getMap(): TGetMap | null {
-        return this.getMap;
-    }*/
 }
 
 export default Store;

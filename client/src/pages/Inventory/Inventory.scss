@@ -1,13 +1,79 @@
-@use '../../scss/variables.scss' as *;
-
 .inventory {
-    position: relative;
-    display: flex;
-    text-align: center;
-    background-color: $main-theme;
-
-    padding: 30px;
-    margin: 10px;
-    border: solid $button-border-color 3px;
+    font-family: Arial, sans-serif;
+    padding: 20px;
+    background-color: #f4f4f4;
     border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.battle-team {
+    margin-bottom: 30px;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 20px;
+}
+
+.pokemon-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.pokemon-card {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 15px;
+    width: calc(33.333% - 20px); 
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+
+    &:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+}
+
+.pokemon-card h2 {
+    font-size: 18px;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.pokemon-card p {
+    font-size: 14px;
+    color: #555;
+    margin: 5px 0;
+}
+
+.pokemon-card button {
+    margin-top: 10px;
+    margin-right: 10px;
+}
+
+.selected-pokemon {
+    margin-top: 30px;
+    padding: 15px;
+    background-color: #e0f7fa;
+    border: 1px solid #80deea;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.selected-pokemon h2 {
+    font-size: 20px;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.selected-pokemon p {
+    font-size: 16px;
+    color: #555;
+    margin: 5px 0;
+}
+
+.back-button-container {
+    margin-top: 20px;
 }

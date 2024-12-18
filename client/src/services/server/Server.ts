@@ -1,7 +1,7 @@
 import md5 from 'md5';
 import CONFIG, { EDIRECTION } from "../../config";
 import Store from "../store/Store";
-import { TAnswer, TError, TMessagesResponse, TUser, TMarketCatalog, TMap, TMapZone, TUpdateSceneResponse } from "./types";
+import { TAnswer, TError, TMessagesResponse, TUser, TMarketCatalog, TMap, TMapZone, TUpdateSceneResponse, TSell, TResources, TCreature, TInventory, TMonsters_level, TMonsterType } from "./types";
 
 const { CHAT_TIMESTAMP, SCENE_TIMESTAMP, HOST } = CONFIG;
 
@@ -10,6 +10,7 @@ class Server {
     store: Store;
     chatInterval: NodeJS.Timer | null = null;
     sceneInterval: NodeJS.Timer | null = null;
+    inventoryInterval: NodeJS.Timer | null = null; // Добавляем интервал для инвентаря
     showErrorCb: (error: TError) => void = () => {};
 
     constructor(store: Store) {
@@ -114,23 +115,25 @@ class Server {
         return null;
     }
 
-    async buyItem(itemId: string): Promise<boolean | null> {
-        const result = await this.request<boolean>('buyItem', { itemId });
-        return result;
-    }
-
-    async getTraderCatalog(): Promise<TMarketCatalog | null> {
-        const catalog = await this.request<TMarketCatalog>('getTraderCatalog');
-        if (catalog) {
-            return catalog;
+    async sell(token: string, objectId: string, amount: string): Promise<TSell | null> {
+        if (isNaN(Number(amount)) || Number(amount) <= 0) {
+            throw new Error('Некорректное количество для продажи'); 
         }
-        return null;
+        const result = await this.request<TSell>('sell', {token, type: 'merchant', amount, objectId});
+        return result;
     }
     
-    async buyFromTrader(id: string): Promise<boolean | null> {
-        const result = await this.request<boolean>('buy', { id });
+
+    async sellExchanger(token: string, amount: string): Promise<TSell | null> {
+        const result = await this.request<TSell>('sell', { token,  type: 'exchanger', amount });
         return result;
     }
+    
+    async getCatalog(token: string): Promise<boolean | null> {
+        const result = await this.request<boolean>('getCatalog', { token });
+        return result;
+    }
+    
 
     async exchangeEggsForPokemon(): Promise<{ success: boolean }> {
         // Здесь должна быть логика для запроса на сервер
@@ -155,6 +158,16 @@ class Server {
         return null;
     }
 
+    async getInventory(token: string): Promise<TInventory | null> {
+        try {
+            const catalog = await this.request<TInventory>('getInventory', { token });
+            return catalog;
+        } catch (error) {
+            console.error('Error fetching inventory:', error);
+            return null;
+        }
+    }
+
     startSceneUpdate(cb: (result: TUpdateSceneResponse) => void): void {
         this.sceneInterval = setInterval(async () => {
             const result = await this.updateScene();
@@ -171,7 +184,20 @@ class Server {
         }
     }
 
+    async upgradePokemon(token: string, monsterId: number): Promise<TMonsters_level | null> {
+        const result = await this.request<TMonsters_level>('upgradePokemon', { token, monsterId: monsterId.toString() });
+        return result;
+    }    
 
+    async addToTeam(token: string, monsterId: number): Promise<TMonsterType | null> {
+        const result = await this.request<TMonsterType>('addToTeam', { token, monsterId: monsterId.toString() });
+        return result;
+    }    
+
+    async removeFromTeam(token: string, monsterId: number): Promise<TMonsterType | null> {
+        const result = await this.request<TMonsterType>('addToTeam', { token, monsterId: monsterId.toString() });
+        return result;
+    }   
 }
 
 export default Server;
