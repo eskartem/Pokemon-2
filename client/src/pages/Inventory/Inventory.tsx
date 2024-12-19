@@ -26,7 +26,7 @@ const Inventory: React.FC<IBasePage> = (props: IBasePage) => {
     const fetchInventory = async () => {
         setLoading(true);
         try {
-            const inventory = await server.getInventory(TOKEN);
+            const inventory = await server.getInventory();
             if (!inventory) return;
 
             const transformedPokemons: TMonsterType[] = inventory.monsters.map((monster) => {
