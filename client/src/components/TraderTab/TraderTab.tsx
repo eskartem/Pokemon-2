@@ -1,6 +1,6 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { ServerContext } from '../../App';
-import { TResources } from '../../services/server/types';
+import { TResources, TResource } from '../../services/server/types';
 import Button from '../../components/Button/Button';
 import './TraderTab.scss';
 
@@ -9,23 +9,32 @@ const TOKEN = 'user-token';
 const TraderTab: React.FC = () => {
     const server = useContext(ServerContext);
     const [resources, setResources] = useState<TResources[]>([]);
+    const [inventory, setInventory] = useState<TResource[]>([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string>("");
     const [sellingResource, setSellingResource] = useState<{ id: string; name: string } | null>(null);
     const [amountToSell, setAmountToSell] = useState<string>("");
     const [sellError, setSellError] = useState<string>("");
 
+    const crystals = inventory.find(item => item.resource_id === 1)?.resource_amount || 0;
+    const eggs = inventory.find(item => item.resource_id === 2)?.resource_amount || 0;
+    const shells = inventory.find(item => item.resource_id === 3)?.resource_amount || 0;
+
     const fetchResources = async () => {
         try {
             setLoading(true);
             setError("");
             const response = await server.getCatalog(TOKEN);
-            if (!response || !Array.isArray(response)) {
-                throw new Error('');
+            const inventoryResponse = await server.getInventory(); 
+
+            if (!response || !Array.isArray(response) || !inventoryResponse) {
+                throw new Error('Ошибка получения данных');
             }
+
             setResources(response);
+            setInventory(inventoryResponse.inventory || []); 
         } catch {
-            setError('');
+            setError('Ошибка загрузки ресурсов');
         } finally {
             setLoading(false);
         }
@@ -40,6 +49,15 @@ const TraderTab: React.FC = () => {
         if (!amountToSell || isNaN(parsedAmount) || parsedAmount <= 0) {
             setSellError('Введите корректное количество!');
             return;
+        }
+
+        const inventoryResource = inventory.find(
+            (resource) => resource.resource_id === Number(id)
+        );
+
+        if (!inventoryResource || inventoryResource.resource_amount < parsedAmount) {
+            setSellError('Недостаточно ресурсов в инвентаре!');
+            return; 
         }
 
         try {
@@ -66,18 +84,37 @@ const TraderTab: React.FC = () => {
         <div className="trader-tab" id="test-trader-tab">
             <h1 id="test-trader-title">Торговец</h1>
             <div className="trader-resources" id="test-trader-resources">
-                {resources.map(({ id, name, cost }) => (
-                    <div className="trader-resource" key={id} id={`test-resource-${id}`}>
-                        <h3 id={`test-resource-name-${id}`}>Ресурс: {name}</h3>
-                        <p id={`test-resource-cost-${id}`}>Стоимость: {cost} монет</p>
-                        <Button
-                            id={`test-sell-button-${id}`}
-                            text="Продать"
-                            onClick={() => setSellingResource({ id: id.toString(), name })}
-                            isDisabled={false}
-                        />
-                    </div>
-                ))}
+                {resources.map(({ id, name, cost }) => {
+                    let resourceAmount = 0;
+
+                    if (id === 1) resourceAmount = crystals;
+                    else if (id === 2) resourceAmount = eggs;
+                    else if (id === 3) resourceAmount = shells;
+
+                    const hasSufficientResources = resourceAmount > 0;
+
+                    return (
+                        <div className="trader-resource" key={id} id={`test-resource-${id}`}>
+                            <h3 id={`test-resource-name-${id}`}>Ресурс: {name}</h3>
+                            <p id={`test-resource-cost-${id}`}>Стоимость: {cost} монет</p>
+                            <Button
+                                id={`test-sell-button-${id}`}
+                                text={
+                                    hasSufficientResources
+                                        ? 'Продать' : 'Недостаточно ресурсов'
+                                }
+                                onClick={() => {
+                                    if (hasSufficientResources) {
+                                        setSellingResource({ id: id.toString(), name });
+                                    } else {
+                                        setSellError('Недостаточно ресурсов для продажи');
+                                    }
+                                }}
+                                isDisabled={!hasSufficientResources} 
+                            />
+                        </div>
+                    );
+                })}
             </div>
 
             {sellingResource && (
@@ -95,7 +132,7 @@ const TraderTab: React.FC = () => {
                         id="test-confirm-sell-button"
                         text="Подтвердить продажу"
                         onClick={sellResource}
-                        isDisabled={false}
+                        isDisabled={!amountToSell || Number(amountToSell) <= 0} 
                     />
                     <Button
                         id="test-cancel-sell-button"
