@@ -61,12 +61,12 @@ const Market: React.FC<IBasePage> = (props: IBasePage) => {
     return (
     <div id='market'>
         <div className='user-resources'>
-            <h1 className='resources-text'>монеты: </h1>
-            <h1 className='resources-text' id='test-market-h1-user_coins'>{user.coins}</h1>
-            <h1 className='resources-text'>| кристаллы улучшения: </h1> 
-            <h1 className='resources-text' id='test-market-h1-user_crystals' >{}</h1>  
-            <h1 className='resources-text'>| куски яиц: </h1>
-            <h1 className='resources-text' id='test-market-h1-user_egg_fragments' >{}</h1>
+            <h1 className='resources-text'>
+                монеты: {inventory?.balance?.money || 0} | 
+                кристаллы: {crystals} | 
+                яйца: {eggs} | 
+                скорлупа: {shells}
+            </h1>
         </div>
             <div className='button-panel'>
                 <button onClick={() => setTab(TABS.MARKET)} className='market-button'> рынок</button>
