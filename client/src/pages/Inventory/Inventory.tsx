@@ -186,6 +186,8 @@ const Inventory: React.FC<IBasePage> = (props: IBasePage) => {
                         <p id="test-pokemon-level">Уровень: {pokemon?.lvl}</p>
                         <p id="test-pokemon-element">Элемент: {pokemon?.element_id}</p>
                         <p id="test-pokemon-hp">HP: {pokemon?.stats?.hp || 'N/A'}</p>
+                        <p id="test-pokemon-ad">AD: {pokemon.stats?.ad || 'N/A'}</p>
+                        <p id="test-pokemon-df">DF: {pokemon.stats?.df || 'N/A'}</p>
                         <Button
                             id="test-replace-button"
                             text="Заменить"
