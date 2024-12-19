@@ -3,7 +3,9 @@ import CONFIG, { EDIRECTION } from "../../config";
 import Store from "../store/Store";
 import { TAnswer, TError, TMessagesResponse, TUser, TMarketCatalog, TMap, TMapZone, 
     TUpdateSceneResponse, TSell, TResources, TCreature, TInventory, TMonsters_level, 
-    TMonsterType, TUpdateMarketResponse, TMakeBet } from "./types";
+    TMonsterType, TUpdateMarketResponse, TMakeBet, 
+    TCancelLot,
+    TUserInfo} from "./types";
 
 const { CHAT_TIMESTAMP, SCENE_TIMESTAMP, MARKET_TIMESTAMP, HOST } = CONFIG;
 
@@ -156,8 +158,8 @@ class Server {
     }
     
 
-    async sellExchanger(token: string, amount: string): Promise<TSell | null> {
-        const result = await this.request<TSell>('sell', { token,  type: 'exchanger', amount });
+    async sellExchanger(amount: string): Promise<TSell | null> {
+        const result = await this.request<TSell>('sell', { type: 'exchanger', amount });
         return result;
     }
     
@@ -190,14 +192,20 @@ class Server {
         return null;
     }
 
-    async getInventory(token: string): Promise<TInventory | null> {
+    async getInventory(): Promise<TInventory | null> {
         try {
-            const catalog = await this.request<TInventory>('getInventory', { token });
+            const catalog = await this.request<TInventory>('getInventory');
             return catalog;
         } catch (error) {
             console.error('Error fetching inventory:', error);
             return null;
         }
+    }
+
+    async getUserInfo(): Promise<TUserInfo | null> {
+        const result = await this.request<TUserInfo>('userInfo');
+        if (result) return result;
+        return null
     }
 
     startSceneUpdate(cb: (result: TUpdateSceneResponse) => void): void {
@@ -219,6 +227,10 @@ class Server {
 
     makeBet(lotId: number, bet: string) {
         return this.request<TMakeBet>('makeBet', { lotId: lotId.toString(), bet});
+    }
+
+    cancelLot(lotId: number) {
+        return this.request<TCancelLot>('cancelLot', { lotId: lotId.toString()});
     }
 
     async upgradePokemon(token: string, monsterId: number): Promise<TMonsters_level | null> {

@@ -27,10 +27,10 @@ const Market: React.FC<IBasePage> = (props: IBasePage) => {
     useEffect(() => {
         if (user) {
             const fetchInventory = () => {
-                server.getInventory(user.token).then(inv => {
+                server.getInventory().then(inv => {
                     setInventory(inv);
                     if (inv && inv.balance) {
-                        console.log('Обновлено количество монет:', inv.balance.money);
+                        // console.log('Обновлено количество монет:', inv.balance.money);
                     }
                 });
             };
@@ -41,7 +41,7 @@ const Market: React.FC<IBasePage> = (props: IBasePage) => {
 
             return () => clearInterval(intervalId);
         }
-    }, [user, server]);
+    }, [user, server, store]);
 
     const backClickHandler = () => setPage(PAGES.GAME);
 

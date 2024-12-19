@@ -5,8 +5,6 @@ import ExchangerImage from '../../assets/ExchangerImage/Exchanger.jpg';
 import MeanExchangerImage from '../../assets/ExchangerImage/MeanExchangerImage.jpg';
 import './ExchangerTab.scss';
 
-const TOKEN = 'user-token';
-
 const ExchangerTab: React.FC = () => {
     const server = useContext(ServerContext);
     const [loading, setLoading] = useState(false);
@@ -17,7 +15,7 @@ const ExchangerTab: React.FC = () => {
         try {
             setLoading(true);
 
-            const inventory = await server.getInventory(TOKEN);
+            const inventory = await server.getInventory();
 
             if (!inventory || !Array.isArray(inventory.inventory)) {
                 throw new Error('Некорректные данные');
@@ -35,7 +33,7 @@ const ExchangerTab: React.FC = () => {
 
     const handleExchange = async () => {
         try {
-            const success = await server.sellExchanger(TOKEN, '50'); 
+            const success = await server.sellExchanger('50'); 
             if (success) {
                 fetchResources(); 
             } else {

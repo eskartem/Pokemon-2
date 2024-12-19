@@ -169,6 +169,8 @@ class Market {
                 $frontendLots[] = [
                     'id' => $lot['id'],
                     'datetime' => $lot['datetime'],
+                    'seller_id' => $lot['seller_id'],
+                    'seller_name' => $lot['seller_name'],
                     'start_cost' => $lot['start_cost'],
                     'step_cost' => $lot['step_cost'],
                     'current_cost' => $lot['current_cost'],
@@ -181,6 +183,7 @@ class Market {
                     'max_HP' => $lot['max_HP'],
                     'ATK' => $lot['ATK'],
                     'DEF' => $lot['DEF'],
+                    'buyer_name' => $lot['buyer_name'],
                     'status' => $lot['status'],
                 ];
             }
@@ -197,6 +200,7 @@ class Market {
             if ($lot['id'] == $lotId){                
                 if ($lot['status'] == 'open'){
                     if ($lot['seller_id'] == $user->id){
+                        $this->db->updateMarketHash(md5(rand()));
                         return ['ableToCancel' => $this->db->changeLotStatus('cancelled', $lot['id']),
                                 'ableToReturnToOwner' => match ($lot['type']) {
                                     'item' => $this->db->sellResources($lot['selling_id'], -($lot['amount']), $lot['seller_id']),
