@@ -23,72 +23,9 @@ class DB {
         // $port = '5432';
         // $user = 'postgres';
         // $pass = '---';
-        // $db = 'nopainnogame';
+        // $db = 'cockstaris';
         // $connect = "pgsql:host=$host;port=$port;dbname=$db;";
         // $this->pdo = new PDO($connect, $user, $pass, [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]);
-
-        $p1 = new stdClass();
-        $p1->id = 1;
-        $p1->name = "Duck";
-        $p1->element = 'fire';
-        $p1->rarity = 'common';
-        $p1->lvl = 3;
-        $p1->stats = [
-            'hp' => 10,
-            'ad'=> 15,
-            'df'=> 16,
-        ];
-        $p1->cost = 25;
-
-        $p2 = new stdClass(); 
-        $p2->id = 2;
-        $p2->name = "Kock";
-        $p2->element = 'water';
-        $p2->rarity = 'legendary';
-        $p2->cost = 310;
-        $p2->lvl = 5;
-        $p2->stats = [
-            'hp' => 20,
-            'ad'=> 10,
-            'df'=> 15,
-        ];
-
-        $p3 = new stdClass(); 
-        $p3->id = 3;
-        $p3->name = "Pock";
-        $p3->element = 'air';
-        $p3->rarity = 'rare';
-        $p3->cost = 304;
-        $p3->lvl = 10;
-        $p3->stats = [
-            'hp' => 14,
-            'ad'=> 19,
-            'df'=> 10,
-        ];
-
-        $res1 = new stdClass();
-        $res1->id = 10;
-        $res1->name = "кристаллы улучшения";
-        $res1->number = 5;
-        $res1->cost = 10;
-        
-        $res2 = new stdClass();
-        $res2->id = 11;
-        $res2->name = "кусок яйца";
-        $res2->number = 2;
-        $res2->cost = 50;
-
-        $res3 = new stdClass();
-        $res3->id = 10;
-        $res3->name = "Кусок яйца";
-        $res3->number = 5;
-        $res3->cost = 350;
-
-
-        $this->catalog = [
-            'creatures' => [$p1, $p2, $p3],
-            'resources' => [$res1, $res2, $res3],
-        ];
 
     }
 
@@ -126,20 +63,28 @@ class DB {
         // return $this->user;
     }
 
+    public function getUsersByStatus($status) {
+        return $this->queryAll("SELECT id, login, name, x, y FROM users WHERE status=?", [$status]);
+    }
+
     public function updateToken($userId, $token) {
         $this->execute("UPDATE users SET token=? WHERE id=?", [$token, $userId]);
     }
 
     public function registration($login, $hash, $name) {
-        $this->execute("INSERT INTO users (login,password,name, team_id, inventory_id) VALUES (?, ?, ?, ?, ?)",[$login, $hash, $name, '1', '1']);
+        $this->execute("INSERT INTO users (login,password,name) VALUES (?, ?, ?)",[$login, $hash, $name]);
     }
 
-    public function getChatHash() {
+    public function getHash() {
         return $this->query("SELECT * FROM hashes WHERE id=1");
     }
 
     public function updateChatHash($hash) {
         $this->execute("UPDATE hashes SET chat_hash=? WHERE id=1", [$hash]);
+    }
+
+    public function updateMapHash($hash) {
+        $this->execute("UPDATE hashes SET map_hash=? WHERE id=1", [$hash]);
     }
 
     public function addMessage($userId, $message) {
@@ -158,7 +103,178 @@ class DB {
         );
     }
 
-    public function getCatalog() {
-        return $this->catalog;
+    public function getMap(){
+        $game = $this->query("SELECT map_id FROM game");
+        $mapId = $game->map_id;
+        return ['map' => $this->query("SELECT * FROM map WHERE id = ?", [$mapId]),
+                'map_zones' => $this->queryAll("SELECT 
+                name, x, y, width, height, type, element_id 
+                FROM map_zones WHERE map_id = ?", [$mapId])
+        ];
     }
+        
+    public function moveUser($userId, $newX, $newY) {
+        return $this->execute("UPDATE users 
+            SET x=?, y=? 
+            WHERE id=?", [$newX, $newY, $userId]
+        );
+    }
+
+    public function getMonstersByUser($userId, $status = null) {
+        if ($status === null) {
+            return $this->queryAll('SELECT * FROM monsters WHERE user_id = ?', [$userId]);
+        } else {
+            return $this->queryAll('SELECT * FROM monsters WHERE user_id = ? AND status = ?', [$userId, $status]);
+        }
+    }
+
+    public function getMonsterById($monsterId){
+        return $this->query('SELECT * FROM monsters WHERE id = ?',[$monsterId]);
+    }
+    
+    public function getInventoryByUser($userId){
+        return $this->queryAll('SELECT * FROM inventory WHERE user_id = ?', [$userId]);
+    }
+    
+    public function getMonsterLevelById($monsterId){
+        return $this->query('SELECT level FROM monsters WHERE id = ?',[$monsterId]);
+    }
+    
+    public function getMonsterTypeById($monster_type_id){
+        return $this->query('SELECT * FROM monster_types WHERE id = ?',[$monster_type_id]);
+    }
+    
+    public function upgradeLevelMonstersByUser($userId, $monsterId){
+        $this->execute('UPDATE monsters SET level = level + 1 WHERE user_id = ? AND id = ?', [$userId, $monsterId]);
+    }
+
+    public function upgradeHpMonstersByUser($userId, $monsterId, $hp){
+        $this->execute('UPDATE monsters SET hp = hp + ? WHERE user_id = ? AND id = ?', [$hp, $userId, $monsterId]);
+    }
+
+    public function getMonsterHpById($monsterId){
+        return $this->query('SELECT hp FROM monsters WHERE id = ?',[$monsterId]);
+    }
+
+
+    //параметры покемона, которые прибавлются при улучшении
+    public function getParametersMonsterByLevel($level) {
+        return [ 
+            'attack' => $this->query("SELECT attack FROM monster_level WHERE level = ?", [$level]),
+            'hp' => $this->query("SELECT hp FROM monster_level WHERE level = ?", [$level])
+        ];
+    } 
+    
+    public function getMonsterTypeByMonsters($monsterId){
+        return $this->query('SELECT monster_type_id FROM monsters WHERE id = ?',[$monsterId]);
+    }
+
+    public function getElementByMonsters($monster_type_id){
+        return $this->query('SELECT element_id FROM monster_types WHERE id = ?',[$monster_type_id]);
+    }
+
+    //узнаем id стихии
+    public function getIdByElement($element){
+        return $this->query('SELECT id FROM elements WHERE name = ?', [$element]);
+    }
+    
+    public function getAmountCrystalByUser($userId){
+        return $this-> query('SELECT resource_amount FROM inventory WHERE user_id = ? AND resource_id = 1 ',[$userId]);
+        
+    }
+    
+    public function getMoneyByUser($userId){
+        return $this-> query('SELECT money FROM users WHERE id = ?',[$userId]);
+    }
+
+    public function clearUserMoney($userId, $money){
+        $this->execute('UPDATE users SET money = ? WHERE id = ?',[$money, $userId]);
+    }
+   
+    public function clearUserResource($userId, $resourceTypeId, $amount ){
+        $this-> execute('UPDATE inventory SET resource_amount = resource_amount	 - ? 
+                        WHERE user_id = ? AND resource_id = ?', [$amount, $userId, $resourceTypeId]);
+    }
+    
+    public function updateUserStatus($userId, $status){
+        $this->execute('UPDATE users SET status = ? WHERE id =?', [$status, $userId]);
+    }
+
+    public function getPlayersIngame() {
+        return $this->queryAll('SELECT id, name, status, x, y FROM users');
+    }
+
+    public function getResources(){
+        return $this->queryAll('SELECT * FROM resources');
+    }
+
+    public function getResourcesById($objectId){
+        return $this->query('SELECT * FROM resources WHERE id=?', [$objectId]);
+    }
+
+    public function sellResources($sellingResourceId, $resourceAmount, $userId){
+        return $this->execute('UPDATE inventory SET resource_amount=resource_amount-? WHERE resource_id=? AND user_id=?', [$resourceAmount, $sellingResourceId, $userId]);
+    }
+
+    public function changeMoney($userId, $balanceIncrease){
+        return $this->execute('UPDATE users SET money=money+? WHERE id=?', [$balanceIncrease, $userId]);
+    }
+    
+    public function getAllLots(){
+        return $this->queryAll('SELECT * from lots');
+    }
+
+    public function makeBet($userId, $lotId, $newBet) {
+        return ['ableToMakeBet' =>  $this->execute('UPDATE lots SET buyer_id = ?, timestamp_cost = UNIX_TIMESTAMP(), current_cost = ? WHERE id = ?', 
+                                    [$userId, $newBet, $lotId]),
+                'ableToTakeMoney' => $this->execute('UPDATE users SET money=money-? WHERE id=?',
+                                    [$newBet, $userId])
+                ];
+    }
+
+    public function getInventory($userId){
+        return ['monsters' => $this->queryAll('SELECT * FROM monsters WHERE user_id=?', [$userId]),
+                'monsterTypes' => $this->queryAll('SELECT * FROM monster_types'),
+                'inventory' => $this->queryAll('SELECT * FROM inventory WHERE user_id=?', [$userId]),
+                'balance' => $this->query('SELECT money FROM users WHERE id=?', [$userId])
+        ];
+    }
+
+    public function makeLotMonster($userId, $sellingItemId, $startCost, $stepCost, $zalog){
+        return ['ableToWithdrawMonster' => $this->execute('UPDATE monsters SET user_id=?, status="on sale" WHERE id=?', [-1, $sellingItemId]),
+                'ableToCreateLot' => $this->execute('INSERT INTO lots 
+                                    (seller_id, datetime, start_cost, step_cost, current_cost, timestamp_cost, buyer_id, type, selling_id, status) 
+                                    VALUES (?, now(), ?, ?, ?, NULL, NULL, "monster", ?, "open")', 
+                                    [$userId, $startCost, $stepCost, $startCost, $sellingItemId]),
+                'ableToTakeMoney' => $this->execute('UPDATE users SET money=money-? WHERE id=?', [$zalog, $userId])
+        ];
+    }
+
+    public function makeLotItem($userId, $sellingItemId, $startCost, $stepCost, $amount, $zalog){
+        return ['ableToWithdrawResources' => $this->execute('UPDATE inventory SET resource_amount=resource_amount-? WHERE user_id=? AND resource_id=?', [$amount, $userId, $sellingItemId]),
+                'ableToCreateLot' => $this->execute('INSERT INTO lots 
+                                    (seller_id, datetime, start_cost, step_cost, current_cost, timestamp_cost, buyer_id, type, selling_id, amount, status) 
+                                    VALUES (?, now(), ?, ?, ?, NULL, NULL, "item", ?, ?, "open")', 
+                                    [$userId, $startCost, $stepCost, $startCost, $sellingItemId, $amount]),
+                'ableToTakeMoney' => $this->execute('UPDATE users SET money=money-? WHERE id=?', [$zalog, $userId])
+        ];
+    }
+  
+    public function getCatalog(){
+        return $this->queryAll('SELECT * from resources');
+    }
+
+    public function changeLotStatus($status, $lotId){
+        return $this->execute('UPDATE lots SET status=? WHERE id=?', [$status, $lotId]);
+    }
+
+    public function changeMonsterStatus($monsterId, $status){
+        return $this->execute('UPDATE monsters SET status=? WHERE id=?', [$status, $monsterId]);
+    }
+
+    public function changeMonsterOwner($monsterId, $newOwnerId){
+        return $this->execute('UPDATE monsters SET user_id=?, status="in pocket" WHERE id=?', [$newOwnerId, $monsterId]);
+    }
+    //объединить в один метод?
+
 }

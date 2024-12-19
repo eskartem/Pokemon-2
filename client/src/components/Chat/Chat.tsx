@@ -29,9 +29,13 @@ const Chat: React.FC = () => {
         return () => {
             server.stopChatMessages();
         }
-    });
+    }, [server, store, user]);
 
-    const input = useMemo(() => <input ref={messageRef} placeholder='сообщение' />, []);
+    const input = useMemo(() => <input 
+    ref={messageRef} 
+    onKeyDown={(event) => {if (event.key === "Enter") sendClickHandler()}} 
+    placeholder='сообщение' />
+    , []);
 
     const sendClickHandler = () => {
         if (messageRef.current) {
@@ -52,12 +56,19 @@ const Chat: React.FC = () => {
 
     return (<div className='chat'>
         <h1>Чат</h1>
-        <div className='chat-messages'>
-            {messages.reverse().map((message, index) => <div key={index}>{`${message.author} (${message.created}): ${message.message}`}</div>)}
+        <div id='test-chat-div-chat' className='chat-messages'>
+            {messages.reverse().map((message, index) => 
+            <div className='nt' key={index}>
+                <span className="message-author">{message.author} </span> 
+                <span className="message-timestamp">({message.created}): </span> 
+                <span className="message-text">{message.message}</span>
+            </div>)}
         </div>
-        {input}
+        <div id='test-chat-div-input' className='chat-input'>
+            {input}
+        </div>
         <div className='chat-buttons'>
-            <Button onClick={sendClickHandler} text='Отправить' />
+            <Button id='test-chat-button-send' onClick={sendClickHandler} text='Отправить' />
         </div>
     </div>)
 }

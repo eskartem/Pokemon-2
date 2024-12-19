@@ -1,14 +1,15 @@
 import md5 from 'md5';
-import CONFIG from "../../config";
+import CONFIG, { EDIRECTION } from "../../config";
 import Store from "../store/Store";
-import { TAnswer, TError, TMessagesResponse, TUser, TUserResources, TMarketCatalog } from "./types";
+import { TAnswer, TError, TMessagesResponse, TUser, TMarketCatalog, TMap, TMapZone, TUpdateSceneResponse } from "./types";
 
-const { CHAT_TIMESTAMP, HOST } = CONFIG;
+const { CHAT_TIMESTAMP, SCENE_TIMESTAMP, HOST } = CONFIG;
 
 class Server {
     HOST = HOST;
     store: Store;
     chatInterval: NodeJS.Timer | null = null;
+    sceneInterval: NodeJS.Timer | null = null;
     showErrorCb: (error: TError) => void = () => {};
 
     constructor(store: Store) {
@@ -64,6 +65,7 @@ class Server {
         if (result) {
             this.store.clearUser();
         }
+        return result;
     }
 
     registration(login: string, password: string, name: string): Promise<boolean | null> {
@@ -94,7 +96,6 @@ class Server {
                 cb(hash);
             }
         }, CHAT_TIMESTAMP);
-
     }
 
     stopChatMessages(): void {
@@ -105,21 +106,71 @@ class Server {
         }
     }
 
-    async getUserResources(): Promise<TUserResources | null> {
-        const resources = await this.request<TUserResources>('getResources');
-        if (resources) {
-            return resources;
-        }
-        return null;
-    }
-
-    async getCatalog():Promise<TMarketCatalog | null> {
+    async getMarketCatalog():Promise<TMarketCatalog | null> {
         const catalog = await this.request<TMarketCatalog>('getCatalog');
         if (catalog) {
             return catalog;
         }
         return null;
     }
+
+    async buyItem(itemId: string): Promise<boolean | null> {
+        const result = await this.request<boolean>('buyItem', { itemId });
+        return result;
+    }
+
+    async getTraderCatalog(): Promise<TMarketCatalog | null> {
+        const catalog = await this.request<TMarketCatalog>('getTraderCatalog');
+        if (catalog) {
+            return catalog;
+        }
+        return null;
+    }
+    
+    async buyFromTrader(id: string): Promise<boolean | null> {
+        const result = await this.request<boolean>('buy', { id });
+        return result;
+    }
+
+    async exchangeEggsForPokemon(): Promise<{ success: boolean }> {
+        // Здесь должна быть логика для запроса на сервер
+        return { success: true }; // Пример возврата. Настоящая логика может отличаться.
+    }
+
+    async getMap(): Promise<{MAP: TMap, mapZones: TMapZone[]} | null> {
+        return await this.request<{MAP: TMap, mapZones: TMapZone[]}>('getMap');
+    }
+
+    async moveUser(direction: EDIRECTION): Promise<boolean | null> {
+        return await this.request<boolean>('moveUser', { direction });
+    }
+
+    async updateScene(): Promise<TUpdateSceneResponse | null> {
+        const hash = this.store.getSceneHash();
+        const result = await this.request<TUpdateSceneResponse>('updateScene', { hash });
+        if (result) {
+            this.store.setSceneHash(result.hash);
+            return result;
+        }
+        return null;
+    }
+
+    startSceneUpdate(cb: (result: TUpdateSceneResponse) => void): void {
+        this.sceneInterval = setInterval(async () => {
+            const result = await this.updateScene();
+            if (result) {
+                cb(result);
+            }
+        }, SCENE_TIMESTAMP);
+    }
+
+    stopSceneUpdate(): void {
+        if (this.sceneInterval) {
+            clearInterval(this.sceneInterval);
+            this.sceneInterval = null;
+        }
+    }
+
 
 }
 

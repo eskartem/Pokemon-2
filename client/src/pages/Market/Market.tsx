@@ -7,7 +7,6 @@ import { IBasePage, PAGES } from '../PageManager';
 import { ServerContext, StoreContext } from '../../App';
 
 import './Market.scss';
-import { TUserResources } from '../../services/server/types';
 
 export enum TABS {
     MARKET,
@@ -23,7 +22,7 @@ const Market: React.FC<IBasePage> = (props: IBasePage) => {
     
     const user = store.getUser();
 
-    const backClickHandler = () => setPage(PAGES.MAINMENU);
+    const backClickHandler = () => setPage(PAGES.GAME   );
 
     if (!user) {
         return (
@@ -38,8 +37,10 @@ const Market: React.FC<IBasePage> = (props: IBasePage) => {
     <div id='market'>
         <div className='user-resources'>
             <h1 className='resources-text'>монеты: {user.coins} |</h1>
-            <h1 className='resources-text'>кристаллы улучшения: {user.crystals} |</h1>
-            <h1 className='resources-text'>куски яиц: {user.eggFragments}</h1>
+            {/* <h1 className='resources-text'>кристаллы улучшения: {user.crystals} |</h1>  надо сделать подругому, надо отправлять 
+                                                                                            запрос на сервер, для получения ресуросов и 
+                                                                                            потом отрисосвывать их, а это убрать
+            <h1 className='resources-text'>куски яиц: {user.eggFragments}</h1> */}
         </div>  
         <div className='button-panel'>
             <button onClick={() => setTab(TABS.MARKET)} className='market-button'>рынок</button>

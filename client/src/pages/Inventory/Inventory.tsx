@@ -7,7 +7,7 @@ import './Inventory.scss';
 const Inventory: React.FC<IBasePage> = (props: IBasePage) => {
     const { setPage } = props;
 
-    const backClickHandler = () => setPage(PAGES.MAINMENU);
+    const backClickHandler = () => setPage(PAGES.GAME);
     
     return (
     <div className='inventory'>

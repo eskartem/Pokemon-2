@@ -20,24 +20,32 @@ export type TWINDOW = {
 const CONFIG = {
     
     // udsu
-    // HOST: 'http://monstaris:80/api/',
+    // HOST: 'http://monstaris:81/api',
     // dev
-    HOST: 'http://server:80/api/',
+    HOST: 'http://server:80/api',
 
+    // игровое окно, видимое пользователю
+    WINV: {
+        WIDTH: 24,
+        HEIGHT: 13.5,
+        LEFT: 0,
+        BOTTOM: 0
+    },
+    //размеры карты
+    MAP: {
+        WIDTH: 160,
+        HEIGHT: 90,
+    },
+
+    fovDistance: 5, // дальность поля зрения игрока
+    
+    winAspect: 16 / 9,
+    tileSize: 40, // размер клетки в пикселях 
+    nickFontSize: 16, // размер ника на карте в пикеслях
 
     CHAT_TIMESTAMP: 200, //ms
+    SCENE_TIMESTAMP: 100, //ms
 
-    SPRITE_SIZE: 64, // размер спрайта в пикселях
-    LINE_OF_SPRITES: 10, // количество спрайтов в карте спрайтов
-    WIDTH: 50, // ширина карты
-    HEIGHT: 32, // высота карты 
-    // игровое окно, видимое пользователю
-    WINDOW: {
-        LEFT: 0,
-        TOP: 0,
-        HEIGHT: 12,
-        WIDTH: 20,
-    },
 };
 
 export default CONFIG;

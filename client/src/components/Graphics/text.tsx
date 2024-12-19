@@ -14,6 +14,8 @@ const Texts: React.FC = () => {
     <Container x={stageProps.width * 0.5 - 50} y={20} name={"test-battle-pixi-activeMonster"}>
       <Text
         text={`${activeMonster.name}`}
+        x={stageProps.width * 0.5 - 50}
+        y={20}
       />
     </Container>
     </>)

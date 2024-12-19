@@ -45,7 +45,7 @@ const Battle: React.FC<IBasePage> = (props: IBasePage) => {
 
   const { setPage } = props; 
 
-  let [sQueue, setSQueue] = useState<Monsters[]>(mathPvp.sortQueuesByLevel(
+  let [sQueue, setSQueue] = useState(mathPvp.sortQueuesByLevel(
     firstSelectedMonster,
     secondSelectedMonster,
     thirdSelectedMonster,
@@ -54,7 +54,7 @@ const Battle: React.FC<IBasePage> = (props: IBasePage) => {
     thirdSelectedEnemyMonster
   ));
 
-  let [activeMonster, setActiveMonster] = useState<Monsters>(sQueue[0]); 
+  let [activeMonster, setActiveMonster] = useState<Monsters>(sQueue[0]);
 
   let [animation, setAnimation] = useState<boolean>(false);
 
@@ -117,7 +117,7 @@ const Battle: React.FC<IBasePage> = (props: IBasePage) => {
     };
   });
   
-  const backClickHandler = () => setPage(PAGES.MAINMENU);
+  const backClickHandler = () => setPage(PAGES.INVENTORY);
   
   return (<>
     <Stage {...stageProps} className='pvpArea'>

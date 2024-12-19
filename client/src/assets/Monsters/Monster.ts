@@ -1,7 +1,3 @@
-interface skill {
-    name: string,
-    scale: number
-}
 
 interface baseParam {
     baseAttack: number,
@@ -15,12 +11,12 @@ export type Monsters = {
     attack: number,
     healthPoint: number,
     defense: number,
-    element:string,
+    elementType:string,
     level: number,
-    skill: skill,
+    skill: object,
     isAlive: boolean
-    side: string
 }
+
 
 class Monster {
     baseParam: baseParam = {
@@ -32,13 +28,9 @@ class Monster {
     attack: number = 100;
     healthPoint: number = 150;
     defense: number = 100;
-    element: string = '';
+    elementType: string = '';
     level: number = 1;
-    side = '';
-    skill: skill = {
-        name: "",
-        scale: 1
-    }
+    skill: object = {};
     isAlive: boolean = true;
 }
 

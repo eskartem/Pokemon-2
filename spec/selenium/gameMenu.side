@@ -1,0 +1,252 @@
+{
+  "id": "209071f3-3c5d-4d75-af24-ca7ad8a3cde4",
+  "version": "2.0",
+  "name": "monstaris",
+  "url": "http://localhost:3000/",
+  "tests": [{
+    "id": "fe1b5841-7b02-406e-befb-1345411e78b0",
+    "name": "Login",
+    "commands": [{
+      "id": "8d0b5d1e-d976-4f09-98b3-e69ee2306874",
+      "comment": "",
+      "command": "open",
+      "target": "http://localhost:3000/",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "633df09b-864b-4b13-b28a-9c0efed758d0",
+      "comment": "",
+      "command": "setWindowSize",
+      "target": "1936x1048",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "ae6bbe56-9e97-4629-8839-18e3c0d78fc7",
+      "comment": "",
+      "command": "clickAt",
+      "target": "css=#test-login-page > div:nth-child(1)",
+      "targets": [
+        ["css=#test-login-page > div:nth-child(1)", "css:finder"],
+        ["xpath=//div[@id='test-login-page']/div", "xpath:idRelative"],
+        ["xpath=//div[3]/div/div/div", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "02989794-a979-499f-8201-45e3277dca51",
+      "comment": "",
+      "command": "sendKeys",
+      "target": "id=test-login-input_login",
+      "targets": [],
+      "value": "vasya"
+    }, {
+      "id": "e90740fd-f7a1-4b51-8e66-7ee9cb91aadc",
+      "comment": "",
+      "command": "sendKeys",
+      "target": "id=test-login-input_pass",
+      "targets": [
+        ["id=test-login-input_pass", "id"],
+        ["css=#test-login-input_pass", "css:finder"],
+        ["xpath=//input[@id='test-login-input_pass']", "xpath:attributes"],
+        ["xpath=//div[@id='test-login-page']/div[2]/div/input[2]", "xpath:idRelative"],
+        ["xpath=//input[2]", "xpath:position"]
+      ],
+      "value": "111"
+    }, {
+      "id": "444665c1-d410-4bbd-a7cf-234b461327c6",
+      "comment": "",
+      "command": "clickAt",
+      "target": "id=test-login-img_auth",
+      "targets": [
+        ["id=test-login-img_auth", "id"],
+        ["css=#test-login-img_auth", "css:finder"],
+        ["xpath=//img[@id='test-login-img_auth']", "xpath:attributes"],
+        ["xpath=//div[@id='test-login-page']/div[2]/div[2]/img", "xpath:idRelative"],
+        ["xpath=//div[2]/img", "xpath:position"]
+      ],
+      "value": ""
+    }]
+  }, {
+    "id": "87cc792b-94a0-4872-b6c8-0677f376ad0a",
+    "name": "Menu",
+    "commands": [{
+      "id": "a5a6adaa-28a2-46fa-96e1-9811b6f76c00",
+      "comment": "",
+      "command": "open",
+      "target": "http://localhost:3000/",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "ba6205d3-7925-433f-a342-c9ab9599cb3b",
+      "comment": "",
+      "command": "setWindowSize",
+      "target": "1936x1048",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "80a01439-030d-43aa-8a33-e1743009d7ac",
+      "comment": "",
+      "command": "clickAt",
+      "target": "css=#test-login-page > div:nth-child(1)",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "99d43c64-f6c2-4175-b99f-2d5ef1db0c81",
+      "comment": "",
+      "command": "sendKeys",
+      "target": "id=test-login-input_login",
+      "targets": [],
+      "value": "vasya"
+    }, {
+      "id": "0750e757-0f40-4bc3-baca-4710ce8e9f66",
+      "comment": "",
+      "command": "sendKeys",
+      "target": "id=test-login-input_pass",
+      "targets": [
+        ["id=test-login-input_pass", "id"],
+        ["css=#test-login-input_pass", "css:finder"],
+        ["xpath=//input[@id='test-login-input_pass']", "xpath:attributes"],
+        ["xpath=//div[@id='test-login-page']/div[2]/div/input[2]", "xpath:idRelative"],
+        ["xpath=//input[2]", "xpath:position"]
+      ],
+      "value": "111"
+    }, {
+      "id": "3f10be93-e152-4823-ace1-41f93ed6b5fa",
+      "comment": "",
+      "command": "clickAt",
+      "target": "id=test-login-img_auth",
+      "targets": [
+        ["id=test-login-img_auth", "id"],
+        ["css=#test-login-img_auth", "css:finder"],
+        ["xpath=//img[@id='test-login-img_auth']", "xpath:attributes"],
+        ["xpath=//div[@id='test-login-page']/div[2]/div[2]/img", "xpath:idRelative"],
+        ["xpath=//div[2]/img", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "aeff6de6-064f-4aa2-9644-8a0a99beef79",
+      "comment": "",
+      "command": "clickAt",
+      "target": "css=.button-panel > .button:nth-child(1)",
+      "targets": [
+        ["css=.button-panel > .button:nth-child(1)", "css:finder"],
+        ["xpath=//div[@id='root']/div/div/div/div[2]/button", "xpath:idRelative"],
+        ["xpath=//button", "xpath:position"],
+        ["xpath=//button[contains(.,'Инвентарь')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "f7412bb2-a63a-4186-a60e-a3fa81ab2904",
+      "comment": "",
+      "command": "clickAt",
+      "target": "css=.button",
+      "targets": [
+        ["css=.button", "css:finder"],
+        ["xpath=//div[@id='root']/div/div/button", "xpath:idRelative"],
+        ["xpath=//button", "xpath:position"],
+        ["xpath=//button[contains(.,'назад')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "25cc3230-93db-41b5-88f9-10b066004397",
+      "comment": "",
+      "command": "clickAt",
+      "target": "css=.button-panel > .button:nth-child(2)",
+      "targets": [
+        ["css=.button-panel > .button:nth-child(2)", "css:finder"],
+        ["xpath=//div[@id='root']/div/div/div/div[2]/button[2]", "xpath:idRelative"],
+        ["xpath=//button[2]", "xpath:position"],
+        ["xpath=//button[contains(.,'Рынок')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "d6f2c482-181b-4d05-a794-053486c05417",
+      "comment": "",
+      "command": "clickAt",
+      "target": "css=.button:nth-child(4)",
+      "targets": [
+        ["css=.button:nth-child(4)", "css:finder"],
+        ["xpath=//div[@id='market']/button", "xpath:idRelative"],
+        ["xpath=//div[6]/div/div/button", "xpath:position"],
+        ["xpath=//button[contains(.,'назад')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "9dca2274-f3bb-4325-8d00-197204a8898e",
+      "comment": "",
+      "command": "clickAt",
+      "target": "css=.button:nth-child(3)",
+      "targets": [
+        ["css=.button:nth-child(3)", "css:finder"],
+        ["xpath=//div[@id='root']/div/div/div/div[2]/button[3]", "xpath:idRelative"],
+        ["xpath=//button[3]", "xpath:position"],
+        ["xpath=//button[contains(.,'Битва')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "c3a3754e-1589-48ad-80b0-a4e387cbbe3b",
+      "comment": "",
+      "command": "clickAt",
+      "target": "css=.button",
+      "targets": [
+        ["css=.button", "css:finder"],
+        ["xpath=//div[@id='root']/div/button", "xpath:idRelative"],
+        ["xpath=//div[8]/div/button", "xpath:position"],
+        ["xpath=//button[contains(.,'назад')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "8ac1e09c-2b0e-48bf-b5f1-088119041ca7",
+      "comment": "",
+      "command": "clickAt",
+      "target": "css=li > .button:nth-child(1)",
+      "targets": [
+        ["css=li > .button:nth-child(1)", "css:finder"],
+        ["xpath=//div[@id='root']/div/div/div/div[2]/li/button", "xpath:idRelative"],
+        ["xpath=//li/button", "xpath:position"],
+        ["xpath=//button[contains(.,'заглушить')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "5f95c822-2f71-4c36-ab3c-cd3a13bf5f18",
+      "comment": "",
+      "command": "sendKeys",
+      "target": "css=input",
+      "targets": [],
+      "value": " тест"
+    }, {
+      "id": "e44e161b-d10c-4cea-9ab2-26695f1afb90",
+      "comment": "",
+      "command": "clickAt",
+      "target": "css=.chat-buttons > .button",
+      "targets": [
+        ["css=.chat-buttons > .button", "css:finder"],
+        ["xpath=//div[@id='root']/div/div/div/div[3]/div[3]/button", "xpath:idRelative"],
+        ["xpath=//div[3]/button", "xpath:position"],
+        ["xpath=//button[contains(.,'Отправить')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "f511b396-ef8b-49e9-99bc-6a2343550ded",
+      "comment": "",
+      "command": "clickAt",
+      "target": "css=li > .button:nth-child(2)",
+      "targets": [
+        ["css=li > .button:nth-child(2)", "css:finder"],
+        ["xpath=//div[@id='root']/div/div/div/div[2]/li/button[2]", "xpath:idRelative"],
+        ["xpath=//li/button[2]", "xpath:position"],
+        ["xpath=//button[contains(.,'разлогиниться')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }]
+  }],
+  "suites": [{
+    "id": "5bbe8f7a-83fc-4f15-a0e0-24a04a29159e",
+    "name": "menu",
+    "persistSession": false,
+    "parallel": false,
+    "timeout": 300,
+    "tests": ["fe1b5841-7b02-406e-befb-1345411e78b0", "87cc792b-94a0-4872-b6c8-0677f376ad0a"]
+  }],
+  "urls": ["http://localhost:3000/"],
+  "plugins": []
+}
