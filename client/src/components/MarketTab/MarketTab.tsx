@@ -3,6 +3,7 @@ import { ServerContext, StoreContext } from '../../App';
 import { TUpdateMarketResponse, TLot, ETypeLot, ELotStatus, 
     TInventory, EMonsterStatus } from '../../services/server/types';
 import Button from '../Button/Button';
+import Lot from '../Lot/Lot';
 
 import './MarketTab.scss';
 
@@ -24,22 +25,9 @@ const MarketTab: React.FC = () => {
         setCatalog(filteredLots);
     };
 
-    const makeBet = (lotId: number) => {
-        const inputBet = document.getElementById(`${lotId}-bet-input`) as HTMLInputElement;
-        const bet = inputBet.value;
-        if (!bet || !lotId) { return }
-        server.makeBet(lotId, bet);
-    }
-
     const makeLot = () => {
         return
     }
-
-    const cancelLot = (lot_id: number) => {
-        if (!lot_id) return
-        server.cancelLot(lot_id);
-    }
-
 
     useEffect(() => {
         const marketUpdateHandler = ( result: TUpdateMarketResponse ) => {
@@ -73,7 +61,7 @@ const MarketTab: React.FC = () => {
 
     return (
     <div className='market-tab'>
-        <label htmlFor="test-select_lot_status"> фильтр: </label>
+        <label htmlFor="test-select_lot_status"> лоты: </label>
         <select name="фильтр" 
             className='lot-filter' 
             id='test-select_lot_status' 
@@ -81,44 +69,13 @@ const MarketTab: React.FC = () => {
             onChange={() => filterLots()}
             defaultValue={ELotStatus.open}
         >
-            <option value={ELotStatus.open} >open</option>
-            <option value={ELotStatus.closed}>closed</option>
-            <option value={ELotStatus.canceled}>canceled</option>
+            <option value={ELotStatus.open} >открытые</option>
+            <option value={ELotStatus.closed}>закрытые</option>
+            <option value={ELotStatus.canceled}>отмененные</option>
         </select>
         <div className='lots'>
             {catalog.map( (lot, index) => {
-                return <div className='market-lot' key={index}>
-                    <h1>
-                        {index+1}) [ {lot.datetime}]| 
-                        {lot.type === ETypeLot.item? `${lot.resource} | шт: ${lot.amount}  |`: `${lot.monster_name} | LVL:${lot.monster_level} 
-                        | ATK:${lot.ATK}, HP: ${lot.max_HP}, DEF: ${lot.DEF} |`}
-                        продавец: {lot.seller_name} | нач.цена: { lot.start_cost } | тек.цена: { lot.current_cost}|
-                        шаг: { lot.step_cost}| {lot.buyer_name != null ? `купил: ${lot.buyer_name} |`: ''} {lot.status}|
-                    </h1>
-                    { lot.status === ELotStatus.open && 
-                        <div className='lot-bet-panel'>
-                            <Button 
-                                onClick={() => makeBet(lot.id)}
-                                text='поставить'
-                            />
-                            <input 
-                                key={index}
-                                type="number"
-                                className='bet-input'
-                                id={`${lot.id}-bet-input`}
-                                placeholder={`${lot.current_cost+ lot.step_cost}`}
-                                min={lot.current_cost + lot.step_cost}
-                                required
-                            />
-                        </div>
-                    }
-                    { lot.seller_id === user?.id && lot.status === ELotStatus.open &&
-                        <Button 
-                            onClick={() => cancelLot(lot.id)}
-                            text='отменить'
-                        />
-                    }
-                </div>
+                return <Lot lot={lot} index={index} />
             })}
         </div>
         {/* <Button 
