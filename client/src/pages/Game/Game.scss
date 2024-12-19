@@ -1,55 +1,110 @@
-
 .game-wrapper {
     display: flex;
-    flex-direction: row;
-}
+    flex-direction: column; /* Располагаем элементы в колонку */
+    height: 100vh; /* Высота на весь экран */
 
-.button-panel {
-    display: inline;
-    list-style-type: none;
-}
-
-.move-button {
-    min-width: 50px;
-    min-height: 50px;
-    &:hover {
-        cursor: pointer;
-    }
-}
-
-.clear-button {
-    &:hover {
-        cursor: pointer;
-    }
-}
-
-.user-panel-nick {
-    display: inline;
-}
-
-.user-resources-coins {
-    display: inline;
-}
-
-.user-resources {
-    display: inline;
-}
-
-.game-wrapper {
     color: #9fbef4;
     text-shadow: -1px -1px 0 #356eb4, 1px -1px 0 #356eb4, -1px 1px 0 #356eb4, 1px 1px 0 #356eb4;
-}
 
-.control-panel {
-    display: inline-flex;
-    align-items: flex-end;
-}
+    .user-panel-nick {
+        display: inline;
+    }
 
-.vertical-move-buttons {
-    display: inline-flex;
-    flex-direction: column;
-}
+    .user-resources {
+        width: 45px; /* Задайте ширину изображения */
+        height: 45px; /* Задайте высоту изображения */
+        margin: 0 7px; /* Отступы вокруг изображения */
+        border: 5px #9fbef4;
+    }
 
-.move-button {
-    max-width: 1px;
+    .user-resources-coins {
+        display: inline;
+    }
+
+    .user-resources {
+        display: inline;
+    }
+
+    .button-panel-test {
+        background-color: #333; /* Цвет фона панели */
+        color: white; /* Цвет текста */
+        padding: 10px; /* Отступы вокруг кнопок */
+        display: flex; /* Используем flexbox для выравнивания кнопок */
+        justify-content: space-between; /* Распределяем кнопки по краям */
+        position: absolute; /* Позволяет панели находиться над картой */
+        align-items: center; /* Выравниваем кнопки по центру по вертикали */
+        top: 0; /* Привязываем к верхней части контейнера */
+        left: 0; /* Привязываем к левому краю контейнера */
+        right: 0; /* Привязываем к правому краю контейнера */
+    }
+
+    .img-logout {
+        width: 45px; /* Задайте ширину изображения */
+        height: 45px; /* Задайте высоту изображения */
+        margin: 0 15px; /* Отступы вокруг изображения */
+        cursor: pointer;
+        filter: invert(1);
+    }
+
+    .img-volume {
+        width: 45px; /* Задайте ширину изображения */
+        height: 45px; /* Задайте высоту изображения */
+        margin: 0 15px; /* Отступы вокруг изображения */
+        cursor: pointer;
+        filter: invert(1);
+    }
+
+    .button-panel-test-left {
+        display: flex;
+    }
+
+    .button-panel-test-centre {
+        display: flex;
+    }
+
+    .button-panel-test-right {
+        display: flex;
+    }
+
+    .button-panel-test button {
+        padding: 7px 10px;
+    }
+
+    .button-panel-test button:hover {
+    }
+
+    .map-container {
+        flex-grow: 1; /* Позволяет карте занимать оставшееся пространство */
+    }
+
+    .game-chat {
+        position: absolute;
+        max-width: 30vw;
+        max-height: 35vw;
+        bottom: 90px;
+        right: 5px;
+    }
+
+    .chat-button {
+        position: absolute;
+        bottom: 10px;
+        right: 0;
+        width: 65px; /* Задайте ширину изображения */
+        height: 65px; /* Задайте высоту изображения */
+        margin: 0 15px; /* Отступы вокруг изображения */
+        cursor: pointer;
+    }
+
+    .vertical-move-buttons {
+        display: inline-flex;
+        flex-direction: column;
+    }
+
+    .move-button {
+        min-width: 60px;
+        min-height: 60px;
+        &:hover {
+            cursor: pointer;
+        }
+    }
 }
