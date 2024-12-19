@@ -1,6 +1,6 @@
-import {useEffect, useState} from 'react';
-import {Stage, Text} from '@pixi/react';
-import { PAGES } from '../PageManager';
+import React, {useContext, useEffect, useState} from 'react';
+import {Stage} from '@pixi/react';
+import { PAGES, IBasePage } from '../PageManager';
 
 import {FirstAnemoMonster, SecondAnemoMonster, ThirdAnemoMonster, FourthAnemoMonster, FirstGeoMonster, SecondGeoMonster,
   ThirdGeoMonster, FourthGeoMonster, FirstHydroMonster, SecondHydroMonster, ThirdHydroMonster, FourthHydroMonster, 
@@ -18,7 +18,7 @@ import { Monsters } from "../../assets/Monsters/Monster"
 import './Battle.scss';
 import MathPvp from '../../services/MathPvp/MathPvp';
 
-const Pvp = (props: any) => {
+const Pvp: React.FC<IBasePage> = (props: IBasePage) => {
   let firstSelectedMonster: Monsters = new FourthPyroMonster();
   let secondSelectedMonster: Monsters = new FirstGeoMonster();
   let thirdSelectedMonster: Monsters = new FirstHydroMonster();
@@ -28,7 +28,7 @@ const Pvp = (props: any) => {
 
   const mathPvp = new MathPvp();
 
-  const { setPage } = props; 
+  const { setPage } = props;  
 
   let [sQueue, setSQueue] = useState(mathPvp.sortQueuesByLevel(
     firstSelectedMonster,

@@ -41,7 +41,7 @@ function result($params) {
             case 'updateScene': return $app-> updateScene($params);
             case 'moveUser': return $app-> moveUser($params);
 
-            //market            
+            //market                   
             case 'makeBet': return $app->makeBet($params);
             case 'getCatalog': return $app->getCatalog($params); // для торговца
             case 'updateLots': return $app->updateLots($params);

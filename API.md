@@ -128,16 +128,16 @@ Inventory: {
 ```
 
 
-### 2.6. Лоты
+### 2.6. Лот рынка
 ```
-Lots: {
+Lot: {
     id: integer; - ID лота
-    seller_id: integer; - ID создателя лота / продавца
+    seller_name: integer; - имя создателя лота / продавца
     datetime: datetime; - время создания лота
     start_cost: integer; - начальная стоимость
     step_cost: integer; - шаг ставки
     current_cost: integer; - текущая стоимость
-    buyer_id: integer; - ID владельца ставки / покупателя
+    buyer_name: integer | null; - имя владельца ставки / покупателя
     type: monster || item; - тип лота 
     selling_id: integer; - ID продаваемого объекта
     amount: integer || NULL; количество продаваемого ресурса, обязателен при типе item, не нужен при типе monster
@@ -588,10 +588,10 @@ MapZones: {
 ```
 **Успешный ответ**
 ```
-    Answer<{
-        all_lots: Lots[]
-        hash: string;
-    }>
+    Answer<
+        lots: Lot[],
+        hash: string; - обновленный хэш    
+    >
 ```
 **Ошибки**
 * `705` - невалидный токен. Пользователь не авторизован

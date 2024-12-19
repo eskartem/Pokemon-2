@@ -1,7 +1,7 @@
 import React, { MouseEvent, useContext, useEffect, useState } from 'react';
 import { Sprite, Stage, Graphics, Text, Container } from '@pixi/react';
 import { TextStyle } from 'pixi.js';
-import { TMap, TMapZone, TUpdateSceneResponse, TGamer, EZones, EStatus } from '../../services/server/types';
+import { TMap, TMapZone, TUpdateSceneResponse, TGamer, EZones, EUserStatus } from '../../services/server/types';
 import { StoreContext, ServerContext } from '../../App';
 import CONFIG, { EDIRECTION, TPoint } from '../../config';
 import Button from '../Button/Button';
@@ -12,9 +12,8 @@ import boatImage from '../../assets/img/boat.png';
 
 import './Map.scss';
 
-
 const Map: React.FC = () => {
-    const { WINV, tileSize, fovDistance} = CONFIG;
+    const { WINV, tileSize, fovDistance } = CONFIG;
     const server = useContext(ServerContext);
     const store = useContext(StoreContext);
     const user = store.getUser();
@@ -248,13 +247,13 @@ const Map: React.FC = () => {
                 {gamers.map( (gamer, index) => { // другие пользователи
                     let color = '#0000ff';
                     switch (gamer.status){
-                        case EStatus.offline:
+                        case EUserStatus.offline:
                             color = '#ffffff';
                             break;
-                        case EStatus.scout:
+                        case EUserStatus.scout:
                             color = '#00ff00';
                             break;
-                        case EStatus.fight:
+                        case EUserStatus.fight:
                             color = '#ff0000';
                             break;
                     }
