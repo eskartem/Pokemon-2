@@ -17,6 +17,7 @@ class Answer {
         '701' => 'Skin is not found',
         '702' => 'pokemon is not found',
         '703' => 'max level pokemon',
+        '704' => 'action is not found',
         '706' => 'text message is empty',
         '707' => 'could not send message', // e-mail;
         '708' => 'invalid code from E-mail',
@@ -39,7 +40,8 @@ class Answer {
         '3001' => 'incorrect "type" parameter',
         '3002' => 'incorrect "amount" parameter',
         '3003' => 'incorrect "startCost" or "stepCost" parameter', 
-        '3004' => 'unable to sell monster if you will have less than 3 monsters', //3005, 3006 свободны
+        '3004' => 'unable to sell monster if you will have less than 3 monsters', // 3006 свободны
+        '3005' => 'this lot does not belong to you',
         '3007' => 'inventory of that user has not been found',
         '3008' => 'selling object with that ID has not been found',
         '3009' => 'not enough resources to sell that amount',

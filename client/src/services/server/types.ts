@@ -9,7 +9,7 @@ export type TAnswer<T> = {
     error?: TError;
 }
 
-export enum EStatus {
+export enum EUserStatus {
     scout = 'scout',
     fight = 'fight', 
     offline = 'offline'
@@ -18,7 +18,7 @@ export enum EStatus {
 export type TGamer = {
     id: number;
     name: string;
-    status: EStatus;
+    status: EUserStatus;
     x: number;
     y: number;
 }
@@ -46,14 +46,13 @@ export type TUpdateSceneResponse = {
     hash: string;
 }
 
-
 // элементы стихии
 export enum EElement {
     fire,
     water,
     earth,
     air,
-    nonElement  // для нейтральных элементов карты (не знаю, есть ли смысл делать отедльный ETileElement, чтобы такого не было)
+    nonElement  // для нейтральных элементов карты
 }
 
 // статы существа
@@ -71,6 +70,49 @@ export type TCreature = {
     element: EElement,
     stats: TStats,
     status: string
+}
+
+export enum ETypeLot {
+    monster = 'monster',
+    item = 'item'
+}
+
+export enum ELotStatus {
+    open = 'open',
+    closed = 'closed',
+    canceled = 'cancelled'
+}
+
+export enum EMonsterStatus {
+    inPocket = 'inPocket',
+    inTeam = 'inTeam'
+}
+
+export type TLot = {
+    id: number;
+    seller_id: number;
+    seller_name: string; // имя создателя лота / продавца
+    datetime: string; // время создания лота
+    start_cost: number; // начальная стоимость
+    step_cost: number; // шаг ставки
+    current_cost: number; // текущая стоимость
+    buyer_name: string | null; // ID владельца ставки / покупателя
+    type: ETypeLot; // тип лота 
+    selling_id: number; // ID продаваемого объекта
+    resource: string | null,
+    monster_level: null,
+    monster_name: number | null,
+    current_monster_hp: number | null,
+    max_HP: number | null,
+    ATK: number | null,
+    DEF: number | null,
+    amount: number | null; // количество продаваемого ресурса, обязателен при типе item, не нужен при типе monster
+    status: ELotStatus;  // статус лота
+}
+
+export type TUpdateMarketResponse = {
+    lots: TLot[],
+    hash: string
 }
 
 //существо на рынке
@@ -118,6 +160,17 @@ export enum EZones {
     chillzone = 'chillzone',
     dungeon = 'dungeon'
 }
+
+export type TMakeBet = {
+    ableToMakeBet: boolean,
+    ableToTakeMoney: boolean
+}
+
+export type TUserInfo = {
+    user: TUser;
+    monsters: TCr[];
+    inventory: TResource[];
+}
  
 export type TInventory = {
     monsters: TCr[];
@@ -164,8 +217,29 @@ export type TMonsters_level = {
     stats: TStats
 }
 
+export type TSell = {
+    token: string,
+    type: string,
+    amount: string,
+    resourceId: string,
+    objectId: string | ''
+}
+
+export type TResources = {
+    id: number,
+    name: string,
+    cost: number,
+    exchange_cost: number
+}
+
+
 export type TMonsters = TCreature;
 
+export type TCancelLot = {
+    ableToCancel: boolean,
+    ableToReturnToOwner: boolean,
+    ableToReturnBet: boolean | string, // 'нет ставок на этом лоте'
+}
 
 
 

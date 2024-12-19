@@ -29,11 +29,8 @@ class User {
                     'id' => $user->id,
                     'name' => $user->name,
                     'token' => $token,
-                    'coins' => $user->coins,
-                    'crystals' => $user->crystals,
-                    'eggFragments' => $user->egg_fragments,
                     'x' => $user->x,
-                    'y'=> $user->y
+                    'y'=> $user->y,
                 ];
             }
             return ['error' => 1002];
@@ -62,16 +59,23 @@ class User {
         if ($user) {
             $token = md5(rand());
             $this->db->updateToken($user->id, $token);
+            $this->db-> addInventoryByUser($user->id);
+            $this->db->updateMoneyByUser($user->id, 500);
             $this->db->updateUserStatus($user->id, 'scout'); 
+
+            //добавление покемонов
+            $monster_type_id1 = rand(1,4);
+            $monster_type_id2 = rand(5,8);
+            $monster_type_id3 = rand(9,12);
+                        
+            $this->db->addMonsters($user->id, $monster_type_id1);
+            $this->db->addMonsters($user->id, $monster_type_id2);
+            $this->db->addMonsters($user->id, $monster_type_id3);
+            
             return [
                 'id' => $user->id,
                 'name' => $user->name,
                 'token' => $token,
-                'coins' => $user->coins,
-                'crystals' => $user->crystals,
-                'eggFragments' => $user->egg_fragments,
-                $this->db->getMonstersByUser($user->id),
-                $this->db->getInventoryByUser($user->id)
             ];
         }
         return ['error' => 1004];
@@ -101,10 +105,6 @@ class User {
         $monster_type_id = $this->db->getMonsterTypeByMonsters($monsterId);
         $monster_type_id = isset($monster_type_id->monster_type_id) ? intval($monster_type_id->monster_type_id) : 0;
     
-        //Получаем id стихии, которая принадлежит покемону
-        //$element_id = $this->db->getElementByMonsters($monster_type_id);
-        //$element_id = isset($element_id->element_id) ? intval($element_id->element_id) : 0;
-    
         //узнаем скок кристалов у пользака определенной стихии 
         $resources = $this->db->getAmountCrystalByUser($user->id);    
         $crystalAmount = isset($resources->resource_amount) ? intval($resources->resource_amount) : 0;
@@ -131,18 +131,12 @@ class User {
     
         $level = $levelMonster + 1;
         $param = $this->db->getParametersMonsterByLevel($level);
-        $hp_param = isset($param['hp']->hp) ? intval($param['hp']->hp) : 0;
-        //не знаю к чему прибавлять атаку из какой табл брать данные 
-        $attack_param= isset($param['attack']->attack) ? intval($param['attack']->attack) : 0;
-
+        $hp_param = $param->hp;
+        
         //увеличиваем hp 
         $this->db->upgradeHpMonstersByUser($user->id, $monsterId, $hp_param);
         $hp = $this->db->getMonsterHpById($monsterId);
         //$hp = isset($hp->hp) ? intval($hp->hp) : 0;
-        $parametersMonsterType = $this->db->getMonsterTypeById($monster_type_id);
-        $attack = isset($parametersMonsterType->attack) ? intval($parametersMonsterType->attack) : 0;
-        $attack = $attack + $attack_param;
-
 
         return[
             $this->db->getMonsterLevelById($monsterId),
