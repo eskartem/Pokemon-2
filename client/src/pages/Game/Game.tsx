@@ -40,7 +40,8 @@ const Game: React.FC<IBasePage> = (props: IBasePage) => {
         // сделать запрос на сервак по изменению поля is_mute в таблицe users
     }
 
-    const panelHeight = '65px';
+    //const panelHeight = '65px';
+    //style={{ paddingTop: panelHeight }} //Для <div className="map-container">
     
     if (!user) { return ( <div><h1> Что-то пошло не так. </h1></div> );} // закоментировать для работы без бекэнда
 
@@ -71,7 +72,7 @@ const Game: React.FC<IBasePage> = (props: IBasePage) => {
                 </div>
             )}
             <img className='chat-button' onClick={toggleChatVisibility} src={isChatVisible ? ChatCloseImg : ChatImg } />
-            <div className="map-container" style={{ paddingTop: panelHeight }}>
+            <div className="map-container">
                 <Map />
             </div>
         </div>
