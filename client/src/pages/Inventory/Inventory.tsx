@@ -1,12 +1,14 @@
 import React, { useState, useEffect, useContext } from 'react';
 import Button from '../../components/Button/Button';
 import { TResource, TStats, TCr } from '../../services/server/types';
+import blobfishfire from '../../assets/characters/blob_fish_fire.png';
+import crystalImage from '../../assets/img/crystal.png';
+import eggImage from '../../assets/img/Egg.png'; 
+import eggShellImage from '../../assets/img/egg_shell.png';
+import butterflyWaterImage from '../../assets/characters/butterfly_water.png';
 import { ServerContext } from '../../App';
 import { IBasePage, PAGES } from '../PageManager';
 import './Inventory.scss';
-import Crystals from '../../assets/img/Ruby.png';
-import Eggs from '../../assets/img/Egg.png';
-import Shells from '../../assets/img/EggBreak.png';
 
 const TOKEN = 'user-token';
 
@@ -51,6 +53,7 @@ const Inventory: React.FC<IBasePage> = (props: IBasePage) => {
                     max_HP: monsterType.max_HP,
                     ATK: monsterType.ATK,
                     DEF: monsterType.DEF,
+                    asset: monsterType.asset, 
                 };
             }).filter((pokemon): pokemon is TCr => pokemon !== null);
 
@@ -154,11 +157,22 @@ const Inventory: React.FC<IBasePage> = (props: IBasePage) => {
     const getResourceImage = (resourceId: number) => {
         switch (resourceId) {
             case 1:
-                return Crystals;
+                return crystalImage;
             case 2:
-                return Eggs;
+                return eggImage;
             case 3:
-                return Shells;
+                return eggShellImage;
+            default:
+                return undefined;
+        }
+    };
+
+    const getPokemonImage = (assetPath: string) => {
+        switch (assetPath) {
+            case '../../assets/characters/butterfly_water.png':
+                return butterflyWaterImage;
+            case '../../assets/characters/blob_fish_fire.png':
+                return blobfishfire;
             default:
                 return undefined;
         }
@@ -184,6 +198,7 @@ const Inventory: React.FC<IBasePage> = (props: IBasePage) => {
                 <h2 id="test-battle-team-title">Команда для боя</h2>
                 {battleTeam.map((pokemon, index) => (
                     <div key={pokemon.id} className="pokemon-card" id={`test-battle-team-pokemon-${index}`}>
+                        <img src={getPokemonImage(pokemon.asset)} alt={pokemon.name} className="pokemon-image"  />
                         <h2 id="test-pokemon-name">{pokemon?.name}</h2>
                         <p id="test-pokemon-level">Уровень: {pokemon?.level}</p>
                         <p id="test-pokemon-element">Элемент: {pokemon?.element}</p>
@@ -209,6 +224,7 @@ const Inventory: React.FC<IBasePage> = (props: IBasePage) => {
                 <h2 id="test-pokemon-list-title">Покемоны не в команде</h2>
                 {pokemonsNotInTeam.map((pokemon, index) => (
                     <div key={pokemon.id} className="pokemon-card" id={`test-pokemon-card-${index}`}>
+                        <img src={getPokemonImage(pokemon.asset)} alt={pokemon.name} />
                         <h2 id="test-pokemon-name">{pokemon.name}</h2>
                         <p id="test-pokemon-level">Уровень: {pokemon.level}</p>
                         <p id="test-pokemon-element">Элемент: {pokemon.element}</p>

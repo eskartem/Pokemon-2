@@ -190,6 +190,7 @@ export type TCr = {
     ATK: number;
     DEF: number;
     status: string;
+    asset: string;
 };
 
 export type TResource = {
