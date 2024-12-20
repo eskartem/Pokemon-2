@@ -137,7 +137,7 @@ class DB {
     }
         
     public function updateUserStatus($userId, $status){
-        $this->execute('UPDATE users SET status = ? WHERE id =?', [$status, $userId]);
+        return $this->execute('UPDATE users SET status = ? WHERE id =?', [$status, $userId]);
     }
 
     //map
@@ -362,4 +362,7 @@ class DB {
     }
     //объединить в один метод?
 
+    public function updateActivity($userId){
+        return $this->execute('UPDATE users SET last_update=now() WHERE id=?', [$userId]);
+    }
 }

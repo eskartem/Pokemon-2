@@ -31,6 +31,7 @@ class User {
                     'token' => $token,
                     'x' => $user->x,
                     'y'=> $user->y,
+                    'check_activity' => true
                 ];
             }
             return ['error' => 1002];
@@ -76,6 +77,7 @@ class User {
                 'id' => $user->id,
                 'name' => $user->name,
                 'token' => $token,
+                'check_activity' => true
             ];
         }
         return ['error' => 1004];
@@ -144,4 +146,21 @@ class User {
         ];
     }
 
+    public function activityCheck($user){
+        if ($user->status != 'offline'){
+            if ($user->last_update == null){
+                return $this->db->updateActivity($user->id);
+            }
+
+            $lastUpdate = new DateTime($user->last_update);
+            $currentTime = new DateTime();
+            $interval = $lastUpdate->diff($currentTime);
+            if ($interval->h == 0 && $interval->i == 0 && $interval->s > 5){
+                return $this->logout($user->token);
+            }
+
+            return $this->db->updateActivity($user->id);
+        }
+        return ['check_activity' => false];
+    }
 }

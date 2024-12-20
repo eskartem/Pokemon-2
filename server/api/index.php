@@ -17,6 +17,7 @@ function result($params) {
             case 'login': return $app->login($params);
             case 'logout': return $app->logout($params);
             case 'registration': return $app->registration($params);
+            case 'activityCheck': return $app->activityCheck($params);
             // chat
             case 'sendMessage': return $app->sendMessage($params);//loop
             case 'getMessages': return $app->getMessages($params);
