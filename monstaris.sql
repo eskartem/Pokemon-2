@@ -353,7 +353,7 @@ CREATE TABLE `monster_types` (
 --
 
 INSERT INTO `monster_types` (`id`, `element_id`, `name`, `hp`, `attack`, `defense`, `image`) VALUES
-(1, 1, 'Рыба капля', 450, 100, 40, '../../assets/characters/blob_fish_fire.png'),
+(1, 1, 'Рыба капля', 450, 100, 40, '../../assets/characters/blob_fish_water.png'),
 (2, 1, 'Мотылек', 460, 110, 45, '../../assets/characters/butterfly_water.png'),
 (3, 1, 'Лягушка', 500, 120, 55, '../../assets/characters/frog_water.png'),
 (4, 2, 'Митбой', 510, 140, 45, '../../assets/characters/meatboy_fire.png'),
@@ -386,7 +386,7 @@ CREATE TABLE `resources` (
 
 INSERT INTO `resources` (`id`, `name`, `cost`, `exchange_cost`, `image`) VALUES
 (1, 'Кристалл', 250, NULL, '../../assets/img/crystal.png'),
-(2, 'Яйцо', 500, NULL, '../../assets/img/egg.png'),
+(2, 'Яйцо', 500, NULL, '../../assets/img/egg_new.png'),
 (3, 'Скорлупа', 10, 50, '../../assets/img/egg_shell.png');
 
 -- --------------------------------------------------------
