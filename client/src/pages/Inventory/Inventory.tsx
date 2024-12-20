@@ -1,7 +1,17 @@
 import React, { useState, useEffect, useContext } from 'react';
 import Button from '../../components/Button/Button';
 import { TResource, TStats, TCr } from '../../services/server/types';
-import blobfishfire from '../../assets/characters/blob_fish_fire.png';
+import blobfishfire from '../../assets/characters/blob_fish_water.png';
+import frog_water from '../../assets/characters/frog_water.png';
+import meatboy_fire from '../../assets/characters/meatboy_fire.png';
+import lizard_fire from '../../assets/characters/lizard_fire.png';
+import emoboy_fire from '../../assets/characters/emoboy_fire.png';
+import worm_earth from '../../assets/characters/worm_earth.png';
+import bee_earth from '../../assets/characters/bee_earth.png';
+import mushroom_earth from '../../assets/characters/mushroom_earth.png';
+import cat_lit_energy_air from '../../assets/characters/cat_lit_energy_air.png';
+import elephant_air from '../../assets/characters/elephant_air.png';
+import bear_air from '../../assets/characters/bear_air.png';
 import crystalImage from '../../assets/img/crystal.png';
 import eggImage from '../../assets/img/Egg.png'; 
 import eggShellImage from '../../assets/img/egg_shell.png';
@@ -96,7 +106,7 @@ const Inventory: React.FC<IBasePage> = (props: IBasePage) => {
                 setAllPokemons((prev) => 
                     prev.map(pokemon => 
                         pokemon.id === pokemonToUpgrade.id 
-                            ? { ...pokemon, level: upgradedPokemon.level, stats: upgradedPokemon.stats } 
+                            ? { ...pokemon, lvl: upgradedPokemon.level, stats: upgradedPokemon.stats } 
                             : pokemon
                     )
                 );
@@ -171,8 +181,28 @@ const Inventory: React.FC<IBasePage> = (props: IBasePage) => {
         switch (assetPath) {
             case '../../assets/characters/butterfly_water.png':
                 return butterflyWaterImage;
-            case '../../assets/characters/blob_fish_fire.png':
+            case '../../assets/characters/blob_fish_water.png':
                 return blobfishfire;
+            case '../../assets/characters/frog_water.png':
+                return frog_water;
+            case '../../assets/characters/meatboy_fire.png':
+                return meatboy_fire;
+            case '../../assets/characters/lizard_fire.png':
+                return lizard_fire;
+            case '../../assets/characters/emoboy_fire.png':
+                return emoboy_fire;
+            case '../../assets/characters/worm_earth.png':
+                return worm_earth;
+            case '../../assets/characters/bee_earth.png':
+                return bee_earth;
+            case '../../assets/characters/mushroom_earth.png':
+                return mushroom_earth;
+            case '../../assets/characters/cat_lit_energy_air.png':
+                return cat_lit_energy_air;
+            case '../../assets/characters/elephant_air.png':
+                return elephant_air;
+            case '../../assets/characters/bear_air.png':
+                return bear_air;
             default:
                 return undefined;
         }
