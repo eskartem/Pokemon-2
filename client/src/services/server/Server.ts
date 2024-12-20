@@ -163,8 +163,8 @@ class Server {
         return result;
     }
     
-    async getCatalog(token: string): Promise<boolean | null> {
-        const result = await this.request<boolean>('getCatalog', { token });
+    async getCatalog(): Promise<boolean | null> {
+        const result = await this.request<boolean>('getCatalog');
         return result;
     }
     

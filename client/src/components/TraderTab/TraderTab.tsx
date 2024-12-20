@@ -24,7 +24,7 @@ const TraderTab: React.FC = () => {
         try {
             setLoading(true);
             setError("");
-            const response = await server.getCatalog(TOKEN);
+            const response = await server.getCatalog();
             const inventoryResponse = await server.getInventory(); 
 
             if (!response || !Array.isArray(response) || !inventoryResponse) {
@@ -41,6 +41,8 @@ const TraderTab: React.FC = () => {
     };
 
     const sellResource = async () => {
+        setSellError(''); 
+
         if (!sellingResource) return;
 
         const { id } = sellingResource;
@@ -99,18 +101,14 @@ const TraderTab: React.FC = () => {
                             <p id={`test-resource-cost-${id}`}>Стоимость: {cost} монет</p>
                             <Button
                                 id={`test-sell-button-${id}`}
-                                text={
-                                    hasSufficientResources
-                                        ? 'Продать' : 'Недостаточно ресурсов'
-                                }
+                                text={hasSufficientResources ? 'Продать' : 'Недостаточно ресурсов'}
                                 onClick={() => {
                                     if (hasSufficientResources) {
+                                        setSellError("");
                                         setSellingResource({ id: id.toString(), name });
-                                    } else {
-                                        setSellError('Недостаточно ресурсов для продажи');
                                     }
                                 }}
-                                isDisabled={!hasSufficientResources} 
+                                isDisabled={!hasSufficientResources || sellingResource !== null}
                             />
                         </div>
                     );
@@ -137,7 +135,10 @@ const TraderTab: React.FC = () => {
                     <Button
                         id="test-cancel-sell-button"
                         text="Отмена"
-                        onClick={() => setSellingResource(null)}
+                        onClick={() => {
+                            setSellError("");
+                            setSellingResource(null);
+                        }}
                         isDisabled={false}
                     />
                 </div>
