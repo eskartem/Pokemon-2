@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import Button from '../../components/Button/Button';
-import { TResource, TStats, TMonsterType } from '../../services/server/types';
+import { TResource, TStats, TCr } from '../../services/server/types';
 import { ServerContext } from '../../App';
 import { IBasePage, PAGES } from '../PageManager';
 import './Inventory.scss';
@@ -14,11 +14,11 @@ const Inventory: React.FC<IBasePage> = (props: IBasePage) => {
     const { setPage } = props;
     const server = useContext(ServerContext);
 
-    const [allPokemons, setAllPokemons] = useState<TMonsterType[]>([]);
+    const [allPokemons, setAllPokemons] = useState<TCr[]>([]);
     const [availableMonsterTypes, setAvailableMonsterTypes] = useState<any[]>([]); 
     const [userResources, setUserResources] = useState<TResource[]>([]); 
-    const [selectedPokemon, setSelectedPokemon] = useState<TMonsterType | null>(null);
-    const [battleTeam, setBattleTeam] = useState<TMonsterType[]>([]); 
+    const [selectedPokemon, setSelectedPokemon] = useState<TCr | null>(null);
+    const [battleTeam, setBattleTeam] = useState<TCr[]>([]); 
     const [loading, setLoading] = useState<boolean>(false);
 
     const backClickHandler = () => setPage(PAGES.GAME);
@@ -29,38 +29,40 @@ const Inventory: React.FC<IBasePage> = (props: IBasePage) => {
             const inventory = await server.getInventory();
             if (!inventory) return;
 
-            const transformedPokemons: TMonsterType[] = inventory.monsters.map((monster) => {
-                const monsterType = inventory.monsterTypes.find(mt => mt.id === monster.monster_type_id);
+            const transformedPokemons: TCr[] = inventory.monsters.map((monster) => {
+                const monsterType = inventory.monsters.find(mt => mt.id === monster.id);
                 if (!monsterType) return null;
 
                 const stats: TStats = {
-                    hp: monster.hp,
-                    ad: monsterType.attack,
-                    df: monsterType.defense,
+                    current_hp: monster.current_hp,
+                    max_HP: monster.max_HP,
+                    ATK: monsterType.ATK,
+                    DEF: monsterType.DEF,
                 };
 
                 return {
                     id: monster.id, 
                     name: monsterType.name,
-                    lvl: monster.level,
-                    element_id: monsterType.element_id, 
+                    level: monster.level,
+                    element: monsterType.element, 
                     stats,
                     status: monster.status || 'not in team', 
-                    hp: monsterType.hp,
-                    attack: monsterType.attack,
-                    defense: monsterType.defense,
+                    current_hp: monsterType.current_hp,
+                    max_HP: monsterType.max_HP,
+                    ATK: monsterType.ATK,
+                    DEF: monsterType.DEF,
                 };
-            }).filter((pokemon): pokemon is TMonsterType => pokemon !== null);
+            }).filter((pokemon): pokemon is TCr => pokemon !== null);
 
             const uniquePokemons = transformedPokemons.reduce((acc, pokemon) => {
                 if (!acc.some(p => p.id === pokemon.id)) {
                     acc.push(pokemon);
                 }
                 return acc;
-            }, [] as TMonsterType[]);
+            }, [] as TCr[]);
 
             setAllPokemons(uniquePokemons);
-            setAvailableMonsterTypes(inventory.monsterTypes);
+            setAvailableMonsterTypes(inventory.monsters);
             setUserResources(inventory.inventory);
 
             const team = uniquePokemons.filter(pokemon => pokemon.status === 'in team');
@@ -91,7 +93,7 @@ const Inventory: React.FC<IBasePage> = (props: IBasePage) => {
                 setAllPokemons((prev) => 
                     prev.map(pokemon => 
                         pokemon.id === pokemonToUpgrade.id 
-                            ? { ...pokemon, lvl: upgradedPokemon.level, stats: upgradedPokemon.stats } 
+                            ? { ...pokemon, level: upgradedPokemon.level, stats: upgradedPokemon.stats } 
                             : pokemon
                     )
                 );
@@ -102,12 +104,12 @@ const Inventory: React.FC<IBasePage> = (props: IBasePage) => {
         }
     };
 
-    const selectPokemonHandler = (pokemon: TMonsterType) => {
+    const selectPokemonHandler = (pokemon: TCr) => {
         if (!pokemon) return;
         setSelectedPokemon(pokemon);
     };
 
-    const replaceInBattleTeam = async (index: number, newPokemon: TMonsterType | null) => {
+    const replaceInBattleTeam = async (index: number, newPokemon: TCr | null) => {
         if (!newPokemon) return;
     
         try {
@@ -183,11 +185,12 @@ const Inventory: React.FC<IBasePage> = (props: IBasePage) => {
                 {battleTeam.map((pokemon, index) => (
                     <div key={pokemon.id} className="pokemon-card" id={`test-battle-team-pokemon-${index}`}>
                         <h2 id="test-pokemon-name">{pokemon?.name}</h2>
-                        <p id="test-pokemon-level">Уровень: {pokemon?.lvl}</p>
-                        <p id="test-pokemon-element">Элемент: {pokemon?.element_id}</p>
-                        <p id="test-pokemon-hp">HP: {pokemon?.stats?.hp || 'N/A'}</p>
-                        <p id="test-pokemon-ad">AD: {pokemon.stats?.ad || 'N/A'}</p>
-                        <p id="test-pokemon-df">DF: {pokemon.stats?.df || 'N/A'}</p>
+                        <p id="test-pokemon-level">Уровень: {pokemon?.level}</p>
+                        <p id="test-pokemon-element">Элемент: {pokemon?.element}</p>
+                        <p id="test-pokemon-current_hp">Current_hp: {pokemon.stats?.current_hp || 'N/A'}</p>
+                        <p id="test-pokemon-max_HP">Max_hp: {pokemon.stats?.max_HP || 'N/A'}</p>
+                        <p id="test-pokemon-ad">ATK: {pokemon.stats?.ATK || 'N/A'}</p>
+                        <p id="test-pokemon-df">DEF: {pokemon.stats?.DEF || 'N/A'}</p>
                         <Button
                             id="test-replace-button"
                             text="Заменить"
@@ -207,11 +210,12 @@ const Inventory: React.FC<IBasePage> = (props: IBasePage) => {
                 {pokemonsNotInTeam.map((pokemon, index) => (
                     <div key={pokemon.id} className="pokemon-card" id={`test-pokemon-card-${index}`}>
                         <h2 id="test-pokemon-name">{pokemon.name}</h2>
-                        <p id="test-pokemon-level">Уровень: {pokemon.lvl}</p>
-                        <p id="test-pokemon-element">Элемент: {pokemon.element_id}</p>
-                        <p id="test-pokemon-hp">HP: {pokemon.stats?.hp || 'N/A'}</p>
-                        <p id="test-pokemon-ad">AD: {pokemon.stats?.ad || 'N/A'}</p>
-                        <p id="test-pokemon-df">DF: {pokemon.stats?.df || 'N/A'}</p>
+                        <p id="test-pokemon-level">Уровень: {pokemon.level}</p>
+                        <p id="test-pokemon-element">Элемент: {pokemon.element}</p>
+                        <p id="test-pokemon-current_hp">Current_hp: {pokemon.stats?.current_hp || 'N/A'}</p>
+                        <p id="test-pokemon-max_HP">Max_hp: {pokemon.stats?.max_HP || 'N/A'}</p>
+                        <p id="test-pokemon-ad">ATK: {pokemon.stats?.ATK || 'N/A'}</p>
+                        <p id="test-pokemon-df">DEF: {pokemon.stats?.DEF || 'N/A'}</p>
                         <Button
                             id="test-upgrade-button"
                             text="Улучшить"

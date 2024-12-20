@@ -57,9 +57,10 @@ export enum EElement {
 
 // статы существа
 export type TStats = {
-    hp: number, // health point
-    ad: number, // attack dmg
-    df: number, // defence
+    current_hp: number,
+    max_HP: number,
+    ATK: number, // attack dmg
+    DEF: number, // defence
 }
 
 // само существо
@@ -174,31 +175,22 @@ export type TUserInfo = {
  
 export type TInventory = {
     monsters: TCr[];
-    monsterTypes: TMonsterType[];
     inventory: TResource[];
     balance: TBalance;
 }
 
 export type TCr = {
     id: number;
-    user_id: number;
-    monster_type_id: number;
+    name: string;
+    element: string;
     level: number;
-    hp: number;
+    current_hp: number;
+    max_HP: number;
+    stats: TStats;
+    ATK: number;
+    DEF: number;
     status: string;
 };
-
-export type TMonsterType = {
-    id: number;
-    element_id: number;
-    lvl: number;
-    name: string;
-    hp: number;
-    attack: number;
-    defense: number;
-    stats: TStats;
-    status: string;
-}
 
 export type TResource = {
     id: number;

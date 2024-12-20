@@ -3,7 +3,7 @@ import CONFIG, { EDIRECTION } from "../../config";
 import Store from "../store/Store";
 import { TAnswer, TError, TMessagesResponse, TUser, TMarketCatalog, TMap, TMapZone, 
     TUpdateSceneResponse, TSell, TResources, TCreature, TInventory, TMonsters_level, 
-    TMonsterType, TUpdateMarketResponse, TMakeBet, 
+    TCr, TUpdateMarketResponse, TMakeBet, 
     TCancelLot,
     TUserInfo} from "./types";
 
@@ -238,13 +238,13 @@ class Server {
         return result;
     }    
 
-    async addToTeam(token: string, monsterId: number): Promise<TMonsterType | null> {
-        const result = await this.request<TMonsterType>('addToTeam', { token, monsterId: monsterId.toString() });
+    async addToTeam(token: string, monsterId: number): Promise<TCr | null> {
+        const result = await this.request<TCr>('addToTeam', { token, monsterId: monsterId.toString() });
         return result;
     }    
 
-    async removeFromTeam(token: string, monsterId: number): Promise<TMonsterType | null> {
-        const result = await this.request<TMonsterType>('addToTeam', { token, monsterId: monsterId.toString() });
+    async removeFromTeam(token: string, monsterId: number): Promise<TCr | null> {
+        const result = await this.request<TCr>('addToTeam', { token, monsterId: monsterId.toString() });
         return result;
     }   
 }
