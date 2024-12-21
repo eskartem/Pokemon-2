@@ -369,8 +369,7 @@ MapZones: {
 **Успешный ответ**
 ```
     Answer<{
-        monsters: Monsters[]; - список всех монстров
-        monsterTypes: MonsterTypes[]; - список всех типов монстров
+        monsters: [Monsters['id', 'level', 'status'], MonsterTypes['name', 'element_id'], 'current_hp' = Monsters['hp'], 'max_HP', 'ATK', 'DEF']; - список всех монстров и их характеристик
         inventory: Inventory[]; - инвентарь пользователя
         balance: User['money']; - деньги пользователя
     }>

@@ -317,19 +317,39 @@ class DB {
                 ];
     }
 
-    public function getInventory($userId){
-        return ['monsters' => $this->queryAll('SELECT * FROM monsters WHERE user_id=?', [$userId]),
-                'monsterTypes' => $this->queryAll('SELECT * FROM monster_types'),
-                'inventory' => $this->queryAll('SELECT * FROM inventory WHERE user_id=?', [$userId]),
-                'balance' => $this->query('SELECT money FROM users WHERE id=?', [$userId])
+    public function getInventory($userId) {
+        return [
+            'monsters' => $this->queryAll('
+                SELECT 
+                    m.id,
+                    mt.name,
+                    el.name AS element,
+                    m.status,
+                    m.level,
+                    m.hp AS current_hp,
+                    (mt.hp + COALESCE(SUM(ml.hp), 0)) AS max_HP,
+                    (mt.attack + COALESCE(SUM(ml.attack), 0)) AS ATK,
+                    (mt.defense + COALESCE(SUM(ml.defense), 0)) AS DEF,
+                    mt.image as asset
+                FROM monsters m
+                JOIN monster_types mt ON m.monster_type_id = mt.id
+                LEFT JOIN monster_level ml ON ml.level <= m.level
+                LEFT JOIN elements el ON el.id = mt.element_id
+                WHERE m.user_id = ?
+                GROUP BY m.id, m.user_id, m.level, m.hp, m.status, mt.element_id, mt.name, mt.hp, mt.attack, mt.defense
+            ', [$userId]),
+            'inventory' => $this->queryAll('SELECT *, r.image FROM inventory AS i LEFT JOIN resources as r ON i.resource_id = r.id WHERE user_id=?', [$userId]),
+            'balance' => $this->query('SELECT money FROM users WHERE id=?', [$userId])->money
         ];
     }
+    
+    
 
     public function makeLotMonster($userId, $sellingItemId, $startCost, $stepCost, $zalog){
         return ['ableToWithdrawMonster' => $this->execute('UPDATE monsters SET user_id=?, status="on sale" WHERE id=?', [-1, $sellingItemId]),
                 'ableToCreateLot' => $this->execute('INSERT INTO lots 
-                                    (seller_id, datetime, start_cost, step_cost, current_cost, timestamp_cost, buyer_id, type, selling_id, status) 
-                                    VALUES (?, now(), ?, ?, ?, NULL, NULL, "monster", ?, "open")', 
+                                    (seller_id, datetime, start_cost, step_cost, current_cost, buyer_id, type, selling_id, status) 
+                                    VALUES (?, now(), ?, ?, ?, NULL, "monster", ?, "open")', 
                                     [$userId, $startCost, $stepCost, $startCost, $sellingItemId]),
                 'ableToTakeMoney' => $this->execute('UPDATE users SET money=money-? WHERE id=?', [$zalog, $userId])
         ];
@@ -338,8 +358,8 @@ class DB {
     public function makeLotItem($userId, $sellingItemId, $startCost, $stepCost, $amount, $zalog){
         return ['ableToWithdrawResources' => $this->execute('UPDATE inventory SET resource_amount=resource_amount-? WHERE user_id=? AND resource_id=?', [$amount, $userId, $sellingItemId]),
                 'ableToCreateLot' => $this->execute('INSERT INTO lots 
-                                    (seller_id, datetime, start_cost, step_cost, current_cost, timestamp_cost, buyer_id, type, selling_id, amount, status) 
-                                    VALUES (?, now(), ?, ?, ?, NULL, NULL, "item", ?, ?, "open")', 
+                                    (seller_id, datetime, start_cost, step_cost, current_cost, buyer_id, type, selling_id, amount, status) 
+                                    VALUES (?, now(), ?, ?, ?, NULL, "item", ?, ?, "open")', 
                                     [$userId, $startCost, $stepCost, $startCost, $sellingItemId, $amount]),
                 'ableToTakeMoney' => $this->execute('UPDATE users SET money=money-? WHERE id=?', [$zalog, $userId])
         ];
