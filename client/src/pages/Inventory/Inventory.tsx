@@ -32,6 +32,7 @@ const Inventory: React.FC<IBasePage> = (props: IBasePage) => {
     const [selectedPokemon, setSelectedPokemon] = useState<TCr | null>(null);
     const [battleTeam, setBattleTeam] = useState<TCr[]>([]); 
     const [loading, setLoading] = useState<boolean>(false);
+    const [replacedPokemonIndex, setReplacedPokemonIndex] = useState<number | null>(null);
 
     const backClickHandler = () => setPage(PAGES.GAME);
 
@@ -77,10 +78,8 @@ const Inventory: React.FC<IBasePage> = (props: IBasePage) => {
             setAllPokemons(uniquePokemons);
             setAvailableMonsterTypes(inventory.monsters);
             setUserResources(inventory.inventory);
-
             const team = uniquePokemons.filter(pokemon => pokemon.status === 'in team');
             setBattleTeam(team);
-
         } catch (error) {
             console.error('Ошибка при получении инвентаря:', error);
         } finally {
@@ -143,7 +142,8 @@ const Inventory: React.FC<IBasePage> = (props: IBasePage) => {
                         pokemon.id === oldPokemon?.id ? { ...pokemon, status: 'not in team' } : pokemon
                     )
                 );
-    
+                setReplacedPokemonIndex(index);
+                setSelectedPokemon(null); 
                 fetchInventory();
             }
         } catch (error) {
@@ -176,6 +176,7 @@ const Inventory: React.FC<IBasePage> = (props: IBasePage) => {
                 return undefined;
         }
     };
+
 
     const getPokemonImage = (assetPath: string) => {
         switch (assetPath) {
@@ -236,11 +237,14 @@ const Inventory: React.FC<IBasePage> = (props: IBasePage) => {
                         <p id="test-pokemon-max_HP">Max_hp: {pokemon.stats?.max_HP || 'N/A'}</p>
                         <p id="test-pokemon-ad">ATK: {pokemon.stats?.ATK || 'N/A'}</p>
                         <p id="test-pokemon-df">DEF: {pokemon.stats?.DEF || 'N/A'}</p>
-                        <Button
-                            id="test-replace-button"
-                            text="Заменить"
-                            onClick={() => replaceInBattleTeam(index, selectedPokemon)}
-                        />
+                        {selectedPokemon && (
+                            <Button
+                                id="test-replace-button"
+                                text="Заменить"
+                                onClick={() => replaceInBattleTeam(index, selectedPokemon)}
+                                isDisabled={replacedPokemonIndex === index}
+                            />
+                        )}
                         <Button
                             id="test-upgrade-button"
                             text="Улучшить"
