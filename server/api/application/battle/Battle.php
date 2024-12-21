@@ -46,8 +46,9 @@ class Battle {
 
     public function startBattle() {
         $players = $this->db->getPlayersScout(); // все игроки со статусом скаут
-        
-        //return[count($players)];
+        if (count($players) === 1){
+            return [false];
+        }
         // Итерируем по всем игрокам
         for ($i = 0; $i < count($players); $i++) {
             for ($j = $i + 1; $j < count($players); $j++) {
