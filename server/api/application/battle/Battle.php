@@ -66,10 +66,10 @@ class Battle {
                         'user2' => $user2['id']
                     ];
                 }
-                return [false];
+                
             }
         }
-        
+        return [false];
     }
     
     public function updateBattle($hash){// loop //получаю данные по всем игрокам
