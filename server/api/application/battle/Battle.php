@@ -57,8 +57,8 @@ class Battle {
     
                 // Проверяем совпадают ли координаты
                 if ($user1['x'] === $user2['x'] && $user1['y'] === $user2['y']) {
-                    $this->db->updateUserStatus($user1->id, 'fight');
-                    $this->db->updateUserStatus($user2->id, 'fight');
+                    $this->db->updateUserStatus($user1['id'], 'fight');
+                    $this->db->updateUserStatus($user2['id'], 'fight');
                     $this->db->addFight($user1['id'], $user2['id']); 
                     
                     return [
