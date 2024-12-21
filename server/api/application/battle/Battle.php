@@ -65,7 +65,7 @@ class Battle {
                         'user2' => $user2['id']
                     ];
                 }
-                return false;
+                return [false];
             }
         }
         
