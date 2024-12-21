@@ -29,7 +29,7 @@ function result($params) {
             // ???? case 'updradePokemon': return $app-> upgradePokemon($params); //
             
             //battle
-            case 'startBattle': return $app-> startBattle($params);
+            case 'startBattle': return $app-> startBattle();
             // case 'updateBattle': return $app-> updateBattle($params); // loop //получаю данные по всем игрокам
             case 'endBattle': return $app-> endBattle($params);
             //case 'actionUser': return $app-> actionUser($params); //действие игрока в бою во время ход
