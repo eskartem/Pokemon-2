@@ -41,6 +41,26 @@ class Battle {
         $this->db->updateUserStatus($winnerId, 'scout');
     }
 
+    public function restoreHp($monsterId){
+        $monster = $this->db->getMonsterById($monsterId);
+        if ($monster->hp != 0){
+        $this->db->upgradeHpMonstersByUser($monsterId, -$monster->hp); 
+        }
+        $monster_type_id = $monster->monster_type_id;
+        $monster_type = $this->db->getMonsterTypeById($monster_type_id);
+        $hp = $monster_type->hp;
+            
+        $level = $monster->level;
+        for ($i = 2; $i <= $level; $i++){
+            $params = $this->db->getParametersMonsterByLevel($i);
+            $hp_params = $params->hp;
+            $hp = $hp + $hp_params;
+        }
+    
+        $this->db->upgradeHpMonstersByUser($monsterId, $hp); 
+        
+    }
+
     public function skills($monster_type_id){}
 
 
@@ -117,6 +137,12 @@ class Battle {
         if ($allDead1) {
             $this->updateResourcesOnVictoryAndLoss($user2->id, $user1->id);
             $this->db->addResultFight($user1->id, $user2->id, $user2->id);
+            foreach ($monsters1 as $monster1){
+                $this->restoreHp($monster1['id']);
+            }
+            foreach ($monsters2 as $monster2){
+                $this->restoreHp($monster2['id']);
+            }
             return [
                 'tokenWinner' => $token2,
                 'tokenLoser' => $token1
@@ -124,12 +150,18 @@ class Battle {
         }elseif($allDead2) {
             $this->updateResourcesOnVictoryAndLoss($user1->id, $user2->id);
             $this->db->addResultFight($user1->id, $user2->id, $user1->id);
+            foreach ($monsters1 as $monster1){
+                $this->restoreHp($monster1['id']);
+            }
+            foreach ($monsters2 as $monster2){
+                $this->restoreHp($monster2['id']);
+            }
             return [
                 'tokenWinner' => $token1,
                 'tokenLoser' => $token2
             ];
         }else {
-            return ['message' => 'Игра не закончена'];
+            return [false];
         }
 
     }
