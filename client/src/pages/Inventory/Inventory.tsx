@@ -233,11 +233,11 @@ const Inventory: React.FC<IBasePage> = (props: IBasePage) => {
                             <img src={getPokemonImage(pokemon.asset)} alt={pokemon.name} className="pokemon-image"  />
                             <h2 id="test-pokemon-name">{pokemon?.name}</h2>
                             <p id="test-pokemon-level">Уровень: {pokemon?.level}</p>
-                            <p id="test-pokemon-element">Элемент: {pokemon?.element}</p>
-                            <p id="test-pokemon-current_hp">Current_hp: {pokemon.stats?.current_hp || 'N/A'}</p>
-                            <p id="test-pokemon-max_HP">Max_hp: {pokemon.stats?.max_HP || 'N/A'}</p>
-                            <p id="test-pokemon-ad">ATK: {pokemon.stats?.ATK || 'N/A'}</p>
-                            <p id="test-pokemon-df">DEF: {pokemon.stats?.DEF || 'N/A'}</p>
+                            <p id="test-pokemon-element">Стихия: {pokemon?.element}</p>
+                            <p id="test-pokemon-current_hp">Текущее здровье: {pokemon.stats?.current_hp || 'N/A'}</p>
+                            <p id="test-pokemon-max_HP">Максимальное здоровье: {pokemon.stats?.max_HP || 'N/A'}</p>
+                            <p id="test-pokemon-ad">Атака: {pokemon.stats?.ATK || 'N/A'}</p>
+                            <p id="test-pokemon-df">Защита: {pokemon.stats?.DEF || 'N/A'}</p>
                             {selectedPokemon && (
                                 <Button
                                     id="test-replace-button"
@@ -262,11 +262,11 @@ const Inventory: React.FC<IBasePage> = (props: IBasePage) => {
                             <img src={getPokemonImage(pokemon.asset)} alt={pokemon.name} />
                             <h2 id="test-pokemon-name">{pokemon.name}</h2>
                             <p id="test-pokemon-level">Уровень: {pokemon.level}</p>
-                            <p id="test-pokemon-element">Элемент: {pokemon.element}</p>
-                            <p id="test-pokemon-current_hp">Current_hp: {pokemon.stats?.current_hp || 'N/A'}</p>
-                            <p id="test-pokemon-max_HP">Max_hp: {pokemon.stats?.max_HP || 'N/A'}</p>
-                            <p id="test-pokemon-ad">ATK: {pokemon.stats?.ATK || 'N/A'}</p>
-                            <p id="test-pokemon-df">DEF: {pokemon.stats?.DEF || 'N/A'}</p>
+                            <p id="test-pokemon-element">Стихия: {pokemon.element}</p>
+                            <p id="test-pokemon-current_hp">Текущее здровье: {pokemon.stats?.current_hp || 'N/A'}</p>
+                            <p id="test-pokemon-max_HP">Максимальное здоровье: {pokemon.stats?.max_HP || 'N/A'}</p>
+                            <p id="test-pokemon-ad">Атака: {pokemon.stats?.ATK || 'N/A'}</p>
+                            <p id="test-pokemon-df">Защита: {pokemon.stats?.DEF || 'N/A'}</p>
                             <Button
                                 id="test-upgrade-button"
                                 text="Улучшить"
