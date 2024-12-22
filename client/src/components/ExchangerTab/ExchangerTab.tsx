@@ -32,6 +32,11 @@ const ExchangerTab: React.FC = () => {
     };
 
     const handleExchange = async () => {
+        if (!hasSufficientResources) {
+            setError('');
+            return;
+        }
+    
         try {
             const success = await server.sellExchanger('50'); 
             if (success) {
@@ -40,7 +45,7 @@ const ExchangerTab: React.FC = () => {
                 throw new Error('Ошибка обмена');
             }
         } catch (error) {
-            setError('');
+            setError('Произошла ошибка при обмене');
         }
     };
 

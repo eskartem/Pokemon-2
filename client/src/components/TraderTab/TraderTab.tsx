@@ -42,26 +42,26 @@ const TraderTab: React.FC = () => {
 
     const sellResource = async () => {
         setSellError(''); 
-
+    
         if (!sellingResource) return;
-
+    
         const { id } = sellingResource;
         const parsedAmount = Number(amountToSell);
-
-        if (!amountToSell || isNaN(parsedAmount) || parsedAmount <= 0) {
+    
+        if (!amountToSell || isNaN(parsedAmount) || parsedAmount <= 0 || amountToSell.startsWith('0') && amountToSell !== '0') {
             setSellError('Введите корректное количество!');
             return;
         }
-
+    
         const inventoryResource = inventory.find(
             (resource) => resource.resource_id === Number(id)
         );
-
+    
         if (!inventoryResource || inventoryResource.resource_amount < parsedAmount) {
             setSellError('Недостаточно ресурсов в инвентаре!');
             return; 
         }
-
+    
         try {
             const response = await server.sell(TOKEN, id, amountToSell);
             if (!response) throw new Error('Ресурс не продан');
