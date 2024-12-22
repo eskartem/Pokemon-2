@@ -127,14 +127,14 @@ class User {
         //вычитаем ресурсы
         $this->db->clearUserResource($user->id, $resourceTypeId, $amount);
         //увеливаем уровень
-        $this->db->upgradeLevelMonstersByUser($user->id, $monsterId);
+        $this->db->upgradeLevelMonstersByUser($monsterId);
     
         $level = $levelMonster + 1;
         $param = $this->db->getParametersMonsterByLevel($level);
         $hp_param = $param->hp;
         
         //увеличиваем hp 
-        $this->db->upgradeHpMonstersByUser($user->id, $monsterId, $hp_param);
+        $this->db->upgradeHpMonstersByUser($monsterId, $hp_param);
         $hp = $this->db->getMonsterHpById($monsterId);
         //$hp = isset($hp->hp) ? intval($hp->hp) : 0;
 

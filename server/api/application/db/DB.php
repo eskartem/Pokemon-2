@@ -296,6 +296,10 @@ class DB {
         return $this->queryAll('SELECT id, name, x, y FROM users WHERE status = "fight"');
     }
 
+    public function getPlayersScout() {
+        return $this->queryAll('SELECT id, name, x, y FROM users WHERE status = "scout"');
+    }
+    
     public function addFight($userId1, $userId2){
         $this->execute('INSERT INTO fight (user1_id, user2_id, turn, status, result) VALUES (?,?, 0, "open", 0)', [$userId1, $userId2]);
     }
