@@ -212,75 +212,77 @@ const Inventory: React.FC<IBasePage> = (props: IBasePage) => {
     const pokemonsNotInTeam = allPokemons.filter(pokemon => pokemon.status !== 'in team');
 
     return (
-        <div className="inventory" id="test-inventory-page">
-            <h1 id="test-inventory-title">Инвентарь</h1>
-            {loading && <p id="test-loading-indicator">Загрузка...</p>}
+        <div className="inventory-container">
+            <div className="inventory" id="test-inventory-page">
+                <h1 id="test-inventory-title">Инвентарь</h1>
+                {loading && <p id="test-loading-indicator">Загрузка...</p>}
 
-            <div id="test-resources-line">
-                {userResources.map((res) => (
-                    <span key={res.resource_id} id={`test-resource-${res.resource_id}`}>
-                        <img src={getResourceImage(res.resource_id)} alt={getResourceName(res.resource_id)} />
-                        {getResourceName(res.resource_id)}: {res.resource_amount}
-                    </span>
-                ))}
-            </div>
+                <div id="test-resources-line">
+                    {userResources.map((res) => (
+                        <span key={res.resource_id} id={`test-resource-${res.resource_id}`}>
+                            <img src={getResourceImage(res.resource_id)} alt={getResourceName(res.resource_id)} />
+                            {getResourceName(res.resource_id)}: {res.resource_amount}
+                        </span>
+                    ))}
+                </div>
 
-            <div className="battle-team" id="test-battle-team-section">
-                <h2 id="test-battle-team-title">Команда для боя</h2>
-                {battleTeam.map((pokemon, index) => (
-                    <div key={pokemon.id} className="pokemon-card" id={`test-battle-team-pokemon-${index}`}>
-                        <img src={getPokemonImage(pokemon.asset)} alt={pokemon.name} className="pokemon-image"  />
-                        <h2 id="test-pokemon-name">{pokemon?.name}</h2>
-                        <p id="test-pokemon-level">Уровень: {pokemon?.level}</p>
-                        <p id="test-pokemon-element">Элемент: {pokemon?.element}</p>
-                        <p id="test-pokemon-current_hp">Current_hp: {pokemon.stats?.current_hp || 'N/A'}</p>
-                        <p id="test-pokemon-max_HP">Max_hp: {pokemon.stats?.max_HP || 'N/A'}</p>
-                        <p id="test-pokemon-ad">ATK: {pokemon.stats?.ATK || 'N/A'}</p>
-                        <p id="test-pokemon-df">DEF: {pokemon.stats?.DEF || 'N/A'}</p>
-                        {selectedPokemon && (
+                <div className="battle-team" id="test-battle-team-section">
+                    <h2 id="test-battle-team-title">Команда для боя</h2>
+                    {battleTeam.map((pokemon, index) => (
+                        <div key={pokemon.id} className="pokemon-card" id={`test-battle-team-pokemon-${index}`}>
+                            <img src={getPokemonImage(pokemon.asset)} alt={pokemon.name} className="pokemon-image"  />
+                            <h2 id="test-pokemon-name">{pokemon?.name}</h2>
+                            <p id="test-pokemon-level">Уровень: {pokemon?.level}</p>
+                            <p id="test-pokemon-element">Элемент: {pokemon?.element}</p>
+                            <p id="test-pokemon-current_hp">Current_hp: {pokemon.stats?.current_hp || 'N/A'}</p>
+                            <p id="test-pokemon-max_HP">Max_hp: {pokemon.stats?.max_HP || 'N/A'}</p>
+                            <p id="test-pokemon-ad">ATK: {pokemon.stats?.ATK || 'N/A'}</p>
+                            <p id="test-pokemon-df">DEF: {pokemon.stats?.DEF || 'N/A'}</p>
+                            {selectedPokemon && (
+                                <Button
+                                    id="test-replace-button"
+                                    text="Заменить"
+                                    onClick={() => replaceInBattleTeam(index, selectedPokemon)}
+                                    isDisabled={replacedPokemonIndex === index}
+                                />
+                            )}
                             <Button
-                                id="test-replace-button"
-                                text="Заменить"
-                                onClick={() => replaceInBattleTeam(index, selectedPokemon)}
-                                isDisabled={replacedPokemonIndex === index}
+                                id="test-upgrade-button"
+                                text="Улучшить"
+                                onClick={() => upgradePokemonHandler(pokemon.id)}
                             />
-                        )}
-                        <Button
-                            id="test-upgrade-button"
-                            text="Улучшить"
-                            onClick={() => upgradePokemonHandler(pokemon.id)}
-                        />
-                    </div>
-                ))}
-            </div>
+                        </div>
+                    ))}
+                </div>
 
-            <div className="pokemon-list" id="test-pokemon-list-section">
-                <h2 id="test-pokemon-list-title">Покемоны не в команде</h2>
-                {pokemonsNotInTeam.map((pokemon, index) => (
-                    <div key={pokemon.id} className="pokemon-card" id={`test-pokemon-card-${index}`}>
-                        <img src={getPokemonImage(pokemon.asset)} alt={pokemon.name} />
-                        <h2 id="test-pokemon-name">{pokemon.name}</h2>
-                        <p id="test-pokemon-level">Уровень: {pokemon.level}</p>
-                        <p id="test-pokemon-element">Элемент: {pokemon.element}</p>
-                        <p id="test-pokemon-current_hp">Current_hp: {pokemon.stats?.current_hp || 'N/A'}</p>
-                        <p id="test-pokemon-max_HP">Max_hp: {pokemon.stats?.max_HP || 'N/A'}</p>
-                        <p id="test-pokemon-ad">ATK: {pokemon.stats?.ATK || 'N/A'}</p>
-                        <p id="test-pokemon-df">DEF: {pokemon.stats?.DEF || 'N/A'}</p>
-                        <Button
-                            id="test-upgrade-button"
-                            text="Улучшить"
-                            onClick={() => upgradePokemonHandler(pokemon.id)}
-                        />
-                        <Button
-                            id="test-select-button"
-                            text="Выбрать"
-                            onClick={() => selectPokemonHandler(pokemon)}
-                        />
-                    </div>
-                ))}
-            </div>
+                <div className="pokemon-list" id="test-pokemon-list-section">
+                    <h2 id="test-pokemon-list-title">Покемоны не в команде</h2>
+                    {pokemonsNotInTeam.map((pokemon, index) => (
+                        <div key={pokemon.id} className="pokemon-card" id={`test-pokemon-card-${index}`}>
+                            <img src={getPokemonImage(pokemon.asset)} alt={pokemon.name} />
+                            <h2 id="test-pokemon-name">{pokemon.name}</h2>
+                            <p id="test-pokemon-level">Уровень: {pokemon.level}</p>
+                            <p id="test-pokemon-element">Элемент: {pokemon.element}</p>
+                            <p id="test-pokemon-current_hp">Current_hp: {pokemon.stats?.current_hp || 'N/A'}</p>
+                            <p id="test-pokemon-max_HP">Max_hp: {pokemon.stats?.max_HP || 'N/A'}</p>
+                            <p id="test-pokemon-ad">ATK: {pokemon.stats?.ATK || 'N/A'}</p>
+                            <p id="test-pokemon-df">DEF: {pokemon.stats?.DEF || 'N/A'}</p>
+                            <Button
+                                id="test-upgrade-button"
+                                text="Улучшить"
+                                onClick={() => upgradePokemonHandler(pokemon.id)}
+                            />
+                            <Button
+                                id="test-select-button"
+                                text="Выбрать"
+                                onClick={() => selectPokemonHandler(pokemon)}
+                            />
+                        </div>
+                    ))}
+                </div>
 
-            <Button id="test-back-button" onClick={backClickHandler} text='назад' />
+                <Button id="test-back-button" onClick={backClickHandler} text='назад' />
+            </div>
         </div>
     );
 };
