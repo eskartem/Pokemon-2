@@ -53,7 +53,6 @@ const ExchangerTab: React.FC = () => {
         fetchResources();
     }, []);
 
-    if (loading) return <div id="test-loading-indicator">Загрузка...</div>;
     if (error) return <div className="error" id="test-error-message">{error}</div>;
 
     const hasSufficientResources = eggFragments >= 50;
