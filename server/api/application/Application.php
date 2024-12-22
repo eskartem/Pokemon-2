@@ -279,8 +279,8 @@ class Application {
 
     //Боевка
 
-    public function startBattle($params) {
-        if ($params['token1']&& $params['token2']) {
+    public function startBattle() {
+        /*if ($params['token1']&& $params['token2']) {
             $user1 = $this->user->getUser($params['token1']);
             $user2 = $this->user->getUser($params['token2']);
             if ($user1 && $user2) {
@@ -288,7 +288,8 @@ class Application {
             }
             return ['error' => 705];
         }
-        return ['error' => 404];
+        return ['error' => 404];*/
+        return $this->battle->startBattle();
     }
     
     public function updateBattle($params) {
