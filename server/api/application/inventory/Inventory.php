@@ -60,19 +60,34 @@ class Inventory {
         //вычитаем ресурсы
         $this->db->clearUserResource($user->id, $resourceTypeId, $amount);
         //увеливаем уровень
-        $this->db->upgradeLevelMonstersByUser($monsterId);
-        
+        $this->db->upgradeLevelMonstersByUser($monsterId);        
         $hp_param = $param->hp;
-        
         //увеличиваем hp 
         $this->db->upgradeHpMonstersByUser($monsterId, $hp_param);
-        
         $hp = $this->db->getMonsterHpById($monsterId);
         
 
         return[
             $this->db->getMonsterLevelById($monsterId),
-            $hp
+            'hp' => $hp
         ];
+    }
+
+    public function getInfoAboutUpgrade($monsterId){
+        $monster = $this->db->getMonsterById($monsterId);
+        $monster_type_id = $monster -> monster_type_id;
+        $level = $monster->level + 1;
+        $cost = $this->db->getParametersMonsterByLevel($level)->cost;
+        $monster_type = $this->db->getMonsterTypeById($monster_type_id);
+        $name = $monster_type->name;
+        $image = $monster_type->image;
+
+        return[
+            'name'=>$name,
+            'image'=>$image,
+            'level'=> $level,
+            'cost' => $cost
+        ];
+
     }
 }

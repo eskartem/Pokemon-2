@@ -373,4 +373,16 @@ class Application {
         }
         return ['error' => 242];
     }
+
+    public function getInfoAboutUpgrade($params){
+        if ($params['monsterId']){
+            $monster = $this->inventory->getMonster($params['monsterId']);
+            if ($monster){
+                return $this->inventory->getInfoAboutUpgrade($params['monsterId']);
+            }
+            return['error' => 702];
+        }
+        return ['error' => 242];
+    }
+    
 }
