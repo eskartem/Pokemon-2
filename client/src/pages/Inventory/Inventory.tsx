@@ -98,14 +98,28 @@ const Inventory: React.FC<IBasePage> = (props: IBasePage) => {
                 console.error('Покемон для улучшения не найден');
                 return;
             }
-
+    
+            if (pokemonToUpgrade.level === 5) {
+                console.error('Покемон уже достиг максимального уровня');
+                return;
+            }
+    
+            const crystalResource = userResources.find(res => res.resource_id === 1);
+            const crystalAmount = crystalResource ? crystalResource.resource_amount : 0;
+            const requiredCrystals = getRequiredCrystals(pokemonToUpgrade.level);
+    
+            if (crystalAmount < requiredCrystals) {
+                console.error('Недостаточно кристаллов для улучшения');
+                return;
+            }
+    
             const upgradedPokemon = await server.upgradePokemon(TOKEN, pokemonToUpgrade.id);
-
+    
             if (upgradedPokemon) {
                 setAllPokemons((prev) => 
                     prev.map(pokemon => 
                         pokemon.id === pokemonToUpgrade.id 
-                            ? { ...pokemon, lvl: upgradedPokemon.level, stats: upgradedPokemon.stats } 
+                            ? { ...pokemon, level: upgradedPokemon.level, stats: upgradedPokemon.stats } 
                             : pokemon
                     )
                 );
@@ -177,7 +191,6 @@ const Inventory: React.FC<IBasePage> = (props: IBasePage) => {
         }
     };
 
-
     const getPokemonImage = (assetPath: string) => {
         switch (assetPath) {
             case '../../assets/characters/butterfly_water.png':
@@ -211,6 +224,41 @@ const Inventory: React.FC<IBasePage> = (props: IBasePage) => {
 
     const pokemonsNotInTeam = allPokemons.filter(pokemon => pokemon.status !== 'in team');
 
+    const getUpgradeButtonText = (pokemon: TCr) => {
+        const crystalResource = userResources.find(res => res.resource_id === 1);
+        const crystalAmount = crystalResource ? crystalResource.resource_amount : 0;
+
+        if (pokemon.level === 5) {
+            return "Макс уровень";
+        } else if (crystalAmount < getRequiredCrystals(pokemon.level)) {
+            return "Недостаточно ресурсов";
+        } else {
+            return "Улучшить";
+        }
+    };
+
+    const getRequiredCrystals = (level: number) => {
+        switch (level) {
+            case 1:
+                return 10;
+            case 2:
+                return 20;
+            case 3:
+                return 100;
+            case 4:
+                return 500;
+            default:
+                return Infinity;
+        }
+    };
+
+    const isUpgradeButtonDisabled = (pokemon: TCr) => {
+        const crystalResource = userResources.find(res => res.resource_id === 1);
+        const crystalAmount = crystalResource ? crystalResource.resource_amount : 0;
+    
+        return pokemon.level === 5 || crystalAmount < getRequiredCrystals(pokemon.level);
+    };
+
     return (
         <div className="inventory-container">
             <div className="inventory" id="test-inventory-page">
@@ -234,7 +282,7 @@ const Inventory: React.FC<IBasePage> = (props: IBasePage) => {
                             <h2 id="test-pokemon-name">{pokemon?.name}</h2>
                             <p id="test-pokemon-level">Уровень: {pokemon?.level}</p>
                             <p id="test-pokemon-element">Стихия: {pokemon?.element}</p>
-                            <p id="test-pokemon-current_hp">Текущее здровье: {pokemon.stats?.current_hp || 'N/A'}</p>
+                            <p id="test-pokemon-current_hp">Текущее здоровье: {pokemon.stats?.current_hp || 'N/A'}</p>
                             <p id="test-pokemon-max_HP">Максимальное здоровье: {pokemon.stats?.max_HP || 'N/A'}</p>
                             <p id="test-pokemon-ad">Атака: {pokemon.stats?.ATK || 'N/A'}</p>
                             <p id="test-pokemon-df">Защита: {pokemon.stats?.DEF || 'N/A'}</p>
@@ -248,8 +296,9 @@ const Inventory: React.FC<IBasePage> = (props: IBasePage) => {
                             )}
                             <Button
                                 id="test-upgrade-button"
-                                text="Улучшить"
+                                text={getUpgradeButtonText(pokemon)}
                                 onClick={() => upgradePokemonHandler(pokemon.id)}
+                                isDisabled={isUpgradeButtonDisabled(pokemon)} 
                             />
                         </div>
                     ))}
@@ -263,15 +312,17 @@ const Inventory: React.FC<IBasePage> = (props: IBasePage) => {
                             <h2 id="test-pokemon-name">{pokemon.name}</h2>
                             <p id="test-pokemon-level">Уровень: {pokemon.level}</p>
                             <p id="test-pokemon-element">Стихия: {pokemon.element}</p>
-                            <p id="test-pokemon-current_hp">Текущее здровье: {pokemon.stats?.current_hp || 'N/A'}</p>
+                            <p id="test-pokemon-current_hp">Текущее здоровье: {pokemon.stats?.current_hp || 'N/A'}</p>
                             <p id="test-pokemon-max_HP">Максимальное здоровье: {pokemon.stats?.max_HP || 'N/A'}</p>
                             <p id="test-pokemon-ad">Атака: {pokemon.stats?.ATK || 'N/A'}</p>
                             <p id="test-pokemon-df">Защита: {pokemon.stats?.DEF || 'N/A'}</p>
                             <Button
                                 id="test-upgrade-button"
-                                text="Улучшить"
+                                text={getUpgradeButtonText(pokemon)}
                                 onClick={() => upgradePokemonHandler(pokemon.id)}
+                                isDisabled={isUpgradeButtonDisabled(pokemon)} 
                             />
+
                             <Button
                                 id="test-select-button"
                                 text="Выбрать"
