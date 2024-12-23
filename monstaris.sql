@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.1:3306
--- Время создания: Дек 17 2024 г., 20:10
+-- Время создания: Дек 20 2024 г., 00:28
 -- Версия сервера: 8.0.30
 -- Версия PHP: 8.1.9
 
@@ -60,10 +60,10 @@ CREATE TABLE `elements` (
 --
 
 INSERT INTO `elements` (`id`, `name`, `boost_id`, `nerf_id`) VALUES
-(1, 'вода', 2, 3),
-(2, 'огонь', 4, 1),
-(3, 'земля', 1, 4),
-(4, 'воздух', 3, 2);
+(1, 'Вода', 2, 3),
+(2, 'Огонь', 4, 1),
+(3, 'Земля', 1, 4),
+(4, 'Воздух', 3, 2);
 
 -- --------------------------------------------------------
 
@@ -124,7 +124,7 @@ CREATE TABLE `hashes` (
 --
 
 INSERT INTO `hashes` (`id`, `chat_hash`, `map_hash`, `battle_hash`, `market_hash`) VALUES
-(1, 'd54549bb2c64c7c0472a1b627d150dcf', 'fabceea19fc9e3671afa4c9ff11ba175', 'fabceea19fc9e3671afa4c9ff11ba176', 'fabceea19fc9e3671afa4c9ff11ba177');
+(1, 'd54549bb2c64c7c0472a1b627d150dcf', 'de45063848c0c09a070a357c9e381eb3', 'fabceea19fc9e3671afa4c9ff11ba176', 'fabceea19fc9e3671afa4c9ff11ba177');
 
 -- --------------------------------------------------------
 
@@ -144,18 +144,18 @@ CREATE TABLE `inventory` (
 --
 
 INSERT INTO `inventory` (`id`, `user_id`, `resource_id`, `resource_amount`) VALUES
-(1, 1, 1, 0),
-(2, 1, 2, 0),
-(3, 1, 3, 0),
-(4, 2, 1, 0),
+(1, 1, 1, 10),
+(2, 1, 2, 1565),
+(3, 1, 3, 2250),
+(4, 2, 1, 1),
 (5, 2, 2, 0),
 (6, 2, 3, 0),
 (7, 3, 1, 0),
 (8, 3, 2, 0),
-(9, 3, 3, 0),
+(9, 3, 3, 177),
 (10, 4, 1, 10000),
-(11, 4, 2, 10000),
-(12, 4, 3, 10000);
+(11, 4, 2, 8440),
+(12, 4, 3, 9000);
 
 -- --------------------------------------------------------
 
@@ -170,7 +170,6 @@ CREATE TABLE `lots` (
   `start_cost` int NOT NULL,
   `step_cost` int NOT NULL,
   `current_cost` int NOT NULL,
-  `timestamp_cost` int DEFAULT NULL,
   `buyer_id` int DEFAULT NULL,
   `type` varchar(32) NOT NULL,
   `selling_id` int NOT NULL,
@@ -182,9 +181,15 @@ CREATE TABLE `lots` (
 -- Дамп данных таблицы `lots`
 --
 
-INSERT INTO `lots` (`id`, `seller_id`, `datetime`, `start_cost`, `step_cost`, `current_cost`, `timestamp_cost`, `buyer_id`, `type`, `selling_id`, `amount`, `status`) VALUES
-(1, 2, '2024-12-04 20:27:15', 1000, 100, 1300, NULL, NULL, 'monster', 0, NULL, 'closed'),
-(2, 2, '2024-12-04 20:49:25', 100, 25, 250, NULL, NULL, 'item', 0, NULL, 'open');
+INSERT INTO `lots` (`id`, `seller_id`, `datetime`, `start_cost`, `step_cost`, `current_cost`, `buyer_id`, `type`, `selling_id`, `amount`, `status`) VALUES
+(1, 2, '2024-12-04 20:27:15', 1000, 100, 1300, NULL, 'monster', 3, NULL, 'cancelled'),
+(2, 3, '2024-12-04 20:49:25', 100, 25, 250, 4, 'item', 3, 177, 'cancelled'),
+(10, 4, '2024-12-31 20:49:50', 1000, 101, 1000, NULL, 'monster', 4, NULL, 'closed'),
+(11, 4, '2024-12-31 20:53:47', 1352, 16, 1352, 1, 'item', 3, 1000, 'closed'),
+(12, 4, '1666-12-19 20:54:13', 18882, 200, 18882, NULL, 'item', 1, 1560, 'closed'),
+(13, 4, '2024-12-19 20:54:21', 18882, 2000, 18882, 1, 'item', 2, 1560, 'closed'),
+(14, 4, '1899-12-31 00:00:00', 1337, 666, 1337, NULL, 'monster', 9, NULL, 'closed'),
+(15, 4, '2024-12-19 23:43:27', 1337, 666, 1337, NULL, 'monster', 9, NULL, 'open');
 
 -- --------------------------------------------------------
 
@@ -205,7 +210,7 @@ CREATE TABLE `map` (
 --
 
 INSERT INTO `map` (`id`, `name`, `width`, `height`, `image`) VALUES
-(1, 'карта', 160, 90, '');
+(1, 'карта', 160, 90, '../../assets/img/map.jpg');
 
 -- --------------------------------------------------------
 
@@ -265,7 +270,7 @@ INSERT INTO `messages` (`id`, `user_id`, `message`, `created`) VALUES
 (5, 1, 'сама ДУРА!!!', '2024-10-30 06:57:20'),
 (6, 1, 'ljskjhdfg', '2024-11-13 07:23:07'),
 (7, 1, 'sdfsd', '2024-12-04 22:40:00'),
-(8, 4, 'пользователь для тестов, не обновляйте ему хэш для удобства', '2024-12-06 14:58:30');
+(8, 4, 'пользователь для тестов, не обновляйте ему токен для удобства', '2024-12-06 14:58:30');
 
 -- --------------------------------------------------------
 
@@ -287,13 +292,21 @@ CREATE TABLE `monsters` (
 --
 
 INSERT INTO `monsters` (`id`, `user_id`, `monster_type_id`, `level`, `hp`, `status`) VALUES
-(1, 2, 1, 2, 350, 'in team'),
+(1, 1, 1, 2, 350, 'in team'),
 (2, 1, 2, 4, 750, 'in team'),
-(3, 2, 2, 5, 305, 'in team'),
-(4, 4, 2, 5, 100, 'in team'),
-(5, 4, 1, 5, 1000, 'in team'),
+(3, 1, 2, 5, 305, 'in team'),
+(4, 4, 2, 5, 100, 'in pocket'),
+(5, 4, 1, 5, 1000, 'in pocket'),
 (6, 4, 1, 5, 1001, 'in team'),
-(7, 4, 1, 5, 1002, 'in team');
+(7, 4, 1, 5, 1002, 'in team'),
+(8, 4, 6, 1, 40, 'in pocket'),
+(9, -1, 4, 4, 2000, 'on sale'),
+(10, 2, 11, 3, 1890, 'in team'),
+(11, 2, 2, 4, 300, 'in team'),
+(12, 2, 9, 5, 2000, 'in team'),
+(13, 3, 10, 2, 550, 'in team'),
+(14, 3, 12, 4, 900, 'in team'),
+(15, 3, 3, 1, 200, 'in team');
 
 -- --------------------------------------------------------
 
@@ -331,26 +344,27 @@ CREATE TABLE `monster_types` (
   `name` varchar(16) NOT NULL,
   `hp` int NOT NULL,
   `attack` int NOT NULL,
-  `defense` int NOT NULL
+  `defense` int NOT NULL,
+  `image` varchar(256) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Дамп данных таблицы `monster_types`
 --
 
-INSERT INTO `monster_types` (`id`, `element_id`, `name`, `hp`, `attack`, `defense`) VALUES
-(1, 1, 'Рыба капля', 450, 100, 40),
-(2, 1, 'Мотылек', 460, 110, 45),
-(3, 1, 'Лягушка', 500, 120, 55),
-(4, 2, 'Митбой', 510, 140, 45),
-(5, 2, 'Ящерица', 550, 150, 65),
-(6, 2, 'Эмобой', 530, 120, 60),
-(7, 3, 'Червь', 520, 70, 55),
-(8, 3, 'Пчела', 550, 90, 65),
-(9, 3, 'Гриб', 500, 150, 60),
-(10, 4, 'Кот Лит Энерджи', 450, 100, 40),
-(11, 4, 'Медведь', 490, 120, 55),
-(12, 4, 'Слон', 510, 140, 45);
+INSERT INTO `monster_types` (`id`, `element_id`, `name`, `hp`, `attack`, `defense`, `image`) VALUES
+(1, 1, 'Рыба капля', 450, 100, 40, '../../assets/characters/blob_fish_water.png'),
+(2, 1, 'Мотылек', 460, 110, 45, '../../assets/characters/butterfly_water.png'),
+(3, 1, 'Лягушка', 500, 120, 55, '../../assets/characters/frog_water.png'),
+(4, 2, 'Митбой', 510, 140, 45, '../../assets/characters/meatboy_fire.png'),
+(5, 2, 'Ящерица', 550, 150, 65, '../../assets/characters/lizard_fire.png'),
+(6, 2, 'Эмобой', 530, 120, 60, '../../assets/characters/emoboy_fire.png'),
+(7, 3, 'Червь', 520, 70, 55, '../../assets/characters/worm_earth.png'),
+(8, 3, 'Пчела', 550, 90, 65, '../../assets/characters/bee_earth.png'),
+(9, 3, 'Гриб', 500, 150, 60, '../../assets/characters/mushroom_earth.png'),
+(10, 4, 'Кот Лит Энерджи', 450, 100, 40, '../../assets/characters/cat_lit_energy_air.png'),
+(11, 4, 'Медведь', 490, 120, 55, '../../assets/characters/bear_air.png'),
+(12, 4, 'Слон', 510, 140, 45, '../../assets/characters/elephant_air.png');
 
 -- --------------------------------------------------------
 
@@ -362,17 +376,18 @@ CREATE TABLE `resources` (
   `id` int NOT NULL,
   `name` varchar(256) NOT NULL,
   `cost` int NOT NULL,
-  `exchange_cost` int DEFAULT NULL
+  `exchange_cost` int DEFAULT NULL,
+  `image` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Дамп данных таблицы `resources`
 --
 
-INSERT INTO `resources` (`id`, `name`, `cost`, `exchange_cost`) VALUES
-(1, 'Кристалл', 250, NULL),
-(2, 'Яйцо', 500, NULL),
-(3, 'Скорлупа', 10, 50);
+INSERT INTO `resources` (`id`, `name`, `cost`, `exchange_cost`, `image`) VALUES
+(1, 'Кристалл', 250, NULL, '../../assets/img/crystal.png'),
+(2, 'Яйцо', 500, NULL, '../../assets/img/egg_new.png'),
+(3, 'Скорлупа', 10, 50, '../../assets/img/egg_shell.png');
 
 -- --------------------------------------------------------
 
@@ -390,18 +405,19 @@ CREATE TABLE `users` (
   `rating` int NOT NULL DEFAULT '0',
   `x` int NOT NULL DEFAULT '80',
   `y` int NOT NULL DEFAULT '45',
-  `status` varchar(32) NOT NULL DEFAULT 'offline'
+  `status` varchar(32) NOT NULL DEFAULT 'offline',
+  `last_update` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Дамп данных таблицы `users`
 --
 
-INSERT INTO `users` (`id`, `login`, `password`, `token`, `name`, `money`, `rating`, `x`, `y`, `status`) VALUES
-(1, 'vasya', 'fcb03559c0317682f5d65a88aca50012', 'a559a74e65dd5a214b365f31e45836c3', 'Вася Пупкин', 256, 0, 80, 45, 'scout'),
-(2, 'petya', 'bcb209cf0d43e198e6467f8b0ac3387a', 'd6fbc6ef4b0f26f17e5cc08f785e59ca', 'Пётр Петрович', 1700, 0, 50, 34, 'offline'),
-(3, 'masha', 'e213995da574de722a416f65b43d8314', '1916666aacbb8732bf2d12238b2cd5db', 'Маша Сергеевна', 0, 0, 80, 45, 'offline'),
-(4, 'test', 'нелогиньтесь', 'test', 'Тестер Тестерович', 10000, 0, 80, 45, 'offline');
+INSERT INTO `users` (`id`, `login`, `password`, `token`, `name`, `money`, `rating`, `x`, `y`, `status`, `last_update`) VALUES
+(1, 'vasya', 'fcb03559c0317682f5d65a88aca50012', 'dd44b8a00399317970a9ba74b465f35d', 'Вася Пупкин', 256, 0, 75, 48, 'scout', NULL),
+(2, 'petya', 'bcb209cf0d43e198e6467f8b0ac3387a', 'd6fbc6ef4b0f26f17e5cc08f785e59ca', 'Пётр Петрович', 1700, 0, 80, 45, 'offline', NULL),
+(3, 'masha', 'e213995da574de722a416f65b43d8314', '1916666aacbb8732bf2d12238b2cd5db', 'Маша Сергеевна', 0, 0, 80, 45, 'offline', NULL),
+(4, 'test', 'нелогиньтесь', 'test', 'Тестер Тестерович', 30775, 0, 80, 45, 'offline', NULL);
 
 --
 -- Индексы сохранённых таблиц
@@ -542,7 +558,7 @@ ALTER TABLE `inventory`
 -- AUTO_INCREMENT для таблицы `lots`
 --
 ALTER TABLE `lots`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT для таблицы `map`
@@ -566,7 +582,7 @@ ALTER TABLE `messages`
 -- AUTO_INCREMENT для таблицы `monsters`
 --
 ALTER TABLE `monsters`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT для таблицы `monster_level`

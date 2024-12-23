@@ -100,16 +100,6 @@ class Application {
         return ['error' => 404];
     }
 
-    public function getResources($params) {
-        if ($params['token']) {
-            $user = $this->user->getUser($params['token']);
-            if ($user) {
-                return $this->user->getResources($params['token']);
-            }
-            return ['error' => 705];
-        }
-    }
-
     public function getMap($params) {
         if ($params['token']) {
             $user = $this->user->getUser($params['token']);
@@ -289,8 +279,8 @@ class Application {
 
     //Боевка
 
-    public function startBattle($params) {
-        if ($params['token1']&& $params['token2']) {
+    public function startBattle() {
+        /*if ($params['token1']&& $params['token2']) {
             $user1 = $this->user->getUser($params['token1']);
             $user2 = $this->user->getUser($params['token2']);
             if ($user1 && $user2) {
@@ -298,7 +288,8 @@ class Application {
             }
             return ['error' => 705];
         }
-        return ['error' => 404];
+        return ['error' => 404];*/
+        return $this->battle->startBattle();
     }
     
     public function updateBattle($params) {
@@ -362,7 +353,7 @@ class Application {
     }
 
 
-    public function updateLots($params) {
+    public function updateLots($params){
         if ($params['token'] && $params['hash']) {
             $user = $this->user->getUser($params['token']);
             if ($user) {
@@ -377,4 +368,18 @@ class Application {
         return ['error' => 242];
     }
 
+    public function cancelLot($params){
+        if ($params['token'] && $params['lotId']){
+            $user = $this->user->getUser($params['token']);
+            if ($user) {
+                $lots = $this->market->getAllLots($this->map->isUserInZone($user, "город"));
+                if (!$lots){
+                    return ['error' => 2999];
+                }
+                return $this->market->cancelLot($params['lotId'], $lots, $user);
+            }
+            return ['error' => 705];
+        }
+        return ['error' => 242];
+    }
 }

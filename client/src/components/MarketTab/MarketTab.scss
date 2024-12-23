@@ -1,9 +1,42 @@
 
 .market-lot {
-    border: 3px solid black;
-    margin: 4px;
+    border: 3px solid #000000;
+    margin: 10px;
+    border-radius: 5px;
+    padding: 10px;
+}
+
+.lots {
+    overflow-y: scroll;
+    max-height: 400px;
 }
 
 .market-tab {
     border: 5px solid black;
+    background-color: #edeaea;
+    margin: 10px;
+    padding: 10px;
 }
+
+.bet-input {
+    background-color: #ffffff;
+}
+
+.make_lot-tab {
+    position: absolute;
+    background-color: #edeaea;
+    border: 5px solid black;
+}
+
+.lot-filter {
+    background-color: #ffffff;
+    border: 1px solid black;
+}
+
+.sell-menu {
+    position: absolute;
+    background-color: aquamarine;
+    border: 3px solid black;
+}
+
+::placeholder { color: rgb(160, 160, 160); }
