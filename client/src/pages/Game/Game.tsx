@@ -45,7 +45,7 @@ const Game: React.FC<IBasePage> = (props: IBasePage) => {
     
     if (!user) { return ( <div><h1> Что-то пошло не так. </h1></div> );} // закоментировать для работы без бекэнда
 
-    return (
+    /*return (
         <div className="game-wrapper">
             <UserPanel
                 user={user} // Передаем пользователя
@@ -64,9 +64,9 @@ const Game: React.FC<IBasePage> = (props: IBasePage) => {
                 <Map />
             </div>
         </div>
-    );
+    );*/
 
-    /*return (
+    return (
         <div className="game-wrapper">
             <div className="header-user-panel">
                 <div className='user-panel-left-items'>
@@ -96,7 +96,7 @@ const Game: React.FC<IBasePage> = (props: IBasePage) => {
                 <Map />
             </div>
         </div>
-    );*/
+    );
 }
 
 export default Game;
