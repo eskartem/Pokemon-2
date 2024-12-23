@@ -96,29 +96,25 @@ class User {
 
     public function upgradePokemon($token, $monsterId) {
         $user = $this->db->getUserByToken($token);
-
+        
         //узнаем уровень покемона
         $levelMonster = $this->db->getMonsterLevelById($monsterId);
         $levelMonster = isset($levelMonster->level) ? intval($levelMonster->level) : 0;
-    
+        $level = $levelMonster + 1;
+
+        $param = $this->db->getParametersMonsterByLevel($level);
       //узнаем id типа монстра
         $monster_type_id = $this->db->getMonsterTypeByMonsters($monsterId);
         $monster_type_id = isset($monster_type_id->monster_type_id) ? intval($monster_type_id->monster_type_id) : 0;
-    
+        
         //узнаем скок кристалов у пользака определенной стихии 
         $resources = $this->db->getAmountCrystalByUser($user->id);    
         $crystalAmount = isset($resources->resource_amount) ? intval($resources->resource_amount) : 0;
-
-        if ($levelMonster === 1 && $crystalAmount >= 10) {
-            $amount = 10; 
-        } elseif ($levelMonster === 2 && $crystalAmount >= 20) {
-            $amount = 20;
-        } elseif ($levelMonster === 3 && $crystalAmount >= 100) {
-            $amount = 100;
-        } elseif ($levelMonster === 4 && $crystalAmount >= 500) {
-            $amount = 500;
-        } elseif ($levelMonster === 5) {
-            return ['error' => 703 ];
+        
+        if ($levelMonster === 5) {
+            return ['error' => 703 ]; 
+        } elseif ($crystalAmount >= $param->cost) {
+            $amount = $param->cost;
         } else {
             return ['error' => 802 ];
         }
@@ -128,15 +124,14 @@ class User {
         $this->db->clearUserResource($user->id, $resourceTypeId, $amount);
         //увеливаем уровень
         $this->db->upgradeLevelMonstersByUser($monsterId);
-    
-        $level = $levelMonster + 1;
-        $param = $this->db->getParametersMonsterByLevel($level);
+        
         $hp_param = $param->hp;
         
         //увеличиваем hp 
         $this->db->upgradeHpMonstersByUser($monsterId, $hp_param);
+        
         $hp = $this->db->getMonsterHpById($monsterId);
-        //$hp = isset($hp->hp) ? intval($hp->hp) : 0;
+        
 
         return[
             $this->db->getMonsterLevelById($monsterId),
