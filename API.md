@@ -39,6 +39,7 @@
     * 4.19. startBattle
     * 4.20. endBattle
     * 4.21. cancelLot
+    * 4.22. getInfoAboutUpgrade
 
 
 
@@ -203,6 +204,7 @@ MapZones: {
 | startBattle | начало боя |
 | endBattle | Завершение боя |
 | cancelLot | Отменить лот |
+| getInfoAboutUpgrade | Получение информации о улучшении монстра | 
 
 ### 3.1. Общие ошибки
 * `101` - если не передан параметр `method`
