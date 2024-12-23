@@ -10,6 +10,11 @@ class Inventory {
         return $this->db->getInventory($userId);
     }
 
+    
+    public function getMonster($monsterId){
+        return $this->db->getMonsterById($monsterId);    
+    }
+
     public function addToTeam($monsterId, $inventory, $userId){
         foreach ($inventory['monsters'] as $monster){
             if ($monster['id'] == $monsterId){               
@@ -24,5 +29,50 @@ class Inventory {
             }
         }
         return ['error' => 1460];
+    }
+    
+    public function upgradePokemon($token, $monsterId) {
+        $user = $this->db->getUserByToken($token);
+        
+        //узнаем уровень покемона
+        $levelMonster = $this->db->getMonsterLevelById($monsterId);
+        $levelMonster = isset($levelMonster->level) ? intval($levelMonster->level) : 0;
+        $level = $levelMonster + 1;
+
+        $param = $this->db->getParametersMonsterByLevel($level);
+        //узнаем id типа монстра
+        $monster_type_id = $this->db->getMonsterTypeByMonsters($monsterId);
+        $monster_type_id = isset($monster_type_id->monster_type_id) ? intval($monster_type_id->monster_type_id) : 0;
+        
+        //узнаем скок кристалов у пользака определенной стихии 
+        $resources = $this->db->getAmountCrystalByUser($user->id);    
+        $crystalAmount = isset($resources->resource_amount) ? intval($resources->resource_amount) : 0;
+        
+        if ($levelMonster === 5) {
+            return ['error' => 703 ]; 
+        } elseif ($crystalAmount >= $param->cost) {
+            $amount = $param->cost;
+        } else {
+            return ['error' => 802 ];
+        }
+
+        $resourceTypeId = 1;
+        //вычитаем ресурсы
+        $this->db->clearUserResource($user->id, $resourceTypeId, $amount);
+        //увеливаем уровень
+        $this->db->upgradeLevelMonstersByUser($monsterId);
+        
+        $hp_param = $param->hp;
+        
+        //увеличиваем hp 
+        $this->db->upgradeHpMonstersByUser($monsterId, $hp_param);
+        
+        $hp = $this->db->getMonsterHpById($monsterId);
+        
+
+        return[
+            $this->db->getMonsterLevelById($monsterId),
+            $hp
+        ];
     }
 }
