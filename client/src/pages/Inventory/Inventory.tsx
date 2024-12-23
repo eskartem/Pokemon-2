@@ -1,6 +1,7 @@
 import React from 'react';
 import Button from '../../components/Button/Button';
 import { IBasePage, PAGES } from '../PageManager';
+import UserPanel from '../../components/UserPanel/UserPanel';
 
 import './Inventory.scss';
 
