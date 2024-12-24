@@ -20,7 +20,6 @@ import { ServerContext } from '../../App';
 import { IBasePage, PAGES } from '../PageManager';
 import './Inventory.scss';
 
-const TOKEN = 'user-token';
 
 const Inventory: React.FC<IBasePage> = (props: IBasePage) => {
     const { setPage } = props;
@@ -113,7 +112,7 @@ const Inventory: React.FC<IBasePage> = (props: IBasePage) => {
                 return;
             }
     
-            const upgradedPokemon = await server.upgradePokemon(TOKEN, pokemonToUpgrade.id);
+            const upgradedPokemon = await server.upgradePokemon(pokemonToUpgrade.id);
     
             if (upgradedPokemon) {
                 setAllPokemons((prev) => 
@@ -141,10 +140,10 @@ const Inventory: React.FC<IBasePage> = (props: IBasePage) => {
         try {
             const oldPokemon = battleTeam[index];
             if (oldPokemon) {
-                await server.removeFromTeam(TOKEN, oldPokemon.id);
+                await server.removeFromTeam(oldPokemon.id);
             }
     
-            const result = await server.addToTeam(TOKEN, newPokemon.id);
+            const result = await server.addToTeam(newPokemon.id);
             if (result) {
                 const updatedTeam = [...battleTeam];
                 updatedTeam[index] = result;

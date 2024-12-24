@@ -233,18 +233,18 @@ class Server {
         return this.request<TCancelLot>('cancelLot', { lotId: lotId.toString()});
     }
 
-    async upgradePokemon(token: string, monsterId: number): Promise<TMonsters_level | null> {
-        const result = await this.request<TMonsters_level>('upgradePokemon', { token, monsterId: monsterId.toString() });
+    async upgradePokemon(monsterId: number): Promise<TMonsters_level | null> {
+        const result = await this.request<TMonsters_level>('upgradePokemon', { monsterId: monsterId.toString() });
         return result;
     }    
 
-    async addToTeam(token: string, monsterId: number): Promise<TCr | null> {
-        const result = await this.request<TCr>('addToTeam', { token, monsterId: monsterId.toString() });
+    async addToTeam(monsterId: number): Promise<TCr | null> {
+        const result = await this.request<TCr>('addToTeam', { monsterId: monsterId.toString() });
         return result;
     }    
 
-    async removeFromTeam(token: string, monsterId: number): Promise<TCr | null> {
-        const result = await this.request<TCr>('addToTeam', { token, monsterId: monsterId.toString() });
+    async removeFromTeam(monsterId: number): Promise<TCr | null> {
+        const result = await this.request<TCr>('addToTeam', { monsterId: monsterId.toString() });
         return result;
     }   
 }
