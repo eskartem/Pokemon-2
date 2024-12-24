@@ -86,10 +86,10 @@ class Application {
     public function upgradePokemon($params) {
         if ($params['token'] && $params['monsterId']) {
             $user = $this->user->getUser($params['token']);
-            $monsters = $this->user->getMonster($params['monsterId']);
+            $monsters = $this->inventory->getMonster($params['monsterId']);
             if ($user) {
                 if ($monsters->user_id === $user->id) {
-                    return $this->user->upgradePokemon($params['token'], $params['monsterId']);
+                    return $this->inventory->upgradePokemon($params['token'], $params['monsterId']);
                 }
               
                 return ['error' => 702];
@@ -280,15 +280,6 @@ class Application {
     //Боевка
 
     public function startBattle() {
-        /*if ($params['token1']&& $params['token2']) {
-            $user1 = $this->user->getUser($params['token1']);
-            $user2 = $this->user->getUser($params['token2']);
-            if ($user1 && $user2) {
-                return $this->battle->startBattle($params['token1'],$params['token2'] );
-            }
-            return ['error' => 705];
-        }
-        return ['error' => 404];*/
         return $this->battle->startBattle();
     }
     
@@ -317,8 +308,8 @@ class Application {
 
     public function actionUser($params){
         if ($params['monsterId1'] && $params['monsterId2'] && $params['action']){
-            $monster1 = $this->user->getMonster($params['monsterId1']);
-            $monster2 = $this->user->getMonster($params['monsterId2']);
+            $monster1 = $this->inventory->getMonster($params['monsterId1']);
+            $monster2 = $this->inventory->getMonster($params['monsterId2']);
             if ($monster1 && $monster2){
                 if ($params['action'] === 'skill') {
                     return $this->battle->actionUser($params['monsterId1'], $params['monsterId2'], $params['action']);
@@ -382,4 +373,16 @@ class Application {
         }
         return ['error' => 242];
     }
+
+    public function getInfoAboutUpgrade($params){
+        if ($params['monsterId']){
+            $monster = $this->inventory->getMonster($params['monsterId']);
+            if ($monster){
+                return $this->inventory->getInfoAboutUpgrade($params['monsterId']);
+            }
+            return['error' => 702];
+        }
+        return ['error' => 242];
+    }
+    
 }
