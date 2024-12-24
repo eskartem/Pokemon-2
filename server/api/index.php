@@ -21,11 +21,15 @@ function result($params) {
             case 'sendMessage': return $app->sendMessage($params);//loop
             case 'getMessages': return $app->getMessages($params);
             //gamer info
-             case 'userInfo': return $app->userInfo($params);
-             case 'upgradePokemon': return $app->upgradePokemon($params);
+
+             case 'userInfo': return $app-> userInfo($params);
+        
             //inventory
             case 'getInventory': return $app->getInventory($params);
             case 'addToTeam': return $app->addToTeam($params);
+            case 'upgradePokemon': return $app->upgradePokemon($params); 
+            case 'getInfoAboutUpgrade': return $app->getInfoAboutUpgrade($params);
+
             
             //battle
             case 'startBattle': return $app->startBattle();
