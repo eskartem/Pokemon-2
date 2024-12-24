@@ -347,7 +347,7 @@ const Inventory: React.FC<IBasePage> = (props: IBasePage) => {
                         <h2>Вы точно хотите улучшить?</h2>
                         <img src={getPokemonImage(upgradeInfo.image)} alt={upgradeInfo.name} />
                         <p>Имя: {upgradeInfo.name}</p>
-                        <p>Уровень: {upgradeInfo.level}</p>
+                        <p>Уровень: {selectedPokemon?.level} {'→'} {upgradeInfo.level}</p>
                         <p>Стоимость: {upgradeInfo.cost} кристаллов</p>
                         <Button
                             id="test-upgrade-confirm-button" 
