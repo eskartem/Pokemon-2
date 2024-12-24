@@ -155,6 +155,11 @@ export type TMapZone = {
     element_id: number // надо название с помощью сложного запроса выдавать, а не само id, наругать бэкендеров.
 }
 
+export type TMapInfo = {
+    MAP: TMap,
+    mapZones: TMapZone[]
+}
+
 export enum EZones {
     town = 'town',
     chillzone = 'chillzone',

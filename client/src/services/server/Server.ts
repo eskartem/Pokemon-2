@@ -5,7 +5,8 @@ import { TAnswer, TError, TMessagesResponse, TUser, TMarketCatalog, TMap, TMapZo
     TUpdateSceneResponse, TSell, TResources, TCreature, TInventory, TMonsters_level, 
     TMonsterType, TUpdateMarketResponse, TMakeBet, 
     TCancelLot,
-    TUserInfo} from "./types";
+    TUserInfo,
+    TMapInfo} from "./types";
 
 const { CHAT_TIMESTAMP, SCENE_TIMESTAMP, MARKET_TIMESTAMP, HOST } = CONFIG;
 
@@ -174,8 +175,8 @@ class Server {
         return { success: true }; // Пример возврата. Настоящая логика может отличаться.
     }
 
-    async getMap(): Promise<{MAP: TMap, mapZones: TMapZone[]} | null> {
-        return await this.request<{MAP: TMap, mapZones: TMapZone[]}>('getMap');
+    async getMap(): Promise<TMapInfo | null> {
+        return await this.request<TMapInfo>('getMap');
     }
 
     async moveUser(direction: EDIRECTION): Promise<boolean | null> {
