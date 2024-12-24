@@ -48,7 +48,7 @@ const TraderTab: React.FC = () => {
         const { id } = sellingResource;
         const parsedAmount = Number(amountToSell);
     
-        if (!amountToSell || isNaN(parsedAmount) || parsedAmount <= 0 || amountToSell.startsWith('0') && amountToSell !== '0') {
+        if (!amountToSell || isNaN(parsedAmount) || parsedAmount <= 0 || amountToSell.startsWith('0') && amountToSell !== '0' || amountToSell.includes('.') || amountToSell.includes('/')) {
             setSellError('Введите корректное количество!');
             return;
         }
