@@ -29,9 +29,12 @@ const Inventory: React.FC<IBasePage> = (props: IBasePage) => {
     const [availableMonsterTypes, setAvailableMonsterTypes] = useState<any[]>([]); 
     const [userResources, setUserResources] = useState<TResource[]>([]); 
     const [selectedPokemon, setSelectedPokemon] = useState<TCr | null>(null);
+    const [selectedPokemonForReplace, setSelectedPokemonForReplace] = useState<TCr | null>(null); 
     const [battleTeam, setBattleTeam] = useState<TCr[]>([]); 
     const [loading, setLoading] = useState<boolean>(false);
     const [replacedPokemonIndex, setReplacedPokemonIndex] = useState<number | null>(null);
+    const [upgradeModalOpen, setUpgradeModalOpen] = useState<boolean>(false);
+    const [upgradeInfo, setUpgradeInfo] = useState<any>(null);
 
     const backClickHandler = () => setPage(PAGES.GAME);
 
@@ -80,7 +83,6 @@ const Inventory: React.FC<IBasePage> = (props: IBasePage) => {
             const team = uniquePokemons.filter(pokemon => pokemon.status === 'in team');
             setBattleTeam(team);
         } catch (error) {
-            console.error('Ошибка при получении инвентаря:', error);
         } finally {
             setLoading(false);
         }
@@ -90,34 +92,39 @@ const Inventory: React.FC<IBasePage> = (props: IBasePage) => {
         fetchInventory();
     }, [server]);
 
+    const openUpgradeModal = async (pokemonId: number) => {
+        const info = await server.getInfoAboutUpgrade(pokemonId);
+        setUpgradeInfo(info);
+        setUpgradeModalOpen(true);
+        setSelectedPokemon(allPokemons.find(pokemon => pokemon.id === pokemonId) || null);
+    };
+
+    const closeUpgradeModal = () => {
+        setUpgradeModalOpen(false);
+        setUpgradeInfo(null);
+    };
+
     const upgradePokemonHandler = async (pokemonId: number) => {
+        if (!pokemonId) return;
+
         try {
             const pokemonToUpgrade = allPokemons.find(pokemon => pokemon.id === pokemonId);
-            if (!pokemonToUpgrade) {
-                console.error('Покемон для улучшения не найден');
-                return;
-            }
+            if (!pokemonToUpgrade) return;
     
-            if (pokemonToUpgrade.level === 5) {
-                console.error('Покемон уже достиг максимального уровня');
-                return;
-            }
+            if (pokemonToUpgrade.level === 5) return;
     
             const crystalResource = userResources.find(res => res.resource_id === 1);
             const crystalAmount = crystalResource ? crystalResource.resource_amount : 0;
             const requiredCrystals = getRequiredCrystals(pokemonToUpgrade.level);
     
-            if (crystalAmount < requiredCrystals) {
-                console.error('Недостаточно кристаллов для улучшения');
-                return;
-            }
+            if (crystalAmount < requiredCrystals) return;
     
-            const upgradedPokemon = await server.upgradePokemon(pokemonToUpgrade.id);
+            const upgradedPokemon = await server.upgradePokemon(pokemonId);
     
             if (upgradedPokemon) {
                 setAllPokemons((prev) => 
                     prev.map(pokemon => 
-                        pokemon.id === pokemonToUpgrade.id 
+                        pokemon.id === pokemonId 
                             ? { ...pokemon, level: upgradedPokemon.level, stats: upgradedPokemon.stats } 
                             : pokemon
                     )
@@ -125,13 +132,14 @@ const Inventory: React.FC<IBasePage> = (props: IBasePage) => {
                 fetchInventory(); 
             }
         } catch (error) {
-            console.error('Ошибка обновления покемонов:', error);
+        } finally {
+            closeUpgradeModal();
         }
     };
 
     const selectPokemonHandler = (pokemon: TCr) => {
         if (!pokemon) return;
-        setSelectedPokemon(pokemon);
+        setSelectedPokemonForReplace(pokemon); 
     };
 
     const replaceInBattleTeam = async (index: number, newPokemon: TCr | null) => {
@@ -156,11 +164,10 @@ const Inventory: React.FC<IBasePage> = (props: IBasePage) => {
                     )
                 );
                 setReplacedPokemonIndex(index);
-                setSelectedPokemon(null); 
+                setSelectedPokemonForReplace(null); 
                 fetchInventory();
             }
         } catch (error) {
-            console.error('Ошибка замены покемона в команде:', error);
         }
     };
 
@@ -177,48 +184,36 @@ const Inventory: React.FC<IBasePage> = (props: IBasePage) => {
         }
     };
 
-    const getResourceImage = (resourceId: number) => {
-        switch (resourceId) {
-            case 1:
-                return crystalImage;
-            case 2:
-                return eggImage;
-            case 3:
-                return eggShellImage;
-            default:
-                return undefined;
-        }
+    const getResourceImage = (resourceId: number): string | undefined => {
+        const resourceImageMap: Record<number, string> = {
+            1: crystalImage,
+            2: eggImage,
+            3: eggShellImage,
+        };
+    
+        return resourceImageMap[resourceId];
     };
 
-    const getPokemonImage = (assetPath: string) => {
-        switch (assetPath) {
-            case '../../assets/characters/butterfly_water.png':
-                return butterflyWaterImage;
-            case '../../assets/characters/blob_fish_water.png':
-                return blobfishfire;
-            case '../../assets/characters/frog_water.png':
-                return frog_water;
-            case '../../assets/characters/meatboy_fire.png':
-                return meatboy_fire;
-            case '../../assets/characters/lizard_fire.png':
-                return lizard_fire;
-            case '../../assets/characters/emoboy_fire.png':
-                return emoboy_fire;
-            case '../../assets/characters/worm_earth.png':
-                return worm_earth;
-            case '../../assets/characters/bee_earth.png':
-                return bee_earth;
-            case '../../assets/characters/mushroom_earth.png':
-                return mushroom_earth;
-            case '../../assets/characters/cat_lit_energy_air.png':
-                return cat_lit_energy_air;
-            case '../../assets/characters/elephant_air.png':
-                return elephant_air;
-            case '../../assets/characters/bear_air.png':
-                return bear_air;
-            default:
-                return undefined;
-        }
+    const getPokemonImage = (assetPath: string): string | undefined => {
+        const imageMap: Record<string, string> = {
+            '../../assets/characters/butterfly_water.png': butterflyWaterImage,
+            '../../assets/characters/blob_fish_water.png': blobfishfire,
+            '../../assets/characters/frog_water.png': frog_water,
+            '../../assets/characters/meatboy_fire.png': meatboy_fire,
+            '../../assets/characters/lizard_fire.png': lizard_fire,
+            '../../assets/characters/emoboy_fire.png': emoboy_fire,
+            '../../assets/characters/worm_earth.png': worm_earth,
+            '../../assets/characters/bee_earth.png': bee_earth,
+            '../../assets/characters/mushroom_earth.png': mushroom_earth,
+            '../../assets/characters/cat_lit_energy_air.png': cat_lit_energy_air,
+            '../../assets/characters/elephant_air.png': elephant_air,
+            '../../assets/characters/bear_air.png': bear_air,
+        };
+    
+        // Заменяем обратные слэши на прямые
+        const normalizedPath = assetPath.replace(/\\/g, '/');
+    
+        return imageMap[normalizedPath];
     };
 
     const pokemonsNotInTeam = allPokemons.filter(pokemon => pokemon.status !== 'in team');
@@ -263,7 +258,7 @@ const Inventory: React.FC<IBasePage> = (props: IBasePage) => {
             <div className="inventory" id="test-inventory-page">
                 <h1 id="test-inventory-title">Инвентарь</h1>
                 {loading && <p id="test-loading-indicator">Загрузка...</p>}
-
+    
                 <div id="test-resources-line">
                     {userResources.map((res) => (
                         <span key={res.resource_id} id={`test-resource-${res.resource_id}`}>
@@ -272,12 +267,12 @@ const Inventory: React.FC<IBasePage> = (props: IBasePage) => {
                         </span>
                     ))}
                 </div>
-
+    
                 <div className="battle-team" id="test-battle-team-section">
                     <h2 id="test-battle-team-title">Команда для боя</h2>
                     {battleTeam.map((pokemon, index) => (
                         <div key={pokemon.id} className="pokemon-card" id={`test-battle-team-pokemon-${index}`}>
-                            <img src={getPokemonImage(pokemon.asset)} alt={pokemon.name} className="pokemon-image"  />
+                            <img src={getPokemonImage(pokemon.asset)} alt={pokemon.name} className="pokemon-image" />
                             <h2 id="test-pokemon-name">{pokemon?.name}</h2>
                             <p id="test-pokemon-level">Уровень: {pokemon?.level}</p>
                             <p id="test-pokemon-element">Стихия: {pokemon?.element}</p>
@@ -285,24 +280,28 @@ const Inventory: React.FC<IBasePage> = (props: IBasePage) => {
                             <p id="test-pokemon-max_HP">Максимальное здоровье: {pokemon.stats?.max_HP || 'N/A'}</p>
                             <p id="test-pokemon-ad">Атака: {pokemon.stats?.ATK || 'N/A'}</p>
                             <p id="test-pokemon-df">Защита: {pokemon.stats?.DEF || 'N/A'}</p>
-                            {selectedPokemon && (
+                            {selectedPokemonForReplace && (
                                 <Button
                                     id="test-replace-button"
                                     text="Заменить"
-                                    onClick={() => replaceInBattleTeam(index, selectedPokemon)}
+                                    onClick={() => replaceInBattleTeam(index, selectedPokemonForReplace)}
                                     isDisabled={replacedPokemonIndex === index}
                                 />
                             )}
                             <Button
                                 id="test-upgrade-button"
                                 text={getUpgradeButtonText(pokemon)}
-                                onClick={() => upgradePokemonHandler(pokemon.id)}
-                                isDisabled={isUpgradeButtonDisabled(pokemon)} 
+                                onClick={() => {
+                                    if (!isUpgradeButtonDisabled(pokemon)) {
+                                        openUpgradeModal(pokemon.id);
+                                    }
+                                }}
+                                isDisabled={isUpgradeButtonDisabled(pokemon)}
                             />
                         </div>
                     ))}
                 </div>
-
+    
                 <div className="pokemon-list" id="test-pokemon-list-section">
                     <h2 id="test-pokemon-list-title">Покемоны не в команде</h2>
                     {pokemonsNotInTeam.map((pokemon, index) => (
@@ -318,10 +317,14 @@ const Inventory: React.FC<IBasePage> = (props: IBasePage) => {
                             <Button
                                 id="test-upgrade-button"
                                 text={getUpgradeButtonText(pokemon)}
-                                onClick={() => upgradePokemonHandler(pokemon.id)}
-                                isDisabled={isUpgradeButtonDisabled(pokemon)} 
+                                onClick={() => {
+                                    if (!isUpgradeButtonDisabled(pokemon)) {
+                                        openUpgradeModal(pokemon.id);
+                                    }
+                                }}
+                                isDisabled={isUpgradeButtonDisabled(pokemon)}
                             />
-
+    
                             <Button
                                 id="test-select-button"
                                 text="Выбрать"
@@ -330,9 +333,36 @@ const Inventory: React.FC<IBasePage> = (props: IBasePage) => {
                         </div>
                     ))}
                 </div>
-
+    
                 <Button id="test-back-button" onClick={backClickHandler} text='назад' />
             </div>
+    
+            {upgradeModalOpen && (
+                <div className="upgrade-modal">
+                    <div className="upgrade-modal-content">
+                        <h2>Прокачка покемона</h2>
+                        <img src={getPokemonImage(upgradeInfo.image)} alt={upgradeInfo.name} />
+                        <p>Имя: {upgradeInfo.name}</p>
+                        <p>Уровень: {upgradeInfo.level}</p>
+                        <p>Стоимость: {upgradeInfo.cost} кристаллов</p>
+                        <Button
+                            id="test-upgrade-confirm-button" 
+                            className="upgrade-confirm-button"
+                            text="Прокачать"
+                            onClick={() => {
+                                console.log('Upgrade button clicked with pokemonId:', selectedPokemon?.id);
+                                upgradePokemonHandler(selectedPokemon?.id || 0);
+                            }}
+                        />
+                        <Button
+                            id="test-upgrade-cancel-button"  
+                            className="upgrade-cancel-button"
+                            text="Отмена"
+                            onClick={closeUpgradeModal}
+                        />
+                    </div>
+                </div>
+            )}
         </div>
     );
 };

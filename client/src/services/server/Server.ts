@@ -247,6 +247,12 @@ class Server {
         const result = await this.request<TCr>('addToTeam', { monsterId: monsterId.toString() });
         return result;
     }   
+
+    async getInfoAboutUpgrade(monsterId: number): Promise<TCr | null> {
+        const result = await this.request<TCr>('getInfoAboutUpgrade', { monsterId: monsterId.toString() });
+        return result;
+    }    
+
 }
 
 export default Server;
