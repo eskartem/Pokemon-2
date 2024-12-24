@@ -195,6 +195,10 @@ const Inventory: React.FC<IBasePage> = (props: IBasePage) => {
     };
 
     const getPokemonImage = (assetPath: string): string | undefined => {
+        if (!assetPath) {
+            return undefined;
+        }
+    
         const imageMap: Record<string, string> = {
             '../../assets/characters/butterfly_water.png': butterflyWaterImage,
             '../../assets/characters/blob_fish_water.png': blobfishfire,
@@ -210,10 +214,12 @@ const Inventory: React.FC<IBasePage> = (props: IBasePage) => {
             '../../assets/characters/bear_air.png': bear_air,
         };
     
-        // Заменяем обратные слэши на прямые
         const normalizedPath = assetPath.replace(/\\/g, '/');
     
-        return imageMap[normalizedPath];
+        if (!imageMap[normalizedPath]) {
+        }
+    
+        return imageMap[normalizedPath] || undefined;
     };
 
     const pokemonsNotInTeam = allPokemons.filter(pokemon => pokemon.status !== 'in team');
@@ -276,8 +282,7 @@ const Inventory: React.FC<IBasePage> = (props: IBasePage) => {
                             <h2 id="test-pokemon-name">{pokemon?.name}</h2>
                             <p id="test-pokemon-level">Уровень: {pokemon?.level}</p>
                             <p id="test-pokemon-element">Стихия: {pokemon?.element}</p>
-                            <p id="test-pokemon-current_hp">Текущее здоровье: {pokemon.stats?.current_hp || 'N/A'}</p>
-                            <p id="test-pokemon-max_HP">Максимальное здоровье: {pokemon.stats?.max_HP || 'N/A'}</p>
+                            <p id="test-pokemon-max_HP">Здоровье: {pokemon.stats?.max_HP || 'N/A'}</p>
                             <p id="test-pokemon-ad">Атака: {pokemon.stats?.ATK || 'N/A'}</p>
                             <p id="test-pokemon-df">Защита: {pokemon.stats?.DEF || 'N/A'}</p>
                             {selectedPokemonForReplace && (
@@ -310,8 +315,7 @@ const Inventory: React.FC<IBasePage> = (props: IBasePage) => {
                             <h2 id="test-pokemon-name">{pokemon.name}</h2>
                             <p id="test-pokemon-level">Уровень: {pokemon.level}</p>
                             <p id="test-pokemon-element">Стихия: {pokemon.element}</p>
-                            <p id="test-pokemon-current_hp">Текущее здоровье: {pokemon.stats?.current_hp || 'N/A'}</p>
-                            <p id="test-pokemon-max_HP">Максимальное здоровье: {pokemon.stats?.max_HP || 'N/A'}</p>
+                            <p id="test-pokemon-max_HP">Здоровье: {pokemon.stats?.max_HP || 'N/A'}</p>
                             <p id="test-pokemon-ad">Атака: {pokemon.stats?.ATK || 'N/A'}</p>
                             <p id="test-pokemon-df">Защита: {pokemon.stats?.DEF || 'N/A'}</p>
                             <Button
@@ -340,7 +344,7 @@ const Inventory: React.FC<IBasePage> = (props: IBasePage) => {
             {upgradeModalOpen && (
                 <div className="upgrade-modal">
                     <div className="upgrade-modal-content">
-                        <h2>Прокачка покемона</h2>
+                        <h2>Вы точно хотите улучшить?</h2>
                         <img src={getPokemonImage(upgradeInfo.image)} alt={upgradeInfo.name} />
                         <p>Имя: {upgradeInfo.name}</p>
                         <p>Уровень: {upgradeInfo.level}</p>
@@ -348,9 +352,8 @@ const Inventory: React.FC<IBasePage> = (props: IBasePage) => {
                         <Button
                             id="test-upgrade-confirm-button" 
                             className="upgrade-confirm-button"
-                            text="Прокачать"
+                            text="Улучшить"
                             onClick={() => {
-                                console.log('Upgrade button clicked with pokemonId:', selectedPokemon?.id);
                                 upgradePokemonHandler(selectedPokemon?.id || 0);
                             }}
                         />
