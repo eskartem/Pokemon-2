@@ -145,6 +145,7 @@ class Market {
                 if ($interval->days == 0 && $interval->h == 0 && $interval->i < 5) {
                 } else {
                     $this->db->changeLotStatus('closed', $filteredLots['id']);
+                    $this->db->updateMarketHash();
                     if ($filteredLots['buyer_id'] == NULL){
                         if ($filteredLots['type'] == 'monster'){
                             $this->db->changeMonsterOwner($filteredLots['selling_id'], $filteredLots['seller_id']);

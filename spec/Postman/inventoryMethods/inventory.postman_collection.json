@@ -16,7 +16,7 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"pm.test('the response has all properties', () => {\r",
+									"pm.test('Response has all required properties and valid data', () => {\r",
 									"    const responseJson = pm.response.json();\r",
 									"\r",
 									"    pm.expect(responseJson).to.have.property('result');\r",
@@ -25,45 +25,43 @@
 									"    pm.expect(responseJson).to.have.property('data');\r",
 									"    pm.expect(responseJson.data).to.be.an('object');\r",
 									"\r",
-									"\r",
 									"    pm.expect(responseJson.data).to.have.property('monsters');\r",
 									"    pm.expect(responseJson.data.monsters).to.be.an('array');\r",
+									"\r",
 									"    responseJson.data.monsters.forEach((monster, index) => {\r",
 									"        pm.expect(monster).to.have.property('id').that.is.a('number');\r",
-									"        pm.expect(monster).to.have.property('user_id').that.is.a('number');\r",
-									"        pm.expect(monster).to.have.property('monster_type_id').that.is.a('number');\r",
-									"        pm.expect(monster).to.have.property('level').that.is.a('number');\r",
-									"        pm.expect(monster).to.have.property('hp').that.is.a('number');\r",
+									"        pm.expect(monster).to.have.property('name').that.is.a('string');\r",
+									"        pm.expect(monster).to.have.property('element').that.is.a('string');\r",
 									"        pm.expect(monster).to.have.property('status').that.is.a('string');\r",
+									"        pm.expect(monster).to.have.property('level').that.is.a('number');\r",
+									"        pm.expect(monster).to.have.property('current_hp').that.is.a('number');\r",
+									"        pm.expect(monster).to.have.property('max_HP').that.is.a('string'); \r",
+									"        pm.expect(monster).to.have.property('ATK').that.is.a('string'); \r",
+									"        pm.expect(monster).to.have.property('DEF').that.is.a('string'); \r",
+									"        pm.expect(monster).to.have.property('asset').that.is.a('string');\r",
+									"        pm.expect(monster.asset).to.include('../../assets/characters/'); \r",
 									"    });\r",
-									"\r",
-									"\r",
-									"    pm.expect(responseJson.data).to.have.property('monsterTypes');\r",
-									"    pm.expect(responseJson.data.monsterTypes).to.be.an('array');\r",
-									"    responseJson.data.monsterTypes.forEach((type, index) => {\r",
-									"        pm.expect(type).to.have.property('id').that.is.a('number');\r",
-									"        pm.expect(type).to.have.property('element_id').that.is.a('number');\r",
-									"        pm.expect(type).to.have.property('name').that.is.a('string');\r",
-									"        pm.expect(type).to.have.property('hp').that.is.a('number');\r",
-									"        pm.expect(type).to.have.property('attack').that.is.a('number');\r",
-									"        pm.expect(type).to.have.property('defense').that.is.a('number');\r",
-									"    });\r",
-									"\r",
 									"\r",
 									"    pm.expect(responseJson.data).to.have.property('inventory');\r",
 									"    pm.expect(responseJson.data.inventory).to.be.an('array');\r",
+									"\r",
 									"    responseJson.data.inventory.forEach((item, index) => {\r",
 									"        pm.expect(item).to.have.property('id').that.is.a('number');\r",
 									"        pm.expect(item).to.have.property('user_id').that.is.a('number');\r",
 									"        pm.expect(item).to.have.property('resource_id').that.is.a('number');\r",
 									"        pm.expect(item).to.have.property('resource_amount').that.is.a('number');\r",
+									"        pm.expect(item).to.have.property('name').that.is.a('string');\r",
+									"        pm.expect(item).to.have.property('cost').that.is.a('number');\r",
+									"        pm.expect(item).to.have.property('exchange_cost'); \r",
+									"        pm.expect(item).to.have.property('image').that.is.a('string');\r",
+									"        pm.expect(item.image).to.include('../../assets/img/'); \r",
 									"    });\r",
 									"\r",
-									"\r",
-									"    pm.expect(responseJson.data).to.have.property('balance');\r",
-									"    pm.expect(responseJson.data.balance).to.be.an('object');\r",
-									"    pm.expect(responseJson.data.balance).to.have.property('money').that.is.a('number');\r",
-									"});"
+									"    pm.expect(responseJson.data).to.have.property('balance').that.is.a('number');\r",
+									"    pm.expect(responseJson.data.balance).to.be.at.least(0); \r",
+									"    console.log('Balance:', responseJson.data.balance);\r",
+									"});\r",
+									""
 								],
 								"type": "text/javascript",
 								"packages": {}
@@ -94,7 +92,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://server/api/?method=getInventory&token=c9c55979a9ddc53b50997827668fbdb3",
+							"raw": "http://server/api/?method=getInventory&token=test",
 							"protocol": "http",
 							"host": [
 								"server"
@@ -110,7 +108,7 @@
 								},
 								{
 									"key": "token",
-									"value": "c9c55979a9ddc53b50997827668fbdb3"
+									"value": "test"
 								}
 							]
 						}

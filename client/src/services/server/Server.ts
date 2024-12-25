@@ -3,9 +3,10 @@ import CONFIG, { EDIRECTION } from "../../config";
 import Store from "../store/Store";
 import { TAnswer, TError, TMessagesResponse, TUser, TMarketCatalog, TMap, TMapZone, 
     TUpdateSceneResponse, TSell, TResources, TCreature, TInventory, TMonsters_level, 
-    TMonsterType, TUpdateMarketResponse, TMakeBet, 
+    TCr, TUpdateMarketResponse, TMakeBet, 
     TCancelLot,
-    TUserInfo} from "./types";
+    TUserInfo,
+    TMapInfo} from "./types";
 
 const { CHAT_TIMESTAMP, SCENE_TIMESTAMP, MARKET_TIMESTAMP, HOST } = CONFIG;
 
@@ -174,8 +175,8 @@ class Server {
         return { success: true }; // Пример возврата. Настоящая логика может отличаться.
     }
 
-    async getMap(): Promise<{MAP: TMap, mapZones: TMapZone[]} | null> {
-        return await this.request<{MAP: TMap, mapZones: TMapZone[]}>('getMap');
+    async getMap(): Promise<TMapInfo | null> {
+        return await this.request<TMapInfo>('getMap');
     }
 
     async moveUser(direction: EDIRECTION): Promise<boolean | null> {
@@ -233,20 +234,26 @@ class Server {
         return this.request<TCancelLot>('cancelLot', { lotId: lotId.toString()});
     }
 
-    async upgradePokemon(token: string, monsterId: number): Promise<TMonsters_level | null> {
-        const result = await this.request<TMonsters_level>('upgradePokemon', { token, monsterId: monsterId.toString() });
+    async upgradePokemon(monsterId: number): Promise<TMonsters_level | null> {
+        const result = await this.request<TMonsters_level>('upgradePokemon', { monsterId: monsterId.toString() });
         return result;
     }    
 
-    async addToTeam(token: string, monsterId: number): Promise<TMonsterType | null> {
-        const result = await this.request<TMonsterType>('addToTeam', { token, monsterId: monsterId.toString() });
+    async addToTeam(monsterId: number): Promise<TCr | null> {
+        const result = await this.request<TCr>('addToTeam', { monsterId: monsterId.toString() });
         return result;
     }    
 
-    async removeFromTeam(token: string, monsterId: number): Promise<TMonsterType | null> {
-        const result = await this.request<TMonsterType>('addToTeam', { token, monsterId: monsterId.toString() });
+    async removeFromTeam(monsterId: number): Promise<TCr | null> {
+        const result = await this.request<TCr>('addToTeam', { monsterId: monsterId.toString() });
         return result;
     }   
+
+    async getInfoAboutUpgrade(monsterId: number): Promise<TCr | null> {
+        const result = await this.request<TCr>('getInfoAboutUpgrade', { monsterId: monsterId.toString() });
+        return result;
+    }    
+
 }
 
 export default Server;

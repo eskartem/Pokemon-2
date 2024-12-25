@@ -59,6 +59,7 @@ const Market: React.FC<IBasePage> = (props: IBasePage) => {
     const shells = inventory?.inventory?.find(item => item.resource_id === 3)?.resource_amount || 0;
 
     return (
+
         <div id='market'>
             <div className='user-resources'>
                 <h1 className='resources-text'>
@@ -68,6 +69,7 @@ const Market: React.FC<IBasePage> = (props: IBasePage) => {
                     скорлупа: {shells}
                 </h1>
             </div>
+
             <div className='button-panel'>
                 <button 
                     onClick={() => setTab(TABS.MARKET)} 

@@ -21,25 +21,28 @@ function result($params) {
             case 'sendMessage': return $app->sendMessage($params);//loop
             case 'getMessages': return $app->getMessages($params);
             //gamer info
+
              case 'userInfo': return $app-> userInfo($params);
-             case 'upgradePokemon': return $app-> upgradePokemon($params);
+        
             //inventory
             case 'getInventory': return $app->getInventory($params);
             case 'addToTeam': return $app->addToTeam($params);
-            // ???? case 'updradePokemon': return $app-> upgradePokemon($params); //
+            case 'upgradePokemon': return $app->upgradePokemon($params); 
+            case 'getInfoAboutUpgrade': return $app->getInfoAboutUpgrade($params);
+
             
             //battle
-            case 'startBattle': return $app-> startBattle($params);
+            case 'startBattle': return $app->startBattle();
             // case 'updateBattle': return $app-> updateBattle($params); // loop //получаю данные по всем игрокам
-            case 'endBattle': return $app-> endBattle($params);
+            case 'endBattle': return $app->endBattle($params);
             //case 'actionUser': return $app-> actionUser($params); //действие игрока в бою во время ход
             //map
-            case 'getMap': return $app-> getMap($params);
+            case 'getMap': return $app->getMap($params);
             //case 'startGame': return $app-> startGame($params);
             //case 'endGame': return $app-> endGame($params);
 
-            case 'updateScene': return $app-> updateScene($params);
-            case 'moveUser': return $app-> moveUser($params);
+            case 'updateScene': return $app->updateScene($params);
+            case 'moveUser': return $app->moveUser($params);
 
             //market                   
             case 'makeBet': return $app->makeBet($params);

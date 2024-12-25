@@ -57,9 +57,10 @@ export enum EElement {
 
 // статы существа
 export type TStats = {
-    hp: number, // health point
-    ad: number, // attack dmg
-    df: number, // defence
+    current_hp: number,
+    max_HP: number,
+    ATK: number, // attack dmg
+    DEF: number, // defence
 }
 
 // само существо
@@ -155,6 +156,11 @@ export type TMapZone = {
     element_id: number // надо название с помощью сложного запроса выдавать, а не само id, наругать бэкендеров.
 }
 
+export type TMapInfo = {
+    MAP: TMap,
+    mapZones: TMapZone[]
+}
+
 export enum EZones {
     town = 'town',
     chillzone = 'chillzone',
@@ -174,31 +180,23 @@ export type TUserInfo = {
  
 export type TInventory = {
     monsters: TCr[];
-    monsterTypes: TMonsterType[];
     inventory: TResource[];
     balance: TBalance;
 }
 
 export type TCr = {
     id: number;
-    user_id: number;
-    monster_type_id: number;
-    level: number;
-    hp: number;
-    status: string;
-};
-
-export type TMonsterType = {
-    id: number;
-    element_id: number;
-    lvl: number;
     name: string;
-    hp: number;
-    attack: number;
-    defense: number;
+    element: string;
+    level: number;
+    current_hp: number;
+    max_HP: number;
     stats: TStats;
+    ATK: number;
+    DEF: number;
     status: string;
-}
+    asset: string;
+};
 
 export type TResource = {
     id: number;
