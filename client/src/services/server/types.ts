@@ -109,6 +109,7 @@ export type TLot = {
     DEF: number | null,
     amount: number | null; // количество продаваемого ресурса, обязателен при типе item, не нужен при типе monster
     status: ELotStatus;  // статус лота
+    image_source: string; // путь до картинки продаваемой вещи
 }
 
 export type TUpdateMarketResponse = {

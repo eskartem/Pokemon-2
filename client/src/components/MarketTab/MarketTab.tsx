@@ -53,30 +53,53 @@ const MarketTab: React.FC = () => {
 
     if (!catalog) {
         return (
-            <div>
-                Рынок не загружен.
+            <div className='market-tab'>
+                <div className='filter-market'>
+                    <h1 > лоты: </h1>
+                    <select name="фильтр" 
+                        className='lot-filter' 
+                        id='test-select_lot_status' 
+                        ref={selectRef} 
+                        onChange={() => {}}
+                        defaultValue={ELotStatus.open}
+                    >
+                        <option value={ELotStatus.open} >открытые</option>
+                        <option value={ELotStatus.closed}>закрытые</option>
+                        <option value={ELotStatus.canceled}>отмененные</option>
+                    </select>
+                </div>
+                <div className='lots'>
+                    <h1> Рынок пока не загружен.</h1>
+                </div>
+                {/* <Button 
+                    onClick={() => {}}
+                    text='создать лот'
+                /> */}
             </div>
         )
     }
 
     return (
     <div className='market-tab'>
-        <label htmlFor="test-select_lot_status"> лоты: </label>
-        <select name="фильтр" 
-            className='lot-filter' 
-            id='test-select_lot_status' 
-            ref={selectRef} 
-            onChange={() => filterLots()}
-            defaultValue={ELotStatus.open}
-        >
-            <option value={ELotStatus.open} >открытые</option>
-            <option value={ELotStatus.closed}>закрытые</option>
-            <option value={ELotStatus.canceled}>отмененные</option>
-        </select>
+        <div className='filter-market'>
+            <h1 > лоты: </h1>
+            <select name="фильтр" 
+                className='lot-filter' 
+                id='test-select_lot_status' 
+                ref={selectRef} 
+                onChange={() => filterLots()}
+                defaultValue={ELotStatus.open}
+            >
+                <option value={ELotStatus.open} >открытые</option>
+                <option value={ELotStatus.closed}>закрытые</option>
+                <option value={ELotStatus.canceled}>отмененные</option>
+            </select>
+        </div>
         <div className='lots'>
             {catalog.map( (lot, index) => {
                 return <Lot lot={lot} index={index} />
             })}
+            {catalog.length === 0 && <h1> Похоже на рынке нет активных лотов...</h1>}
         </div>
         {/* <Button 
             onClick={() => setMakeLot(true)}

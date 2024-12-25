@@ -22,7 +22,6 @@ const Lot: React.FC<ILot> = (props: ILot) => {
     const makeBet = (lotId: number) => {
         const bet = inputBet.current?.value;
         if (!bet || !lotId) { return }
-        console.log(bet);
         server.makeBet(lotId, bet);
     }
 
@@ -33,14 +32,72 @@ const Lot: React.FC<ILot> = (props: ILot) => {
 
     return (
         <div className="market-lot" key={index}>
+            <div className='lot-header'>
+                <h3 id='test-market-market_tab-lot-number'>{index+1}</h3>
+                <h3 id='test-market-market_tab-lot-start_datetime'>{lot.datetime}</h3>
+            </div>
+            <div className='lot-item'>
+                {/* <img src={lot.image_source} /> */}
+                {lot.type === ETypeLot.item? 
+                    <div>
+                        <h3>{ lot.resource }</h3>
+                        <div className='lot-text_pair'>
+                            <h3>шт:</h3>
+                            <h3 id='test-market-market_tab-lot-item_amount'>{lot.amount}</h3>
+                        </div>
+                    </div>: 
+                    <div>
+                        <h3>{ lot.monster_name }</h3>
+                        <div className='lot-text_pair'>
+                            <h3>ЛВЛ:</h3>
+                            <h3>{lot.monster_level} </h3>
+                        </div>
+                        <div className='monster-stats'>
+                            <div className='lot-text_pair'>
+                                <h3>АТК: </h3>
+                                <h3>{ lot.ATK }</h3>
+                            </div>
+                            <div className='lot-text_pair'>
+                                <h3>ОЗ: </h3>
+                                <h3>{ lot.max_HP }</h3>
+                            </div>
+                            <div className='lot-text_pair'>
+                                <h3>ЗЩ: </h3>
+                                <h3>{ lot.DEF }</h3>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+            <div className='lot-text_pair'>
+                <h3>продавец:</h3> 
+                <h3 id='test-market-market_tab-lot-seller_name'>{ lot.seller_name }</h3>
+            </div>
+            <div className='lot-text_pair'>
+                <h3>нач.цена: </h3>
+                <h3 id='test-market-market_tab-lot-start_cost'>{ lot.start_cost }</h3>
+            </div>
+            <div className='lot-text_pair'>
+                <h3>шаг:</h3> 
+                <h3 id='test-market-market_tab-lot-step_cost'>{ lot.step_cost}</h3>
+            </div>
+            <div className='lot-text_pair'>
+                <h3>нач.цена: </h3>
+                <h3 id='test-market-market_tab-lot-start_cost'>{ lot.start_cost }</h3>
+            </div>
 
-            <h1>
-                {index+1}) [ {lot.datetime}]| 
-                {lot.type === ETypeLot.item? `${lot.resource} | шт: ${lot.amount}  |`: `${lot.monster_name} | LVL:${lot.monster_level} 
-                | ATK:${lot.ATK}, HP: ${lot.max_HP}, DEF: ${lot.DEF} |`}
-                продавец: {lot.seller_name} | нач.цена: { lot.start_cost } | тек.цена: { lot.current_cost}|
-                шаг: { lot.step_cost}| {lot.buyer_name != null ? `купил: ${lot.buyer_name} |`: ''} {lot.status}|
-            </h1>
+            {lot.buyer_name != null ?
+            <div className='lot-text_pair'>
+                <h3>купил: </h3> 
+                <h3 id='test-market-market_tab-lot-buyer_name'>{ lot.buyer_name }</h3>
+            </div>
+            : ''}
+            {lot.status === ELotStatus.open? <div id='test-market-market_tab-lot-status' 
+                                                className='open-status'>открыт</div>: 
+            lot.status === ELotStatus.closed? <div id='test-market-market_tab-lot-status'  
+                                                className='close-status'>закрыт</div>: 
+            lot.status === ELotStatus.canceled? <div id='test-market-market_tab-lot-status'  
+                                                className='cancelled-status'>отменён</div>: ''}
 
             { lot.status === ELotStatus.open && 
             <div className='lot-bet-panel'>
@@ -59,6 +116,7 @@ const Lot: React.FC<ILot> = (props: ILot) => {
                     required
                 />
             </div>}
+
             { lot.seller_id === user?.id && lot.status === ELotStatus.open &&
             <Button 
                 onClick={() => cancelLot(lot.id)}
