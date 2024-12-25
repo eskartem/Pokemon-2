@@ -30,7 +30,7 @@ const Market: React.FC<IBasePage> = (props: IBasePage) => {
                 server.getInventory().then(inv => {
                     setInventory(inv);
                     if (inv && inv.balance) {
-                        // console.log('Обновлено количество монет:', inv.balance.money);
+                        // console.log('Обновлено количество монет:', inv.balance);
                     }
                 });
             };
@@ -59,17 +59,17 @@ const Market: React.FC<IBasePage> = (props: IBasePage) => {
     const shells = inventory?.inventory?.find(item => item.resource_id === 3)?.resource_amount || 0;
 
     return (
-    <div id='market'>
-        <div className='user-resources'>
-            <h1 className='resources-text'>
-                монеты: {inventory?.balance?.money || 0} | 
-                кристаллы: {crystals} | 
-                яйца: {eggs} | 
-                скорлупа: {shells}
-            </h1>
-        </div>
+        <div id='market'>
+            <div className='user-resources'>
+                <h1 className='resources-text'>
+                    монеты: {inventory?.balance || 0} | 
+                    кристаллы: {crystals} | 
+                    яйца: {eggs} | 
+                    скорлупа: {shells}
+                </h1>
+            </div>
             <div className='button-panel'>
-                <button onClick={() => setTab(TABS.MARKET)} className='market-button'> рынок</button>
+                <button onClick={() => setTab(TABS.MARKET)} className='market-button'>рынок</button>
                 <button onClick={() => setTab(TABS.TRADER)} className='market-button'>торговец</button>
                 <button onClick={() => setTab(TABS.EXCHANGER)} className='market-button'>обменник</button>
             </div>

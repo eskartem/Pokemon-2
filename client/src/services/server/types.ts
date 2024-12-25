@@ -181,7 +181,7 @@ export type TUserInfo = {
 export type TInventory = {
     monsters: TCr[];
     inventory: TResource[];
-    balance: TBalance;
+    balance: number;
 }
 
 export type TCr = {
@@ -203,10 +203,6 @@ export type TResource = {
     user_id: number;
     resource_id: number;
     resource_amount: number;
-}
-
-export type TBalance = {
-    money: number;
 }
 
 export type TMonsters_level = {
