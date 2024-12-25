@@ -59,19 +59,39 @@ const Market: React.FC<IBasePage> = (props: IBasePage) => {
     const shells = inventory?.inventory?.find(item => item.resource_id === 3)?.resource_amount || 0;
 
     return (
-    <div id='market'>
-        <div className='user-resources'>
-            <h1 className='resources-text'>
-                монеты: {inventory?.balance?.money || 0} | 
-                кристаллы: {crystals} | 
-                яйца: {eggs} | 
-                скорлупа: {shells}
-            </h1>
-        </div>
+
+        <div id='market'>
+            <div className='user-resources'>
+                <h1 className='resources-text'>
+                    монеты: {inventory?.balance?.money || 0} | 
+                    кристаллы: {crystals} | 
+                    яйца: {eggs} | 
+                    скорлупа: {shells}
+                </h1>
+            </div>
+
             <div className='button-panel'>
-                <button onClick={() => setTab(TABS.MARKET)} className='market-button'> рынок</button>
-                <button onClick={() => setTab(TABS.TRADER)} className='market-button'>торговец</button>
-                <button onClick={() => setTab(TABS.EXCHANGER)} className='market-button'>обменник</button>
+                <button 
+                    onClick={() => setTab(TABS.MARKET)} 
+                    className='market-button'
+                    title="Находится в главном городе, позволяет торговать покемонами, ресурсами и предметами. Залог: 5% от цены. Возвращается при продаже, удерживается при снятии или истечении срока. Ограничения: нельзя продавать покемонов, если в инвентаре осталось меньше 3. Лоты: фиксированы на 5 минут, работают по принципу аукциона. Лимит лотов: залог обязателен для ограничения их количества. Контроль цен: минимальные и максимальные цены на товары. Цены на ресурсы: зависят от спроса и предложения, расчеты в разработке."
+                >
+                    рынок
+                </button>
+                <button 
+                    onClick={() => setTab(TABS.TRADER)} 
+                    className='market-button'
+                    title="Отдельный персонаж на рынке для продажи кусков яиц и кристаллов стихий (покемонов продавать нельзя). Цены фиксированы и не зависят от рыночных колебаний."
+                >
+                    торговец
+                </button>
+                <button 
+                    onClick={() => setTab(TABS.EXCHANGER)} 
+                    className='market-button'
+                    title="Позволяет обменивать 50 кусков яиц на одно яйцо покемона. Куски яиц можно собирать в активностях для получения новых покемонов."
+                >
+                    обменник
+                </button>
             </div>
             <div>
                 {tab === TABS.MARKET && <MarketTab />}
