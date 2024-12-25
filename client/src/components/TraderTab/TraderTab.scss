@@ -16,8 +16,10 @@
 }
 
 .trader-resources {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    display: flex;
+    align-items: center;
+    align-content: center;
+    justify-content: center;
     gap: 20px;
 }
 

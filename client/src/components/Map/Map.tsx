@@ -166,7 +166,6 @@ const Map: React.FC = () => {
                 const { MAP: mapParams, mapZones: zones } = result;
                 setMap(mapParams);
                 setMapZones(zones);
-                console.log(result)
                 setMapPosition({x: -mapParams.WIDTH/2.6 * tileSize, y: -mapParams.HEIGHT/2.2  * tileSize});
             }
         };

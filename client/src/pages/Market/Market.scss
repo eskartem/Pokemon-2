@@ -1,15 +1,11 @@
 @use '../../scss/variables.scss' as *;
 
-.market {
-    position: relative;
+#market {
     display: flex;
-    text-align: center;
-    background-color: $main-theme;
-
-    padding: 30px;
-    margin: 10px;
-    border: solid $button-border-color 3px;
-    border-radius: 10px;
+    flex-direction: column;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
 }
 
 .user-resources {
@@ -22,9 +18,10 @@
 .market-button {
     border-left: 3px gray solid;
     border-right: 3px gray solid;
-    background-color: white;
+    background-color: rgb(126, 229, 254);
     padding: 5px;
     min-width: 200px;
+    text-align: center;
 
     &:hover {
         background-color: rgb(185, 185, 185);
