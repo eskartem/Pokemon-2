@@ -1,6 +1,7 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { ServerContext } from '../../App';
 import { TResources, TResource } from '../../services/server/types';
+import InfoModal from '../../components/InfoModal/InfoModal'; 
 import Button from '../../components/Button/Button';
 import './TraderTab.scss';
 
@@ -15,6 +16,7 @@ const TraderTab: React.FC = () => {
     const [sellingResource, setSellingResource] = useState<{ id: string; name: string } | null>(null);
     const [amountToSell, setAmountToSell] = useState<string>("");
     const [sellError, setSellError] = useState<string>("");
+    const [isInfoModalOpen, setIsInfoModalOpen] = useState(false);
 
     const crystals = inventory.find(item => item.resource_id === 1)?.resource_amount || 0;
     const eggs = inventory.find(item => item.resource_id === 2)?.resource_amount || 0;
@@ -74,6 +76,15 @@ const TraderTab: React.FC = () => {
         }
     };
 
+    const handleOpenInfoModal = () => {
+        setIsInfoModalOpen(true);
+    };
+
+    const handleCloseInfoModal = () => {
+        setIsInfoModalOpen(false);
+    };
+
+
     useEffect(() => {
         fetchResources();
     }, []);
@@ -113,6 +124,17 @@ const TraderTab: React.FC = () => {
                         </div>
                     );
                 })}
+            </div>
+
+            <div className="trader-tab">
+                <button onClick={handleOpenInfoModal}>Что такое торговец?</button>
+
+                <InfoModal
+                    isOpen={isInfoModalOpen}
+                    onClose={handleCloseInfoModal}
+                    title="Торговец"
+                    content="Торговец — это персонаж, который позволяет вам продавать ресурсы, такие как кристаллы, яйца и скорлупу, за монеты."
+                />
             </div>
 
             {sellingResource && (
