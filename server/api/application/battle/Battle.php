@@ -83,7 +83,7 @@ class Battle {
                         $this->db->updateUserStatus($user1['id'], 'fight');
                         $this->db->updateUserStatus($user2['id'], 'fight');
                         $this->db->addFight($user1['id'], $user2['id']); 
-                    
+                        $this->db->updateBattleHash(md5(rand()));
                         return [
                             'user1' => $user1['id'],
                             'user2' => $user2['id']

@@ -293,11 +293,15 @@ class DB {
     //battle
     //?
     public function getPlayersInBattle() {
-        return $this->queryAll('SELECT u.id, u.name, m.id, f.user2_id AS AS opponent_id
-                FROM users u
-                JOIN monsters m ON u.id = m.user_id 
-                JOIN fight f ON u.id = f.user1_id 
-                WHERE u.status = "fight" AND m.status = "in taem" AND f.status = "open"');
+        return $this->queryAll('SELECT u.id AS user_id, 
+                                       GROUP_CONCAT(m.id) AS monsters,
+                                       f.user1_id AS opponent1_id,
+                                       f.user2_id AS opponent2_id 
+                                FROM users AS u
+                                LEFT JOIN monsters AS m ON u.id = m.user_id AND m.status = "in team"
+                                LEFT JOIN fight AS f ON (u.id = f.user1_id OR u.id = f.user2_id) AND f.status = "open"
+                                WHERE u.status = "fight"
+                                GROUP BY u.id, f.user1_id, f.user2_id');
     }
 
     public function getPlayersScout() {
