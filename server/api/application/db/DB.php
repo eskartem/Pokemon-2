@@ -293,7 +293,11 @@ class DB {
     //battle
     //?
     public function getPlayersInBattle() {
-        return $this->queryAll('SELECT id, name, x, y FROM users WHERE status = "fight"');
+        return $this->queryAll('SELECT u.id, u.name, m.id, f.user2_id AS AS opponent_id
+                FROM users u
+                JOIN monsters m ON u.id = m.user_id 
+                JOIN fight f ON u.id = f.user1_id 
+                WHERE u.status = "fight" AND m.status = "in taem" AND f.status = "open"');
     }
 
     public function getPlayersScout() {

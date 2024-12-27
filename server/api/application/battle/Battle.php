@@ -219,10 +219,10 @@ class Battle {
                 $amountCrystal = $amountCrystal1 * 0.05;
                 $this->db->clearUserResource($userId, 1, $amountCrystal);
                 $this->db->updateUserStatus($userId, 'scout');
-                return ['message'=>'убежал'];
+                return [true];
             }else{
 
-                return ['message'=>'не убежал'];
+                return [false];
             }
         }
     }
