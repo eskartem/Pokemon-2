@@ -5,8 +5,25 @@
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     font-family: 'Arial', sans-serif;
     max-width: 800px;
-    margin: 40px auto; /* Спустили вниз, добавив отступ */
+    margin: 40px auto; 
+    position: relative;
 }
+
+
+.info-icon { 
+    position: absolute; 
+    top: 20px; 
+    right: 20px; 
+    width: 24px; 
+    height: 24px; 
+    cursor: pointer; 
+    transition: opacity 0.2s ease-in-out; 
+
+    &:hover {
+        opacity: 0.8; 
+    }
+}
+
 
 .trader-tab h1 {
     text-align: center;
@@ -56,9 +73,6 @@
     margin-top: 20px;
 }
 
-button:hover {
-    background-color: #218838;
-}
 
 button:disabled {
     background-color: #adb5bd;

@@ -4,6 +4,8 @@ import { TUpdateMarketResponse, TLot, ETypeLot, ELotStatus,
     TInventory, EMonsterStatus } from '../../services/server/types';
 import Button from '../Button/Button';
 import Lot from '../Lot/Lot';
+import InfoModal from '../../components/InfoModal/InfoModal'; 
+import question from '../../assets/img/question.png';
 
 import './MarketTab.scss';
 
@@ -17,6 +19,7 @@ const MarketTab: React.FC = () => {
     const [inventory, setInventory] = useState<TInventory | null>(null);
     const user = store.getUser();
     const selectRef = useRef<HTMLSelectElement>(null);
+    const [isInfoModalOpen, setIsInfoModalOpen] = useState(false);
 
     const filterLots = () => {
         const currenStatus = selectRef.current?.value as ELotStatus;
@@ -28,6 +31,14 @@ const MarketTab: React.FC = () => {
     const makeLot = () => {
         return
     }
+
+    const handleOpenInfoModal = () => {
+        setIsInfoModalOpen(true);
+    };
+
+    const handleCloseInfoModal = () => {
+        setIsInfoModalOpen(false);
+    };
 
     useEffect(() => {
         const marketUpdateHandler = ( result: TUpdateMarketResponse ) => {
@@ -56,6 +67,22 @@ const MarketTab: React.FC = () => {
             <div className='market-tab'>
                 <div className='filter-market'>
                     <h1 > лоты: </h1>
+                    <img
+                        src={question}
+                        onClick={handleOpenInfoModal}
+                        className="info-icon" 
+                        id="test-info-icon" 
+                     />
+                     <InfoModal
+                        isOpen={isInfoModalOpen}
+                        onClose={handleCloseInfoModal}
+                        title="Рынок"
+                        content={
+                            <div className="info-modal-content">
+                                Находится в главном городе, позволяет торговать покемонами, ресурсами и предметами. Залог: 5% от цены. Возвращается при продаже, удерживается при снятии или истечении срока. Ограничения: нельзя продавать покемонов, если в инвентаре осталось меньше 3. Лоты: фиксированы на 5 минут, работают по принципу аукциона. Лимит лотов: залог обязателен для ограничения их количества. Контроль цен: минимальные и максимальные цены на товары. Цены на ресурсы: зависят от спроса и предложения, расчеты в разработке.
+                            </div>
+                        }
+                    />
                     <select name="фильтр" 
                         className='lot-filter' 
                         id='test-select_lot_status' 
@@ -83,6 +110,22 @@ const MarketTab: React.FC = () => {
     <div className='market-tab'>
         <div className='filter-market'>
             <h1 > лоты: </h1>
+            <img
+                src={question}
+                onClick={handleOpenInfoModal}
+                className="info-icon" 
+                id="test-info-icon" 
+            />
+            <InfoModal
+                isOpen={isInfoModalOpen}
+                onClose={handleCloseInfoModal}
+                title="Рынок"
+                content={
+                    <div className="info-modal-content">
+                Находится в главном городе, позволяет торговать покемонами, ресурсами и предметами. Залог: 5% от цены. Возвращается при продаже, удерживается при снятии или истечении срока. Ограничения: нельзя продавать покемонов, если в инвентаре осталось меньше 3. Лоты: фиксированы на 5 минут, работают по принципу аукциона. Лимит лотов: залог обязателен для ограничения их количества. Контроль цен: минимальные и максимальные цены на товары. Цены на ресурсы: зависят от спроса и предложения, расчеты в разработке.
+                    </div>
+                }
+            />
             <select name="фильтр" 
                 className='lot-filter' 
                 id='test-select_lot_status' 

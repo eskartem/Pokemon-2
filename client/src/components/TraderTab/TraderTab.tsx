@@ -1,6 +1,7 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { ServerContext } from '../../App';
 import { TResources, TResource } from '../../services/server/types';
+import question from '../../assets/img/question.png';
 import InfoModal from '../../components/InfoModal/InfoModal'; 
 import Button from '../../components/Button/Button';
 import './TraderTab.scss';
@@ -96,6 +97,18 @@ const TraderTab: React.FC = () => {
     return (
         <div className="trader-tab" id="test-trader-tab">
             <h1 id="test-trader-title">Торговец</h1>
+            <img
+                src={question}
+                onClick={handleOpenInfoModal}
+                className="info-icon" 
+                id="test-info-icon" 
+            />
+            <InfoModal
+                    isOpen={isInfoModalOpen}
+                    onClose={handleCloseInfoModal}
+                    title="Торговец"
+                    content="Торговец — это персонаж, который позволяет вам продавать ресурсы, такие как кристаллы, яйца и скорлупу, за монеты."
+                />
             <div className="trader-resources" id="test-trader-resources">
                 {resources.map(({ id, name, cost }) => {
                     let resourceAmount = 0;
@@ -124,17 +137,6 @@ const TraderTab: React.FC = () => {
                         </div>
                     );
                 })}
-            </div>
-
-            <div className="trader-tab">
-                <button onClick={handleOpenInfoModal}>Что такое торговец?</button>
-
-                <InfoModal
-                    isOpen={isInfoModalOpen}
-                    onClose={handleCloseInfoModal}
-                    title="Торговец"
-                    content="Торговец — это персонаж, который позволяет вам продавать ресурсы, такие как кристаллы, яйца и скорлупу, за монеты."
-                />
             </div>
 
             {sellingResource && (

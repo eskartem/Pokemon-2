@@ -1,6 +1,8 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { ServerContext } from '../../App';
 import Button from '../../components/Button/Button';
+import InfoModal from '../../components/InfoModal/InfoModal'; 
+import question from '../../assets/img/question.png';
 import ExchangerImage from '../../assets/ExchangerImage/Exchanger.jpg';
 import MeanExchangerImage from '../../assets/ExchangerImage/MeanExchangerImage.jpg';
 import './ExchangerTab.scss';
@@ -10,6 +12,7 @@ const ExchangerTab: React.FC = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
     const [eggFragments, setEggFragments] = useState(0);
+    const [isInfoModalOpen, setIsInfoModalOpen] = useState(false);
 
     const fetchResources = async () => {
         try {
@@ -49,6 +52,15 @@ const ExchangerTab: React.FC = () => {
         }
     };
 
+    const handleOpenInfoModal = () => {
+        setIsInfoModalOpen(true);
+    };
+
+    const handleCloseInfoModal = () => {
+        setIsInfoModalOpen(false);
+    };
+
+
     useEffect(() => {
         fetchResources();
     }, []);
@@ -59,6 +71,18 @@ const ExchangerTab: React.FC = () => {
 
     return (
         <div className="exchanger-container" id="test-exchanger-container">
+            <img
+                src={question}
+                onClick={handleOpenInfoModal}
+                className="info-icon" 
+                id="test-info-icon" 
+            />
+            <InfoModal
+                    isOpen={isInfoModalOpen}
+                    onClose={handleCloseInfoModal}
+                    title="Обменник"
+                    content="Позволяет обменивать 50 кусков яиц на одно яйцо покемона. Куски яиц можно собирать в активностях для получения новых покемонов"
+                />
             <img
                 src={hasSufficientResources ? ExchangerImage : MeanExchangerImage}
                 alt="Exchanger"
