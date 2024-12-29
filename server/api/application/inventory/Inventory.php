@@ -90,4 +90,27 @@ class Inventory {
         ];
 
     }
+
+    public function hatchEgg($inventory){
+        foreach ($inventory['inventory'] as $res){
+            if ($res['resource_id'] == 2){
+                if ($res['resource_amount'] == 0){
+                    return ['error' => 3006];
+                }
+                $eggs = $res['resource_amount'];
+            }
+        }
+        
+        
+        $monsterTypes = $this->db->getMonsterTypes();
+        $monsterIds = [];
+        foreach ($monsterTypes as $monsterType) {
+            $monsterIds[] = $monsterType['id'];
+        }
+        
+        return ['hatched' => $this->db->addMonsters($res['user_id'], array_rand($monsterIds), 'in pocket'),
+                'eggConsumed' => $this->db->sellResources(2, 1, $res['user_id']),
+                'eggs' => $eggs
+        ];
+    }
 }

@@ -190,6 +190,14 @@ class Application {
             foreach ($inventory['monsters'] as $monsters){
                 if ($monsters['id'] == $params['id']){
                     if (count($inventory['monsters']) > 3){
+                        if ($monster['status'] == 'in team') {
+                            foreach ($inventory['monsters'] as $newMonster) {
+                                if ($newMonster['status'] == 'in pocket') {
+                                    $this->db->changeMonsterStatus($newMonster['id'], 'in team');
+                                    break;
+                                }
+                            }
+                        }
                         return $this->market->makeLotMonster($user, $params['id'], $params['startCost'], $params['stepCost']);
                     }
                     return ['error' => 3004];
@@ -260,6 +268,11 @@ class Application {
 
         if (!filter_var($params['amount'], FILTER_VALIDATE_INT) || $params['amount'] <= 0) {
             return ['error' => 3002];
+        }
+
+        $inTown = $this->map->isUserInZone($user, "город");
+        if (!$inTown){
+            return ['error' => 2999];
         }
 
         if ($params['type'] === 'merchant') {
@@ -384,5 +397,27 @@ class Application {
         }
         return ['error' => 242];
     }
+
+    public function hatchEgg($params){
+        if (!isset($params['token'])) {
+            return ['error' => 242];
+        }
     
+        $user = $this->user->getUser($params['token']);
+        if (!$user) {
+            return ['error' => 705];
+        }
+    
+        $inTown = $this->map->isUserInZone($user, "город");
+        if (!$inTown) {
+            return ['error' => 2999];
+        }
+    
+        $inventory = $this->inventory->getInventory($user->id);
+        if (!$inventory) {
+            return ['error' => 3007];
+        }
+    
+        return $this->inventory->hatchEgg($inventory);
+    }
 }
