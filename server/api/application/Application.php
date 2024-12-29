@@ -115,14 +115,21 @@ class Application {
         if (!isset($params['token'])) {
             return ['error' => 242];
         }
+        
         $user = $this->user->getUser($params['token']);
         if (!$user) {
             return ['error' => 705];
         }
+
         if (!isset($params['direction'])) {
             return ['error' => 2001];
         }
+
         $direction = $params['direction'];
+        if (!in_array($direction, ['up', 'down', 'left', 'right'])) {
+            return ['error' => 2002];
+        }
+
         return $this->map->moveUser($user->id, $direction, $user->x, $user->y);
     }
 
