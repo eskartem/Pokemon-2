@@ -107,8 +107,9 @@ class Inventory {
         foreach ($monsterTypes as $monsterType) {
             $monsterIds[] = $monsterType['id'];
         }
-        
-        return ['hatched' => $this->db->addMonsters($res['user_id'], array_rand($monsterIds), 'in pocket'),
+
+        $randomMonster = $monsterIds[array_rand($monsterIds)];
+        return ['hatched' => $this->db->addMonsters($res['user_id'], $randomMonster, 'in pocket'),
                 'eggConsumed' => $this->db->sellResources(2, 1, $res['user_id']),
                 'eggs' => $eggs
         ];

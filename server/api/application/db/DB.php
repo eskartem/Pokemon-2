@@ -389,7 +389,7 @@ class DB {
         return $this->execute('UPDATE monsters SET user_id=?, status="in pocket" WHERE id=?', [$newOwnerId, $monsterId]);
     }
     //объединить в один метод?
-
+    
     public function getMonsterTypes(){
         return $this->queryAll('SELECT * from monster_types');
     }
