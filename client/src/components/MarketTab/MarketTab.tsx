@@ -101,10 +101,10 @@ const MarketTab: React.FC = () => {
             })}
             {catalog.length === 0 && <h1> Похоже на рынке нет активных лотов...</h1>}
         </div>
-        {/* <Button 
+        <Button 
             onClick={() => setMakeLot(true)}
             text='создать лот'
-        /> */}
+        />
         {isMakeLot && // создание лота
             <div className='make_lot-tab'>
                 <div className='sell-menu'>
@@ -126,6 +126,31 @@ const MarketTab: React.FC = () => {
                 <input type="number" id='test-market-make_lot-step_cost' className='bet-input' />
                 <Button text='выставить' onClick={() => makeLot()} />
                 <Button text='x' onClick={() =>setMakeLot(false)} />
+            {/* {upgradeModalOpen && (
+                <div className="upgrade-modal">
+                    <div className="upgrade-modal-content">
+                        <h2>Вы точно хотите улучшить?</h2>
+                        <img src={getPokemonImage(upgradeInfo.image)} alt={upgradeInfo.name} />
+                        <p>Имя: {upgradeInfo.name}</p>
+                        <p>Уровень: {selectedPokemon?.level} {'→'} {upgradeInfo.level}</p>
+                        <p>Стоимость: {upgradeInfo.cost} кристаллов</p>
+                        <Button
+                            id="test-upgrade-confirm-button" 
+                            className="upgrade-confirm-button"
+                            text="Улучшить"
+                            onClick={() => {
+                                upgradePokemonHandler(selectedPokemon?.id || 0);
+                            }}
+                        />
+                        <Button
+                            id="test-upgrade-cancel-button"  
+                            className="upgrade-cancel-button"
+                            text="Отмена"
+                            onClick={closeUpgradeModal}
+                        />
+                    </div>
+                </div>
+            )} */}
             </div>}
     </div>)
 }
