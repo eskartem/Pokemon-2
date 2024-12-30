@@ -108,6 +108,7 @@ const TraderTab: React.FC = () => {
                     onClose={handleCloseInfoModal}
                     title="Торговец"
                     content="Торговец — это персонаж, который позволяет вам продавать ресурсы, такие как кристаллы, яйца и скорлупу, за монеты."
+                    id="test-trader-info-modal"
                 />
             <div className="trader-resources" id="test-trader-resources">
                 {resources.map(({ id, name, cost }) => {

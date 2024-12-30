@@ -285,6 +285,7 @@ const Inventory: React.FC<IBasePage> = (props: IBasePage) => {
                     onClose={handleCloseInfoModal}
                     title="Инвентарь"
                     content="Здесь ты можешь выбрать себе команду или улучшить покемонов"
+                    id="test-inventory-info-modal"
                 />
                 {loading && <p id="test-loading-indicator">Загрузка...</p>}
     

@@ -1,58 +1,109 @@
 .exchanger-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 20px;
-  border: 2px solid #4CAF50;
-  border-radius: 10px;
-  background-color: #f9f9f9;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  position: relative;
-
-  .exchanger-image {
-      max-width: 50%;
-      height: auto;
-      margin-bottom: 20px;
-  }
-
-  .info-icon { 
-    position: absolute; 
-    top: 20px; 
-    right: 20px; 
-    width: 24px; 
-    height: 24px; 
-    cursor: pointer; 
-    transition: opacity 0.2s ease-in-out; 
-
-    &:hover {
-        opacity: 0.8; 
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    border: 2px solid #4CAF50;
+    border-radius: 10px;
+    background-color: #f9f9f9;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    position: relative;
+  
+    .exchanger-image {
+        max-width: 50%;
+        height: auto;
+        margin-bottom: 20px;
+        order: -1; // Перемещаем изображение наверх
     }
-}
-
-  .exchange-status {
-      font-size: 18px;
-      font-weight: bold;
-      color: red;
-      text-align: center;
-  }
-
-  .fragments-status {
-      font-size: 16px;
-      margin-bottom: 20px;
-  }
-
-  .exchange-button {
-      width: 100%;
-      padding: 10px;
-      font-size: 16px;
-      font-weight: bold;
-      cursor: pointer;
-      transition: background-color 0.3s;
-      
-
-      &.disabled {
-          background-color: #d3d3d3;
-          cursor: not-allowed;
+  
+    .info-icon { 
+      position: absolute; 
+      top: 20px; 
+      right: 20px; 
+      width: 24px; 
+      height: 24px; 
+      cursor: pointer; 
+      transition: opacity 0.2s ease-in-out; 
+  
+      &:hover {
+          opacity: 0.8; 
       }
+    }
+  
+    .exchange-status {
+        font-size: 18px;
+        font-weight: bold;
+        color: red;
+        text-align: center;
+    }
+  
+    .fragments-status {
+        font-size: 16px;
+        margin-bottom: 20px;
+    }
+  
+    .exchange-button {
+        width: 100%;
+        padding: 10px;
+        font-size: 16px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: background-color 0.3s;
+  
+        &.disabled {
+            background-color: #d3d3d3;
+            cursor: not-allowed;
+        }
+    }
+  
+    .hatched-pokemon-modal {
+      background-color: #f9f9f9;
+      border: 2px solid #4CAF50;
+      border-radius: 10px;
+      padding: 20px;
+      max-width: 400px;
+      width: 100%;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      text-align: center;
+  
+      
+      p {
+          font-size: 16px;
+          color: #333;
+          margin: 5px 0;
+      }
+  
+      img {
+          width: 80px;
+          height: 80px;
+          object-fit: cover;
+          border-radius: 50%;
+          border: 2px solid #333;
+          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+          margin-bottom: 10px;
+      }
+  
+      .modal-content {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+      }
+  
+      .modal-close-button {
+          margin-top: 20px;
+          padding: 10px 20px;
+          font-size: 16px;
+          font-weight: bold;
+          color: #fff;
+          background-color: #4CAF50;
+          border: none;
+          border-radius: 5px;
+          cursor: pointer;
+          transition: background-color 0.3s;
+  
+          &:hover {
+              background-color: #45a049;
+          }
+      }
+    }
   }
-}
