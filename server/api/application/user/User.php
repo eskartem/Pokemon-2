@@ -64,9 +64,9 @@ class User {
             $monster_type_id2 = rand(5,8);
             $monster_type_id3 = rand(9,12);
                         
-            $this->db->addMonsters($user->id, $monster_type_id1);
-            $this->db->addMonsters($user->id, $monster_type_id2);
-            $this->db->addMonsters($user->id, $monster_type_id3);
+            $this->db->addMonsters($user->id, $monster_type_id1, 'in team');
+            $this->db->addMonsters($user->id, $monster_type_id2, 'in team');
+            $this->db->addMonsters($user->id, $monster_type_id3, 'in team');
             
             return [
                 'id' => $user->id,

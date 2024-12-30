@@ -118,11 +118,38 @@ class DB {
         $this->execute('INSERT INTO inventory (user_id, resource_id, resource_amount) VALUES (?,3, 0)', [$userId]);
     }
 
-    public function addMonsters($userId, $monster_type_id){
+    public function addMonsters($userId, $monster_type_id, $status){
         $hp = $this->query('SELECT hp FROM monster_types WHERE id = ?',[$monster_type_id]);
         $hp = $hp->hp;
-        $this->execute('INSERT INTO monsters (user_id, monster_type_id, level, hp, status) VALUES (?, ?, 1, ?, "in team")', [$userId, $monster_type_id, $hp]);
+        
+        $this->execute(
+            'INSERT INTO monsters (user_id, monster_type_id, level, hp, status) VALUES (?, ?, 1, ?, ?)', 
+            [$userId, $monster_type_id, $hp, $status]
+        );
+        
+        $newMonsterId = $this->query('SELECT LAST_INSERT_ID()')->{'LAST_INSERT_ID()'};
+        
+        return $this->query(
+            'SELECT 
+                    m.id,
+                    mt.name,
+                    el.name AS element,
+                    m.level,
+                    mt.hp AS base_hp,
+                    mt.attack AS base_atk,
+                    mt.defense AS base_def,
+                    mt.image as asset
+                FROM monsters m
+                JOIN monster_types mt ON m.monster_type_id = mt.id
+                LEFT JOIN monster_level ml ON ml.level <= m.level
+                LEFT JOIN elements el ON el.id = mt.element_id
+                WHERE m.id = ?
+                GROUP BY m.id, mt.name, m.level, element, base_hp, base_atk, base_def, asset
+            ', [$newMonsterId]
+        );
     }
+    // сделал, чтобы статус прилетал извне 
+    // возвращает теперь инфу о добавленном монстре
     
     public function updateMoneyByUser($userId, $money){
         $this->execute('UPDATE users SET money = ? WHERE id = ?',[$money, $userId]);
@@ -385,5 +412,8 @@ class DB {
         return $this->execute('UPDATE monsters SET user_id=?, status="in pocket" WHERE id=?', [$newOwnerId, $monsterId]);
     }
     //объединить в один метод?
-
+    
+    public function getMonsterTypes(){
+        return $this->queryAll('SELECT * from monster_types');
+    }
 }
