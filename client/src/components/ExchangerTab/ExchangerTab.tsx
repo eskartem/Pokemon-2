@@ -32,6 +32,11 @@ const ExchangerTab: React.FC = () => {
     };
 
     const handleExchange = async () => {
+        if (!hasSufficientResources) {
+            setError('');
+            return;
+        }
+    
         try {
             const success = await server.sellExchanger('50'); 
             if (success) {
@@ -40,7 +45,7 @@ const ExchangerTab: React.FC = () => {
                 throw new Error('Ошибка обмена');
             }
         } catch (error) {
-            setError('');
+            setError('Произошла ошибка при обмене');
         }
     };
 
@@ -48,7 +53,6 @@ const ExchangerTab: React.FC = () => {
         fetchResources();
     }, []);
 
-    if (loading) return <div id="test-loading-indicator">Загрузка...</div>;
     if (error) return <div className="error" id="test-error-message">{error}</div>;
 
     const hasSufficientResources = eggFragments >= 50;

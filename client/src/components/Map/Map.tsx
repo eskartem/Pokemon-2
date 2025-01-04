@@ -17,11 +17,12 @@ const Map: React.FC = () => {
     const server = useContext(ServerContext);
     const store = useContext(StoreContext);
     const user = store.getUser();
+    const mapInfo = store.getMapInfo();
 
     const [userOnMap, setUserOnMap] = useState<TGamer | null>(null);
     const [gamers, setGamers] = useState<TGamer[]>([]);
-    const [MAP, setMAP] = useState<TMap>({ WIDTH: 0, HEIGHT: 0, IMAGE: '' });
-    const [mapZones, setMapZones] = useState<TMapZone[]>([]);
+    const [map, setMap] = useState<TMap | null>(mapInfo?.MAP || null);
+    const [mapZones, setMapZones] = useState<TMapZone[]>(mapInfo?.mapZones || []);
     const [mapPosition, setMapPosition] = useState<TPoint>({ x: 0, y: 0 });
     const [isCanMove, setCanMove] = useState<boolean>(false);
     const [lastMousePosition, setLastMousePosition] = useState<TPoint>({ x: 0, y: 0 });
@@ -32,7 +33,7 @@ const Map: React.FC = () => {
     //const canvasHeight = WINV.HEIGHT * tileSize;
 
     const getCurrentZone = (currenGamer: TGamer) => {
-        if (!userOnMap) return 'пользователя нету';
+        if (!userOnMap) return ;
         for (let i=0; i <= mapZones.length; i++) {
             const zone = mapZones[i];
             const result = (currenGamer.x >= zone.x && currenGamer.y >= zone.y
@@ -52,18 +53,18 @@ const Map: React.FC = () => {
 
     const goToUser = () => {
 
-        if (!userOnMap) return;
+        if (!userOnMap || !map) return;
         
         let x = -(userOnMap.x - WINV.WIDTH / 2) * tileSize;
         let y = -(userOnMap.y - WINV.HEIGHT / 2) * tileSize;
-        console.log(x, y)
+
         // Ограничение по горизонтали
         const maxX = 0;
-        const minX = canvasWidth - MAP.WIDTH * tileSize;
+        const minX = canvasWidth - map.WIDTH * tileSize;
 
         // Ограничение по вертикали
         const maxY = 0;
-        const minY = canvasHeight - MAP.HEIGHT * tileSize;
+        const minY = canvasHeight - map.HEIGHT * tileSize;
 
         x = Math.max(minX, Math.min(maxX, x));
         y = Math.max(minY, Math.min(maxY, y));
@@ -114,7 +115,7 @@ const Map: React.FC = () => {
     const mouseleave = () => setCanMove(false);
 
     const mousemove = (event: MouseEvent) => {
-        if (!isCanMove) return;
+        if (!isCanMove || !map) return;
 
         const deltaX = event.clientX - lastMousePosition.x;
         const deltaY = event.clientY - lastMousePosition.y;
@@ -125,11 +126,11 @@ const Map: React.FC = () => {
         
             // Ограничение по горизонтали
             const maxX = 0;
-            const minX = canvasWidth - MAP.WIDTH * tileSize;
+            const minX = canvasWidth - map.WIDTH * tileSize;
         
             // Ограничение по вертикали
             const maxY = 0;
-            const minY = canvasHeight - MAP.HEIGHT * tileSize;
+            const minY = canvasHeight - map.HEIGHT * tileSize;
         
             return {
                 x: Math.max(minX, Math.min(maxX, newX)),
@@ -141,45 +142,41 @@ const Map: React.FC = () => {
 
     useEffect(() => {
 
-        window.addEventListener('keydown', keyDown);
-
         const updateSceneHandler = (result: TUpdateSceneResponse) => { // получаю массив игроков и выдергиваю себя из него
             if (!result.gamers) return;
-            
             let gamers = result.gamers;
-            
             if (!user) return;
-            
             const userHimself = gamers.find(item => item.id === user?.id);
             if (!userHimself) return;
-            
-            const index = gamers.findIndex(item => item.id === user?.id);
-            if (index === -1) return;
-
-            gamers.splice(index, 1);
             setUserOnMap(userHimself);
             const gamersAround = gamers.filter(gamer => { // выбираю пользователей только в поле зрения
                 return ( 
                     (Math.abs(userHimself.x - gamer.x) < (fovDistance+1)) && 
-                    (Math.abs(userHimself.y - gamer.y) < (fovDistance+1)) 
+                    (Math.abs(userHimself.y - gamer.y) < (fovDistance+1)) &&
+                    (user.id != gamer.id)
                 )
             });
             setGamers(gamersAround);
         }
 
-        (async () => { // получаем карту, зоны и центрируем ее
+        const getMap = async () => { // получаем карту, зоны и центрируем ее
             const result = await server.getMap();
             if (result) {
-                const { MAP: map, mapZones: zones } = result;
-                setMAP(map);
+                store.setMapInfo(result);
+                const { MAP: mapParams, mapZones: zones } = result;
+                setMap(mapParams);
                 setMapZones(zones);
-                setMapPosition({x: -map.WIDTH/2.6 * tileSize, y: -map.HEIGHT/2.2  * tileSize});
+                setMapPosition({x: -mapParams.WIDTH/2.6 * tileSize, y: -mapParams.HEIGHT/2.2  * tileSize});
             }
-        })();
+        };
+
+        if (!mapInfo) getMap();
         
         if (user) {
             server.startSceneUpdate(updateSceneHandler);
         }
+
+        window.addEventListener('keydown', keyDown);
         
         return () => {
             server.stopSceneUpdate();
@@ -188,7 +185,7 @@ const Map: React.FC = () => {
         
     }, [server, store, user]);
 
-    if (!user || !userOnMap) {
+    if (!user || !userOnMap || !map) {
         return (<>Карта не загружена. Что-то пошло не так.</>)
     }
 
@@ -207,20 +204,20 @@ const Map: React.FC = () => {
                     image={mapImage}
                     x={mapPosition.x}
                     y={mapPosition.y}
-                    width={MAP.WIDTH * tileSize}
-                    height={MAP.HEIGHT * tileSize}
+                    width={map.WIDTH * tileSize}
+                    height={map.HEIGHT * tileSize}
                 />
                 <Graphics // сетка на карте
                     draw={(g) => {
                             g.clear();
                             g.lineStyle(1, 0x333333, 0.3);
-                            for (let x = 0; x <= MAP.WIDTH; x++) {
+                            for (let x = 0; x <= map.WIDTH; x++) {
                                 g.moveTo(mapPosition.x + x * tileSize, mapPosition.y);
-                                g.lineTo(mapPosition.x + x * tileSize, mapPosition.y + MAP.HEIGHT * tileSize);
+                                g.lineTo(mapPosition.x + x * tileSize, mapPosition.y + map.HEIGHT * tileSize);
                             }
-                            for (let y = 0; y <= MAP.HEIGHT; y++) {
+                            for (let y = 0; y <= map.HEIGHT; y++) {
                                 g.moveTo(mapPosition.x, mapPosition.y + y * tileSize);
-                                g.lineTo(mapPosition.x + MAP.WIDTH * tileSize, mapPosition.y + y * tileSize);
+                                g.lineTo(mapPosition.x + map.WIDTH * tileSize, mapPosition.y + y * tileSize);
                             }
                         }
                     }
