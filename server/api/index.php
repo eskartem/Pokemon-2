@@ -33,9 +33,9 @@ function result($params) {
             
             //battle
             case 'startBattle': return $app->startBattle();
-            // case 'updateBattle': return $app-> updateBattle($params); // loop //получаю данные по всем игрокам
+            case 'updateBattle': return $app-> updateBattle($params); // loop //получаю данные по всем игрокам
             case 'endBattle': return $app->endBattle($params);
-            //case 'actionUser': return $app-> actionUser($params); //действие игрока в бою во время ход
+            case 'actionUser': return $app-> actionUser($params); //действие игрока в бою во время ход
             //map
             case 'getMap': return $app->getMap($params);
             //case 'startGame': return $app-> startGame($params);
