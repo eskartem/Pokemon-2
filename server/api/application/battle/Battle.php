@@ -273,6 +273,11 @@ public function actionUser($monsterId1, $monsterId2, $action){
                     $getDamage3 = $this->updateMonsterHealth($monster_3, $damage * 0.5);
                 }
 
+            }elseif($skill->id === 4){//Горение: +10% от урона 5 секунд
+                $damage = $this->getDamage($main_mon, $damage_multiplier);
+                $burning = $damage * 0.5;
+                $getDamage1 = $this->updateMonsterHealth($main_mon, $damage + $burning);
+                
             }elseif($skill->id === 7){
                 $monst_type_id = $main_mon['monster_type_id'];
                 $params = $this->db->getMonsterTypeById($monst_type_id);
