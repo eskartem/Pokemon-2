@@ -202,7 +202,7 @@ class DB {
 
         
     public function getParametersMonsterByLevel($level) { 
-        return $this->query("SELECT attack, hp, cost FROM monster_level WHERE level = ?", [$level]);
+        return $this->query("SELECT attack, hp, defense, cost FROM monster_level WHERE level = ?", [$level]);
     } 
     
     public function getElementByMonsters($monster_type_id){ //стихия покемона по типу 
