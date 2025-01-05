@@ -25,6 +25,7 @@ const ExchangerTab: React.FC = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
     const [eggFragments, setEggFragments] = useState(0);
+    const [eggs, setEggs] = useState(0);
     const [isInfoModalOpen, setIsInfoModalOpen] = useState(false);
     const [isHatchModalOpen, setIsHatchModalOpen] = useState(false);
     const [hatchedPokemon, setHatchedPokemon] = useState<THatchedResponse | null>(null);
@@ -39,7 +40,11 @@ const ExchangerTab: React.FC = () => {
             const eggFragmentResource = inventory.inventory.find(
                 (resource) => resource.resource_id === 3
             );
+            const eggResource = inventory.inventory.find(
+                (resource) => resource.resource_id === 2
+            );
             setEggFragments(eggFragmentResource ? eggFragmentResource.resource_amount : 0);
+            setEggs(eggResource ? eggResource.resource_amount : 0);
         } finally {
             setLoading(false);
         }
@@ -71,11 +76,16 @@ const ExchangerTab: React.FC = () => {
     };
 
     const handleHatchEgg = async () => {
+        if (!hasSufficientEggs) {
+            setError('');
+            return;
+        }
         try {
             const result = await server.hatchEgg();
             if (result) {
                 setHatchedPokemon(result);
                 setIsHatchModalOpen(true);
+                fetchResources(); 
             }
         } catch (error) {
             setError('Произошла ошибка при вылуплении покемона');
@@ -110,7 +120,6 @@ const ExchangerTab: React.FC = () => {
         return imageMap[normalizedPath] || undefined;
     };
 
-
     useEffect(() => {
         fetchResources();
     }, []);
@@ -118,6 +127,7 @@ const ExchangerTab: React.FC = () => {
     if (error) return <div className="error" id="test-error-message">{error}</div>;
 
     const hasSufficientResources = eggFragments >= 50;
+    const hasSufficientEggs = eggs > 0;
 
     return (
         <div className="exchanger-container" id="test-exchanger-container">
@@ -155,7 +165,8 @@ const ExchangerTab: React.FC = () => {
                 text="Получить покемона"
                 onClick={handleHatchEgg}
                 className="exchange-button"
-                id="test-hatch-egg-button"
+                isDisabled={!hasSufficientEggs}
+                id={hasSufficientEggs ? "test-hatch-egg-button" : "test-hatch-egg-button-disabled"}
             />
             {hatchedPokemon && (
                 <InfoModal
