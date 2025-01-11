@@ -6,9 +6,10 @@ import { TAnswer, TError, TMessagesResponse, TUser, TMarketCatalog, TMap, TMapZo
     TCr, TUpdateMarketResponse, TMakeBet, 
     TCancelLot,
     TUserInfo,
-    TMapInfo} from "./types";
+    TMapInfo,
+    TGamerBattle} from "./types";
 
-const { CHAT_TIMESTAMP, SCENE_TIMESTAMP, MARKET_TIMESTAMP, HOST } = CONFIG;
+const { CHAT_TIMESTAMP, SCENE_TIMESTAMP, MARKET_TIMESTAMP, HOST, BATTLE_TIMESTAMP } = CONFIG;
 
 class Server {
     HOST = HOST;
@@ -17,6 +18,7 @@ class Server {
     sceneInterval: NodeJS.Timer | null = null;
     marketInterval: NodeJS.Timer | null = null;
     inventoryInterval: NodeJS.Timer | null = null; // Добавляем интервал для инвентаря
+    battleInterval: NodeJS.Timer | null = null; 
     showErrorCb: (error: TError) => void = () => {};
 
     constructor(store: Store) {
@@ -253,6 +255,39 @@ class Server {
         const result = await this.request<TCr>('getInfoAboutUpgrade', { monsterId: monsterId.toString() });
         return result;
     }    
+
+    startBattleUpdate(cb: (result: TUpdateSceneResponse) => void): void {
+        this.battleInterval = setInterval(async () => {
+            const result = await this.updateBattle();
+            if (result) {
+                cb(result);
+            }
+        }, BATTLE_TIMESTAMP);
+    }
+
+    async updateBattle(): Promise<TUpdateSceneResponse | null> {
+        const hash = this.store.getSceneHash();
+        const result = await this.request<TUpdateSceneResponse>('updateBattle', { hash });
+        if (result) {
+            this.store.setSceneHash(result.hash);
+            return result;
+        }
+        return null;
+    }
+
+    stopBattleUpdate(): void {
+        if (this.battleInterval) {
+            clearInterval(this.battleInterval);
+            this.battleInterval = null;
+            this.store.clearAllHashes();
+        }
+    }
+
+    async getPlayerInBattle(): Promise<TGamerBattle[] | null> {
+        return await this.request<TGamerBattle[]>('startBattle', {});
+    }
+
+
 
 }
 

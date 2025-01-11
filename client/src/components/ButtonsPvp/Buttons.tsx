@@ -222,8 +222,6 @@ const Buttons: React.FC<buttonsProps> = (props: buttonsProps) => {
         if(activeMonster.side === 'enemySide' && enemyType === 'bot') {
             let setAction: string = Math.random() < 1 ? 'baseAttack' : 'skill' ;
             const randomValue = values[Math.floor(Math.random() * values.length)];
-            console.log(randomValue);
-            console.log(values);
             setTimeout(() => {
                 const healthPoint = mathPvp.dealingDamage(
                     hpBarFirstMonster, 

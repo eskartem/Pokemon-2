@@ -23,6 +23,10 @@ export type TGamer = {
     y: number;
 }
 
+export type TGamerBattle =  {
+    id: number
+}
+
 export type TUser = TGamer & {
     token: string;
     coins: number;

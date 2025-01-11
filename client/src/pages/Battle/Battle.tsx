@@ -1,4 +1,4 @@
-import {useEffect, useState, createContext} from 'react';
+import {useEffect, useState, useContext} from 'react';
 import {Stage} from '@pixi/react';
 import { IBasePage, PAGES } from '../PageManager';
 
@@ -25,14 +25,22 @@ import { Monsters } from "../../assets/Monsters/Monster"
 
 import './Battle.scss';
 import MathPvp from '../../services/MathPvp/MathPvp';
+import { ServerContext, StoreContext } from '../../App';
+import { TGamerBattle } from '../../services/server/types';
+
 
 const Battle: React.FC<IBasePage> = (props: IBasePage) => {
+
+  const server = useContext(ServerContext);
+  const store = useContext(StoreContext);
   
   const enemy = new easyBot() /*lvl = 1 */
   //const enemy = new mediumBot() /*lvl = 3 */
   //const enemy = new hardBot() /*lvl = 5 */
 
   const enemyType: string = 'bot'
+
+  const players: Promise<TGamerBattle[] | null> = server.getPlayerInBattle();
 
   let firstSelectedMonster: Monsters = new FirstPyroMonster("yourSide", 5);
   let secondSelectedMonster: Monsters = new FirstPyroMonster("yourSide", 5);

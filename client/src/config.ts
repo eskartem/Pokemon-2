@@ -46,6 +46,7 @@ const CONFIG = {
     CHAT_TIMESTAMP: 200, //ms
     SCENE_TIMESTAMP: 100, //ms
     MARKET_TIMESTAMP: 400, // ms
+    BATTLE_TIMESTAMP: 400
 
 };
 

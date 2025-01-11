@@ -3,6 +3,7 @@ import Monster from "../Monster";
 import MathPvp from "../../../services/MathPvp/MathPvp";
 
 class FirstAnemoMonster extends Monster {
+    mathPvp: MathPvp; 
     side: string;
     name: string = "Farfetch'd";
     element: string = 'Air';
@@ -13,7 +14,7 @@ class FirstAnemoMonster extends Monster {
         baseHealthPoint: 520,
         baseDefense: 60
     };
-    mathPvp: MathPvp; 
+
     attack: number;
     healthPoint: number;
     defense: number;
