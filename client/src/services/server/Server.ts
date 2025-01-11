@@ -1,15 +1,22 @@
 import md5 from 'md5';
 import CONFIG, { EDIRECTION } from "../../config";
 import Store from "../store/Store";
-import { TAnswer, TError, TMessagesResponse, TUser, TMarketCatalog, TMap, TMapZone, TUpdateSceneResponse } from "./types";
+import { TAnswer, TError, TMessagesResponse, TUser, TMarketCatalog, TMap, TMapZone, 
+    TUpdateSceneResponse, TSell, TResources, TCreature, TInventory, TMonsters_level, 
+    TCr, TUpdateMarketResponse, TMakeBet, 
+    TCancelLot,
+    TUserInfo,
+    TMapInfo} from "./types";
 
-const { CHAT_TIMESTAMP, SCENE_TIMESTAMP, HOST } = CONFIG;
+const { CHAT_TIMESTAMP, SCENE_TIMESTAMP, MARKET_TIMESTAMP, HOST } = CONFIG;
 
 class Server {
     HOST = HOST;
     store: Store;
     chatInterval: NodeJS.Timer | null = null;
     sceneInterval: NodeJS.Timer | null = null;
+    marketInterval: NodeJS.Timer | null = null;
+    inventoryInterval: NodeJS.Timer | null = null; // Добавляем интервал для инвентаря
     showErrorCb: (error: TError) => void = () => {};
 
     constructor(store: Store) {
@@ -64,6 +71,7 @@ class Server {
         const result = await this.request<boolean>('logout');
         if (result) {
             this.store.clearUser();
+            this.store.clearAllHashes();
         }
         return result;
     }
@@ -103,20 +111,35 @@ class Server {
             clearInterval(this.chatInterval);
             this.chatInterval = null;
             this.store.clearMessages();
+            this.store.clearAllHashes();
         }
     }
 
-    async getMarketCatalog():Promise<TMarketCatalog | null> {
-        const catalog = await this.request<TMarketCatalog>('getCatalog');
-        if (catalog) {
-            return catalog;
+    async updateMarket(): Promise<TUpdateMarketResponse | null> {
+        const hash = this.store.getMarketHash();
+        const result = await this.request<TUpdateMarketResponse>('updateLots', { hash });
+        if (result) {
+            this.store.setMarketHash(result.hash);
+            return result;
         }
         return null;
     }
 
-    async buyItem(itemId: string): Promise<boolean | null> {
-        const result = await this.request<boolean>('buyItem', { itemId });
-        return result;
+    startMarketUpdate(cb: (result: TUpdateMarketResponse) => void): void {
+        this.marketInterval = setInterval(async () => {
+            const result = await this.updateMarket();
+            if (result) {
+                cb(result);
+            }
+        }, MARKET_TIMESTAMP);
+    }
+
+    stopMarketUpdate(): void {
+        if (this.marketInterval) {
+            clearInterval(this.marketInterval);
+            this.marketInterval = null;
+            this.store.clearAllHashes();
+        }
     }
 
     async getTraderCatalog(): Promise<TMarketCatalog | null> {
@@ -126,19 +149,34 @@ class Server {
         }
         return null;
     }
-    
-    async buyFromTrader(id: string): Promise<boolean | null> {
-        const result = await this.request<boolean>('buy', { id });
+
+    async sell(token: string, objectId: string, amount: string): Promise<TSell | null> {
+        if (isNaN(Number(amount)) || Number(amount) <= 0) {
+            throw new Error('Некорректное количество для продажи'); 
+        }
+        const result = await this.request<TSell>('sell', {token, type: 'merchant', amount, objectId});
         return result;
     }
+    
+
+    async sellExchanger(amount: string): Promise<TSell | null> {
+        const result = await this.request<TSell>('sell', { type: 'exchanger', amount });
+        return result;
+    }
+    
+    async getCatalog(): Promise<boolean | null> {
+        const result = await this.request<boolean>('getCatalog');
+        return result;
+    }
+    
 
     async exchangeEggsForPokemon(): Promise<{ success: boolean }> {
         // Здесь должна быть логика для запроса на сервер
         return { success: true }; // Пример возврата. Настоящая логика может отличаться.
     }
 
-    async getMap(): Promise<{MAP: TMap, mapZones: TMapZone[]} | null> {
-        return await this.request<{MAP: TMap, mapZones: TMapZone[]}>('getMap');
+    async getMap(): Promise<TMapInfo | null> {
+        return await this.request<TMapInfo>('getMap');
     }
 
     async moveUser(direction: EDIRECTION): Promise<boolean | null> {
@@ -155,6 +193,22 @@ class Server {
         return null;
     }
 
+    async getInventory(): Promise<TInventory | null> {
+        try {
+            const catalog = await this.request<TInventory>('getInventory');
+            return catalog;
+        } catch (error) {
+            console.error('Error fetching inventory:', error);
+            return null;
+        }
+    }
+
+    async getUserInfo(): Promise<TUserInfo | null> {
+        const result = await this.request<TUserInfo>('userInfo');
+        if (result) return result;
+        return null
+    }
+
     startSceneUpdate(cb: (result: TUpdateSceneResponse) => void): void {
         this.sceneInterval = setInterval(async () => {
             const result = await this.updateScene();
@@ -168,9 +222,37 @@ class Server {
         if (this.sceneInterval) {
             clearInterval(this.sceneInterval);
             this.sceneInterval = null;
+            this.store.clearAllHashes();
         }
     }
 
+    makeBet(lotId: number, bet: string) {
+        return this.request<TMakeBet>('makeBet', { lotId: lotId.toString(), bet});
+    }
+
+    cancelLot(lotId: number) {
+        return this.request<TCancelLot>('cancelLot', { lotId: lotId.toString()});
+    }
+
+    async upgradePokemon(monsterId: number): Promise<TMonsters_level | null> {
+        const result = await this.request<TMonsters_level>('upgradePokemon', { monsterId: monsterId.toString() });
+        return result;
+    }    
+
+    async addToTeam(monsterId: number): Promise<TCr | null> {
+        const result = await this.request<TCr>('addToTeam', { monsterId: monsterId.toString() });
+        return result;
+    }    
+
+    async removeFromTeam(monsterId: number): Promise<TCr | null> {
+        const result = await this.request<TCr>('addToTeam', { monsterId: monsterId.toString() });
+        return result;
+    }   
+
+    async getInfoAboutUpgrade(monsterId: number): Promise<TCr | null> {
+        const result = await this.request<TCr>('getInfoAboutUpgrade', { monsterId: monsterId.toString() });
+        return result;
+    }    
 
 }
 

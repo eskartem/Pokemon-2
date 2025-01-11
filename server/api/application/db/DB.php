@@ -87,6 +87,10 @@ class DB {
         $this->execute("UPDATE hashes SET map_hash=? WHERE id=1", [$hash]);
     }
 
+    public function updateMarketHash($hash) {
+        $this->execute("UPDATE hashes SET market_hash=? WHERE id=1", [$hash]);
+    }
+    
     public function updateBattleHash($hash) {
         $this->execute("UPDATE hashes SET battle_hash=? WHERE id=1", [$hash]);
     }
@@ -198,7 +202,7 @@ class DB {
 
         
     public function getParametersMonsterByLevel($level) { 
-        return $this->query("SELECT attack, hp FROM monster_level WHERE level = ?", [$level]);
+        return $this->query("SELECT attack, hp, defense, cost FROM monster_level WHERE level = ?", [$level]);
     } 
     
     public function getElementByMonsters($monster_type_id){ //стихия покемона по типу 
@@ -250,16 +254,60 @@ class DB {
         return $this->execute('UPDATE users SET money=money+? WHERE id=?', [$balanceIncrease, $userId]);
     }
     
-    public function getAllLots(){
-        return $this->queryAll('SELECT * from lots');
+    public function getAllLots() {
+        return $this->queryAll('
+                                SELECT
+                                    l.id AS id,
+                                    l.seller_id AS seller_id,
+                                    l.datetime AS datetime,
+                                    l.start_cost AS start_cost,
+                                    l.step_cost AS step_cost,
+                                    l.current_cost AS current_cost,
+                                    l.buyer_id AS buyer_id,
+                                    l.type AS type,
+                                    l.selling_id AS selling_id,
+                                    l.amount AS amount,
+                                    l.status AS status,
+                                    seller.name AS seller_name,
+                                    buyer.name AS buyer_name,
+                                    r.name as resource,
+                                    m.level as monster_level,
+                                    mt.name as monster_name,
+                                    m.hp as current_monster_hp,
+                                    (mt.hp + COALESCE(SUM(ml.hp), 0)) AS max_HP,
+                                    (mt.attack + COALESCE(SUM(ml.attack), 0)) AS ATK,
+                                    (mt.defense + COALESCE(SUM(ml.defense), 0)) AS DEF
+                                FROM lots AS l
+                                LEFT JOIN users AS seller ON seller.id = l.seller_id
+                                LEFT JOIN users AS buyer ON buyer.id = l.buyer_id
+                                LEFT JOIN resources AS r ON r.id = l.selling_id AND l.type = "item"
+                                LEFT JOIN monsters AS m ON m.id = l.selling_id AND l.type = "monster"
+                                LEFT JOIN monster_types AS mt ON m.monster_type_id = mt.id AND l.type = "monster"
+                                LEFT JOIN monster_level AS ml ON ml.level <= m.level
+                                GROUP BY l.id, m.level, mt.id, m.hp, seller.name, buyer.name, r.name
+                                
+        ');
     }
+    
 
     //battle
     //?
     public function getPlayersInBattle() {
-        return $this->queryAll('SELECT id, name, x, y FROM users WHERE status = "fight"');
+        return $this->queryAll('SELECT u.id AS user_id, 
+                                       GROUP_CONCAT(m.id) AS monsters,
+                                       f.user1_id AS opponent1_id,
+                                       f.user2_id AS opponent2_id 
+                                FROM users AS u
+                                LEFT JOIN monsters AS m ON u.id = m.user_id AND m.status = "in team"
+                                LEFT JOIN fight AS f ON (u.id = f.user1_id OR u.id = f.user2_id) AND f.status = "open"
+                                WHERE u.status = "fight"
+                                GROUP BY u.id, f.user1_id, f.user2_id');
     }
 
+    public function getPlayersScout() {
+        return $this->queryAll('SELECT id, name, x, y FROM users WHERE status = "scout"');
+    }
+    
     public function addFight($userId1, $userId2){
         $this->execute('INSERT INTO fight (user1_id, user2_id, turn, status, result) VALUES (?,?, 0, "open", 0)', [$userId1, $userId2]);
     }
@@ -281,19 +329,39 @@ class DB {
                 ];
     }
 
-    public function getInventory($userId){
-        return ['monsters' => $this->queryAll('SELECT * FROM monsters WHERE user_id=?', [$userId]),
-                'monsterTypes' => $this->queryAll('SELECT * FROM monster_types'),
-                'inventory' => $this->queryAll('SELECT * FROM inventory WHERE user_id=?', [$userId]),
-                'balance' => $this->query('SELECT money FROM users WHERE id=?', [$userId])
+    public function getInventory($userId) {
+        return [
+            'monsters' => $this->queryAll('
+                SELECT 
+                    m.id,
+                    mt.name,
+                    el.name AS element,
+                    m.status,
+                    m.level,
+                    m.hp AS current_hp,
+                    (mt.hp + COALESCE(SUM(ml.hp), 0)) AS max_HP,
+                    (mt.attack + COALESCE(SUM(ml.attack), 0)) AS ATK,
+                    (mt.defense + COALESCE(SUM(ml.defense), 0)) AS DEF,
+                    mt.image as asset
+                FROM monsters m
+                JOIN monster_types mt ON m.monster_type_id = mt.id
+                LEFT JOIN monster_level ml ON ml.level <= m.level
+                LEFT JOIN elements el ON el.id = mt.element_id
+                WHERE m.user_id = ?
+                GROUP BY m.id, m.user_id, m.level, m.hp, m.status, mt.element_id, mt.name, mt.hp, mt.attack, mt.defense
+            ', [$userId]),
+            'inventory' => $this->queryAll('SELECT *, r.image FROM inventory AS i LEFT JOIN resources as r ON i.resource_id = r.id WHERE user_id=?', [$userId]),
+            'balance' => $this->query('SELECT money FROM users WHERE id=?', [$userId])->money
         ];
     }
+    
+    
 
     public function makeLotMonster($userId, $sellingItemId, $startCost, $stepCost, $zalog){
         return ['ableToWithdrawMonster' => $this->execute('UPDATE monsters SET user_id=?, status="on sale" WHERE id=?', [-1, $sellingItemId]),
                 'ableToCreateLot' => $this->execute('INSERT INTO lots 
-                                    (seller_id, datetime, start_cost, step_cost, current_cost, timestamp_cost, buyer_id, type, selling_id, status) 
-                                    VALUES (?, now(), ?, ?, ?, NULL, NULL, "monster", ?, "open")', 
+                                    (seller_id, datetime, start_cost, step_cost, current_cost, buyer_id, type, selling_id, status) 
+                                    VALUES (?, now(), ?, ?, ?, NULL, "monster", ?, "open")', 
                                     [$userId, $startCost, $stepCost, $startCost, $sellingItemId]),
                 'ableToTakeMoney' => $this->execute('UPDATE users SET money=money-? WHERE id=?', [$zalog, $userId])
         ];
@@ -302,8 +370,8 @@ class DB {
     public function makeLotItem($userId, $sellingItemId, $startCost, $stepCost, $amount, $zalog){
         return ['ableToWithdrawResources' => $this->execute('UPDATE inventory SET resource_amount=resource_amount-? WHERE user_id=? AND resource_id=?', [$amount, $userId, $sellingItemId]),
                 'ableToCreateLot' => $this->execute('INSERT INTO lots 
-                                    (seller_id, datetime, start_cost, step_cost, current_cost, timestamp_cost, buyer_id, type, selling_id, amount, status) 
-                                    VALUES (?, now(), ?, ?, ?, NULL, NULL, "item", ?, ?, "open")', 
+                                    (seller_id, datetime, start_cost, step_cost, current_cost, buyer_id, type, selling_id, amount, status) 
+                                    VALUES (?, now(), ?, ?, ?, NULL, "item", ?, ?, "open")', 
                                     [$userId, $startCost, $stepCost, $startCost, $sellingItemId, $amount]),
                 'ableToTakeMoney' => $this->execute('UPDATE users SET money=money-? WHERE id=?', [$zalog, $userId])
         ];

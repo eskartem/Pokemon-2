@@ -43,7 +43,7 @@ const Battle: React.FC<IBasePage> = (props: IBasePage) => {
   
   const mathPvp = new MathPvp();
 
-  const { setPage } = props; 
+  const { setPage } = props;  
 
   let [sQueue, setSQueue] = useState(mathPvp.sortQueuesByLevel(
     firstSelectedMonster,

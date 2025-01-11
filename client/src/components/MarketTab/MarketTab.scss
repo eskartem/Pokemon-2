@@ -1,9 +1,102 @@
 
-.market-lot {
-    border: 3px solid black;
-    margin: 4px;
+.lots {
+    min-width: 600px;
+    max-height: 400px;
+    overflow-y: scroll;
+    background-color: #929292;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    padding: 10px;
+    border-radius: 10px;
 }
 
+.filter-market {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+}
+
+
 .market-tab {
+    padding: 20px;
+    // margin: 10px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    font-family: "Arial", sans-serif;
+    max-width: 800px;
+    margin: 40px auto;
+    display: grid;
+    align-items: center;
+    justify-content: center;
+    justify-items: center;
+}
+
+.market-tab h1 {
+    text-align: center;
+    color: #414141;
+    margin-bottom: 20px;
+    font-size: 24px;
+}
+
+.bet-input {
+    background-color: #ffffff;
+}
+
+.make_lot-tab {
+    position: absolute;
+    background-color: #edeaea;
     border: 5px solid black;
+}
+
+.lot-filter {
+    background-color: #ffffff;
+    border: 1px solid black;
+}
+
+.sell-menu {
+    position: absolute;
+    background-color: aquamarine;
+    border: 3px solid black;
+}
+
+::placeholder { color: rgb(160, 160, 160); }
+
+.lot-filter {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    appearance: none; /* Убираем стандартное оформление */
+    -webkit-appearance: none; /* Для WebKit браузеров */
+    -moz-appearance: none; /* Для Firefox */
+    background: #fff;
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 10px 6px;
+    font-size: 16px;
+    color: #333;
+}
+
+/* Стили для стрелки */
+.filter-market::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    width: 0;
+    height: 0;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 5px solid #333;
+    pointer-events: none;
+}
+
+/* Стили для опций */
+.lot-filter option {
+    padding: 10px;
+    font-size: 16px;
+    color: #333;
 }
