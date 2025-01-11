@@ -1,12 +1,9 @@
 import md5 from 'md5';
 import CONFIG, { EDIRECTION } from "../../config";
 import Store from "../store/Store";
-import { TAnswer, TError, TMessagesResponse, TUser, TMarketCatalog, TMap, TMapZone, 
-    TUpdateSceneResponse, TSell, TResources, TCreature, TInventory, TMonsters_level, 
-    TCr, TUpdateMarketResponse, TMakeBet, 
-    TCancelLot,
-    TUserInfo,
-    TMapInfo} from "./types";
+import { TAnswer, TError, TMessagesResponse, TUser, TUpdateSceneResponse, TSell,
+    TInventory, TMonsters_level, TCr, TUpdateMarketResponse, TMakeBet, 
+    TCancelLot, TUserInfo, TMapInfo} from "./types";
 
 const { CHAT_TIMESTAMP, SCENE_TIMESTAMP, MARKET_TIMESTAMP, HOST } = CONFIG;
 
@@ -56,6 +53,8 @@ class Server {
         this.showErrorCb = cb;
     }
 
+    // методы для пользователя
+
     async login(login: string, password: string): Promise<boolean> {
         const rnd = Math.round(Math.random() * 100000);
         const hash = md5(`${md5(`${login}${password}`)}${rnd}`);
@@ -80,6 +79,14 @@ class Server {
         const hash = md5(`${login}${password}`);
         return this.request<boolean>('registration', { login, hash, name });
     }
+
+    async getUserInfo(): Promise<TUserInfo | null> {
+        const result = await this.request<TUserInfo>('userInfo');
+        if (result) return result;
+        return null
+    }
+
+    // методы для чата
 
     sendMessage(message: string): void {
         this.request<boolean>('sendMessage', { message });
@@ -115,6 +122,8 @@ class Server {
         }
     }
 
+    // методы для рынка
+
     async updateMarket(): Promise<TUpdateMarketResponse | null> {
         const hash = this.store.getMarketHash();
         const result = await this.request<TUpdateMarketResponse>('updateLots', { hash });
@@ -142,14 +151,6 @@ class Server {
         }
     }
 
-    async getTraderCatalog(): Promise<TMarketCatalog | null> {
-        const catalog = await this.request<TMarketCatalog>('getTraderCatalog');
-        if (catalog) {
-            return catalog;
-        }
-        return null;
-    }
-
     async sell(token: string, objectId: string, amount: string): Promise<TSell | null> {
         if (isNaN(Number(amount)) || Number(amount) <= 0) {
             throw new Error('Некорректное количество для продажи'); 
@@ -164,16 +165,20 @@ class Server {
         return result;
     }
     
-    async getCatalog(): Promise<boolean | null> {
+    async getCatalog(): Promise<boolean | null> { // для торговца
         const result = await this.request<boolean>('getCatalog');
         return result;
     }
-    
 
-    async exchangeEggsForPokemon(): Promise<{ success: boolean }> {
-        // Здесь должна быть логика для запроса на сервер
-        return { success: true }; // Пример возврата. Настоящая логика может отличаться.
+    makeBet(lotId: number, bet: string) {
+        return this.request<TMakeBet>('makeBet', { lotId: lotId.toString(), bet});
     }
+
+    cancelLot(lotId: number) {
+        return this.request<TCancelLot>('cancelLot', { lotId: lotId.toString()});
+    }
+
+    // методы для карты
 
     async getMap(): Promise<TMapInfo | null> {
         return await this.request<TMapInfo>('getMap');
@@ -193,22 +198,6 @@ class Server {
         return null;
     }
 
-    async getInventory(): Promise<TInventory | null> {
-        try {
-            const catalog = await this.request<TInventory>('getInventory');
-            return catalog;
-        } catch (error) {
-            console.error('Error fetching inventory:', error);
-            return null;
-        }
-    }
-
-    async getUserInfo(): Promise<TUserInfo | null> {
-        const result = await this.request<TUserInfo>('userInfo');
-        if (result) return result;
-        return null
-    }
-
     startSceneUpdate(cb: (result: TUpdateSceneResponse) => void): void {
         this.sceneInterval = setInterval(async () => {
             const result = await this.updateScene();
@@ -226,12 +215,16 @@ class Server {
         }
     }
 
-    makeBet(lotId: number, bet: string) {
-        return this.request<TMakeBet>('makeBet', { lotId: lotId.toString(), bet});
-    }
+    // методы для инвенторя
 
-    cancelLot(lotId: number) {
-        return this.request<TCancelLot>('cancelLot', { lotId: lotId.toString()});
+    async getInventory(): Promise<TInventory | null> {
+        try {
+            const catalog = await this.request<TInventory>('getInventory');
+            return catalog;
+        } catch (error) {
+            console.error('Error fetching inventory:', error);
+            return null;
+        }
     }
 
     async upgradePokemon(monsterId: number): Promise<TMonsters_level | null> {
@@ -252,8 +245,7 @@ class Server {
     async getInfoAboutUpgrade(monsterId: number): Promise<TCr | null> {
         const result = await this.request<TCr>('getInfoAboutUpgrade', { monsterId: monsterId.toString() });
         return result;
-    }    
-
+    }
 }
 
 export default Server;

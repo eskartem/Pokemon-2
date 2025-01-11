@@ -63,16 +63,6 @@ export type TStats = {
     DEF: number, // defence
 }
 
-// само существо
-export type TCreature = {
-    id: number,
-    name: string;
-    lvl: number;
-    element: EElement,
-    stats: TStats,
-    status: string
-}
-
 export enum ETypeLot {
     monster = 'monster',
     item = 'item'
@@ -117,11 +107,6 @@ export type TUpdateMarketResponse = {
     hash: string
 }
 
-//существо на рынке
-export type TMarketCreature = TCreature & {
-    id: number;
-    cost: number;
-}
 
 export enum EMarketRes {
     crystal,
@@ -133,13 +118,6 @@ export type TMarketItem = {
     number: number,
     cost: number
 }
-
-export type TMarketCatalog = {
-    creatures: TMarketCreature[],
-    resources: TMarketItem[]
-}
-
-export type TTraderCatalog = TMarketCatalog;
 
 export type TMap = {
     HEIGHT: number,
@@ -230,9 +208,6 @@ export type TResources = {
     cost: number,
     exchange_cost: number
 }
-
-
-export type TMonsters = TCreature;
 
 export type TCancelLot = {
     ableToCancel: boolean,
