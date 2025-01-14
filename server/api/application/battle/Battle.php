@@ -28,7 +28,7 @@ class Battle {
 
         return [
             'typeId' => $monster_type_id,
-            'type' => $monster_data -> name,
+            'name' => $monster_data -> name,
             'elementId' => $elementId,
             'element' => $element->name,
             'level' => $level,
@@ -38,7 +38,7 @@ class Battle {
         ];
     }
 
-    
+
     public function updateResourcesOnVictoryAndLoss($winnerId, $loserId){
         //loser
         $this->db->updateUserLocation($loserId, 80, 45);
