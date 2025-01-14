@@ -32,6 +32,7 @@ function result($params) {
 
             
             //battle
+            case 'getInfoMonster': return $app->getInfoMonster($params);
             case 'startBattle': return $app->startBattle();
             case 'updateBattle': return $app-> updateBattle($params); // loop //получаю данные по всем игрокам
             case 'endBattle': return $app->endBattle($params);

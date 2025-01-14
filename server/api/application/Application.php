@@ -385,4 +385,15 @@ class Application {
         return ['error' => 242];
     }
     
+    public function getInfoMonster($params){
+        if ($params['monsterId']){
+            $monster = $this->inventory->getMonster($params['monsterId']);
+            if ($monster){
+                return $this->battle->getInfoMonster($params['monsterId']);
+            }
+            return['error' => 702];
+        }
+        return ['error' => 242];
+    }
+    
 }
