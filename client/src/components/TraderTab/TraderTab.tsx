@@ -1,6 +1,8 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { ServerContext } from '../../App';
 import { TResources, TResource } from '../../services/server/types';
+import question from '../../assets/img/question.png';
+import InfoModal from '../../components/InfoModal/InfoModal'; 
 import Button from '../../components/Button/Button';
 import './TraderTab.scss';
 
@@ -15,6 +17,7 @@ const TraderTab: React.FC = () => {
     const [sellingResource, setSellingResource] = useState<{ id: string; name: string } | null>(null);
     const [amountToSell, setAmountToSell] = useState<string>("");
     const [sellError, setSellError] = useState<string>("");
+    const [isInfoModalOpen, setIsInfoModalOpen] = useState(false);
 
     const crystals = inventory.find(item => item.resource_id === 1)?.resource_amount || 0;
     const eggs = inventory.find(item => item.resource_id === 2)?.resource_amount || 0;
@@ -74,6 +77,15 @@ const TraderTab: React.FC = () => {
         }
     };
 
+    const handleOpenInfoModal = () => {
+        setIsInfoModalOpen(true);
+    };
+
+    const handleCloseInfoModal = () => {
+        setIsInfoModalOpen(false);
+    };
+
+
     useEffect(() => {
         fetchResources();
     }, []);
@@ -85,6 +97,19 @@ const TraderTab: React.FC = () => {
     return (
         <div className="trader-tab" id="test-trader-tab">
             <h1 id="test-trader-title">Торговец</h1>
+            <img
+                src={question}
+                onClick={handleOpenInfoModal}
+                className="info-icon" 
+                id="test-info-icon" 
+            />
+            <InfoModal
+                    isOpen={isInfoModalOpen}
+                    onClose={handleCloseInfoModal}
+                    title="Торговец"
+                    content="Торговец — это персонаж, который позволяет вам продавать ресурсы, такие как кристаллы, яйца и скорлупу, за монеты."
+                    id="test-trader-info-modal"
+                />
             <div className="trader-resources" id="test-trader-resources">
                 {resources.map(({ id, name, cost }) => {
                     let resourceAmount = 0;

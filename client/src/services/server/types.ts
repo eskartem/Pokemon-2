@@ -182,7 +182,7 @@ export type TUserInfo = {
 export type TInventory = {
     monsters: TCr[];
     inventory: TResource[];
-    balance: TBalance;
+    balance: number;
 }
 
 export type TCr = {
@@ -230,6 +230,24 @@ export type TResources = {
     cost: number,
     exchange_cost: number
 }
+
+export type THashEgg = {
+    id: number;
+    name: string;
+    element: string;
+    level: number;
+    base_hp: number;
+    base_atk: number;
+    base_def: number;
+    asset: string;
+}
+
+export type THatchedResponse = {
+    hatched: THashEgg;
+    eggConsumed: boolean;
+    eggs: number;
+}
+
 
 
 export type TMonsters = TCreature;
