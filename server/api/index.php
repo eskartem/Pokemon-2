@@ -29,6 +29,7 @@ function result($params) {
             case 'addToTeam': return $app->addToTeam($params);
             case 'upgradePokemon': return $app->upgradePokemon($params); 
             case 'getInfoAboutUpgrade': return $app->getInfoAboutUpgrade($params);
+            case 'hatchEgg': return $app->hatchEgg($params);
 
             
             //battle
