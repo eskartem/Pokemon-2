@@ -7,6 +7,38 @@ class Battle {
         $this->db = $db;
     }
 
+    public function getInfoMonster($monsterId){
+        $monster = $this->db->getMonsterById($monsterId);
+
+        $monster_type_id = $monster->monster_type_id;
+        $level = $monster->level;
+        $param = $this->db->getParametersMonsterByLevel($level);
+        $monster_data = $this->db->getMonsterTypeById($monster_type_id);
+
+        $elementId = $monster_data->element_id;
+        $element = $this->db->getElement($elementId);
+ // Атака
+        $attack_param= isset($param->attack) ? intval($param->attack) : 0;
+        $attack = $monster_data->attack;
+        $attack = $attack + $attack_param;
+ //Защита
+        $defense_param= isset($param->defense) ? intval($param->defense) : 0;
+        $defense = $monster_data->defense;
+        $defense = $defense + $defense_param;
+
+        return [
+            'typeId' => $monster_type_id,
+            'name' => $monster_data -> name,
+            'elementId' => $elementId,
+            'element' => $element->name,
+            'level' => $level,
+            'hp' => $monster->hp,
+            'attack' => $attack,
+            'defense' => $defense
+        ];
+    }
+
+
     public function updateResourcesOnVictoryAndLoss($winnerId, $loserId){
         //loser
         $this->db->updateUserLocation($loserId, 80, 45);

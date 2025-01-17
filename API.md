@@ -41,6 +41,7 @@
     * 4.21  actionUser
     * 4.22. cancelLot
     * 4.23. getInfoAboutUpgrade
+    * 4.24. getInfoMonster
 
 
 
@@ -207,6 +208,7 @@ MapZones: {
 | actionUser | дейстия пользователя в бою |
 | cancelLot | Отменить лот |
 | getInfoAboutUpgrade | Получение информации о улучшении монстра | 
+| getInfoMonster | Получение информации о монстре|
 
 ### 3.1. Общие ошибки
 * `101` - если не передан параметр `method`
@@ -789,6 +791,34 @@ Answer<false>
         image: string; - путь к изображению монстра
         level: number; - будующий уровень 
         cost: number; - стоимость прокачки (в кристаллах)
+    }>
+```
+**Ошибки**
+
+*`702` - Покемон не найден.
+
+
+### 4.24. getInfoMonster
+Возвращает информацию о покемоне
+
+**Параметры**
+```
+{
+    monsterId: number; - id монстра.
+}
+```
+
+**Успешный ответ**
+```
+    Answer<{
+        typeId: number; - id типа монстра
+        name: string; - имя монстра
+        elementId: number; - id стихии
+        element: string; - название стихии
+        level: number; -  уровень 
+        hp: number; - здоровье монстра
+        attack: number; - атака 
+        defense: number; - защита
     }>
 ```
 **Ошибки**
