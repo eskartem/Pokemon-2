@@ -39,15 +39,26 @@ export type TMessage = {
 }
 
 export type TUpdateBattleResponse = {
-    gamers: TMonster
+    gamers: TPlayers[]
     hash: string
 }
 
-export type TMonster = {
+export type TPlayers = {
     user_id: number,
     opponent_id: number
     monsters: string,
     monster_opp: string,
+}
+
+export type TMonster = {
+    typeId: number
+    name: string
+    elementId: number
+    element: string
+    level: number
+    hp: number
+    attack: number
+    defense: number
 }
 
 export type TMessages = TMessage[];

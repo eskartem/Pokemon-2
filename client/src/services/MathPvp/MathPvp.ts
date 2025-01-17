@@ -1,43 +1,43 @@
 import { Monsters } from "../../assets/Monsters/Monster";
-import { TCr } from "../server/types";
+import { TMonster } from "../server/types";
 
 class MathPvp {
     
     dealingDamage = (healthPointFirst: number, healthPointSecond: number, 
-        healthPointThird: number, attackedFirst: TCr, attackedSecond: TCr,
-        attackedThird: TCr, attacking: TCr, action: string, mainTarget: TCr
+        healthPointThird: number, attackedFirst: TMonster, attackedSecond: TMonster,
+        attackedThird: TMonster, attacking: TMonster, action: string, mainTarget: TMonster
     ): number[] => {
         if(action === 'baseAttack') {
             if (mainTarget === attackedFirst) {
-                healthPointFirst = Math.round(healthPointFirst - attacking.ATK * this.defenceMultuplicator(attackedFirst.DEF))
+                healthPointFirst = Math.round(healthPointFirst - attacking.attack * this.defenceMultuplicator(attackedFirst.defense))
             } else if (mainTarget === attackedSecond) {
-                healthPointSecond = Math.round(healthPointSecond - attacking.ATK * this.defenceMultuplicator(attackedSecond.DEF))
+                healthPointSecond = Math.round(healthPointSecond - attacking.attack * this.defenceMultuplicator(attackedSecond.defense))
             } else if (mainTarget === attackedThird) {
-                healthPointThird = Math.round(healthPointThird - attacking.ATK * this.defenceMultuplicator(attackedThird.DEF))
+                healthPointThird = Math.round(healthPointThird - attacking.attack * this.defenceMultuplicator(attackedThird.defense))
             } return [healthPointFirst, healthPointSecond, healthPointThird]
         } else if (action === 'skill') {
             switch (attacking.name) {
                 //Earth Skill's
                 case "Земной импульс":
                     if (mainTarget === attackedFirst) {
-                        healthPointFirst =Math.round(healthPointFirst - (attacking.ATK * 278) * this.defenceMultuplicator(attackedFirst.DEF))
-                        healthPointSecond = Math.round(healthPointSecond - attacking.ATK * this.defenceMultuplicator(attackedSecond.DEF))
-                        healthPointThird =Math.round(healthPointThird - attacking.ATK * this.defenceMultuplicator(attackedThird.DEF))
+                        healthPointFirst =Math.round(healthPointFirst - (attacking.attack * 278) * this.defenceMultuplicator(attackedFirst.defense))
+                        healthPointSecond = Math.round(healthPointSecond - attacking.attack * this.defenceMultuplicator(attackedSecond.defense))
+                        healthPointThird =Math.round(healthPointThird - attacking.attack * this.defenceMultuplicator(attackedThird.defense))
                     } else if (mainTarget === attackedSecond) {
-                        healthPointFirst =Math.round(healthPointFirst - attacking.ATK) * this.defenceMultuplicator(attackedFirst.DEF)
-                        healthPointSecond = Math.round(healthPointSecond - (attacking.ATK  * 278) * this.defenceMultuplicator(attackedSecond.DEF))
-                        healthPointThird =Math.round(healthPointThird - attacking.ATK) * this.defenceMultuplicator(attackedThird.DEF)
+                        healthPointFirst =Math.round(healthPointFirst - attacking.attack) * this.defenceMultuplicator(attackedFirst.defense)
+                        healthPointSecond = Math.round(healthPointSecond - (attacking.attack  * 278) * this.defenceMultuplicator(attackedSecond.defense))
+                        healthPointThird =Math.round(healthPointThird - attacking.attack) * this.defenceMultuplicator(attackedThird.defense)
                     } else if (mainTarget === attackedThird) {
-                        healthPointFirst =Math.round(healthPointFirst - attacking.ATK * this.defenceMultuplicator(attackedFirst.DEF))
-                        healthPointSecond = Math.round(healthPointSecond - attacking.ATK * this.defenceMultuplicator(attackedSecond.DEF))
-                        healthPointThird =Math.round(healthPointThird - (attacking.ATK * 278) * this.defenceMultuplicator(attackedThird.DEF))
+                        healthPointFirst =Math.round(healthPointFirst - attacking.attack * this.defenceMultuplicator(attackedFirst.defense))
+                        healthPointSecond = Math.round(healthPointSecond - attacking.attack * this.defenceMultuplicator(attackedSecond.defense))
+                        healthPointThird =Math.round(healthPointThird - (attacking.attack * 278) * this.defenceMultuplicator(attackedThird.defense))
                     } return [healthPointFirst, healthPointSecond, healthPointThird]
                 case "Гравитационная волна": 
                     if (mainTarget === attackedFirst) {
                         let time = 0;
                         const GravitationalWave = setInterval(() => {
                             time++;
-                            healthPointFirst = Math.round(healthPointFirst - (attacking.ATK * 278) * this.defenceMultuplicator(attackedFirst.DEF))
+                            healthPointFirst = Math.round(healthPointFirst - (attacking.attack * 278) * this.defenceMultuplicator(attackedFirst.defense))
                             if (time === 5) {
                                 clearInterval(GravitationalWave)
                             }
@@ -46,7 +46,7 @@ class MathPvp {
                         let time = 0;
                         const GravitationalWave = setInterval(() => {
                             time++;
-                            healthPointSecond = Math.round(healthPointSecond - (attacking.ATK * 278) * this.defenceMultuplicator(attackedSecond.DEF))
+                            healthPointSecond = Math.round(healthPointSecond - (attacking.attack * 278) * this.defenceMultuplicator(attackedSecond.defense))
                             if (time === 5) {
                                 clearInterval(GravitationalWave)
                             }
@@ -55,7 +55,7 @@ class MathPvp {
                         let time = 0;
                         const GravitationalWave = setInterval(() => {
                             time++;
-                            healthPointThird = Math.round(healthPointThird - (attacking.ATK * 278) * this.defenceMultuplicator(attackedThird.DEF))
+                            healthPointThird = Math.round(healthPointThird - (attacking.attack * 278) * this.defenceMultuplicator(attackedThird.defense))
                             if (time === 5) {
                                 clearInterval(GravitationalWave)
                             }
@@ -63,122 +63,122 @@ class MathPvp {
                     } return [healthPointFirst, healthPointSecond, healthPointThird]
                 case "Тектонический удар": 
                     if (mainTarget === attackedFirst) {
-                        healthPointFirst = Math.round(healthPointFirst - (attacking.ATK * 278) * this.defenceMultuplicator(attackedFirst.DEF))
+                        healthPointFirst = Math.round(healthPointFirst - (attacking.attack * 278) * this.defenceMultuplicator(attackedFirst.defense))
                     } else if (mainTarget === attackedSecond) {
-                        healthPointSecond = Math.round(healthPointSecond - (attacking.ATK * 278) * this.defenceMultuplicator(attackedSecond.DEF))
+                        healthPointSecond = Math.round(healthPointSecond - (attacking.attack * 278) * this.defenceMultuplicator(attackedSecond.defense))
                     } else if (mainTarget === attackedThird) {
-                        healthPointThird = Math.round(healthPointThird - (attacking.ATK * 278) * this.defenceMultuplicator(attackedThird.DEF))
+                        healthPointThird = Math.round(healthPointThird - (attacking.attack * 278) * this.defenceMultuplicator(attackedThird.defense))
                     } return [healthPointFirst, healthPointSecond, healthPointThird]    
                 //Water Skill's
                 case "Каскад":
                     if (mainTarget === attackedFirst) {
                         if (mainTarget.element === "Fire" || mainTarget.element === 'Air') {
-                            healthPointFirst = Math.round(healthPointFirst - (attacking.ATK * 278) * this.defenceMultuplicator(attackedFirst.DEF))
+                            healthPointFirst = Math.round(healthPointFirst - (attacking.attack * 278) * this.defenceMultuplicator(attackedFirst.defense))
                         } if (mainTarget.element === "Water" || mainTarget.element === 'Earth') {
-                            healthPointFirst = Math.round(healthPointFirst - attacking.ATK * this.defenceMultuplicator(attackedFirst.DEF)) 
+                            healthPointFirst = Math.round(healthPointFirst - attacking.attack * this.defenceMultuplicator(attackedFirst.defense)) 
                         }
                     } else if (mainTarget === attackedSecond) {
                         if (mainTarget.element === "Fire" || mainTarget.element === 'Air') {
-                            healthPointSecond = Math.round(healthPointSecond - (attacking.ATK * 278) * this.defenceMultuplicator(attackedSecond.DEF))
+                            healthPointSecond = Math.round(healthPointSecond - (attacking.attack * 278) * this.defenceMultuplicator(attackedSecond.defense))
                         } if (mainTarget.element === "Water" || mainTarget.element === 'Earth') {
-                            healthPointSecond = Math.round(healthPointSecond - attacking.ATK * this.defenceMultuplicator(attackedSecond.DEF))
+                            healthPointSecond = Math.round(healthPointSecond - attacking.attack * this.defenceMultuplicator(attackedSecond.defense))
                         }
                     } else if (mainTarget === attackedThird) {
                         if (mainTarget.element === "Fire" || mainTarget.element === 'Air') {
-                            healthPointThird = Math.round(healthPointThird - (attacking.ATK * 278) * this.defenceMultuplicator(attackedThird.DEF))
+                            healthPointThird = Math.round(healthPointThird - (attacking.attack * 278) * this.defenceMultuplicator(attackedThird.defense))
                         } if (mainTarget.element === "Water" || mainTarget.element === 'Earth') {
-                            healthPointThird = Math.round(healthPointThird - attacking.ATK * this.defenceMultuplicator(attackedThird.DEF))
+                            healthPointThird = Math.round(healthPointThird - attacking.attack * this.defenceMultuplicator(attackedThird.defense))
                         }
                     } return [healthPointFirst, healthPointSecond, healthPointThird]
                 case "Волна разрушения":
                     if (mainTarget === attackedFirst) {
-                        let damage = Math.round(attacking.ATK * 278)
-                        healthPointFirst = healthPointFirst - damage * this.defenceMultuplicator(attackedFirst.DEF)
+                        let damage = Math.round(attacking.attack * 278)
+                        healthPointFirst = healthPointFirst - damage * this.defenceMultuplicator(attackedFirst.defense)
                         if(healthPointFirst > 0) {
-                            healthPointSecond = Math.round(healthPointSecond - damage *  this.defenceMultuplicator(attackedSecond.DEF) * 0.5)
-                            healthPointThird = Math.round(healthPointThird - damage * this.defenceMultuplicator(attackedThird.DEF) * 0.5)
+                            healthPointSecond = Math.round(healthPointSecond - damage *  this.defenceMultuplicator(attackedSecond.defense) * 0.5)
+                            healthPointThird = Math.round(healthPointThird - damage * this.defenceMultuplicator(attackedThird.defense) * 0.5)
                         } else if (healthPointFirst <= 0) {
-                            healthPointSecond = Math.round(healthPointSecond - damage * this.defenceMultuplicator(attackedSecond.DEF))
-                            healthPointThird = Math.round(healthPointThird - damage * this.defenceMultuplicator(attackedThird.DEF))
+                            healthPointSecond = Math.round(healthPointSecond - damage * this.defenceMultuplicator(attackedSecond.defense))
+                            healthPointThird = Math.round(healthPointThird - damage * this.defenceMultuplicator(attackedThird.defense))
                         }
                     } else if (mainTarget === attackedSecond) {
-                        let damage = Math.round(attacking.ATK * 278)
-                        healthPointSecond = healthPointSecond - damage * this.defenceMultuplicator(attackedSecond.DEF)
+                        let damage = Math.round(attacking.attack * 278)
+                        healthPointSecond = healthPointSecond - damage * this.defenceMultuplicator(attackedSecond.defense)
                         if(healthPointSecond > 0) {
-                            healthPointFirst = Math.round(healthPointFirst - damage * this.defenceMultuplicator(attackedFirst.DEF) * 0.5)
-                            healthPointThird = Math.round(healthPointThird - damage * this.defenceMultuplicator(attackedThird.DEF) * 0.5)
+                            healthPointFirst = Math.round(healthPointFirst - damage * this.defenceMultuplicator(attackedFirst.defense) * 0.5)
+                            healthPointThird = Math.round(healthPointThird - damage * this.defenceMultuplicator(attackedThird.defense) * 0.5)
                         } else if (healthPointSecond <= 0) {
-                            healthPointFirst = Math.round(healthPointFirst - damage * this.defenceMultuplicator(attackedFirst.DEF))
-                            healthPointThird = Math.round(healthPointThird - damage * this.defenceMultuplicator(attackedThird.DEF))
+                            healthPointFirst = Math.round(healthPointFirst - damage * this.defenceMultuplicator(attackedFirst.defense))
+                            healthPointThird = Math.round(healthPointThird - damage * this.defenceMultuplicator(attackedThird.defense))
                         }
                     } else if (mainTarget === attackedThird) {
-                        let damage = Math.round(attacking.ATK * 278)
-                        healthPointThird = healthPointThird - damage * this.defenceMultuplicator(attackedThird.DEF)
+                        let damage = Math.round(attacking.attack * 278)
+                        healthPointThird = healthPointThird - damage * this.defenceMultuplicator(attackedThird.defense)
                         if(healthPointThird > 0) {
-                            healthPointSecond = Math.round(healthPointSecond - damage * this.defenceMultuplicator(attackedSecond.DEF) * 0.5)
-                            healthPointFirst = Math.round(healthPointFirst - damage * this.defenceMultuplicator(attackedFirst.DEF)* 0.5)
+                            healthPointSecond = Math.round(healthPointSecond - damage * this.defenceMultuplicator(attackedSecond.defense) * 0.5)
+                            healthPointFirst = Math.round(healthPointFirst - damage * this.defenceMultuplicator(attackedFirst.defense)* 0.5)
                         } else if (healthPointThird <= 0) {
-                            healthPointSecond = Math.round(healthPointSecond - damage * this.defenceMultuplicator(attackedSecond.DEF))
-                            healthPointFirst = Math.round(healthPointFirst - damage * this.defenceMultuplicator(attackedFirst.DEF))
+                            healthPointSecond = Math.round(healthPointSecond - damage * this.defenceMultuplicator(attackedSecond.defense))
+                            healthPointFirst = Math.round(healthPointFirst - damage * this.defenceMultuplicator(attackedFirst.defense))
                         }
                     } return [healthPointFirst, healthPointSecond, healthPointThird]
                 case "Ледяной шквал":
                     if (mainTarget === attackedFirst) {
-                        healthPointFirst = Math.round(healthPointFirst - attacking.ATK * this.defenceMultuplicator(attackedFirst.DEF))
+                        healthPointFirst = Math.round(healthPointFirst - attacking.attack * this.defenceMultuplicator(attackedFirst.defense))
                     } else if (mainTarget === attackedSecond) {
-                        healthPointSecond = Math.round(healthPointSecond - attacking.ATK * this.defenceMultuplicator(attackedSecond.DEF))
+                        healthPointSecond = Math.round(healthPointSecond - attacking.attack * this.defenceMultuplicator(attackedSecond.defense))
                     } else if (mainTarget === attackedThird) {
-                        healthPointThird = Math.round(healthPointThird - attacking.ATK * this.defenceMultuplicator(attackedThird.DEF))
+                        healthPointThird = Math.round(healthPointThird - attacking.attack * this.defenceMultuplicator(attackedThird.defense))
                     } return [healthPointFirst, healthPointSecond, healthPointThird]
                 //Fire Skill's
                 case "Испепеляющий удар":
                     if (mainTarget === attackedFirst) {
                         let count = 0;
-                        healthPointFirst = Math.round(healthPointFirst - (attacking.ATK * 278) * this.defenceMultuplicator(attackedFirst.DEF))
+                        healthPointFirst = Math.round(healthPointFirst - (attacking.attack * 278) * this.defenceMultuplicator(attackedFirst.defense))
                         const glyba = setInterval(() => {
                             count++;
-                            healthPointFirst = Math.round(healthPointFirst - attacking.ATK * this.defenceMultuplicator(attackedFirst.DEF) * 0.1)
+                            healthPointFirst = Math.round(healthPointFirst - attacking.attack * this.defenceMultuplicator(attackedFirst.defense) * 0.1)
                             if(count === 5) {
                                 clearInterval(glyba)
                             }
                         }, 1000)
                     } else if (mainTarget === attackedSecond) {
                         let count = 0;
-                        healthPointSecond = Math.round(healthPointSecond - (attacking.ATK * 278) * this.defenceMultuplicator(attackedSecond.DEF))
+                        healthPointSecond = Math.round(healthPointSecond - (attacking.attack * 278) * this.defenceMultuplicator(attackedSecond.defense))
                         const glyba = setInterval(() => {
                             count++;
-                            healthPointSecond = Math.round(healthPointSecond - attacking.ATK * this.defenceMultuplicator(attackedSecond.DEF) * 0.1)
+                            healthPointSecond = Math.round(healthPointSecond - attacking.attack * this.defenceMultuplicator(attackedSecond.defense) * 0.1)
                             if(count === 5) {
                                 clearInterval(glyba)
                             }
                         }, 1000)
                     } else if (mainTarget === attackedThird) {
                         let count = 0;
-                        healthPointThird = Math.round(healthPointThird - (attacking.ATK * 278) * this.defenceMultuplicator(attackedThird.DEF))
+                        healthPointThird = Math.round(healthPointThird - (attacking.attack * 278) * this.defenceMultuplicator(attackedThird.defense))
                         const glyba = setInterval(() => {
                             count++;
-                            healthPointThird = Math.round(healthPointThird - attacking.ATK * this.defenceMultuplicator(attackedThird.DEF) * 0.1)
+                            healthPointThird = Math.round(healthPointThird - attacking.attack * this.defenceMultuplicator(attackedThird.defense) * 0.1)
                             if(count === 5) {
                                 clearInterval(glyba)
                             }
                         }, 1000)
                     } return [healthPointFirst, healthPointSecond, healthPointThird]
                 case "Огненная буря":
-                    healthPointFirst = Math.round(healthPointFirst - (attacking.ATK * 278) * this.defenceMultuplicator(attackedFirst.DEF))
-                    healthPointSecond = Math.round(healthPointSecond - (attacking.ATK * 278) * this.defenceMultuplicator(attackedSecond.DEF))
-                    healthPointThird = Math.round(healthPointThird - (attacking.ATK * 278) * this.defenceMultuplicator(attackedThird.DEF))
+                    healthPointFirst = Math.round(healthPointFirst - (attacking.attack * 278) * this.defenceMultuplicator(attackedFirst.defense))
+                    healthPointSecond = Math.round(healthPointSecond - (attacking.attack * 278) * this.defenceMultuplicator(attackedSecond.defense))
+                    healthPointThird = Math.round(healthPointThird - (attacking.attack * 278) * this.defenceMultuplicator(attackedThird.defense))
                     return [healthPointFirst, healthPointSecond, healthPointThird]
                 case "Пепельный взрыв":
                     if (mainTarget === attackedFirst) {
                         let damageBoost: boolean = false;
                         if(damageBoost === false) {
-                            healthPointFirst = Math.round(healthPointFirst - (attackedFirst.ATK * 278) * this.defenceMultuplicator(attackedSecond.DEF))
+                            healthPointFirst = Math.round(healthPointFirst - (attackedFirst.attack * 278) * this.defenceMultuplicator(attackedSecond.defense))
                             damageBoost = true
                             setTimeout(() => {
                                 damageBoost = false;
                             }, 60000)
                         } else {
-                            healthPointFirst = Math.round(healthPointFirst - attackedFirst.ATK * this.defenceMultuplicator(attackedFirst.DEF) * 2)
+                            healthPointFirst = Math.round(healthPointFirst - attackedFirst.attack * this.defenceMultuplicator(attackedFirst.defense) * 2)
                             damageBoost = true
                             setTimeout(() => {
                                 damageBoost = false;
@@ -187,13 +187,13 @@ class MathPvp {
                     } else if (mainTarget === attackedSecond) {
                         let damageBoost: boolean = false;
                         if(damageBoost === false) {
-                            healthPointSecond = Math.round(healthPointSecond - (attackedFirst.ATK * 278) * this.defenceMultuplicator(attackedSecond.DEF))
+                            healthPointSecond = Math.round(healthPointSecond - (attackedFirst.attack * 278) * this.defenceMultuplicator(attackedSecond.defense))
                             damageBoost = true
                             setTimeout(() => {
                                 damageBoost = false;
                             }, 60000)
                         } else {
-                            healthPointSecond = Math.round(healthPointSecond - attackedFirst.ATK * this.defenceMultuplicator(attackedSecond.DEF) * 2)
+                            healthPointSecond = Math.round(healthPointSecond - attackedFirst.attack * this.defenceMultuplicator(attackedSecond.defense) * 2)
                             damageBoost = true
                             setTimeout(() => {
                                 damageBoost = false;
@@ -202,13 +202,13 @@ class MathPvp {
                     } else if (mainTarget === attackedThird) {
                         let damageBoost: boolean = false;
                         if(damageBoost === false) {
-                            healthPointThird = Math.round(healthPointThird - (attackedFirst.ATK * 278) * this.defenceMultuplicator(attackedThird.DEF))
+                            healthPointThird = Math.round(healthPointThird - (attackedFirst.attack * 278) * this.defenceMultuplicator(attackedThird.defense))
                             damageBoost = true
                             setTimeout(() => {
                                 damageBoost = false;
                             }, 60000)
                         } else {
-                            healthPointThird = Math.round(healthPointThird - attackedFirst.ATK * this.defenceMultuplicator(attackedThird.DEF) * 2)
+                            healthPointThird = Math.round(healthPointThird - attackedFirst.attack * this.defenceMultuplicator(attackedThird.defense) * 2)
                             damageBoost = true
                             setTimeout(() => {
                                 damageBoost = false;
@@ -219,42 +219,42 @@ class MathPvp {
                 case "Штормовой порыв":
                     if (mainTarget === attackedFirst) {
                         if(mainTarget.element === "Water") {
-                            healthPointFirst = Math.round(healthPointFirst - (attacking.ATK * (278 + 0.3)) * this.defenceMultuplicator(attackedFirst.DEF))
+                            healthPointFirst = Math.round(healthPointFirst - (attacking.attack * (278 + 0.3)) * this.defenceMultuplicator(attackedFirst.defense))
                         } else {
-                            healthPointFirst = Math.round(healthPointFirst - (attacking.ATK * 278) * this.defenceMultuplicator(attackedFirst.DEF))
+                            healthPointFirst = Math.round(healthPointFirst - (attacking.attack * 278) * this.defenceMultuplicator(attackedFirst.defense))
                         }
                     } else if (mainTarget === attackedSecond) {
                         if(mainTarget.element === "Water") {
-                            healthPointSecond = Math.round(healthPointSecond - (attacking.ATK * (278 + 0.3)) * this.defenceMultuplicator(attackedSecond.DEF))
+                            healthPointSecond = Math.round(healthPointSecond - (attacking.attack * (278 + 0.3)) * this.defenceMultuplicator(attackedSecond.defense))
                         } else {
-                            healthPointSecond = Math.round(healthPointSecond - (attacking.ATK * 278) * this.defenceMultuplicator(attackedSecond.DEF))
+                            healthPointSecond = Math.round(healthPointSecond - (attacking.attack * 278) * this.defenceMultuplicator(attackedSecond.defense))
                         }
                     } else if (mainTarget === attackedThird) {
                         if(mainTarget.element === "Water") {
-                            healthPointThird = Math.round(healthPointThird - (attacking.ATK * (278 + 0.3)) * this.defenceMultuplicator(attackedThird.DEF))
+                            healthPointThird = Math.round(healthPointThird - (attacking.attack * (278 + 0.3)) * this.defenceMultuplicator(attackedThird.defense))
                         } else {
-                            healthPointThird = Math.round(healthPointThird - (attacking.ATK * 278) * this.defenceMultuplicator(attackedThird.DEF))
+                            healthPointThird = Math.round(healthPointThird - (attacking.attack * 278) * this.defenceMultuplicator(attackedThird.defense))
                         }
                     } return [healthPointFirst, healthPointSecond, healthPointThird]
                 case "Воздушный клинок":
-                    healthPointFirst = Math.round(healthPointFirst - (attacking.ATK * 278) * this.defenceMultuplicator(attackedFirst.DEF))
-                    healthPointSecond = Math.round(healthPointSecond - (attacking.ATK * (278 + 0.1) * this.defenceMultuplicator(attackedSecond.DEF)))
-                    healthPointThird = Math.round(healthPointThird - (attacking.ATK * (278 + 0.2) * this.defenceMultuplicator(attackedThird.DEF)))
+                    healthPointFirst = Math.round(healthPointFirst - (attacking.attack * 278) * this.defenceMultuplicator(attackedFirst.defense))
+                    healthPointSecond = Math.round(healthPointSecond - (attacking.attack * (278 + 0.1) * this.defenceMultuplicator(attackedSecond.defense)))
+                    healthPointThird = Math.round(healthPointThird - (attacking.attack * (278 + 0.2) * this.defenceMultuplicator(attackedThird.defense)))
                     return [healthPointFirst, healthPointSecond, healthPointThird]
                 case "Циклон разрушения":
                     if (mainTarget === attackedFirst) {
-                        healthPointFirst = Math.round(healthPointFirst - attacking.ATK * 278 * this.defenceMultuplicator(attackedFirst.DEF))
+                        healthPointFirst = Math.round(healthPointFirst - attacking.attack * 278 * this.defenceMultuplicator(attackedFirst.defense))
                     } else if (mainTarget === attackedSecond) {
-                        healthPointSecond = Math.round(healthPointSecond - attacking.ATK * 278 * this.defenceMultuplicator(attackedSecond.DEF))
+                        healthPointSecond = Math.round(healthPointSecond - attacking.attack * 278 * this.defenceMultuplicator(attackedSecond.defense))
                     } else if (mainTarget === attackedThird) {
-                        healthPointThird = Math.round(healthPointThird - attacking.ATK* 278 * this.defenceMultuplicator(attackedThird.DEF))
+                        healthPointThird = Math.round(healthPointThird - attacking.attack* 278 * this.defenceMultuplicator(attackedThird.defense))
                     } return [healthPointFirst, healthPointSecond, healthPointThird]
                 default: return [healthPointFirst, healthPointSecond, healthPointThird]
             }
         } return [healthPointFirst, healthPointSecond, healthPointThird]
     }
 
-    timeIsOut = (arr: TCr[]) => {
+    timeIsOut = (arr: TMonster[]) => {
         const removedElement = arr.shift()
             if (removedElement) {
                 arr.push(removedElement)
@@ -267,7 +267,7 @@ class MathPvp {
         return arr
     }
 
-    nextMove = (arr: TCr[], attacked: TCr, attacking: TCr, action: string) => {
+    nextMove = (arr: TMonster[], attacked: TMonster, attacking: TMonster, action: string) => {
         //if ((attacking.skill.name === "Тектонический удар" && action === "skill") && this.randomForTectonicImpact() === true) {
         //    return arr;
         //} else if ((attacking.skill.name === "Ледяной шквал" && action === "skill") && this.randomForIceSquall() === true) {
@@ -282,9 +282,9 @@ class MathPvp {
         //}
     }
 
-    sortQueuesByLevel = (a:TCr, b: TCr, c: TCr, d: TCr, e: TCr, f: TCr) => {
+    sortQueuesByLevel = (a:TMonster, b: TMonster, c: TMonster, d: TMonster, e: TMonster, f: TMonster) => {
         let objects = [a, b, c, d, e,f]
-        objects.sort((a: TCr, b: TCr) => {
+        objects.sort((a: TMonster, b: TMonster) => {
             if (a.level === b.level) {
                 return Math.random() - 0.5;
             }
@@ -312,15 +312,15 @@ class MathPvp {
     }
 
     calculateParam = (baseAttack: number, baseHealthPoint: number, baseDefense: number, level: number) => {
-        let ATK = baseAttack;
+        let attack = baseAttack;
         let healthPoint = baseHealthPoint;
-        let DEF = baseDefense;
+        let defense = baseDefense;
         for (let i = 1; i <= level; i++) {
-            ATK *= 1.2;  
+            attack *= 1.2;  
             healthPoint *= 1.2;
-            DEF *= 1.2;
+            defense *= 1.2;
         }
-        return [Math.round(ATK), Math.round(healthPoint), Math.round(DEF)];
+        return [Math.round(attack), Math.round(healthPoint), Math.round(defense)];
     }
 
     animation = (action: string) => {

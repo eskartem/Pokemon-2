@@ -2,7 +2,7 @@ import { createContext } from "react"
 
 import Monster from "../Monsters/Monster"
 
-import { TCr } from "../../services/server/types"
+import { TMonster } from "../../services/server/types"
 
 interface stageContext{
     hpBarFirstMonster: number,
@@ -11,14 +11,14 @@ interface stageContext{
     hpBarFirstEnemyMonster: number,
     hpBarSecondEnemyMonster: number,
     hpBarThirdEnemyMonster: number,
-    firstSelectedMonster: TCr,
-    secondSelectedMonster: TCr,
-    thirdSelectedMonster: TCr,
-    firstSelectedEnemyMonster: TCr,
-    secondSelectedEnemyMonster: TCr,
-    thirdSelectedEnemyMonster: TCr,
-    activeMonster: TCr,
-    sQueue: TCr[],
+    firstSelectedMonster: TMonster,
+    secondSelectedMonster: TMonster,
+    thirdSelectedMonster: TMonster,
+    firstSelectedEnemyMonster: TMonster,
+    secondSelectedEnemyMonster: TMonster,
+    thirdSelectedEnemyMonster: TMonster,
+    activeMonster: TMonster,
+    sQueue: TMonster[],
     stageProps: {
       width: number,
       height: number,
@@ -29,8 +29,8 @@ interface stageContext{
     setHpBarSecondMonster: (hpBarFirstEnemyMonster: number) => void,
     setHpBarThirdEnemyMonster: (hpBarSecondEnemyMonster: number) => void,
     setHpBarThirdMonster: (hpBarThirdEnemyMonster: number) => void,
-    setSQueue: (sQueue: TCr[]) => void,
-    setActiveMonster: (activeMonster: TCr) => void,
+    setSQueue: (sQueue: TMonster[]) => void,
+    setActiveMonster: (activeMonster: TMonster) => void,
   }
   
   export const stageContext = createContext<stageContext>({

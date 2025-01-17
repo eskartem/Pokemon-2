@@ -8,7 +8,8 @@ import { TAnswer, TError, TMessagesResponse, TUser, TMarketCatalog, TMap, TMapZo
     TUserInfo,
     TMapInfo,
     TGamerBattle,
-    TUpdateBattleResponse} from "./types";
+    TUpdateBattleResponse,
+    TMonster} from "./types";
 
 const { CHAT_TIMESTAMP, SCENE_TIMESTAMP, MARKET_TIMESTAMP, HOST, BATTLE_TIMESTAMP } = CONFIG;
 
@@ -288,6 +289,10 @@ class Server {
         const result = await this.request<TGamerBattle[]>('startBattle', {})     
         return result;
     }    
+
+    async getMonsterInfo(monsterId: number): Promise<TMonster | null> {
+        return await this.request<TMonster>('getInfoMonster', {monsterId: monsterId.toString()});
+    } 
 
     
 }

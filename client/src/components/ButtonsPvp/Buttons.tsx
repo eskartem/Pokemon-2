@@ -5,7 +5,7 @@ import MathPvp from "../../services/MathPvp/MathPvp";
 
 import { Monsters } from "../../assets/Monsters/Monster";
 import { stageContext } from "../../assets/context/stage";
-import { TCr } from "../../services/server/types";
+import { TMonster } from "../../services/server/types";
 
 interface buttonsProps {
         //enemyType: string
@@ -66,7 +66,7 @@ const Buttons: React.FC<buttonsProps> = (props: buttonsProps) => {
         }
     }
 
-    const setNewSQueue = (attacked: TCr) => {
+    const setNewSQueue = (attacked: TMonster) => {
         setSQueue(sQueue = mathPvp.nextMove(sQueue, attacked, activeMonster, action))
         setActiveMonster(sQueue[0])
         ActiveButtonMenu()

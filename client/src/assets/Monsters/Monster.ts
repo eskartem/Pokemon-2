@@ -46,22 +46,14 @@ export type Monsters = {
 //}
 
 class Monster {
-    id = 0;
-    name = '';
-    element = '';
-    level = 0;
-    current_hp = 0;
-    max_HP = 0;
-    ATK = 0;
-    DEF = 0;
-    status = '';
-    asset = '';
-    stats: TStats = {
-        current_hp: 0,
-        max_HP: 0,
-        ATK: 0 ,
-        DEF: 0
-    }
+    typeId = 1
+    name = ''
+    elementId = 1
+    element= ''
+    level = 1
+    hp = 1
+    attack = 1
+    defense = 1
 }
 
 export default Monster;
