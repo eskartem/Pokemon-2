@@ -1,4 +1,4 @@
-import { TGamer, TMessages, TUser, TInventory } from "../server/types";
+import { TGamer, TMessages, TUser, TInventory, TMapInfo } from "../server/types";
 
 const TOKEN = 'token';
 
@@ -6,11 +6,19 @@ class Store {
     user: TUser | null = null;
     messages: TMessages = [];
     gamers: TGamer[] = [];
+    inventory: TInventory | null = null;
+    mapInfo: TMapInfo | null = null;
     chatHash: string = 'empty_chat_hash';
     sceneHash: string = 'empty_scene_hash';
     marketHash: string = 'empty_market_hash';
-    inventory: TInventory | null = null; // Добавляем инвентарь
-    inventoryHash: string = 'empty inventory hash'; // Добавляем хеш инвентаря
+    inventoryHash: string = 'empty_inventory_hash';
+
+    clearAllHashes() {
+        this.chatHash = 'empty_chat_hash';
+        this.sceneHash = 'empty_scene_hash';
+        this.marketHash = 'empty_market_hash';
+        this.inventoryHash = 'empty_inventory_hash';
+    }
 
     setToken(token: string): void {
         localStorage.setItem(TOKEN, token);
@@ -85,11 +93,14 @@ class Store {
         this.marketHash = hash;
     }
 
-    clearAllHashes() {
-        this.chatHash = 'empty_chat_hash';
-        this.sceneHash = 'empty_scene_hash';
-        this.marketHash = 'empty_market_hash';
+    setMapInfo(mapInfo: TMapInfo): void {
+        this.mapInfo = mapInfo;
     }
+
+    getMapInfo(): TMapInfo | null {
+        return this.mapInfo;
+    }
+
 }
 
 export default Store;

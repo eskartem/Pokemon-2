@@ -109,6 +109,7 @@ export type TLot = {
     DEF: number | null,
     amount: number | null; // количество продаваемого ресурса, обязателен при типе item, не нужен при типе monster
     status: ELotStatus;  // статус лота
+    image_source: string; // путь до картинки продаваемой вещи
 }
 
 export type TUpdateMarketResponse = {
@@ -156,6 +157,11 @@ export type TMapZone = {
     element_id: number // надо название с помощью сложного запроса выдавать, а не само id, наругать бэкендеров.
 }
 
+export type TMapInfo = {
+    MAP: TMap,
+    mapZones: TMapZone[]
+}
+
 export enum EZones {
     town = 'town',
     chillzone = 'chillzone',
@@ -176,7 +182,7 @@ export type TUserInfo = {
 export type TInventory = {
     monsters: TCr[];
     inventory: TResource[];
-    balance: TBalance;
+    balance: number;
 }
 
 export type TCr = {
@@ -224,6 +230,24 @@ export type TResources = {
     cost: number,
     exchange_cost: number
 }
+
+export type THashEgg = {
+    id: number;
+    name: string;
+    element: string;
+    level: number;
+    base_hp: number;
+    base_atk: number;
+    base_def: number;
+    asset: string;
+}
+
+export type THatchedResponse = {
+    hatched: THashEgg;
+    eggConsumed: boolean;
+    eggs: number;
+}
+
 
 
 export type TMonsters = TCreature;

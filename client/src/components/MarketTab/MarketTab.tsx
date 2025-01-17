@@ -3,6 +3,9 @@ import { ServerContext, StoreContext } from '../../App';
 import { TUpdateMarketResponse, TLot, ETypeLot, ELotStatus, 
     TInventory, EMonsterStatus } from '../../services/server/types';
 import Button from '../Button/Button';
+import Lot from '../Lot/Lot';
+import InfoModal from '../../components/InfoModal/InfoModal'; 
+import question from '../../assets/img/question.png';
 
 import './MarketTab.scss';
 
@@ -16,6 +19,7 @@ const MarketTab: React.FC = () => {
     const [inventory, setInventory] = useState<TInventory | null>(null);
     const user = store.getUser();
     const selectRef = useRef<HTMLSelectElement>(null);
+    const [isInfoModalOpen, setIsInfoModalOpen] = useState(false);
 
     const filterLots = () => {
         const currenStatus = selectRef.current?.value as ELotStatus;
@@ -24,22 +28,17 @@ const MarketTab: React.FC = () => {
         setCatalog(filteredLots);
     };
 
-    const makeBet = (lotId: number) => {
-        const inputBet = document.getElementById(`${lotId}-bet-input`) as HTMLInputElement;
-        const bet = inputBet.value;
-        if (!bet || !lotId) { return }
-        server.makeBet(lotId, bet);
-    }
-
     const makeLot = () => {
         return
     }
 
-    const cancelLot = (lot_id: number) => {
-        if (!lot_id) return
-        server.cancelLot(lot_id);
-    }
+    const handleOpenInfoModal = () => {
+        setIsInfoModalOpen(true);
+    };
 
+    const handleCloseInfoModal = () => {
+        setIsInfoModalOpen(false);
+    };
 
     useEffect(() => {
         const marketUpdateHandler = ( result: TUpdateMarketResponse ) => {
@@ -65,61 +64,86 @@ const MarketTab: React.FC = () => {
 
     if (!catalog) {
         return (
-            <div>
-                Рынок не загружен.
+            <div className='market-tab'>
+                <div className='filter-market'>
+                    <h1 > лоты: </h1>
+                    <img
+                        src={question}
+                        onClick={handleOpenInfoModal}
+                        className="info-icon" 
+                        id="test-info-icon" 
+                     />
+                     <InfoModal
+                        isOpen={isInfoModalOpen}
+                        onClose={handleCloseInfoModal}
+                        title="Рынок"
+                        content={
+                            <div className="info-modal-content">
+                                Находится в главном городе, позволяет торговать покемонами, ресурсами и предметами. Залог: 5% от цены. Возвращается при продаже, удерживается при снятии или истечении срока. Ограничения: нельзя продавать покемонов, если в инвентаре осталось меньше 3. Лоты: фиксированы на 5 минут, работают по принципу аукциона. Лимит лотов: залог обязателен для ограничения их количества. Контроль цен: минимальные и максимальные цены на товары. Цены на ресурсы: зависят от спроса и предложения, расчеты в разработке.
+                            </div>
+                        }
+                    />
+                    <select name="фильтр" 
+                        className='lot-filter' 
+                        id='test-select_lot_status' 
+                        ref={selectRef} 
+                        onChange={() => {}}
+                        defaultValue={ELotStatus.open}
+                    >
+                        <option value={ELotStatus.open} >открытые</option>
+                        <option value={ELotStatus.closed}>закрытые</option>
+                        <option value={ELotStatus.canceled}>отмененные</option>
+                    </select>
+                </div>
+                <div className='lots'>
+                    <h1> Рынок пока не загружен.</h1>
+                </div>
+                {/* <Button 
+                    onClick={() => {}}
+                    text='создать лот'
+                /> */}
             </div>
         )
     }
 
     return (
     <div className='market-tab'>
-        <label htmlFor="test-select_lot_status"> фильтр: </label>
-        <select name="фильтр" 
-            className='lot-filter' 
-            id='test-select_lot_status' 
-            ref={selectRef} 
-            onChange={() => filterLots()}
-            defaultValue={ELotStatus.open}
-        >
-            <option value={ELotStatus.open} >open</option>
-            <option value={ELotStatus.closed}>closed</option>
-            <option value={ELotStatus.canceled}>canceled</option>
-        </select>
+        <div className='filter-market'>
+            <h1 > лоты: </h1>
+            <img
+                src={question}
+                onClick={handleOpenInfoModal}
+                className="info-icon" 
+                id="test-info-icon" 
+            />
+            <InfoModal
+                isOpen={isInfoModalOpen}
+                onClose={handleCloseInfoModal}
+                title="Рынок"
+                content={
+                    <div className="info-modal-content">
+                Находится в главном городе, позволяет торговать покемонами, ресурсами и предметами. Залог: 5% от цены. Возвращается при продаже, удерживается при снятии или истечении срока. Ограничения: нельзя продавать покемонов, если в инвентаре осталось меньше 3. Лоты: фиксированы на 5 минут, работают по принципу аукциона. Лимит лотов: залог обязателен для ограничения их количества. Контроль цен: минимальные и максимальные цены на товары. Цены на ресурсы: зависят от спроса и предложения, расчеты в разработке.
+                    </div>
+                }
+                id="test-market-info-modal"
+            />
+            <select name="фильтр" 
+                className='lot-filter' 
+                id='test-select_lot_status' 
+                ref={selectRef} 
+                onChange={() => filterLots()}
+                defaultValue={ELotStatus.open}
+            >
+                <option value={ELotStatus.open} >открытые</option>
+                <option value={ELotStatus.closed}>закрытые</option>
+                <option value={ELotStatus.canceled}>отмененные</option>
+            </select>
+        </div>
         <div className='lots'>
             {catalog.map( (lot, index) => {
-                return <div className='market-lot' key={index}>
-                    <h1>
-                        {index+1}) [ {lot.datetime}]| 
-                        {lot.type === ETypeLot.item? `${lot.resource} | шт: ${lot.amount}  |`: `${lot.monster_name} | LVL:${lot.monster_level} 
-                        | ATK:${lot.ATK}, HP: ${lot.max_HP}, DEF: ${lot.DEF} |`}
-                        продавец: {lot.seller_name} | нач.цена: { lot.start_cost } | тек.цена: { lot.current_cost}|
-                        шаг: { lot.step_cost}| {lot.buyer_name != null ? `купил: ${lot.buyer_name} |`: ''} {lot.status}|
-                    </h1>
-                    { lot.status === ELotStatus.open && 
-                        <div className='lot-bet-panel'>
-                            <Button 
-                                onClick={() => makeBet(lot.id)}
-                                text='поставить'
-                            />
-                            <input 
-                                key={index}
-                                type="number"
-                                className='bet-input'
-                                id={`${lot.id}-bet-input`}
-                                placeholder={`${lot.current_cost+ lot.step_cost}`}
-                                min={lot.current_cost + lot.step_cost}
-                                required
-                            />
-                        </div>
-                    }
-                    { lot.seller_id === user?.id && lot.status === ELotStatus.open &&
-                        <Button 
-                            onClick={() => cancelLot(lot.id)}
-                            text='отменить'
-                        />
-                    }
-                </div>
+                return <Lot lot={lot} index={index} />
             })}
+            {catalog.length === 0 && <h1> Похоже на рынке нет активных лотов...</h1>}
         </div>
         {/* <Button 
             onClick={() => setMakeLot(true)}
