@@ -6,7 +6,7 @@ import { TAnswer, TError, TMessagesResponse, TUser, TMarketCatalog, TMap, TMapZo
     TCr, TUpdateMarketResponse, TMakeBet, 
     TCancelLot,
     TUserInfo,
-    TMapInfo} from "./types";
+    TMapInfo, TInfoMon} from "./types";
 
 const { CHAT_TIMESTAMP, SCENE_TIMESTAMP, MARKET_TIMESTAMP, HOST } = CONFIG;
 
@@ -253,6 +253,12 @@ class Server {
         const result = await this.request<TCr>('getInfoAboutUpgrade', { monsterId: monsterId.toString() });
         return result;
     }    
+
+    // только для примера
+    async getInfoMonster(monsterId: number): Promise<TInfoMon | null> {
+        const result = await this.request<TInfoMon>('getInfoMonster', { monsterId: monsterId.toString() });
+        return result;
+    }   
 
 }
 

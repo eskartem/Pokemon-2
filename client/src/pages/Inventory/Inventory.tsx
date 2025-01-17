@@ -93,7 +93,7 @@ const Inventory: React.FC<IBasePage> = (props: IBasePage) => {
     }, [server]);
 
     const openUpgradeModal = async (pokemonId: number) => {
-        const info = await server.getInfoAboutUpgrade(pokemonId);
+        const info = await server.getInfoMonster(pokemonId);
         setUpgradeInfo(info);
         setUpgradeModalOpen(true);
         setSelectedPokemon(allPokemons.find(pokemon => pokemon.id === pokemonId) || null);
@@ -119,7 +119,7 @@ const Inventory: React.FC<IBasePage> = (props: IBasePage) => {
     
             if (crystalAmount < requiredCrystals) return;
     
-            const upgradedPokemon = await server.upgradePokemon(pokemonId);
+            const upgradedPokemon = await server.sellExchanger('50'); 
     
             if (upgradedPokemon) {
                 setAllPokemons((prev) => 

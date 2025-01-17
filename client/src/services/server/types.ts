@@ -240,6 +240,16 @@ export type TCancelLot = {
     ableToReturnBet: boolean | string, // 'нет ставок на этом лоте'
 }
 
+export type TInfoMon = {
+    typeId: number; 
+    name: string; 
+    elementId: number;  
+    element: string; 
+    level: number; 
+    hp: number; 
+    attack: number; 
+    defense: number; 
+}
 
 
 
