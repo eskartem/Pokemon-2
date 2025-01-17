@@ -813,7 +813,7 @@ Answer<false>
     Answer<{
         typeId: number; - id типа монстра
         name: string; - имя монстра
-        telementId: number; - id стихии
+        elementId: number; - id стихии
         element: string; - название стихии
         level: number; -  уровень 
         hp: number; - здоровье монстра
