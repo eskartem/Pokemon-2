@@ -193,7 +193,12 @@ const Map: React.FC<IMap> = (props: IMap) => {
     }, [server, store, user]);
 
     if (!user || !userOnMap || !map) {
-        return (<>Карта не загружена. Что-то пошло не так.</>)
+        store.clearAllHashes()
+        return (
+            <div>
+                <p> Карта не загружена. Что-то пошло не так. </p>
+            </div>
+        )
     }
 
     return (
@@ -345,7 +350,7 @@ const Map: React.FC<IMap> = (props: IMap) => {
                     y={tileSize/2}
                     style={
                         new TextStyle({
-                            fontSize: 20,
+                            fontSize: 30,
                             strokeThickness: 1,
                             fill: ['#000000'], 
                         })
