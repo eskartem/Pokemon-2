@@ -63,7 +63,7 @@ const Market: React.FC<IBasePage> = (props: IBasePage) => {
         <div className='market'>
             <div className='user-resources'>
                 <h1 className='resources-text'>
-                    монеты: {inventory?.balance?.money || 0} | 
+                    монеты: {inventory?.balance || 0} | 
                     кристаллы: {crystals} | 
                     яйца: {eggs} | 
                     скорлупа: {shells}

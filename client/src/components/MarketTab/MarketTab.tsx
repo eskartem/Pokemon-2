@@ -19,6 +19,9 @@ import bear_air from '../../assets/characters/bear_air.png';
 import butterflyWaterImage from '../../assets/characters/butterfly_water.png';
 import Button from '../Button/Button';
 import Lot from '../Lot/Lot';
+import InfoModal from '../../components/InfoModal/InfoModal'; 
+import question from '../../assets/img/question.png';
+
 import './MarketTab.scss';
 
 const MarketTab: React.FC = () => {
@@ -35,6 +38,7 @@ const MarketTab: React.FC = () => {
     const startCost = useRef<HTMLInputElement>(null);
     const stepCost = useRef<HTMLInputElement>(null);
     const user = store.getUser();
+    const [isInfoModalOpen, setIsInfoModalOpen] = useState(false);
 
     const filterLots = () => {
         const currentStatus = selectRef.current?.value as ELotStatus;
@@ -51,6 +55,14 @@ const MarketTab: React.FC = () => {
         setMakeLot(false);
         setIsItemList(true);
         server.makeLot(sellingType, sellingItem.id, cost, step, null);
+    };
+
+    const handleOpenInfoModal = () => {
+        setIsInfoModalOpen(true);
+    };
+
+    const handleCloseInfoModal = () => {
+        setIsInfoModalOpen(false);
     };
 
     useEffect(() => {
@@ -112,9 +124,24 @@ const MarketTab: React.FC = () => {
         return (
             <div className='market-tab'>
                 <div className='filter-market'>
-                    <h1>Лоты:</h1>
-                    <select 
-                        name='фильтр' 
+                    <h1 > лоты: </h1>
+                    <img
+                        src={question}
+                        onClick={handleOpenInfoModal}
+                        className="info-icon" 
+                        id="test-info-icon" 
+                     />
+                     <InfoModal
+                        isOpen={isInfoModalOpen}
+                        onClose={handleCloseInfoModal}
+                        title="Рынок"
+                        content={
+                            <div className="info-modal-content">
+                                Находится в главном городе, позволяет торговать покемонами, ресурсами и предметами. Залог: 5% от цены. Возвращается при продаже, удерживается при снятии или истечении срока. Ограничения: нельзя продавать покемонов, если в инвентаре осталось меньше 3. Лоты: фиксированы на 5 минут, работают по принципу аукциона. Лимит лотов: залог обязателен для ограничения их количества. Контроль цен: минимальные и максимальные цены на товары. Цены на ресурсы: зависят от спроса и предложения, расчеты в разработке.
+                            </div>
+                        }
+                    />
+                    <select name="фильтр" 
                         className='lot-filter' 
                         id='test-select_lot_status' 
                         ref={selectRef} 

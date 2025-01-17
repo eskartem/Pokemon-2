@@ -1,10 +1,12 @@
 import md5 from 'md5';
 import CONFIG, { EDIRECTION } from "../../config";
 import Store from "../store/Store";
-import { TAnswer, TError, TMessagesResponse, TUser, TUpdateSceneResponse, TSell,
-    TInventory, TMonsters_level, TCr, TUpdateMarketResponse, TMakeBet, 
-    TCancelLot, TUserInfo, TMapInfo, TMakeLot,
-    ETypeLot} from "./types";
+import { TAnswer, TError, TMessagesResponse, TUser, TMap, TMapZone, 
+    TUpdateSceneResponse, TSell, TResources, TInventory, TMonsters_level, 
+    TCr, TUpdateMarketResponse, TMakeBet, ETypeLot, TMakeLot,
+    TCancelLot,
+    TUserInfo,
+    TMapInfo} from "./types";
 
 const { CHAT_TIMESTAMP, SCENE_TIMESTAMP, MARKET_TIMESTAMP, HOST } = CONFIG;
 
@@ -253,6 +255,11 @@ class Server {
         return result;
     }
 
+
+    async hatchEgg(): Promise<THatchedResponse | null> {
+        const result = await this.request<THatchedResponse>('hatchEgg');
+        return result;
+    }    
 
 }
 

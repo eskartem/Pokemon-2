@@ -40,6 +40,7 @@
     * 4.20. endBattle
     * 4.21. cancelLot
     * 4.22. getInfoAboutUpgrade
+    * 4.23. hatchEgg
 
 
 
@@ -187,6 +188,16 @@ MapZones: {
 }
 ```
 
+### 2.9. Элементы
+```
+Elements: {
+    id: number;
+    name: string;
+    boost_id: number;
+    nerf_id: number;
+}
+```
+
 
 ## 3. Список запросов
 | Название | О чем |
@@ -213,6 +224,7 @@ MapZones: {
 | endBattle | Завершение боя |
 | cancelLot | Отменить лот |
 | getInfoAboutUpgrade | Получение информации о улучшении монстра | 
+| hatchEgg | Вылупляет яички |
 
 ### 3.1. Общие ошибки
 * `101` - если не передан параметр `method`
@@ -745,3 +757,29 @@ Answer<
 **Ошибки**
 
 *`702` - Покемон не найден.
+
+### 4.23. hatchEgg
+открыть яйцо
+
+
+**Параметры**
+```
+{
+    token: string; - токен.
+}
+```
+
+**Успешный ответ**
+```
+    Answer<{
+        hatched:[Monsters['id'], MonsterTypes['name', 'hp' as 'base_hp', 'attack' as 'base_atk', 'defense' as 'base_def', 'asset'], Elements['name'], level = 1],
+        eggConsumed:true,
+        eggs: number
+    }>
+```
+**Ошибки**
+
+* `705` - невалидный токен. Пользователь не авторизован.
+* `2999` - пользователь находится не в городе.
+* `3006` - у пользователя нет яиц XDDD
+* `3007` - инвентарь пользователя с данным айди не был найден
