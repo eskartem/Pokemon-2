@@ -3,6 +3,13 @@ import Button from '../../components/Button/Button';
 import MarketTab from '../../components/MarketTab/MarketTab';
 import TraderTab from '../../components/TraderTab/TraderTab';
 import ExchangerTab from '../../components/ExchangerTab/ExchangerTab';
+import moneyImage from '../../assets/img/money.png';
+import crystalImage from '../../assets/img/crystal.png';
+import eggImage from '../../assets/img/egg_new.png';
+import eggShellImage from '../../assets/img/egg_shell.png';
+import marketImg from '../../assets/img/marketRynokImg.png';
+import tradeImg from '../../assets/img/tradeRynokImg.png';
+import traderImg from '../../assets/img/traderRynokImg.png';
 import { IBasePage, PAGES } from '../PageManager';
 import { ServerContext, StoreContext } from '../../App';
 import { TInventory } from '../../services/server/types';
@@ -62,36 +69,42 @@ const Market: React.FC<IBasePage> = (props: IBasePage) => {
 
         <div id='market'>
             <div className='user-resources'>
-                <h1 className='resources-text'>
-                    монеты: {inventory?.balance || 0} | 
-                    кристаллы: {crystals} | 
-                    яйца: {eggs} | 
-                    скорлупа: {shells}
-                </h1>
-            </div>
+                        <div className='moneyMenu'>
+                            <img src={moneyImage} alt="" />
+                            <h1 >
+                            Монеты: {inventory?.balance || 0}
+                            </h1>
+                        </div>
+                        <div className='crystalMenu'>
+                            <img src={crystalImage} alt="" />
+                            <h1>
+                                Кристаллы: {crystals}
+                            </h1>
+                        </div>
+                        <div className='eggMenu'>
+                            <img src={eggImage} alt="" />
+                            <h1>
+                            Яйца: {eggs}
+                            </h1>
+                        </div>
+                        <div className='eggShellMenu'>
+                            <img src={eggShellImage} alt="" />
+                            <h1>
+                            Скорлупа: {shells}
+                            </h1>
+                        </div>
+                    </div>
 
             <div className='button-panel'>
-                <button 
-                    onClick={() => setTab(TABS.MARKET)} 
-                    className='market-button'
-                    title="Находится в главном городе, позволяет торговать покемонами, ресурсами и предметами. Залог: 5% от цены. Возвращается при продаже, удерживается при снятии или истечении срока. Ограничения: нельзя продавать покемонов, если в инвентаре осталось меньше 3. Лоты: фиксированы на 5 минут, работают по принципу аукциона. Лимит лотов: залог обязателен для ограничения их количества. Контроль цен: минимальные и максимальные цены на товары. Цены на ресурсы: зависят от спроса и предложения, расчеты в разработке."
-                >
-                    рынок
-                </button>
-                <button 
-                    onClick={() => setTab(TABS.TRADER)} 
-                    className='market-button'
-                    title="Отдельный персонаж на рынке для продажи кусков яиц и кристаллов стихий (покемонов продавать нельзя). Цены фиксированы и не зависят от рыночных колебаний."
-                >
-                    торговец
-                </button>
-                <button 
-                    onClick={() => setTab(TABS.EXCHANGER)} 
-                    className='market-button'
-                    title="Позволяет обменивать 50 кусков яиц на одно яйцо покемона. Куски яиц можно собирать в активностях для получения новых покемонов."
-                >
-                    обменник
-                </button>
+                <div>
+                <img src={marketImg} onClick={() => setTab(TABS.MARKET)} className='market-button' title="Находится в главном городе, позволяет торговать покемонами, ресурсами и предметами. Залог: 5% от цены. Возвращается при продаже, удерживается при снятии или истечении срока. Ограничения: нельзя продавать покемонов, если в инвентаре осталось меньше 3. Лоты: фиксированы на 5 минут, работают по принципу аукциона. Лимит лотов: залог обязателен для ограничения их количества. Контроль цен: минимальные и максимальные цены на товары. Цены на ресурсы: зависят от спроса и предложения, расчеты в разработке."/>
+                </div>
+                <div>
+                <img src={tradeImg} onClick={() => setTab(TABS.EXCHANGER)} className='market-button' title="Отдельный персонаж на рынке для продажи кусков яиц и кристаллов стихий (покемонов продавать нельзя). Цены фиксированы и не зависят от рыночных колебаний."/>
+                </div>
+                <div>
+                <img src={traderImg} onClick={() => setTab(TABS.TRADER)} className='market-button' title="Позволяет обменивать 50 кусков яиц на одно яйцо покемона. Куски яиц можно собирать в активностях для получения новых покемонов."/>
+                </div>
             </div>
             <div>
                 {tab === TABS.MARKET && <MarketTab />}

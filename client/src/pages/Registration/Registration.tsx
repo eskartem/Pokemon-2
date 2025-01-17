@@ -41,6 +41,7 @@ const Registration: React.FC<IBasePage> = (props: IBasePage) => {
     const backClickHandler = () => setPage(PAGES.LOGIN);
 
     return (<div className='regist' id='test-registration-page'>
+        <div className='textReg'>РЕГИСТРАЦИЯ</div>
         <div className='regist-wrapper'>
             <div className='regist-inputs'>
                 <input 

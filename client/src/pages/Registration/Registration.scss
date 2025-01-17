@@ -11,12 +11,24 @@
     border: solid $button-border-color 3px;
     border-radius: 10px;
 
+    //display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    //height: 70vh;
     font-family: $text-style;
+    //color: #333;
 
     h1 {
         margin-bottom: 24px;
         font-size: 2rem;
         color: #4A90E2;
+    }
+
+    .textReg {
+        color: #9fbef4;
+        text-shadow: -1px -1px 0 #356eb4, 1px -1px 0 #356eb4, -1px 1px 0 #356eb4, 1px 1px 0 #356eb4;
+        font-size: 38px;
     }
 
     .regist-wrapper {

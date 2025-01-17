@@ -11,6 +11,8 @@ import moneyImage from '../../assets/img/money.png';
 import crystalImage from '../../assets/img/crystal.png';
 import eggImage from '../../assets/img/egg_new.png';
 import eggShellImage from '../../assets/img/egg_shell.png';
+import inventImage from '../../assets/img/inventImg.png';
+import marketImage from '../../assets/img/marketImg.png';
 import { TInventory } from '../../services/server/types';
 
 import './Game.scss';
@@ -26,23 +28,21 @@ const Game: React.FC<IBasePage> = (props: IBasePage) => {
     const [inventory, setInventory] = useState<TInventory | null>(null);
 
     useEffect(() => {
-            if (user) {
-                const fetchInventory = () => {
-                    server.getInventory().then(inv => {
-                        setInventory(inv);
-                        if (inv && inv.balance) {
-                            // console.log('Обновлено количество монет:', inv.balance.money);
-                        }
-                    });
-                };
+        if (user) {
+            const fetchInventory = async () => {
+                const inv = await server.getInventory();
+                if (inv && JSON.stringify(inv) !== JSON.stringify(inventory)) {
+                    setInventory(inv);
+                }
+            };
     
-                fetchInventory();
+            fetchInventory();
     
-                const intervalId = setInterval(fetchInventory, 1000);
+            const intervalId = setInterval(fetchInventory, 1000);
     
-                return () => clearInterval(intervalId);
-            }
-        }, [user, server, store]);
+            return () => clearInterval(intervalId);
+        }
+    }, [user, server, store, inventory]); // Добавьте inventory в зависимости
         
     const crystals = inventory?.inventory?.find(item => item.resource_id === 1)?.resource_amount || 0;
     const eggs = inventory?.inventory?.find(item => item.resource_id === 2)?.resource_amount || 0;
@@ -65,7 +65,7 @@ const Game: React.FC<IBasePage> = (props: IBasePage) => {
         }
     }
 
-    const panelHeight = '65px';
+    //const panelHeight = '65px';
     
     if (!user) { return ( <div><h1> Что-то пошло не так. </h1></div> );} // закоментировать для работы без бекэнда
 
@@ -75,27 +75,35 @@ const Game: React.FC<IBasePage> = (props: IBasePage) => {
                 <div className='button-panel-test-left'>
                     <h1 id='test-game-h1-name' className='user-panel-nick'> {user?.name} | </h1>
                     <div className='user-resources'>
-                        <img src={moneyImage} alt="" />
-                        <h1 >
-                            {inventory?.balance || 0}
-                        </h1>
-                        <img src={crystalImage} alt="" />
-                        <h1>
-                            {crystals}
-                        </h1>
-                        <img src={eggImage} alt="" />
-                        <h1>
-                            {eggs}
-                        </h1>
-                        <img src={eggShellImage} alt="" />
-                        <h1>
-                            {shells}
-                        </h1>
+                        <div className='moneyMenu'>
+                            <img src={moneyImage} alt="" />
+                            <h1 >
+                                {inventory?.balance || 0}
+                            </h1>
+                        </div>
+                        <div className='crystalMenu'>
+                            <img src={crystalImage} alt="" />
+                            <h1>
+                                {crystals}
+                            </h1>
+                        </div>
+                        <div className='eggMenu'>
+                            <img src={eggImage} alt="" />
+                            <h1>
+                                {eggs}
+                            </h1>
+                        </div>
+                        <div className='eggShellMenu'>
+                            <img src={eggShellImage} alt="" />
+                            <h1>
+                                {shells}
+                            </h1>
+                        </div>
                     </div>
                 </div>
                 <div className='button-panel-test-centre'>
-                    <Button id='test-game-button-inventory' onClick={inventoryClickHandler} text='Инвентарь' />
-                    <Button id='test-game-button-market' onClick={marketClickHandler} text='Рынок' />
+                    <img src={inventImage} alt="" onClick={inventoryClickHandler} className='imageButton' />
+                    <img src={marketImage} alt="" onClick={marketClickHandler} className='imageButton' />
                     <Button id='test-game-button-battle' onClick={battleClickHandler} text='Битва' />
                 </div>
                 <div className='button-panel-test-right'>
@@ -108,13 +116,13 @@ const Game: React.FC<IBasePage> = (props: IBasePage) => {
                 </div>
             )}
             <img className='chat-button' onClick={toggleChatVisibility} src={isChatVisible ? ChatCloseImg : ChatImg } />
-            <div className="map-container" style={{ paddingTop: panelHeight }}>
+            <div className="map-container">
                 <Map />
             </div>
         </div>
     );
 }
-
+// style={{ paddingTop: panelHeight }}
 export default Game;
 
 
