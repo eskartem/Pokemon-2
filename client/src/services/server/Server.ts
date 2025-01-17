@@ -6,7 +6,7 @@ import { TAnswer, TError, TMessagesResponse, TUser, TMap, TMapZone,
     TCr, TUpdateMarketResponse, TMakeBet, ETypeLot, TMakeLot,
     TCancelLot,
     TUserInfo,
-    TMapInfo} from "./types";
+    TMapInfo, THatchedResponse} from "./types";
 
 const { CHAT_TIMESTAMP, SCENE_TIMESTAMP, MARKET_TIMESTAMP, HOST } = CONFIG;
 
