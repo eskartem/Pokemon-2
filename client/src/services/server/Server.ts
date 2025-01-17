@@ -3,7 +3,8 @@ import CONFIG, { EDIRECTION } from "../../config";
 import Store from "../store/Store";
 import { TAnswer, TError, TMessagesResponse, TUser, TUpdateSceneResponse, TSell,
     TInventory, TMonsters_level, TCr, TUpdateMarketResponse, TMakeBet, 
-    TCancelLot, TUserInfo, TMapInfo} from "./types";
+    TCancelLot, TUserInfo, TMapInfo, TMakeLot,
+    ETypeLot} from "./types";
 
 const { CHAT_TIMESTAMP, SCENE_TIMESTAMP, MARKET_TIMESTAMP, HOST } = CONFIG;
 
@@ -178,6 +179,11 @@ class Server {
         return this.request<TCancelLot>('cancelLot', { lotId: lotId.toString()});
     }
 
+    makeLot(type: ETypeLot, id: number, startCost: string, stepCost: string, amount: string | null) {
+        return this.request<TMakeLot>('makeLot', {type, id: `${id}`,
+            startCost, stepCost, amount: `${amount}`})
+    }
+
     // методы для карты
 
     async getMap(): Promise<TMapInfo | null> {
@@ -246,6 +252,8 @@ class Server {
         const result = await this.request<TCr>('getInfoAboutUpgrade', { monsterId: monsterId.toString() });
         return result;
     }
+
+
 }
 
 export default Server;

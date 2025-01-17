@@ -151,6 +151,13 @@ export type TMakeBet = {
     ableToTakeMoney: boolean
 }
 
+export type TMakeLot = {
+    ableToWithdrawResources?: boolean,
+    ableToWithdrawMonster?: boolean,
+    ableToCreateLot: boolean,
+    ableToTakeMoney: boolean
+}
+
 export type TUserInfo = {
     user: TUser;
     monsters: TCr[];
