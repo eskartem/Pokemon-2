@@ -40,7 +40,15 @@ const Battle: React.FC<IBasePage> = (props: IBasePage) => {
 
   const enemyType: string = 'bot'
 
-  const players: Promise<TGamerBattle[] | null> = server.getPlayerInBattle();
+
+  const f = async () => {
+    const players: TGamerBattle[] | null = await server.getPlayerInBattle()
+    console.log(players)
+  }
+
+  useEffect(() => {
+    f()
+  })
 
   let firstSelectedMonster: Monsters = new FirstPyroMonster("yourSide", 5);
   let secondSelectedMonster: Monsters = new FirstPyroMonster("yourSide", 5);
@@ -51,7 +59,7 @@ const Battle: React.FC<IBasePage> = (props: IBasePage) => {
   
   const mathPvp = new MathPvp();
 
-  const { setPage } = props;  
+  const { setPage } = props;
 
   let [sQueue, setSQueue] = useState(mathPvp.sortQueuesByLevel(
     firstSelectedMonster,

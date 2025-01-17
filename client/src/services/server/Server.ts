@@ -256,39 +256,37 @@ class Server {
         return result;
     }    
 
-    startBattleUpdate(cb: (result: TUpdateSceneResponse) => void): void {
-        this.battleInterval = setInterval(async () => {
-            const result = await this.updateBattle();
-            if (result) {
-                cb(result);
-            }
-        }, BATTLE_TIMESTAMP);
-    }
+    //startBattleUpdate(cb: (result: TUpdateSceneResponse) => void): void {
+    //    this.battleInterval = setInterval(async () => {
+    //        const result = await this.updateBattle();
+    //        if (result) {
+    //            cb(result);
+    //        }
+    //    }, BATTLE_TIMESTAMP);
+    //}
+//
+    //async updateBattle(): Promise<TUpdateSceneResponse | null> {
+    //    const hash = this.store.getSceneHash();
+    //    const result = await this.request<TUpdateSceneResponse>('updateBattle', { hash });
+    //    if (result) {
+    //        this.store.setSceneHash(result.hash);
+    //        return result;
+    //    }
+    //    return null;
+    //}
+//
+    //stopBattleUpdate(): void {
+    //    if (this.battleInterval) {
+    //        clearInterval(this.battleInterval);
+    //        this.battleInterval = null;
+    //        this.store.clearAllHashes();
+    //    }
+    //}
 
-    async updateBattle(): Promise<TUpdateSceneResponse | null> {
-        const hash = this.store.getSceneHash();
-        const result = await this.request<TUpdateSceneResponse>('updateBattle', { hash });
-        if (result) {
-            this.store.setSceneHash(result.hash);
-            return result;
-        }
-        return null;
-    }
-
-    stopBattleUpdate(): void {
-        if (this.battleInterval) {
-            clearInterval(this.battleInterval);
-            this.battleInterval = null;
-            this.store.clearAllHashes();
-        }
-    }
-
-    async getPlayerInBattle(): Promise<TGamerBattle[] | null> {
-        return await this.request<TGamerBattle[]>('startBattle', {});
-    }
-
-
-
+    async getPlayerInBattle(): Promise<TGamerBattle[] | null> {    
+        const result = await this.request<TGamerBattle[]>('startBattle', {})     
+        return result;
+    }    
 }
 
 export default Server;

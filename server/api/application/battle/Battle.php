@@ -74,12 +74,10 @@ class Battle {
             for ($j = $i + 1; $j < count($players); $j++) {
                 $user1 = $players[$i];
                 $user2 = $players[$j];
-
                 // Проверяем совпадают ли координаты
                 if ($user1['x'] === $user2['x'] && $user1['y'] === $user2['y']) {
                     //проверка на безопасную зону
-                    if ($user1['x'] <= 57 || $user1['x'] >= 90 ||
-                    $user1['y'] <= 43 || $user1['y'] >= 51 ){
+                    if ($user1['x'] <= 57 || $user1['x'] >= 90 || $user1['y'] <= 43 || $user1['y'] >= 51 ){
                         $this->db->updateUserStatus($user1['id'], 'fight');
                         $this->db->updateUserStatus($user2['id'], 'fight');
                         $this->db->addFight($user1['id'], $user2['id']); 
