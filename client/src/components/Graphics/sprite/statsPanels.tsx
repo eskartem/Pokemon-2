@@ -42,17 +42,17 @@ const StatsPanel: React.FC<StatsPanelProps> = (props: StatsPanelProps) => {
         {(isOpenFirstMonster && hpBarFirstMonster > 0) && 
             (<Container x={stageProps.width * 0.15 } y={stageProps.height * 0.3 + 35} name={"test-battle-pixi-yourFirstStats"}>
                 <Text
-                    text={`hp: ${firstSelectedMonster.healthPoint}`}
+                    text={`hp: ${firstSelectedMonster.current_hp}`}
                     scale={0.5}
                     y={12}
                 />
                 <Text
-                    text={`atk: ${firstSelectedMonster.attack}`}
+                    text={`atk: ${firstSelectedMonster.ATK}`}
                     scale={0.5}
                     y={24}
                 />
                 <Text
-                    text={`def: ${firstSelectedMonster.defense}`}
+                    text={`def: ${firstSelectedMonster.DEF}`}
                     scale={0.5}
                     y={36}
                 />
@@ -71,17 +71,17 @@ const StatsPanel: React.FC<StatsPanelProps> = (props: StatsPanelProps) => {
         {(isOpenSecondMonster && hpBarSecondMonster > 0) && 
             (<Container x={stageProps.width * 0.15 } y={stageProps.height * 0.5 + 35} name={"test-battle-pixi-yourSecondStats"}>
                 <Text
-                    text={`hp: ${secondSelectedMonster.healthPoint}`}
+                    text={`hp: ${secondSelectedMonster.current_hp}`}
                     scale={0.5}
                     y={12}
                 />
                 <Text
-                    text={`atk: ${secondSelectedMonster.attack}`}
+                    text={`atk: ${secondSelectedMonster.ATK}`}
                     scale={0.5}
                     y={24}
                 />
                 <Text
-                    text={`def: ${secondSelectedMonster.defense}`}
+                    text={`def: ${secondSelectedMonster.DEF}`}
                     scale={0.5}
                     y={36}
                 />
@@ -100,17 +100,17 @@ const StatsPanel: React.FC<StatsPanelProps> = (props: StatsPanelProps) => {
         {(isOpenThirdMonster && hpBarThirdMonster > 0) && 
             (<Container x={stageProps.width * 0.15 } y={stageProps.height * 0.7 + 35} name={"test-battle-pixi-yourThirdStats"}>
                 <Text
-                    text={`hp: ${thirdSelectedMonster.healthPoint}`}
+                    text={`hp: ${thirdSelectedMonster.current_hp}`}
                     scale={0.5}
                     y={12}
                 />
                 <Text
-                    text={`atk: ${thirdSelectedMonster.attack}`}
+                    text={`atk: ${thirdSelectedMonster.ATK}`}
                     scale={0.5}
                     y={24}
                 />
                 <Text
-                    text={`def: ${thirdSelectedMonster.defense}`}
+                    text={`def: ${thirdSelectedMonster.DEF}`}
                     scale={0.5}
                     y={36}
                 />
@@ -129,17 +129,17 @@ const StatsPanel: React.FC<StatsPanelProps> = (props: StatsPanelProps) => {
         {(isOpenFirstEnemyMonster && hpBarFirstEnemyMonster > 0) && 
             (<Container x={stageProps.width * 0.85 - 30 } y={stageProps.height * 0.3 + 35} name={"test-battle-pixi-enemyFirstStats"}>
                 <Text
-                    text={`hp: ${firstSelectedEnemyMonster.healthPoint}`}
+                    text={`hp: ${firstSelectedEnemyMonster.current_hp}`}
                     scale={0.5}
                     y={12}
                 />
                 <Text
-                    text={`atk: ${firstSelectedEnemyMonster.attack}`}
+                    text={`atk: ${firstSelectedEnemyMonster.ATK}`}
                     scale={0.5}
                     y={24}
                 />
                 <Text
-                    text={`def: ${firstSelectedEnemyMonster.defense}`}
+                    text={`def: ${firstSelectedEnemyMonster.DEF}`}
                     scale={0.5}
                     y={36}
                 />
@@ -158,17 +158,17 @@ const StatsPanel: React.FC<StatsPanelProps> = (props: StatsPanelProps) => {
         {(isOpenSecondEnemyMonster && hpBarSecondEnemyMonster > 0) && 
             (<Container x={stageProps.width * 0.85 - 30 } y={stageProps.height * 0.5 + 35} name={"test-battle-pixi-enemySecondStats"}>
                 <Text
-                    text={`hp: ${secondSelectedEnemyMonster.healthPoint}`}
+                    text={`hp: ${secondSelectedEnemyMonster.current_hp}`}
                     scale={0.5}
                     y={12}
                 />
                 <Text
-                    text={`atk: ${secondSelectedEnemyMonster.attack}`}
+                    text={`atk: ${secondSelectedEnemyMonster.ATK}`}
                     scale={0.5}
                     y={24}
                 />
                 <Text
-                    text={`def: ${secondSelectedEnemyMonster.defense}`}
+                    text={`def: ${secondSelectedEnemyMonster.DEF}`}
                     scale={0.5}
                     y={36}
                 />
@@ -187,17 +187,17 @@ const StatsPanel: React.FC<StatsPanelProps> = (props: StatsPanelProps) => {
         {(isOpenThirdEnemyMonster && hpBarThirdEnemyMonster > 0) && 
             (<Container x={stageProps.width * 0.85 - 30 } y={stageProps.height * 0.7 + 35} name={"test-battle-pixi-enemyThirdStats"}>
                 <Text
-                    text={`hp: ${thirdSelectedEnemyMonster.healthPoint}`}
+                    text={`hp: ${thirdSelectedEnemyMonster.current_hp}`}
                     scale={0.5}
                     y={12}
                 />
                 <Text
-                    text={`atk: ${thirdSelectedEnemyMonster.attack}`}
+                    text={`atk: ${thirdSelectedEnemyMonster.ATK}`}
                     scale={0.5}
                     y={24}
                 />
                 <Text
-                    text={`def: ${thirdSelectedEnemyMonster.defense}`}
+                    text={`def: ${thirdSelectedEnemyMonster.DEF}`}
                     scale={0.5}
                     y={36}
                 />

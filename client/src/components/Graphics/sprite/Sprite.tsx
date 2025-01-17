@@ -1,15 +1,15 @@
 import { useContext, useEffect, useState } from "react"
 import { Sprite, Text, Container} from "@pixi/react"
-import {firstAnemoMoster, secondAnemoMonster, thirdAnemoMonster, 
-    firstGeoMonster, secondGeoMonster, thirdGeoMonster, 
-    firstHydroMonster, secondHydroMonster, thirdHydroMonster, 
-    firstPyroMonster, secondPyroMonster, thirdPyroMonster, empty
-} from '../../../assets/img_monster/AllSprites';
+import {bear_air, bee_earth, blob_fish_water, butterfly_water, 
+    cat_lit_energy_air, elephant_air, emoboy_fire, 
+    frog_water, lizard_fire, meatboy_fire, mushroom_earth, worm_earth, empty} from '../../../assets/characters/allSprites'
 
 import { Monsters } from "../../../assets/Monsters/Monster"
 
 import StatsPanel from "./statsPanels";
 import { stageContext } from "../../../assets/context/stage";
+import { TCr } from "../../../services/server/types";
+import { doesNotMatch } from "assert";
 
 
 const Sprites: React.FC = () => {
@@ -43,44 +43,44 @@ const Sprites: React.FC = () => {
     let [isOpenSecondEnemyMonster, setIsOpenSecondEnemyMonster] = useState(false);
     let [isOpenThirdEnemyMonster, setIsOpenThirdEnemyMonster] = useState(false);
 
-    const selectSprite = (activeMonster: Monsters, thisSprite: string) => {
+    const selectSprite = (activeMonster: TCr, thisSprite: string) => {
         let thisMonster: string
         switch (activeMonster.name) {
-            case "Farfetch'd":
-                thisMonster = firstAnemoMoster;
+            case 'Кот Лит Энерджи':
+                thisMonster = cat_lit_energy_air;
                 return thisSprite = thisMonster;
-            case 'Butterfree':
-                thisMonster = secondAnemoMonster;
+            case 'Медведь':
+                thisMonster = bear_air;
                 return thisSprite = thisMonster;
-            case 'Zubat':
-                thisMonster = thirdAnemoMonster;
+            case 'Слон':
+                thisMonster = elephant_air;
                 return thisSprite = thisMonster;
-            case 'Bulbasaur':
-                thisMonster = firstGeoMonster;
+            case 'Червь':
+                thisMonster = worm_earth;
                 return thisSprite = thisMonster;
-            case 'Dugtrio':
-                thisMonster = secondGeoMonster;
+            case 'Гриб':
+                thisMonster = mushroom_earth;
                 return thisSprite = thisMonster;
-            case 'Sandshrew':
-                thisMonster = thirdGeoMonster;
+            case 'Пчела':
+                thisMonster = bee_earth;
                 return thisSprite = thisMonster;
-            case 'Magikarp':
-                thisMonster = firstHydroMonster;
+            case 'Лягушка':
+                thisMonster = frog_water;
                 return thisSprite = thisMonster;
-            case 'Omanyte':
-                thisMonster = secondHydroMonster;
+            case 'Мотылек':
+                thisMonster = butterfly_water;
                 return thisSprite = thisMonster;
-            case 'Poliwhirl':
-                thisMonster = thirdHydroMonster;
+            case 'Рыба капля':
+                thisMonster = blob_fish_water;
                 return thisSprite = thisMonster;
-            case 'Flareon':
-                thisMonster = firstPyroMonster;
+            case 'Митбой':
+                thisMonster = meatboy_fire;
                 return thisSprite = thisMonster;
-            case 'Growlithe':
-                thisMonster = secondPyroMonster;
+            case 'Ящерица':
+                thisMonster = lizard_fire;
                 return thisSprite = thisMonster;
-            case 'Ponyta':
-                thisMonster = thirdPyroMonster;
+            case 'Эмобой':
+                thisMonster = emoboy_fire;
                 return thisSprite = thisMonster;
             default: 
                 thisMonster = empty;
@@ -102,7 +102,7 @@ const Sprites: React.FC = () => {
     return(<>
         {hpBarFirstMonster > 0 && (
             <Container x={stageProps.width * 0.05} y={stageProps.height * 0.3}>
-                <Sprite image={firstSelectedMonster.isAlive ? firstSelectedSprite || empty : empty} 
+                <Sprite image={firstSelectedMonster.current_hp > 0 ? firstSelectedSprite || empty : empty} 
                     scale={[0.1, 0.1]} 
                     interactive
                     onclick={() => {setIsOpenFirstMonster(isOpenFirstMonster === false ? true : false)}} 
@@ -117,7 +117,7 @@ const Sprites: React.FC = () => {
         )}
         {hpBarSecondMonster > 0 && (
             <Container x={stageProps.width * 0.05} y={stageProps.height * 0.51}>
-                <Sprite image={secondSelectedMonster.isAlive ? secondSelectedSprite || empty : empty} 
+                <Sprite image={secondSelectedMonster.current_hp > 0 ? secondSelectedSprite || empty : empty} 
                     scale={[0.1, 0.1]} 
                     interactive
                     onclick={() => {setIsOpenSecondMonster(isOpenSecondMonster === false ? true : false)}}
@@ -132,7 +132,7 @@ const Sprites: React.FC = () => {
         )}
         {hpBarThirdMonster > 0 && (
             <Container x={stageProps.width * 0.05} y={stageProps.height * 0.72}>
-                <Sprite image={thirdSelectedMonster.isAlive ? thirdSelectedSprite || empty : empty} 
+                <Sprite image={thirdSelectedMonster.current_hp > 0 ? thirdSelectedSprite || empty : empty} 
                     scale={[0.1, 0.1]} 
                     interactive
                     onclick={() => {setIsOpenThirdMonster(isOpenThirdMonster === false ? true : false)}}
@@ -147,7 +147,7 @@ const Sprites: React.FC = () => {
         )}
         {hpBarFirstEnemyMonster > 0 && (
             <Container x={stageProps.width * 0.85} y={stageProps.height * 0.3}>
-                <Sprite image={firstSelectedEnemyMonster.isAlive ? firstSelectedEnemySprite || empty : empty} 
+                <Sprite image={firstSelectedEnemyMonster.current_hp > 0 ? firstSelectedEnemySprite || empty : empty} 
                     x={120}
                     scale={[-0.1, 0.1]} 
                     interactive
@@ -163,7 +163,7 @@ const Sprites: React.FC = () => {
         )}
         {hpBarSecondEnemyMonster > 0 && (
             <Container x={stageProps.width * 0.85} y={stageProps.height * 0.51}>
-                <Sprite image={secondSelectedEnemyMonster.isAlive ? secondSelectedEnemySprite || empty : empty} 
+                <Sprite image={secondSelectedEnemyMonster.current_hp > 0 ? secondSelectedEnemySprite || empty : empty} 
                     x={120}
                     scale={[-0.1, 0.1]} 
                     interactive
@@ -179,7 +179,7 @@ const Sprites: React.FC = () => {
         )}
         {hpBarThirdEnemyMonster > 0 && (
             <Container x={stageProps.width * 0.85} y={stageProps.height * 0.72}>
-                <Sprite image={thirdSelectedEnemyMonster.isAlive ? thirdSelectedEnemySprite || empty : empty} 
+                <Sprite image={thirdSelectedEnemyMonster.current_hp > 0 ? thirdSelectedEnemySprite || empty : empty} 
                     x={120}
                     scale={[-0.1, 0.1]} 
                     interactive

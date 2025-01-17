@@ -1,3 +1,4 @@
+import { TStats } from "../../services/server/types"
 
 interface baseParam {
     baseAttack: number,
@@ -24,24 +25,43 @@ export type Monsters = {
 }
 
 
+//class Monster {
+//    baseParam: baseParam = {
+//        baseAttack: 1,
+//        baseHealthPoint: 1,
+//        baseDefense: 1
+//    }
+//    name: string = '';
+//    attack: number = 100;
+//    healthPoint: number = 150;
+//    defense: number = 100;
+//    element: string = '';
+//    level: number = 1;
+//    skill: skill = {
+//        name: '',
+//        scale: 1
+//    };
+//    side: string = '';
+//    isAlive: boolean = true;
+//}
+
 class Monster {
-    baseParam: baseParam = {
-        baseAttack: 1,
-        baseHealthPoint: 1,
-        baseDefense: 1
+    id = 0;
+    name = '';
+    element = '';
+    level = 0;
+    current_hp = 0;
+    max_HP = 0;
+    ATK = 0;
+    DEF = 0;
+    status = '';
+    asset = '';
+    stats: TStats = {
+        current_hp: 0,
+        max_HP: 0,
+        ATK: 0 ,
+        DEF: 0
     }
-    name: string = '';
-    attack: number = 100;
-    healthPoint: number = 150;
-    defense: number = 100;
-    element: string = '';
-    level: number = 1;
-    skill: skill = {
-        name: '',
-        scale: 1
-    };
-    side: string = '';
-    isAlive: boolean = true;
 }
 
 export default Monster;

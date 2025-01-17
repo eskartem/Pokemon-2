@@ -4,6 +4,7 @@ import { Text, Container } from "@pixi/react";
 import { Monsters } from "../../../assets/Monsters/Monster";
 import MathPvp from "../../../services/MathPvp/MathPvp";
 import { stageContext } from "../../../assets/context/stage";
+import { TCr } from "../../../services/server/types";
 
 const BattleTimer: React.FC = () => {
 
@@ -15,7 +16,7 @@ const BattleTimer: React.FC = () => {
         } = useContext(stageContext)
 
         let [timer, setTimer] = useState<number>(30);
-        let [Monster, setMonster] = useState<Monsters>(activeMonster)
+        let [Monster, setMonster] = useState<TCr>(activeMonster)
 
         const mathPvp = new MathPvp();
 

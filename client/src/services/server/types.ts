@@ -38,6 +38,18 @@ export type TMessage = {
     created: string;
 }
 
+export type TUpdateBattleResponse = {
+    gamers: TMonster
+    hash: string
+}
+
+export type TMonster = {
+    user_id: number,
+    opponent_id: number
+    monsters: string,
+    monster_opp: string,
+}
+
 export type TMessages = TMessage[];
 
 export type TMessagesResponse = {
@@ -234,6 +246,7 @@ export type TResources = {
     cost: number,
     exchange_cost: number
 }
+
 
 
 export type TMonsters = TCreature;
