@@ -25,7 +25,7 @@
         display: inline;
     }
 
-    .header-user-panel {
+    .button-panel-test {
         background-color: #333; /* Цвет фона панели */
         color: white; /* Цвет текста */
         padding: 10px; /* Отступы вокруг кнопок */
@@ -54,23 +54,23 @@
         filter: invert(1);
     }
 
-    .user-panel-left-items {
+    .button-panel-test-left {
         display: flex;
     }
 
-    .user-panel-centre-items {
+    .button-panel-test-centre {
         display: flex;
     }
 
-    .user-panel-right-items {
+    .button-panel-test-right {
         display: flex;
     }
 
-    .header-user-panel button {
+    .button-panel-test button {
         padding: 7px 10px;
     }
 
-    .header-user-panel button:hover {
+    .button-panel-test button:hover {
     }
 
     .map-container {
