@@ -6,7 +6,7 @@ import { TAnswer, TError, TMessagesResponse, TUser, TMarketCatalog, TMap, TMapZo
     TCr, TUpdateMarketResponse, TMakeBet, 
     TCancelLot,
     TUserInfo,
-    TMapInfo} from "./types";
+    TMapInfo, THatchedResponse} from "./types";
 
 const { CHAT_TIMESTAMP, SCENE_TIMESTAMP, MARKET_TIMESTAMP, HOST } = CONFIG;
 
@@ -251,6 +251,11 @@ class Server {
 
     async getInfoAboutUpgrade(monsterId: number): Promise<TCr | null> {
         const result = await this.request<TCr>('getInfoAboutUpgrade', { monsterId: monsterId.toString() });
+        return result;
+    }    
+
+    async hatchEgg(): Promise<THatchedResponse | null> {
+        const result = await this.request<THatchedResponse>('hatchEgg');
         return result;
     }    
 
