@@ -354,8 +354,8 @@ class DB {
     }
 
     //element
-    public function getIdByElement($element){//узнаем id стихии
-        return $this->query('SELECT id FROM elements WHERE name = ?', [$element]);
+    public function getElement($elementId){//узнаем id стихии
+        return $this->query('SELECT name FROM elements WHERE id = ?', [$elementId]);
     }
     
     public function makeBet($userId, $lotId, $newBet) {
@@ -433,5 +433,9 @@ class DB {
     
     public function getMonsterTypes(){
         return $this->queryAll('SELECT * from monster_types');
+    }
+
+    public function getSkillById($skillId) { //id скилла совпадают с id типом монстра
+        return $this->query('SELECT * FROM skills WHERE id=?', [$skillId]);
     }
 }
