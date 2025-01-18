@@ -40,8 +40,9 @@ class Answer {
         '3001' => 'incorrect "type" parameter',
         '3002' => 'incorrect "amount" parameter',
         '3003' => 'incorrect "startCost" or "stepCost" parameter', 
-        '3004' => 'unable to sell monster if you will have less than 3 monsters', // 3006 свободны
+        '3004' => 'unable to sell monster if you will have less than 3 monsters', 
         '3005' => 'this lot does not belong to you',
+        '3006' => 'no eggs to hatch',
         '3007' => 'inventory of that user has not been found',
         '3008' => 'selling object with that ID has not been found',
         '3009' => 'not enough resources to sell that amount',

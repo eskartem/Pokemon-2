@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext, useRef } from 'react';
 import Button from '../../components/Button/Button';
 import { TResource, TStats, TCr } from '../../services/server/types';
 import blobfishfire from '../../assets/characters/blob_fish_water.png';
@@ -11,6 +11,8 @@ import bee_earth from '../../assets/characters/bee_earth.png';
 import mushroom_earth from '../../assets/characters/mushroom_earth.png';
 import cat_lit_energy_air from '../../assets/characters/cat_lit_energy_air.png';
 import elephant_air from '../../assets/characters/elephant_air.png';
+import InfoModal from '../../components/InfoModal/InfoModal'; 
+import question from '../../assets/img/question.png';
 import bear_air from '../../assets/characters/bear_air.png';
 import crystalImage from '../../assets/img/crystal.png';
 import eggImage from '../../assets/img/Egg.png'; 
@@ -35,6 +37,7 @@ const Inventory: React.FC<IBasePage> = (props: IBasePage) => {
     const [replacedPokemonIndex, setReplacedPokemonIndex] = useState<number | null>(null);
     const [upgradeModalOpen, setUpgradeModalOpen] = useState<boolean>(false);
     const [upgradeInfo, setUpgradeInfo] = useState<any>(null);
+    const [isInfoModalOpen, setIsInfoModalOpen] = useState(false);
 
     const backClickHandler = () => setPage(PAGES.GAME);
 
@@ -86,6 +89,14 @@ const Inventory: React.FC<IBasePage> = (props: IBasePage) => {
         } finally {
             setLoading(false);
         }
+    };
+
+    const handleOpenInfoModal = () => {
+        setIsInfoModalOpen(true);
+    };
+
+    const handleCloseInfoModal = () => {
+        setIsInfoModalOpen(false);
     };
 
     useEffect(() => {
@@ -263,6 +274,19 @@ const Inventory: React.FC<IBasePage> = (props: IBasePage) => {
         <div className="inventory-container">
             <div className="inventory" id="test-inventory-page">
                 <h1 id="test-inventory-title">Инвентарь</h1>
+                <img
+                    src={question}
+                    onClick={handleOpenInfoModal}
+                    className="info-icon" 
+                    id="test-info-icon" 
+                />
+                <InfoModal
+                    isOpen={isInfoModalOpen}
+                    onClose={handleCloseInfoModal}
+                    title="Инвентарь"
+                    content="Здесь ты можешь выбрать себе команду или улучшить покемонов"
+                    id="test-inventory-info-modal"
+                />
                 {loading && <p id="test-loading-indicator">Загрузка...</p>}
     
                 <div id="test-resources-line">

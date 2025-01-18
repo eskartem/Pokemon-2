@@ -90,16 +90,6 @@ export type TStats = {
     DEF: number, // defence
 }
 
-// само существо
-export type TCreature = {
-    id: number,
-    name: string;
-    lvl: number;
-    element: EElement,
-    stats: TStats,
-    status: string
-}
-
 export enum ETypeLot {
     monster = 'monster',
     item = 'item'
@@ -144,11 +134,6 @@ export type TUpdateMarketResponse = {
     hash: string
 }
 
-//существо на рынке
-export type TMarketCreature = TCreature & {
-    id: number;
-    cost: number;
-}
 
 export enum EMarketRes {
     crystal,
@@ -160,13 +145,6 @@ export type TMarketItem = {
     number: number,
     cost: number
 }
-
-export type TMarketCatalog = {
-    creatures: TMarketCreature[],
-    resources: TMarketItem[]
-}
-
-export type TTraderCatalog = TMarketCatalog;
 
 export type TMap = {
     HEIGHT: number,
@@ -200,6 +178,13 @@ export type TMakeBet = {
     ableToTakeMoney: boolean
 }
 
+export type TMakeLot = {
+    ableToWithdrawResources?: boolean,
+    ableToWithdrawMonster?: boolean,
+    ableToCreateLot: boolean,
+    ableToTakeMoney: boolean
+}
+
 export type TUserInfo = {
     user: TUser;
     monsters: TCr[];
@@ -209,7 +194,7 @@ export type TUserInfo = {
 export type TInventory = {
     monsters: TCr[];
     inventory: TResource[];
-    balance: TBalance;
+    balance: number;
 }
 
 export type TCr = {
@@ -258,14 +243,27 @@ export type TResources = {
     exchange_cost: number
 }
 
-
-
-export type TMonsters = TCreature;
-
 export type TCancelLot = {
     ableToCancel: boolean,
     ableToReturnToOwner: boolean,
     ableToReturnBet: boolean | string, // 'нет ставок на этом лоте'
+}
+
+export type THashEgg = {
+    id: number;
+    name: string;
+    element: string;
+    level: number;
+    base_hp: number;
+    base_atk: number;
+    base_def: number;
+    asset: string;
+}
+
+export type THatchedResponse = {
+    hatched: THashEgg;
+    eggConsumed: boolean;
+    eggs: number;
 }
 
 

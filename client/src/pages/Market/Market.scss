@@ -1,36 +1,100 @@
 @use '../../scss/variables.scss' as *;
 
 #market {
+    position: relative;
+
     display: flex;
+    text-align: center;
+    background-color: $main-theme;
+
+    padding: 30px;
+    margin: 10px;
+    border: solid $button-border-color 3px;
+    border-radius: 10px;
+    
     flex-direction: column;
     align-content: center;
     justify-content: center;
     align-items: center;
+    height: 100vh; 
+    overflow: auto; 
+    background-color: #f0f0f0; 
+    padding: 20px;
+}
+
+.market_tab-wrapper {
+    font-family: Arial, sans-serif;
+    padding: 20px;
+    background-color: #f4f4f4;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    max-width: 1200px;
+    margin: 0 auto;
 }
 
 .user-resources {
-    display: inline-flex;
-    flex-direction: row;
-    flex-wrap: nowrap;
-    justify-content: space-evenly;
+    display: flex;
+    align-items: center;
+    font-size: 24px;
+    border: 5px #9fbef4;
+    gap: 20px;
+
+    color: #9fbef4;
+    text-shadow: -1px -1px 0 #356eb4, 1px -1px 0 #356eb4, -1px 1px 0 #356eb4, 1px 1px 0 #356eb4;
+}
+.moneyMenu {
+    display: flex;
+    align-items: center;
+    img {
+        width: 45px;
+        height: 45px;
+        margin: 0 7px;
+    }
+}
+.crystalMenu {
+    display: flex;
+    align-items: center;
+    img {
+        width: 45px;
+        height: 45px;
+        margin: 0 7px;
+    }
+}
+.eggMenu {
+    display: flex;
+    align-items: center;
+    img {
+        width: 45px;
+        height: 45px;
+        margin: 0 7px;
+    }
+}
+.eggShellMenu {
+    display: flex;
+    align-items: center;
+    img {
+        width: 45px;
+        height: 45px;
+        margin: 0 7px;
+    }
 }
 
 .market-button {
-    border-left: 3px gray solid;
-    border-right: 3px gray solid;
-    background-color: rgb(126, 229, 254);
-    padding: 5px;
-    min-width: 200px;
-    text-align: center;
-
-    &:hover {
-        background-color: rgb(185, 185, 185);
-    }
+    max-height: 50px;
+    margin-top: 30px;
+    cursor: pointer;
 }
+
 
 .resourses-text {
     display: inline;
     border: 3px solid rgb(76, 84, 227);
     border-radius: 5px; 
     background-color: rgb(135, 103, 58);
+}
+
+.button-panel {
+    display: flex;
+    align-items: center;
+    gap: 15px;
 }

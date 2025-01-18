@@ -17,7 +17,6 @@
     align-items: flex-start;
 }
 
-
 .market-tab {
     padding: 20px;
     // margin: 10px;
@@ -31,12 +30,27 @@
     align-items: center;
     justify-content: center;
     justify-items: center;
+    position: relative;
+}
+
+.info-icon { 
+    position: absolute; 
+    top: 20px; 
+    right: 20px; 
+    width: 24px; 
+    height: 24px; 
+    cursor: pointer; 
+    transition: opacity 0.2s ease-in-out; 
+
+    &:hover {
+        opacity: 0.8; 
+    }
 }
 
 .market-tab h1 {
     text-align: center;
     color: #414141;
-    margin-bottom: 20px;
+    margin-bottom: 5px;
     font-size: 24px;
 }
 
@@ -44,21 +58,9 @@
     background-color: #ffffff;
 }
 
-.make_lot-tab {
-    position: absolute;
-    background-color: #edeaea;
-    border: 5px solid black;
-}
-
 .lot-filter {
     background-color: #ffffff;
     border: 1px solid black;
-}
-
-.sell-menu {
-    position: absolute;
-    background-color: aquamarine;
-    border: 3px solid black;
 }
 
 ::placeholder { color: rgb(160, 160, 160); }
@@ -99,4 +101,84 @@
     padding: 10px;
     font-size: 16px;
     color: #333;
+}
+
+.make_lot-tab {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000; 
+    animation: fadeIn 0.3s ease-in-out;
+    
+    .make_lot-content {
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        padding: 20px;
+        max-width: 400px;
+        width: 100%;
+        text-align: center;
+        position: relative;
+    }
+
+    .monster-list {
+        max-height: 400px;
+        align-items: stretch;
+        justify-items: stretch;
+        justify-content: center;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+        overflow-y: scroll;
+        gap: 20px;
+        padding: 10px;
+        border-radius: 10px;
+        padding: 20px;
+        background-color: #f4f4f4;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        max-width: 1200px;
+        margin: 0 auto;
+        pokemon-card {
+           cursor: pointer;
+           transition: background-color 0.3s ease;
+        
+           &:hover {
+            background-color: #f9f9f9;
+        }
+    }
+
+    .make_lot-selling_item {
+        background-color: #fff;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+    }
+        
+
+    }
+}
+
+.info-modal {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 400px;
+    width: 100%;
+    text-align: center;
+    max-height: 80vh; 
+    overflow-y: auto; 
+
+    h2 {
+        margin-bottom: 15px;
+    }
+
+    p {
+        margin-bottom: 20px;
+    }
 }

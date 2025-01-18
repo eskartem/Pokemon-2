@@ -82,7 +82,7 @@ const Lot: React.FC<ILot> = (props: ILot) => {
                 <h3 id='test-market-market_tab-lot-step_cost'>{ lot.step_cost}</h3>
             </div>
             <div className='lot-text_pair'>
-                <h3>нач.цена: </h3>
+                <h3>тек.цена: </h3>
                 <h3 id='test-market-market_tab-lot-start_cost'>{ lot.start_cost }</h3>
             </div>
 
