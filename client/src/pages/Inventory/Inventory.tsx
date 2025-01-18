@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext, useRef } from 'react';
 import Button from '../../components/Button/Button';
 import { TResource, TStats, TCr } from '../../services/server/types';
 import blobfishfire from '../../assets/characters/blob_fish_water.png';
