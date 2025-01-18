@@ -229,7 +229,7 @@ class DB {
 
         
     public function getParametersMonsterByLevel($level) { 
-        return $this->query("SELECT attack, hp, cost FROM monster_level WHERE level = ?", [$level]);
+        return $this->query("SELECT attack, hp, defense, cost FROM monster_level WHERE level = ?", [$level]);
     } 
     
     public function getElementByMonsters($monster_type_id){ //стихия покемона по типу 
@@ -320,7 +320,25 @@ class DB {
     //battle
     //?
     public function getPlayersInBattle() {
-        return $this->queryAll('SELECT id, name, x, y FROM users WHERE status = "fight"');
+        return $this->queryAll('SELECT u.id AS user_id,
+                                    GROUP_CONCAT(DISTINCT m.id) AS monsters,
+                                    CASE 
+                                        WHEN u.id = f.user1_id THEN f.user2_id  
+                                        WHEN u.id = f.user2_id THEN f.user1_id  
+                                        ELSE NULL 
+                                    END AS opponent_id,
+                                    (
+                                        SELECT GROUP_CONCAT(DISTINCT m_opp.id)
+                                        FROM users AS u_opp
+                                        LEFT JOIN monsters AS m_opp ON u_opp.id = m_opp.user_id AND m_opp.status = "in team"
+                                        WHERE (u_opp.id = f.user1_id OR u_opp.id = f.user2_id) AND u_opp.id != u.id
+                                    ) AS monster_opp
+                                FROM users AS u
+                                LEFT JOIN monsters AS m ON u.id = m.user_id AND m.status = "in team"
+                                LEFT JOIN fight AS f ON (u.id = f.user1_id OR u.id = f.user2_id) AND f.status = "open"
+                                WHERE u.status = "fight"
+                                GROUP BY u.id, f.user1_id, f.user2_id;'
+        );
     }
 
     public function getPlayersScout() {
