@@ -11,6 +11,7 @@ const Chat: React.FC = () => {
     const [messages, setMessages] = useState<TMessages>([]);
     const [_, setHash] = useState<string>('');
     const messageRef = useRef<HTMLInputElement>(null);
+    const messagesContainerRef = useRef<HTMLDivElement>(null); // Ref для контейнера сообщений
     const user = store.getUser();
 
     useEffect(() => {
@@ -31,10 +32,17 @@ const Chat: React.FC = () => {
         }
     }, [server, store, user]);
 
+    // Прокрутка контейнера сообщений вниз при обновлении сообщений
+    useEffect(() => {
+        if (messagesContainerRef.current) {
+            messagesContainerRef.current.scrollTop = messagesContainerRef.current.scrollHeight;
+        }
+    }, [messages]); // Срабатывает при изменении messages
+
     const input = useMemo(() => <input 
-    ref={messageRef} 
-    onKeyDown={(event) => {if (event.key === "Enter") sendClickHandler()}} 
-    placeholder='сообщение' />
+        ref={messageRef} 
+        onKeyDown={(event) => {if (event.key === "Enter") sendClickHandler()}} 
+        placeholder='сообщение' />
     , []);
 
     const sendClickHandler = () => {
@@ -56,7 +64,7 @@ const Chat: React.FC = () => {
 
     return (<div className='chat'>
         <h1>Чат</h1>
-        <div id='test-chat-div-chat' className='chat-messages'>
+        <div id='test-chat-div-chat' className='chat-messages' ref={messagesContainerRef}> {/* Добавьте ref сюда */}
             {messages.reverse().map((message, index) => 
             <div className='nt' key={index}>
                 <span className="message-author">{message.author} </span> 
