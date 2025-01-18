@@ -54,6 +54,8 @@ class Answer {
         '3015' => 'this lot has been closed already',
         '3016' => 'this lot does not exist',
         '3017' => 'you do not have enough currency to buy this',
+        '4000' => 'You can not attack your monster',
+        '4001' => 'You can not attack with a dead monster',
         '9000' => 'unknown error'
     );
 
