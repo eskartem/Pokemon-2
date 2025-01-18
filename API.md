@@ -48,7 +48,7 @@
 
 ## 1. Общее
 ### 1.1. Адрес сервера
-`http://monstaris.local/api`
+`http://server/api`
 
 ### 1.2. Используемый протокол
 API полностью реализовано на http(s).
@@ -78,11 +78,9 @@ Answer<T>: {
 ```
 User: {
     id: number;
-    login: string;
-    password: string;
     token: string;
     name: string;
-    money: integer;
+    coins: integer;
     rating: integer;
     x: integer;
     y: integer;
@@ -100,15 +98,25 @@ Message: {
 }
 ```
 
-### 2.4. Монстры
+### 2.4. Монстр
 ```
-Monsters: {
+Monster: {
     id: number; - ID покемона
     user_id: number;
     level: number; - Уровень покемона
-    monster_type_id: integer; - ID типа монстра
     hp: integer; - Уровень здоровья покемона
     status: string; - Статус покемона
+    id: number;
+    name: string;
+    element: string;
+    level: number;
+    current_hp: number;
+    max_HP: number;
+    stats: TStats;
+    ATK: number;
+    DEF: number;
+    status: string;
+    asset: string;
 }
 
 MonsterTypes: {

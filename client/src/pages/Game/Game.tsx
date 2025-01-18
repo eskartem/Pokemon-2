@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React, {useContext, useState, useEffect} from 'react';
 import Button from '../../components/Button/Button';
 import Map from '../../components/Map/Map';
 import Chat from '../../components/Chat/Chat';
@@ -50,6 +50,7 @@ const Game: React.FC<IBasePage> = (props: IBasePage) => {
 
     //Чат
     const [isChatVisible, setIsChatVisible] = useState(false); // Состояние для управления видимостью чата
+    const [isUserInTown, setIsUserInTown] = useState(false); // Для отображения кнопки рынка, когда пользователь в городе 
 
     const toggleChatVisibility = () => {
         setIsChatVisible(prevState => !prevState); // Переключаем состояние видимости
@@ -103,7 +104,8 @@ const Game: React.FC<IBasePage> = (props: IBasePage) => {
                 </div>
                 <div className='button-panel-test-centre'>
                     <img src={inventImage} alt="" onClick={inventoryClickHandler} className='imageButton' />
-                    <img src={marketImage} alt="" onClick={marketClickHandler} className='imageButton' />
+                    {isUserInTown && <img src={marketImage} alt="" onClick={marketClickHandler} className='imageButton' /> }
+
                     <Button id='test-game-button-battle' onClick={battleClickHandler} text='Битва' />
                 </div>
                 <div className='button-panel-test-right'>
@@ -116,8 +118,9 @@ const Game: React.FC<IBasePage> = (props: IBasePage) => {
                 </div>
             )}
             <img className='chat-button' onClick={toggleChatVisibility} src={isChatVisible ? ChatCloseImg : ChatImg } />
-            <div className="map-container">
-                <Map />
+
+            <div className="map-container" style={{ paddingTop: panelHeight }}>
+                <Map setIsUserInTown={setIsUserInTown}/>
             </div>
         </div>
     );
