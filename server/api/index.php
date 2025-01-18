@@ -26,6 +26,7 @@ function result($params) {
             case 'addToTeam': return $app->addToTeam($params);
             case 'upgradePokemon': return $app->upgradePokemon($params); 
             case 'getInfoAboutUpgrade': return $app->getInfoAboutUpgrade($params);
+            case 'hatchEgg': return $app->hatchEgg($params);
             //battle
             case 'startBattle': return $app->startBattle();
             // case 'updateBattle': return $app-> updateBattle($params); // loop //получаю данные по всем игрокам
