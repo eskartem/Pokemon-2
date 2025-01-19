@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.1:3306
--- Время создания: Дек 23 2024 г., 16:09
+-- Время создания: Янв 19 2025 г., 19:48
 -- Версия сервера: 8.0.30
 -- Версия PHP: 8.1.9
 
@@ -85,7 +85,10 @@ CREATE TABLE `fight` (
 --
 
 INSERT INTO `fight` (`id`, `user1_id`, `user2_id`, `turn`, `status`, `result`) VALUES
-(1, 1, 3, 1, 'close', 1);
+(1, 1, 3, 1, 'close', 1),
+(2, 1, 2, 0, 'open', 0),
+(3, 1, 2, 0, 'open', 0),
+(4, 1, 2, 0, 'open', 0);
 
 -- --------------------------------------------------------
 
@@ -124,7 +127,7 @@ CREATE TABLE `hashes` (
 --
 
 INSERT INTO `hashes` (`id`, `chat_hash`, `map_hash`, `battle_hash`, `market_hash`) VALUES
-(1, 'd54549bb2c64c7c0472a1b627d150dcf', 'de45063848c0c09a070a357c9e381eb3', 'fabceea19fc9e3671afa4c9ff11ba176', 'fabceea19fc9e3671afa4c9ff11ba177');
+(1, 'd54549bb2c64c7c0472a1b627d150dcf', 'd99f7934ce684c8092047e4c0c44ba6f', '66e1b26d929177a329b056c8a8caf667', 'fabceea19fc9e3671afa4c9ff11ba177');
 
 -- --------------------------------------------------------
 
@@ -155,7 +158,10 @@ INSERT INTO `inventory` (`id`, `user_id`, `resource_id`, `resource_amount`) VALU
 (9, 3, 3, 177),
 (10, 4, 1, 10000),
 (11, 4, 2, 8440),
-(12, 4, 3, 9000);
+(12, 4, 3, 9000),
+(34, 5, 1, 0),
+(35, 5, 2, 0),
+(36, 5, 3, 0);
 
 -- --------------------------------------------------------
 
@@ -292,21 +298,24 @@ CREATE TABLE `monsters` (
 --
 
 INSERT INTO `monsters` (`id`, `user_id`, `monster_type_id`, `level`, `hp`, `status`) VALUES
-(1, 1, 1, 2, 350, 'in team'),
-(2, 1, 2, 4, 750, 'in team'),
-(3, 1, 2, 5, 305, 'in team'),
+(1, 1, 1, 2, 0, 'in team'),
+(2, 1, 7, 4, 234, 'in team'),
+(3, 1, 2, 5, 0, 'in team'),
 (4, 4, 2, 5, 100, 'in pocket'),
-(5, 4, 1, 5, 1000, 'in pocket'),
-(6, 4, 1, 5, 1001, 'in team'),
-(7, 4, 1, 5, 1002, 'in team'),
+(5, 4, 1, 1, 0, 'in team'),
+(6, 4, 4, 5, 453, 'in team'),
+(7, 4, 1, 5, 756, 'in team'),
 (8, 4, 6, 1, 40, 'in pocket'),
 (9, -1, 4, 4, 2000, 'on sale'),
-(10, 2, 11, 3, 1890, 'in team'),
-(11, 2, 2, 4, 300, 'in team'),
-(12, 2, 9, 5, 2000, 'in team'),
+(10, 2, 11, 3, 0, 'in team'),
+(11, 2, 2, 4, 0, 'in team'),
+(12, 2, 9, 1, 952, 'in team'),
 (13, 3, 10, 2, 550, 'in team'),
 (14, 3, 12, 4, 900, 'in team'),
-(15, 3, 3, 1, 200, 'in team');
+(15, 3, 3, 1, 200, 'in team'),
+(16, 5, 3, 1, 500, 'in team'),
+(17, 5, 6, 1, 530, 'in team'),
+(18, 5, 10, 1, 450, 'in team');
 
 -- --------------------------------------------------------
 
@@ -393,6 +402,40 @@ INSERT INTO `resources` (`id`, `name`, `cost`, `exchange_cost`, `image`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Структура таблицы `skills`
+--
+
+CREATE TABLE `skills` (
+  `id` int NOT NULL,
+  `name` varchar(256) NOT NULL,
+  `monster_type_id` int NOT NULL,
+  `description` text NOT NULL,
+  `damage_multiplier` float NOT NULL,
+  `damage_multiplier2` float NOT NULL,
+  `damage_multiplier3` float NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Дамп данных таблицы `skills`
+--
+
+INSERT INTO `skills` (`id`, `name`, `monster_type_id`, `description`, `damage_multiplier`, `damage_multiplier2`, `damage_multiplier3`) VALUES
+(1, 'Ледяной шквал', 1, 'Водный покемон выпускает ледяные иглы в цель, нанося 100% урон из статистики ', 1, 0, 0),
+(2, 'Каскад', 2, 'Мощный водяной поток обрушивается на цель. Если цель - покемон стихии воздуха или огня, наносится 150% от урона из статистики.', 1.5, 0, 0),
+(3, 'Волна разрушений', 3, 'Сильная водная атака, которая наносит 120% урона цели и 50% от этого урона остальным покемонам в команде', 1.2, 0.5, 0.5),
+(4, 'Испепеляющий удар', 4, 'Мощная огненная атака, которая наносит 140% урона и вызывает статус \"горение\", наносящий урон в 10% от урона каждую секунду на протяжении 5 секунд. ', 1.4, 0, 0),
+(5, 'Пепельный взрыв', 5, 'Атакует с мощным взрывом огня, нанося 150% урона по одной цели и заставляя покемона гореть на протяжении 1 минуты. Если враг уже имеет эффект \"горения\", урон составляет 200%.', 1.5, 0, 0),
+(6, 'Огненная буря', 6, ' Поднимает огненную бурю, наносящую 120% урона по всем врагам в команде. ', 1.2, 1.2, 1.2),
+(7, 'Гравитационная волна', 7, 'Изменяет локальную гравитацию, увеличивая вес врагов, что наносит им 25% от урона каждую секунду на протяжении 5 секунд.', 0.25, 0.25, 0.25),
+(8, 'Земной импульс', 8, 'Создает земной всплеск, который наносит урон всем врагам. Используется скилл на конкретного покемона, нанося ему на 125% от урона из статистики, а всем остальным наносится', 1.25, 1, 1),
+(9, 'Тектонический удар', 9, 'Вызывает мощный сдвиг земли, который бьет по одной цели с силой 150% от урона в статистике. Шанс вызвать оглушение (10%) из-за потрясения земли. Оглушение блокирует', 1.5, 0, 0),
+(10, 'Штормовой порыв', 10, 'Атакует врага мощной воздушной атакой, нанося 110% урона, с дополнительным уроном (до +30%) на водяных покемон', 1.1, 0, 0),
+(11, 'Воздушный клинок', 11, 'Выпускает острую волну воздуха, наносящую 110% урона первому покемону противника, 120% урона второму и 130% урона третьему.', 1.1, 1.2, 1.3),
+(12, 'Циклон разрушений', 12, 'Создает мощный воздушный вихрь, нанося 150% урона цели', 1.5, 0, 0);
+
+-- --------------------------------------------------------
+
+--
 -- Структура таблицы `users`
 --
 
@@ -415,10 +458,11 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `login`, `password`, `token`, `name`, `money`, `rating`, `x`, `y`, `status`, `last_update`) VALUES
-(1, 'vasya', 'fcb03559c0317682f5d65a88aca50012', 'dd44b8a00399317970a9ba74b465f35d', 'Вася Пупкин', 256, 0, 75, 48, 'scout', NULL),
-(2, 'petya', 'bcb209cf0d43e198e6467f8b0ac3387a', 'd6fbc6ef4b0f26f17e5cc08f785e59ca', 'Пётр Петрович', 1700, 0, 80, 45, 'offline', NULL),
+(1, 'vasya', 'fcb03559c0317682f5d65a88aca50012', NULL, 'Вася Пупкин', 256, 0, 70, 41, 'offline', NULL),
+(2, 'petya', 'bcb209cf0d43e198e6467f8b0ac3387a', NULL, 'Пётр Петрович', 1700, 0, 70, 41, 'offline', NULL),
 (3, 'masha', 'e213995da574de722a416f65b43d8314', '1916666aacbb8732bf2d12238b2cd5db', 'Маша Сергеевна', 0, 0, 80, 45, 'offline', NULL),
-(4, 'test', 'нелогиньтесь', 'test', 'Тестер Тестерович', 30775, 0, 80, 45, 'offline', NULL);
+(4, 'test', 'нелогиньтесь', 'test', 'Тестер Тестерович', 30775, 0, 80, 45, 'offline', NULL),
+(5, 'fghj', 'c05d708b03d6ce35c218e7ed35a29da4', NULL, 'dfgh', 500, 0, 80, 45, 'offline', NULL);
 
 --
 -- Индексы сохранённых таблиц
@@ -509,6 +553,12 @@ ALTER TABLE `resources`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Индексы таблицы `skills`
+--
+ALTER TABLE `skills`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Индексы таблицы `users`
 --
 ALTER TABLE `users`
@@ -535,7 +585,7 @@ ALTER TABLE `elements`
 -- AUTO_INCREMENT для таблицы `fight`
 --
 ALTER TABLE `fight`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT для таблицы `game`
@@ -553,7 +603,7 @@ ALTER TABLE `hashes`
 -- AUTO_INCREMENT для таблицы `inventory`
 --
 ALTER TABLE `inventory`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
 
 --
 -- AUTO_INCREMENT для таблицы `lots`
@@ -583,7 +633,7 @@ ALTER TABLE `messages`
 -- AUTO_INCREMENT для таблицы `monsters`
 --
 ALTER TABLE `monsters`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT для таблицы `monster_level`
@@ -604,10 +654,16 @@ ALTER TABLE `resources`
   MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
+-- AUTO_INCREMENT для таблицы `skills`
+--
+ALTER TABLE `skills`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+
+--
 -- AUTO_INCREMENT для таблицы `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
