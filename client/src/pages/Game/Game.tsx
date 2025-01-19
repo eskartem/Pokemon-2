@@ -13,6 +13,7 @@ import eggImage from '../../assets/img/egg_new.png';
 import eggShellImage from '../../assets/img/egg_shell.png';
 import inventImage from '../../assets/img/inventImg.png';
 import marketImage from '../../assets/img/marketImg.png';
+import buttonHoverImage from '../../assets/img/buttonHoverImage.jpg';
 import { TInventory } from '../../services/server/types';
 
 import './Game.scss';
@@ -55,6 +56,10 @@ const Game: React.FC<IBasePage> = (props: IBasePage) => {
     const toggleChatVisibility = () => {
         setIsChatVisible(prevState => !prevState); // Переключаем состояние видимости
     };
+
+    // Наведение на изображение
+    const [isInventHovered, setIsInventHovered] = useState(false);
+    const [isMarketHovered, setIsMarketHovered] = useState(false);
 
     //Кнопки
     const inventoryClickHandler = () => setPage(PAGES.INVENTORY);
@@ -103,8 +108,22 @@ const Game: React.FC<IBasePage> = (props: IBasePage) => {
                     </div>
                 </div>
                 <div className='button-panel-test-centre'>
-                    <img src={inventImage} alt="" onClick={inventoryClickHandler} className='imageButton' />
-                    {isUserInTown && <img src={marketImage} alt="" onClick={marketClickHandler} className='imageButton' /> }
+                    <img
+                        src={isInventHovered ? buttonHoverImage : inventImage}
+                        alt=""
+                        onClick={inventoryClickHandler}
+                        className='imageButton'
+                        onMouseEnter={() => setIsInventHovered(true)}
+                        onMouseLeave={() => setIsInventHovered(false)}
+                    />
+                    {isUserInTown && <img
+                        src={isMarketHovered ? buttonHoverImage : marketImage}
+                        alt=""
+                        onClick={inventoryClickHandler}
+                        className='imageButton'
+                        onMouseEnter={() => setIsMarketHovered(true)}
+                        onMouseLeave={() => setIsMarketHovered(false)}
+                    /> }
 
                     <Button id='test-game-button-battle' onClick={battleClickHandler} text='Битва' />
                 </div>
