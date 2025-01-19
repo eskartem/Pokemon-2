@@ -5,6 +5,7 @@
     flex-direction: column;
     align-items: center;
     border: 5px solid #0540a5;
+    backdrop-filter: blur(20px);
 
     &-inputs {
         display: flex;
@@ -34,7 +35,6 @@
     border: 5px solid #9fbef4;
     text-align: left;
     padding: 5px;
-    backdrop-filter: blur(10px);
     overflow-y: auto;
 }
 

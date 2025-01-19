@@ -75,7 +75,7 @@ const Game: React.FC<IBasePage> = (props: IBasePage) => {
             <div className="button-panel-test">
                 <div className='button-panel-test-left'>
                     <h1 id='test-game-h1-name' className='user-panel-nick'> {user?.name} | </h1>
-                    <div className='user-resources'>
+                    <div className='user-resource'>
                         <div className='moneyMenu'>
                             <img src={moneyImage} alt="" />
                             <h1 >
@@ -119,7 +119,7 @@ const Game: React.FC<IBasePage> = (props: IBasePage) => {
             )}
             <img className='chat-button' onClick={toggleChatVisibility} src={isChatVisible ? ChatCloseImg : ChatImg } />
 
-            <div className="map-container" style={{ paddingTop: panelHeight }}>
+            <div className="map-container">
                 <Map setIsUserInTown={setIsUserInTown}/>
             </div>
         </div>
