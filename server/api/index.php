@@ -34,7 +34,6 @@ function result($params) {
             case 'endBattle': return $app->endBattle($params);
             case 'actionUser': return $app-> actionUser($params); //действие игрока в бою во время ход
             case 'getQueue': return $app->getQueue($params); 
-            case 'getFight': return $app->getFight($params); 
             
             //map
             case 'getMap': return $app->getMap($params);
