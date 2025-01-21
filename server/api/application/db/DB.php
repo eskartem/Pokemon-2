@@ -164,7 +164,7 @@ class DB {
     }
         
     public function updateUserStatus($userId, $status){
-        $this->execute('UPDATE users SET status = ? WHERE id =?', [$status, $userId]);
+        return $this->execute('UPDATE users SET status = ? WHERE id =?', [$status, $userId]);
     }
 
     //map
@@ -342,11 +342,12 @@ class DB {
     }
 
     public function getPlayersScout() {
-        return $this->queryAll('SELECT id, name, x, y FROM users WHERE status = "scout"');
+        return $this->queryAll('SELECT id, name, x, y, rating FROM users WHERE status = "scout"');
     }
     
     public function addFight($userId1, $userId2){
         $this->execute('INSERT INTO fight (user1_id, user2_id, turn, status, result) VALUES (?,?, 0, "open", 0)', [$userId1, $userId2]);
+        return $lastBattle = $this->query('SELECT LAST_INSERT_ID()')->{'LAST_INSERT_ID()'};
     }
 
     public function addResultFight($userId1, $userId2, $result){
@@ -434,4 +435,12 @@ class DB {
     public function getMonsterTypes(){
         return $this->queryAll('SELECT * from monster_types');
     }
+
+    public function getBattleById($battleId){
+        return $this->query('SELECT * FROM fight WHERE id=?', [$battleId]);
+    }
+
+    public function getUserById($userId) {
+        return $this->query('SELECT * FROM users WHERE id = ?', [$userId]);
+    }   
 }

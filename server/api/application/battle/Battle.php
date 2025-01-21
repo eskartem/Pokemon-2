@@ -96,34 +96,38 @@ class Battle {
     public function skills($monster_type_id){}
 
 
-    public function startBattle() {
-        $players = $this->db->getPlayersScout(); // все игроки со статусом скаут
-        if (count($players) === 1){
-            return [false];
+    public function startBattle($user, $zoneCheck) {
+        if (in_array(true, $zoneCheck, true)) {
+            return ['error' => 4002];
         }
-        // Итерируем по всем игрокам
-        for ($i = 0; $i < count($players); $i++) {
-            for ($j = $i + 1; $j < count($players); $j++) {
-                $user1 = $players[$i];
-                $user2 = $players[$j];
+        
+        $players = $this->db->getPlayersScout();
+        $playerToFight = null;
+        foreach ($players as $player) {
+            if ($player['x'] == $user->x && $player['y'] == $user->y && $player['status'] != 'fight' && $user->status != 'fight' && $player['id'] != $user->id) {
+                $playerToFight = $player;
+            }            
+        }
 
-                // Проверяем совпадают ли координаты
-                if ($user1['x'] === $user2['x'] && $user1['y'] === $user2['y']) {
-                    //проверка на безопасную зону
-                    if ($user1['x'] <= 57 || $user1['x'] >= 90 ||
-                    $user1['y'] <= 43 || $user1['y'] >= 51 ){
-                        $this->db->updateUserStatus($user1['id'], 'fight');
-                        $this->db->updateUserStatus($user2['id'], 'fight');
-                        $this->db->addFight($user1['id'], $user2['id']); 
-                        $this->db->updateBattleHash(md5(rand()));
-                        return [
-                            'user1' => $user1['id'],
-                            'user2' => $user2['id']
-                        ];
-                    }   
-                }
-            }
-        }return [false];
+        
+
+        if (!is_null($playerToFight)){
+            $this->db->updateUserStatus($user->id, 'fight');
+            $this->db->updateUserStatus($playerToFight['id'], 'fight');
+            $this->db->updateBattleHash(md5(rand()));
+            $battle = $this->db->addFight($user->id, $playerToFight['id']);
+            return [
+                'attackerId' => $user->id,
+                'attackerName' => $user->name,
+                'attackerRating' => $user->rating,
+                'defenderId' => $playerToFight['id'],
+                'defenderName' => $playerToFight['name'],
+                'defenderRating' => $playerToFight['rating'],
+                'battleId' => $battle
+            ];
+        }
+
+        return ['message' => 'на данной клетке нет игрока для старта боя'];
     }
     
     public function updateBattle($hash){// loop //получаю данные по всем игрокам
@@ -140,16 +144,17 @@ class Battle {
         ];
     } 
 
-    public function endBattle($token1, $token2){
+    public function endBattle($battle){
+        //return ['test' => $battle];
         //первый игрок
-        $user1 = $this->db->getUserByToken($token1);
+        $user1 = $battle->user1_id;
         $allDead1 = true;
-        $monsters1 = $this->db->getMonstersByUser($user1->id, 'in team');
+        $monsters1 = $this->db->getMonstersByUser($user1, 'in team');
         
         //второй игрок
-        $user2 = $this->db->getUserByToken($token2);
+        $user2 = $battle->user2_id;
         $allDead2 = true;
-        $monsters2 = $this->db->getMonstersByUser($user2->id, 'in team');
+        $monsters2 = $this->db->getMonstersByUser($user2, 'in team');
 
         foreach ($monsters1 as $monster1) {
             if ($monster1['hp'] > 0) {
@@ -167,33 +172,54 @@ class Battle {
         }
 
         if ($allDead1) {
-            $this->updateResourcesOnVictoryAndLoss($user2->id, $user1->id);
-            $this->db->addResultFight($user1->id, $user2->id, $user2->id);
+            $this->updateResourcesOnVictoryAndLoss($user2, $user1);
+            $this->db->addResultFight($user1, $user2, $user2);
             foreach ($monsters1 as $monster1){
                 $this->restoreHp($monster1['id']);
             }
             foreach ($monsters2 as $monster2){
                 $this->restoreHp($monster2['id']);
             }
+            $winner = $this->db->getUserById($user2);
+            $loser = $this->db->getUserById($user1);
+
             return [
-                'tokenWinner' => $token2,
-                'tokenLoser' => $token1
+                'Winner' => [
+                    'id' => $winner->id,
+                    'name' => $winner->name
+                ],
+                'Loser' => [
+                    'id' => $loser->id,
+                    'name' => $loser->name
+                ]
             ];
+
         }elseif($allDead2) {
-            $this->updateResourcesOnVictoryAndLoss($user1->id, $user2->id);
-            $this->db->addResultFight($user1->id, $user2->id, $user1->id);
+            $this->updateResourcesOnVictoryAndLoss($user1, $user2);
+            $this->db->addResultFight($user1, $user2, $user1);
             foreach ($monsters1 as $monster1){
                 $this->restoreHp($monster1['id']);
             }
             foreach ($monsters2 as $monster2){
                 $this->restoreHp($monster2['id']);
             }
+            $winner = $this->db->getUserById($user1);
+            $loser = $this->db->getUserById($user2);
+
             return [
-                'tokenWinner' => $token1,
-                'tokenLoser' => $token2
+                'Winner' => [
+                    'id' => $winner->id,
+                    'name' => $winner->name
+                ],
+                'Loser' => [
+                    'id' => $loser->id,
+                    'name' => $loser->name
+                ]
             ];
+
+            
         }else {
-            return [false];
+            return ['battle is still going'];
         }
 
     }
@@ -440,5 +466,9 @@ public function actionUser($monsterId1, $monsterId2, $action){
                 return [false];
             }
         }
+    }
+
+    public function getBattleById($battleId){
+        return $this->db->getBattleById($battleId);
     }
 }

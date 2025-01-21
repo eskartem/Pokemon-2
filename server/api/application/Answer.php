@@ -56,6 +56,10 @@ class Answer {
         '3017' => 'you do not have enough currency to buy this',
         '4000' => 'You can not attack your monster',
         '4001' => 'You can not attack with a dead monster',
+        '4002' => 'cannot enter the battle in the town',
+        '4003' => 'this user is already in battle',
+        '4004' => 'battle not found',
+        '4005' => 'battle already ended',
         '9000' => 'unknown error'
     );
 
