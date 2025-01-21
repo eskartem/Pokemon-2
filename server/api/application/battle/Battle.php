@@ -118,9 +118,10 @@ class Battle {
                     $user1['y'] <= 43 || $user1['y'] >= 51 ){
                         $this->db->updateUserStatus($user1['id'], 'fight');
                         $this->db->updateUserStatus($user2['id'], 'fight');
-                        $this->db->addFight($user1['id'], $user2['id']); 
+                        $fightId = $this->db->addFight($user1['id'], $user2['id']); 
                         $this->db->updateBattleHash(md5(rand()));
                         return [
+                            'fightId' => $fightId,
                             'user1' => $user1['id'],
                             'user2' => $user2['id']
                         ];
