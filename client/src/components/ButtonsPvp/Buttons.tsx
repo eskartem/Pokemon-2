@@ -39,7 +39,10 @@ const Buttons: React.FC<buttonsProps> = (props: buttonsProps) => {
         oppMonster,
         monster,
         setButtonClicked,
-        setTime
+        setTime,
+        setQueue,
+        fightId,
+        Queues
     } = useContext(stageContext)
 
 
@@ -114,7 +117,7 @@ const Buttons: React.FC<buttonsProps> = (props: buttonsProps) => {
     }
     
     const ActiveButtonMenu = () => {
-        if(activeMonster === firstSelectedMonster || activeMonster === secondSelectedMonster || activeMonster === thirdSelectedMonster) {
+        if(true) {
             return (<>
                 <div ref={firstPlayerButton} className='showButton buttons'>
                 <button id="test-battle-button-yourBaseAttack" onClick={() => {
@@ -135,11 +138,11 @@ const Buttons: React.FC<buttonsProps> = (props: buttonsProps) => {
                 <div ref={yourChoose} className='hideButton buttons'>
                     {hpBarFirstEnemyMonster > 0 && (
                         <button id="test-battle-button-attackFirstEnemyMonster" onClick={() => {
-                            server.actionUser(activeMonsterInfo(activeMonster), oppMonster[0], action)
+                            server.actionUser(Queues[0], oppMonster[0], action)
                             server.stopBattleUpdate()
                             setTime(100)
                             setButtonClicked(true)
-                            setSQueue(sQueue = mathPvp.nextMove(sQueue))
+                            setQueue(fightId, Queues)
                         }}>Ударить {firstSelectedEnemyMonster.name}</button>
                     )}
                     {hpBarSecondEnemyMonster > 0 && (
@@ -166,7 +169,7 @@ const Buttons: React.FC<buttonsProps> = (props: buttonsProps) => {
                     }}>Назад </button>
                 </div>
             </>)
-        }else if(activeMonster === firstSelectedEnemyMonster || activeMonster === secondSelectedEnemyMonster || activeMonster === thirdSelectedEnemyMonster){
+        }else if(true){
             return (<>
                 <div ref={secondPlayerButton} className='showButton buttons'>
                 <button id="test-battle-button-enemyBaseAttack" onClick={() => {

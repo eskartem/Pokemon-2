@@ -474,7 +474,6 @@ public function actionUser($monsterId1, $monsterId2, $action){
     }
 
     public function getQueue($fightId, $queue){
-
         $fight = $this->db->getFight($fightId);
         if ($fight->status === 'close'){
             return['error' => 4002];

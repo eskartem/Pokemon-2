@@ -42,8 +42,9 @@ interface stageContext{
     setHpBarThirdMonster: (hpBarThirdEnemyMonster: number) => void,
     setSQueue: (sQueue: TMonster[]) => void,
     setActiveMonster: (activeMonster: TMonster) => void,
-    setQueue: (fightId: number, squeue: TMonster[]) => void,
-    fightId: number
+    setQueue: (fightId: number, squeue: number[]) => void,
+    fightId: number,
+    Queues: number[]
   }
   
   export const stageContext = createContext<stageContext>({
@@ -85,5 +86,6 @@ interface stageContext{
     setSQueue: () => {},
     setActiveMonster: () => {},
     setQueue: () => {},
-    fightId: 0
+    fightId: 0,
+    Queues: []
   })

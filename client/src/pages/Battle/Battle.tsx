@@ -11,6 +11,7 @@ import MathPvp from '../../services/MathPvp/MathPvp';
 import { ServerContext, StoreContext } from '../../App';
 import { TMonster, TUpdateBattleResponse, TPlayers, TUserInfo, TBattle } from '../../services/server/types';
 import './Battle.scss';
+import userEvent from '@testing-library/user-event';
 
 const Battle: React.FC<IBasePage> = (props: IBasePage) => {
 
@@ -28,6 +29,7 @@ const Battle: React.FC<IBasePage> = (props: IBasePage) => {
   const [thirdSelectedEnemyMonster, setThirdSelectedEnemyMonster] = useState<TMonster>({} as TMonster)
   const [fightId, setFightId] = useState<number>(6)
   const [user, setUser] = useState<TUserInfo | null>(null)
+  const [Queues, setHuinya] = useState<number[]>([])
   
   const [time, setTime] = useState<number>(200)
 
@@ -66,10 +68,10 @@ const Battle: React.FC<IBasePage> = (props: IBasePage) => {
     },
   });
 
-  const setQueue = async (fightId: number, sQueue: TMonster[]) => {
+  const setQueue = async (fightId: number, sQueue: number[]) => {
     try {
-      const queue: number[] = sQueue.map(obj => obj.id);
-      const squeue = await server.getQueue(fightId, JSON.stringify(queue))
+      const squeue = await server.getQueue(fightId, JSON.stringify(sQueue))
+      if(squeue){setHuinya(squeue)}
     } catch (error) {}
   }
 
@@ -109,12 +111,20 @@ const Battle: React.FC<IBasePage> = (props: IBasePage) => {
     setTime,
     setButtonClicked,
     setQueue,
-    fightId
+    fightId,
+    Queues
   });
 
+  const getMonsterById = async (queue: number[]) => {
+    try { 
+      const monster = await server.getMonsterInfo(queue[0])
+      if (monster) {setActiveMonster(monster)}
+    } catch (error) {}
+  }
+
   useEffect(() => {
-    setActiveMonster(sQueue[0])
-  }, [sQueue])
+    getMonsterById(Queues)
+  }, [Queues])
 
   const getMonsterInfo = async (monsterIds: number[], opp_monsterIds: number[]) => {
     try {
@@ -138,14 +148,11 @@ const Battle: React.FC<IBasePage> = (props: IBasePage) => {
     } catch (error) {}
   };
 
-  //const getFightId = async () => {
-  //  try {
-  //    const Id: TBattle | null = await server.startBattle()
-  //    setFightId(Id?.fightId)
-  //  } catch (error){}
-  //}
-
   const backClickHandler = () => setPage(PAGES.GAME);
+
+  useEffect(() => {
+    setActiveMonster(sQueue[0])
+  }, [sQueue])
 
   useEffect(() => {
     const sortedQueue = mathPvp.sortQueuesByLevel(
@@ -157,6 +164,9 @@ const Battle: React.FC<IBasePage> = (props: IBasePage) => {
       thirdSelectedEnemyMonster
     );
     setSQueue(sQueue = sortedQueue);
+    setHuinya([sQueue[0].id, sQueue[1].id, sQueue[2].id, sQueue[3].id, sQueue[4].id, sQueue[5].id])
+    console.log(Queues);
+    
   }, [allMonsterSelected])
 
   useEffect(() => {
@@ -181,10 +191,12 @@ const Battle: React.FC<IBasePage> = (props: IBasePage) => {
       if(!oppMonster || oppMonster.length !== 3) return
       getMonsterInfo(monster, oppMonster);
       if(monster && oppMonster) {
-        setTime(30000)
+        setTime(3000)
         SetLoading(false)
       }
     };
+
+    
 
     if (true) {
       server.startBattleUpdate(updateBattleHandler, time);
@@ -217,6 +229,27 @@ const Battle: React.FC<IBasePage> = (props: IBasePage) => {
     }
   }, [firstSelectedMonster, secondSelectedMonster, thirdSelectedMonster,
       firstSelectedEnemyMonster, secondSelectedEnemyMonster, thirdSelectedEnemyMonster]);
+
+  useEffect(() => {
+    const sortedQueue = mathPvp.sortQueuesByLevel(
+      firstSelectedMonster,
+      secondSelectedMonster,
+      thirdSelectedMonster,
+      firstSelectedEnemyMonster,
+      secondSelectedEnemyMonster,
+      thirdSelectedEnemyMonster
+    );
+    setSQueue(sQueue = sortedQueue);
+  }, [allMonsterSelected])
+  
+  useEffect(() => {
+    setMaxHpBarFirstMonster(firstSelectedMonster.hp);
+    setMaxHpBarSecondMonster(secondSelectedMonster.hp);
+    setMaxHpBarThirdMonster(thirdSelectedMonster.hp);
+    setMaxHpBarFirstEnemyMonster(firstSelectedEnemyMonster.hp);
+    setMaxHpBarSecondEnemyMonster(secondSelectedEnemyMonster.hp);
+    setMaxHpBarThirdEnemyMonster(thirdSelectedEnemyMonster.hp);
+  }, [maxHp])
   
   useEffect(() => {
     setStage({
@@ -255,7 +288,8 @@ const Battle: React.FC<IBasePage> = (props: IBasePage) => {
       setButtonClicked,
       setTime,
       setQueue,
-      fightId
+      fightId,
+      Queues
     });
   }, [stageProps, hpBarFirstEnemyMonster, hpBarFirstMonster, hpBarSecondEnemyMonster, hpBarSecondMonster, hpBarThirdEnemyMonster, hpBarThirdMonster,
       firstSelectedMonster, secondSelectedMonster, thirdSelectedMonster, firstSelectedEnemyMonster, secondSelectedEnemyMonster, thirdSelectedEnemyMonster,
