@@ -861,6 +861,7 @@ Answer<false>
 **Успешный ответ**
 ```
     Answer<{
+        id: number; - id монстра
         typeId: number; - id типа монстра
         name: string; - имя монстра
         elementId: number; - id стихии
@@ -883,7 +884,7 @@ Answer<false>
 ```
 {
     fightId: number; - id баттла
-    queue: array; - массив очереди из id монстров
+    queue: string; - строка очереди из id монстров (через запятую, без пробелов)
 }
 ```
 

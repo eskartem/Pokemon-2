@@ -31,6 +31,7 @@ class Battle {
         $defense = $defense + $defense_param;
 
         return [
+            'id' => $monsterId,
             'typeId' => $monster_type_id,
             'name' => $monster_data -> name,
             'elementId' => $elementId,
@@ -453,8 +454,9 @@ public function actionUser($monsterId1, $monsterId2, $action){
         if ($fight->status === 'close'){
             return['error' => 4002];
         }
-
         //$queue = [1,2,3,4,5,6];
+        $queue = explode(',', $queue);
+        $queue = array_map('intval', $queue);
 
         for ($i = 0; $i <= 5; $i++){
             $monster = $this->db->getMonsterById($queue[$i]);
@@ -476,14 +478,13 @@ public function actionUser($monsterId1, $monsterId2, $action){
 
         $this->db->updateQueue($fight->id, $queue1, $queue2, $queue3, $queue4, $queue5, $queue6);
 
-        return[
-            'queue' =>
-            [$queue1,
+        return
+            array($queue1,
             $queue2,
             $queue3,
             $queue4,
             $queue5,
-            $queue6]
-        ];
+            $queue6)
+        ;
     }
 }
