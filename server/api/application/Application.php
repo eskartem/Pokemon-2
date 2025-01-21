@@ -405,11 +405,21 @@ class Application {
         return ['error' => 242];
     }
 
+    public function getInfoMonster($params){
+        if ($params['monsterId']){
+            $monster = $this->inventory->getMonster($params['monsterId']);
+            if ($monster){
+                return $this->battle->getInfoMonster($params['monsterId']);
+            }
+            return['error' => 702];
+        }
+        return ['error' => 242];
+    }
+
     public function hatchEgg($params){
         if (!isset($params['token'])) {
             return ['error' => 242];
         }
-    
         $user = $this->user->getUser($params['token']);
         if (!$user) {
             return ['error' => 705];
