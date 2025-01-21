@@ -73,6 +73,7 @@ export type TBattleInfo = {
     damage: number
     lostMonye: number
     lostCrystal: number
+    result: boolean
 }
 
 export type TMessages = TMessage[];
