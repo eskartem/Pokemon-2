@@ -437,4 +437,19 @@ class Application {
     
         return $this->inventory->hatchEgg($inventory);
     }
+
+    
+    public function getQueue($params){
+        if ($params['token1'] && $params['token2'] && $params['queue']){
+            $user1 = $this->user->getUser($params['token1']);
+            $user2 = $this->user->getUser($params['token2']);
+
+            if ($user1 && $user2){
+                return $this->battle->getQueue($params['token1'], $params['token2'], $params['queue']);
+            }
+            return['error' => 702];
+        }
+        return ['error' => 242];
+    }
+
 }

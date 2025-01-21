@@ -457,4 +457,13 @@ class DB {
     public function getSkillById($skillId) { //id скилла совпадают с id типом монстра
         return $this->query('SELECT * FROM skills WHERE id=?', [$skillId]);
     }
+
+    public function getFight ($userId1, $userId2){
+        return $this->query('SELECT * FROM fight WHERE (user1_id = ? OR user1_id = ?) AND status = "open"', [$userId1, $userId2]);
+    }
+
+    public function updateQueue($fightId,$queue1, $queue2, $queue3, $queue4, $queue5, $queue6){
+        $this->execute('UPDATE fight SET queue1 = ?, queue2 = ?, queue3 = ?, queue4 = ?, queue5 = ?, queue6 = ? WHERE id = ?', [$queue1, $queue2, $queue3, $queue4, $queue5, $queue6, $fightId]);
+    }
+    
 }
