@@ -334,12 +334,13 @@ class Application {
         return ['error' => 242];
     }
     
-    public function endBattle($params) {
-        if (!isset($params['battleId'])) {
-            return ['error' => 242];
-        }
+    public function endBattle($fightId) {
+        // if (!isset($params['battleId'])) {
+        //     return ['error' => 242];
+        // }
     
-        $battle = $this->battle->getBattleById($params['battleId']);
+        $battle = $this->battle->getFight($fightId);
+
         if (!$battle) {
             return ['error' => 4005];
         }
@@ -348,7 +349,7 @@ class Application {
             return ['error' => 4005];
         }
     
-        return $this->battle->endBattle($battle);
+        return $this->battle->endBattle($fightId);
     }
     
 
