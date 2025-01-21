@@ -90,4 +90,12 @@ class Inventory {
         ];
 
     }
+
+    public function getAttackPokemon($monsterId) {
+        $monsterInfo = $this->db->getAttackPokemon($monsterId);
+        if (!$monsterInfo) {
+            return ['error' => 702]; // Покемон не найден
+        }
+        return $monsterInfo;
+    }
 }

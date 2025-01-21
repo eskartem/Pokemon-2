@@ -404,4 +404,39 @@ class DB {
     }
     //объединить в один метод?
 
+    public function getAttackPokemon($monsterId) {
+        // Получаем информацию о покемоне
+        $monster = $this->query('SELECT * FROM monsters WHERE id = ?', [$monsterId]);
+        if (!$monster) {
+            return null; // Покемон не найден
+        }
+    
+        // Получаем тип покемона
+        $monsterType = $this->query('SELECT * FROM monster_types WHERE id = ?', [$monster->monster_type_id]);
+        if (!$monsterType) {
+            return null; // Тип покемона не найден
+        }
+    
+        // Получаем стихию покемона
+        $element = $this->query('SELECT * FROM elements WHERE id = ?', [$monsterType->element_id]);
+        if (!$element) {
+            return null; // Стихия не найдена
+        }
+    
+        // Получаем параметры атаки для текущего уровня покемона
+        $levelParams = $this->query('SELECT * FROM monster_level WHERE level = ?', [$monster->level]);
+        if (!$levelParams) {
+            return null; // Параметры уровня не найдены
+        }
+    
+        // Рассчитываем общую атаку
+        $attack = $monsterType->attack + $levelParams->attack;
+    
+        return [
+            'name' => $monsterType->name,
+            'element' => $element->name,
+            'attack' => $attack
+        ];
+    }
+
 }

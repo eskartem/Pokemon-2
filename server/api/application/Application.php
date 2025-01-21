@@ -395,5 +395,18 @@ class Application {
         }
         return ['error' => 242];
     }
+
+    public function getAttackPokemon($params) {
+        if (!isset($params['token'], $params['monsterId'])) {
+            return ['error' => 242]; // Параметры не переданы
+        }
+    
+        $user = $this->user->getUser($params['token']);
+        if (!$user) {
+            return ['error' => 705]; // Пользователь не найден
+        }
+    
+        return $this->inventory->getAttackPokemon($params['monsterId']);
+    }
     
 }
