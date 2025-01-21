@@ -8,8 +8,11 @@ import crystalImage from '../../assets/img/crystal.png';
 import eggImage from '../../assets/img/egg_new.png';
 import eggShellImage from '../../assets/img/egg_shell.png';
 import marketImg from '../../assets/img/marketRynokImg.png';
-import tradeImg from '../../assets/img/tradeRynokImg.png';
+import marketHoverImg from '../../assets/img/marketRynokHoverImg.png';
+import ExchangerImg from '../../assets/img/tradeRynokImg.png';
+import tradeHoverImg from '../../assets/img/tradeRynokHoverImg.png';
 import traderImg from '../../assets/img/traderRynokImg.png';
+import traderHoverImg from '../../assets/img/traderRynokHoverImg.png';
 import { IBasePage, PAGES } from '../PageManager';
 import { ServerContext, StoreContext } from '../../App';
 import { TInventory } from '../../services/server/types';
@@ -30,6 +33,11 @@ const Market: React.FC<IBasePage> = (props: IBasePage) => {
     const [inventory, setInventory] = useState<TInventory | null>(null);
 
     const user = store.getUser();
+
+    // Наведение на изображение
+    const [isRynokHovered, setIsRynokHovered] = useState(false);
+    const [isExchangerHovered, setIsExchangerHovered] = useState(false);
+    const [isTraderHovered, setIsTraderHovered] = useState(false);
 
     useEffect(() => {
         if (user) {
@@ -96,24 +104,30 @@ const Market: React.FC<IBasePage> = (props: IBasePage) => {
                     </div>
 
             <div className='button-panel'>
-                <img 
-                    src={marketImg}
+                <img //Кнопка Рынка
+                    src={isRynokHovered ? marketHoverImg : marketImg}
                     onClick={() => setTab(TABS.MARKET)} 
                     className='market-button'
+                    onMouseEnter={() => setIsRynokHovered(true)}
+                    onMouseLeave={() => setIsRynokHovered(false)}
                     //text='рынок'
                     // title="Находится в главном городе, позволяет торговать покемонами, ресурсами и предметами. Залог: 5% от цены. Возвращается при продаже, удерживается при снятии или истечении срока. Ограничения: нельзя продавать покемонов, если в инвентаре осталось меньше 3. Лоты: фиксированы на 5 минут, работают по принципу аукциона. Лимит лотов: залог обязателен для ограничения их количества. Контроль цен: минимальные и максимальные цены на товары. Цены на ресурсы: зависят от спроса и предложения, расчеты в разработке."
                 />
-                <img 
-                    src={tradeImg}
+                <img //Кнопка Торговца
+                    src={isTraderHovered ? traderHoverImg : traderImg}
                     onClick={() => setTab(TABS.TRADER)} 
                     className='market-button'
+                    onMouseEnter={() => setIsTraderHovered(true)}
+                    onMouseLeave={() => setIsTraderHovered(false)}
                     // title="Отдельный персонаж на рынке для продажи кусков яиц и кристаллов стихий (покемонов продавать нельзя). Цены фиксированы и не зависят от рыночных колебаний."
                     //text='торговец'
                 />
-                <img 
-                    src={traderImg}
+                <img //Кнопка Обменника
+                    src={isExchangerHovered ? tradeHoverImg : ExchangerImg}
                     onClick={() => setTab(TABS.EXCHANGER)} 
                     className='market-button'
+                    onMouseEnter={() => setIsExchangerHovered(true)}
+                    onMouseLeave={() => setIsExchangerHovered(false)}
                     // title="Позволяет обменивать 50 кусков яиц на одно яйцо покемона. Куски яиц можно собирать в активностях для получения новых покемонов."
                     //text='обменник'
                 />

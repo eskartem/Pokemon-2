@@ -5,6 +5,7 @@ import Chat from '../../components/Chat/Chat';
 import { StoreContext, ServerContext } from '../../App';
 import { IBasePage, PAGES } from '../PageManager';
 import ExitImg from '../../assets/img/cross.png';
+import ExitHoverImg from '../../assets/img/crossHover.png';
 import ChatImg from '../../assets/img/chat.png';
 import ChatCloseImg from '../../assets/img/chatclose.png';
 import moneyImage from '../../assets/img/money.png';
@@ -12,8 +13,9 @@ import crystalImage from '../../assets/img/crystal.png';
 import eggImage from '../../assets/img/egg_new.png';
 import eggShellImage from '../../assets/img/egg_shell.png';
 import inventImage from '../../assets/img/inventImg.png';
+import inventHoverImg from '../../assets/img/inventHoverImg.png';
 import marketImage from '../../assets/img/marketImg.png';
-import buttonHoverImage from '../../assets/img/buttonHoverImage.jpg';
+import marketHoverImg from '../../assets/img/marketHoverImg.png';
 import { TInventory } from '../../services/server/types';
 
 import './Game.scss';
@@ -60,6 +62,7 @@ const Game: React.FC<IBasePage> = (props: IBasePage) => {
     // Наведение на изображение
     const [isInventHovered, setIsInventHovered] = useState(false);
     const [isMarketHovered, setIsMarketHovered] = useState(false);
+    const [isExitHovered, setIsExitHovered] = useState(false);
 
     //Кнопки
     const inventoryClickHandler = () => setPage(PAGES.INVENTORY);
@@ -108,27 +111,38 @@ const Game: React.FC<IBasePage> = (props: IBasePage) => {
                     </div>
                 </div>
                 <div className='button-panel-test-centre'>
-                    <img
-                        src={isInventHovered ? buttonHoverImage : inventImage}
+                    <img //Кнопка инвентаря
+                        src={isInventHovered ? inventHoverImg : inventImage}
                         alt=""
                         onClick={inventoryClickHandler}
                         className='imageButton'
                         onMouseEnter={() => setIsInventHovered(true)}
                         onMouseLeave={() => setIsInventHovered(false)}
                     />
-                    {isUserInTown && <img
-                        src={isMarketHovered ? buttonHoverImage : marketImage}
+                    {isUserInTown && <img //Кнопка Рынка
+                        src={isMarketHovered ? marketHoverImg : marketImage}
                         alt=""
-                        onClick={inventoryClickHandler}
+                        onClick={marketClickHandler}
                         className='imageButton'
                         onMouseEnter={() => setIsMarketHovered(true)}
                         onMouseLeave={() => setIsMarketHovered(false)}
                     /> }
 
+                    {/*Конпка Битвы*/}
                     <Button id='test-game-button-battle' onClick={battleClickHandler} text='Битва' />
                 </div>
+
+                
+                {/*Кнопка Выхода*/}
                 <div className='button-panel-test-right'>
-                    <img id='test-game-img-logout' className='img-logout' src={ExitImg} alt="ExitImg" onClick={logoutClickHandler} />
+                    <img //Кнопка инвентаря
+                        id='test-game-img-logout'
+                        className='img-logout'
+                        src={isExitHovered ? ExitHoverImg : ExitImg}
+                        onClick={logoutClickHandler}
+                        onMouseEnter={() => setIsExitHovered(true)}
+                        onMouseLeave={() => setIsExitHovered(false)}
+                    />
                 </div>
             </div>
             {isChatVisible && (
@@ -136,6 +150,8 @@ const Game: React.FC<IBasePage> = (props: IBasePage) => {
                     <Chat />
                 </div>
             )}
+            
+            {/*Кнопка чата*/}
             <img className='chat-button' onClick={toggleChatVisibility} src={isChatVisible ? ChatCloseImg : ChatImg } />
 
             <div className="map-container">
