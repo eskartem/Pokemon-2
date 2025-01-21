@@ -861,6 +861,7 @@ Answer<false>
 **Успешный ответ**
 ```
     Answer<{
+        id: number; - id монстра
         typeId: number; - id типа монстра
         name: string; - имя монстра
         elementId: number; - id стихии
