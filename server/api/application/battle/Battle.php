@@ -81,7 +81,7 @@ class Battle {
     public function restoreHp($monsterId){
         $monster = $this->db->getMonsterById($monsterId);
         if ($monster->hp != 0){
-        $this->db->upgradeHpMonstersByUser($monsterId, -$monster->hp); 
+            $this->db->upgradeHpMonstersByUser($monsterId, -$monster->hp); 
         }
         $monster_type_id = $monster->monster_type_id;
         $monster_type = $this->db->getMonsterTypeById($monster_type_id);
@@ -162,24 +162,23 @@ class Battle {
         foreach ($monsters1 as $monster1) {
             if ($monster1['hp'] > 0) {
                 $allDead1 = false; // Если хотя бы один жив, устанавливаем в false
-            } else {
-                $this->db->updateMonsterStatus($monster1['id'], 'in pocket'); 
             }
         }
         foreach ($monsters2 as $monster2) {
             if ($monster2['hp'] > 0) {
                 $allDead2 = false;
-            } else {
-                $this->db->updateMonsterStatus($monster2['id'], 'in pocket');
             }
         }
 
         if ($allDead1) {
             $this->updateResourcesOnVictoryAndLoss($user2, $user1);
             $this->db->addResultFight($fightId, $user2);
+
+            $this->db->updateUserStatus($user1, 'scout');
+            $this->db->updateUserStatus($user2, 'scout');
+
             foreach ($monsters1 as $monster1){
                 $this->restoreHp($monster1['id']);
-                
             }
             foreach ($monsters2 as $monster2){
                 $this->restoreHp($monster2['id']);
@@ -191,6 +190,10 @@ class Battle {
         }elseif($allDead2) {
             $this->updateResourcesOnVictoryAndLoss($user1, $user2);
             $this->db->addResultFight($fightId, $user1);
+
+            $this->db->updateUserStatus($user1, 'scout');
+            $this->db->updateUserStatus($user2, 'scout');
+
             foreach ($monsters1 as $monster1){
                 $this->restoreHp($monster1['id']);
             }
