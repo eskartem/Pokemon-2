@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.1:3306
--- Время создания: Янв 19 2025 г., 19:48
+-- Время создания: Янв 21 2025 г., 17:23
 -- Версия сервера: 8.0.30
 -- Версия PHP: 8.1.9
 
@@ -77,18 +77,22 @@ CREATE TABLE `fight` (
   `user2_id` int NOT NULL,
   `turn` int NOT NULL,
   `status` varchar(16) NOT NULL,
-  `result` int NOT NULL
+  `result` int NOT NULL,
+  `queue1` int DEFAULT NULL COMMENT 'queue',
+  `queue2` int DEFAULT NULL COMMENT 'queue',
+  `queue3` int DEFAULT NULL COMMENT 'queue',
+  `queue4` int DEFAULT NULL COMMENT 'queue',
+  `queue5` int DEFAULT NULL COMMENT 'queue',
+  `queue6` int DEFAULT NULL COMMENT 'queue'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Дамп данных таблицы `fight`
 --
 
-INSERT INTO `fight` (`id`, `user1_id`, `user2_id`, `turn`, `status`, `result`) VALUES
-(1, 1, 3, 1, 'close', 1),
-(2, 1, 2, 0, 'open', 0),
-(3, 1, 2, 0, 'open', 0),
-(4, 1, 2, 0, 'open', 0);
+INSERT INTO `fight` (`id`, `user1_id`, `user2_id`, `turn`, `status`, `result`, `queue1`, `queue2`, `queue3`, `queue4`, `queue5`, `queue6`) VALUES
+(1, 1, 3, 1, 'close', 1, NULL, NULL, NULL, NULL, NULL, NULL),
+(2, 1, 2, 0, 'open', 0, 2, 0, 4, 0, 6, 0);
 
 -- --------------------------------------------------------
 
@@ -127,7 +131,7 @@ CREATE TABLE `hashes` (
 --
 
 INSERT INTO `hashes` (`id`, `chat_hash`, `map_hash`, `battle_hash`, `market_hash`) VALUES
-(1, 'd54549bb2c64c7c0472a1b627d150dcf', 'd99f7934ce684c8092047e4c0c44ba6f', '66e1b26d929177a329b056c8a8caf667', 'fabceea19fc9e3671afa4c9ff11ba177');
+(1, 'd54549bb2c64c7c0472a1b627d150dcf', 'aa03e9680150a5281aeb1b50ce209af0', 'fc883db1f0c02fe419d6be1b668e498c', 'fabceea19fc9e3671afa4c9ff11ba177');
 
 -- --------------------------------------------------------
 
@@ -458,8 +462,8 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `login`, `password`, `token`, `name`, `money`, `rating`, `x`, `y`, `status`, `last_update`) VALUES
-(1, 'vasya', 'fcb03559c0317682f5d65a88aca50012', NULL, 'Вася Пупкин', 256, 0, 70, 41, 'offline', NULL),
-(2, 'petya', 'bcb209cf0d43e198e6467f8b0ac3387a', NULL, 'Пётр Петрович', 1700, 0, 70, 41, 'offline', NULL),
+(1, 'vasya', 'fcb03559c0317682f5d65a88aca50012', 'fb55edb42157f4641847c507b1948de2', 'Вася Пупкин', 256, 0, 70, 41, 'fight', NULL),
+(2, 'petya', 'bcb209cf0d43e198e6467f8b0ac3387a', '59ffe3cbedf20e8ba4290a471f74f998', 'Пётр Петрович', 1700, 0, 70, 41, 'fight', NULL),
 (3, 'masha', 'e213995da574de722a416f65b43d8314', '1916666aacbb8732bf2d12238b2cd5db', 'Маша Сергеевна', 0, 0, 80, 45, 'offline', NULL),
 (4, 'test', 'нелогиньтесь', 'test', 'Тестер Тестерович', 30775, 0, 80, 45, 'offline', NULL),
 (5, 'fghj', 'c05d708b03d6ce35c218e7ed35a29da4', NULL, 'dfgh', 500, 0, 80, 45, 'offline', NULL);
@@ -585,7 +589,7 @@ ALTER TABLE `elements`
 -- AUTO_INCREMENT для таблицы `fight`
 --
 ALTER TABLE `fight`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT для таблицы `game`
