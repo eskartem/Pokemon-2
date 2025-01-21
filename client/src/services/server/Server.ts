@@ -9,9 +9,13 @@ import { TAnswer, TError, TMessagesResponse, TUser, TMap, TMapZone,
     TMapInfo,
     TGamerBattle,
     TUpdateBattleResponse,
-    TMonster, THatchedResponse} from "./types";
+    TMonster, THatchedResponse,
+    TBattleInfo,
+    TBalance,
+    TBattle,
+    TEBattle} from "./types";
 
-const { CHAT_TIMESTAMP, SCENE_TIMESTAMP, MARKET_TIMESTAMP, HOST, BATTLE_TIMESTAMP } = CONFIG;
+const { CHAT_TIMESTAMP, SCENE_TIMESTAMP, MARKET_TIMESTAMP, HOST} = CONFIG;
 
 class Server {
     HOST = HOST;
@@ -265,13 +269,13 @@ class Server {
         return result;
     }    
 
-    startBattleUpdate(cb: (result: TUpdateBattleResponse) => void): void {
+    startBattleUpdate(cb: (result: TUpdateBattleResponse) => void, TIMESTAMP: number): void {
         this.battleInterval = setInterval(async () => {
             const result = await this.updateBattle();
             if (result) {
                 cb(result);
             }
-        }, BATTLE_TIMESTAMP);
+        }, TIMESTAMP);
     }
 
     async updateBattle(): Promise<TUpdateBattleResponse | null> {
@@ -290,16 +294,27 @@ class Server {
             this.battleInterval = null;
             this.store.clearAllHashes();
         }
-    }
-
-    async getPlayerInBattle(): Promise<TGamerBattle[] | null> {    
-        const result = await this.request<TGamerBattle[]>('startBattle', {})     
-        return result;
-    }    
+    }   
 
     async getMonsterInfo(monsterId: number): Promise<TMonster | null> {
         return await this.request<TMonster>('getInfoMonster', {monsterId: monsterId.toString()});
     } 
+
+    async actionUser(monsterId1: number, monsterId2: number, action: string): Promise<TBattleInfo | null> {
+        return await this.request<TBattleInfo>('actionUser', {monsterId1: monsterId1.toString(), monsterId2: monsterId2.toString(), action});
+    }
+
+    async startBattle(): Promise<TBattle | null> {
+        return await this.request<TBattle>('startBattle');
+    }
+
+    async getQueue(fightId: number, sortQueue: string): Promise<number[] | null> {
+        return await this.request<number[]>('getQueue', {fightId: fightId.toString(), queue: sortQueue});
+    }
+
+    async endBattle(fightId: number): Promise<TEBattle[] | null> {
+        return await this.request<TEBattle[]>('getQueue', {fightId: fightId.toString()});
+    }
 
     
 }

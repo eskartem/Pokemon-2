@@ -40,7 +40,7 @@ const StatsPanel: React.FC<StatsPanelProps> = (props: StatsPanelProps) => {
 
     return (<>
         {(isOpenFirstMonster && hpBarFirstMonster > 0) && 
-            (<Container x={stageProps.width * 0.15 } y={stageProps.height * 0.3 + 35} name={"test-battle-pixi-yourFirstStats"}>
+            (<Container x={stageProps.width * 0.15 + 20} y={stageProps.height * 0.3 + 35} name={"test-battle-pixi-yourFirstStats"}>
                 <Text
                     text={`hp: ${firstSelectedMonster.hp}`}
                     scale={0.5}
@@ -69,7 +69,7 @@ const StatsPanel: React.FC<StatsPanelProps> = (props: StatsPanelProps) => {
             </Container>
         )}
         {(isOpenSecondMonster && hpBarSecondMonster > 0) && 
-            (<Container x={stageProps.width * 0.15 } y={stageProps.height * 0.5 + 35} name={"test-battle-pixi-yourSecondStats"}>
+            (<Container x={stageProps.width * 0.15 + 20} y={stageProps.height * 0.5 + 35} name={"test-battle-pixi-yourSecondStats"}>
                 <Text
                     text={`hp: ${secondSelectedMonster.hp}`}
                     scale={0.5}
@@ -98,7 +98,7 @@ const StatsPanel: React.FC<StatsPanelProps> = (props: StatsPanelProps) => {
             </Container>
         )}
         {(isOpenThirdMonster && hpBarThirdMonster > 0) && 
-            (<Container x={stageProps.width * 0.15 } y={stageProps.height * 0.7 + 35} name={"test-battle-pixi-yourThirdStats"}>
+            (<Container x={stageProps.width * 0.15 + 20 } y={stageProps.height * 0.7 + 35} name={"test-battle-pixi-yourThirdStats"}>
                 <Text
                     text={`hp: ${thirdSelectedMonster.hp}`}
                     scale={0.5}
@@ -127,7 +127,7 @@ const StatsPanel: React.FC<StatsPanelProps> = (props: StatsPanelProps) => {
             </Container>
         )}
         {(isOpenFirstEnemyMonster && hpBarFirstEnemyMonster > 0) && 
-            (<Container x={stageProps.width * 0.85 - 30 } y={stageProps.height * 0.3 + 35} name={"test-battle-pixi-enemyFirstStats"}>
+            (<Container x={stageProps.width * 0.85 - 100 } y={stageProps.height * 0.3 + 35} name={"test-battle-pixi-enemyFirstStats"}>
                 <Text
                     text={`hp: ${firstSelectedEnemyMonster.hp}`}
                     scale={0.5}
@@ -156,7 +156,7 @@ const StatsPanel: React.FC<StatsPanelProps> = (props: StatsPanelProps) => {
             </Container>
         )}
         {(isOpenSecondEnemyMonster && hpBarSecondEnemyMonster > 0) && 
-            (<Container x={stageProps.width * 0.85 - 30 } y={stageProps.height * 0.5 + 35} name={"test-battle-pixi-enemySecondStats"}>
+            (<Container x={stageProps.width * 0.85 - 100 } y={stageProps.height * 0.5 + 35} name={"test-battle-pixi-enemySecondStats"}>
                 <Text
                     text={`hp: ${secondSelectedEnemyMonster.hp}`}
                     scale={0.5}
@@ -185,7 +185,7 @@ const StatsPanel: React.FC<StatsPanelProps> = (props: StatsPanelProps) => {
             </Container>
         )}
         {(isOpenThirdEnemyMonster && hpBarThirdEnemyMonster > 0) && 
-            (<Container x={stageProps.width * 0.85 - 30 } y={stageProps.height * 0.7 + 35} name={"test-battle-pixi-enemyThirdStats"}>
+            (<Container x={stageProps.width * 0.85 - 100 } y={stageProps.height * 0.7 + 35} name={"test-battle-pixi-enemyThirdStats"}>
                 <Text
                     text={`hp: ${thirdSelectedEnemyMonster.hp}`}
                     scale={0.5}

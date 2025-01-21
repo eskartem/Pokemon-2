@@ -1,15 +1,13 @@
 import { useContext, useEffect, useState } from "react"
 import { Sprite, Text, Container} from "@pixi/react"
+import { TextStyle } from "pixi.js";
 import {bear_air, bee_earth, blob_fish_water, butterfly_water, 
     cat_lit_energy_air, elephant_air, emoboy_fire, 
     frog_water, lizard_fire, meatboy_fire, mushroom_earth, worm_earth, empty} from '../../../assets/characters/allSprites'
 
-import { Monsters } from "../../../assets/Monsters/Monster"
-
 import StatsPanel from "./statsPanels";
 import { stageContext } from "../../../assets/context/stage";
 import { TMonster } from "../../../services/server/types";
-import { doesNotMatch } from "assert";
 
 
 const Sprites: React.FC = () => {
@@ -26,8 +24,21 @@ const Sprites: React.FC = () => {
         thirdSelectedMonster,
         firstSelectedEnemyMonster,
         secondSelectedEnemyMonster,
-        thirdSelectedEnemyMonster 
-    } = useContext(stageContext)
+        thirdSelectedEnemyMonster,
+        activeMonster 
+        } = useContext(stageContext)
+
+    const unactiveTextStyle = new TextStyle({
+        fill: '#ffffff', // Цвет текста
+        stroke: '#000000', // Цвет обводки
+        strokeThickness: 2,
+    });
+
+    const activeTextStyle = new TextStyle({
+        fill: '#4feb34', // Цвет текста
+        stroke: '#000000', // Цвет обводки
+        strokeThickness: 2,
+    });
 
     let [firstSelectedSprite, setFirstSelectedSprite] = useState('');
     let [secondSelectedSprite, setSecondSelectedSprite] = useState('');
@@ -112,6 +123,7 @@ const Sprites: React.FC = () => {
                 text={`${firstSelectedMonster.name}`}
                 x={20}
                 y={-30}
+                style={firstSelectedMonster === activeMonster ? activeTextStyle : unactiveTextStyle}
                 />
             </Container>
         )}
@@ -127,6 +139,7 @@ const Sprites: React.FC = () => {
                     text={`${secondSelectedMonster.name}`}
                     x={20}
                     y={-30}
+                    style={secondSelectedMonster === activeMonster ? activeTextStyle : unactiveTextStyle}
                 />
             </Container>
         )}
@@ -142,6 +155,7 @@ const Sprites: React.FC = () => {
                     text={`${thirdSelectedMonster.name}`}
                     x={20}
                     y={-30}
+                    style={thirdSelectedMonster === activeMonster ? activeTextStyle : unactiveTextStyle}
                 />
             </Container>
         )}
@@ -158,6 +172,7 @@ const Sprites: React.FC = () => {
                     text={`${firstSelectedEnemyMonster.name}`}
                     x={-20}
                     y={-30}
+                    style={firstSelectedEnemyMonster === activeMonster ? activeTextStyle : unactiveTextStyle}
                 />
         </Container>
         )}
@@ -174,6 +189,7 @@ const Sprites: React.FC = () => {
                     text={`${secondSelectedEnemyMonster.name}`}
                     x={-20}
                     y={-30}
+                    style={secondSelectedEnemyMonster === activeMonster ? activeTextStyle : unactiveTextStyle}
                 />
             </Container>
         )}
@@ -190,6 +206,7 @@ const Sprites: React.FC = () => {
                     text={`${thirdSelectedEnemyMonster.name}`}
                     x={-20}
                     y={-30}
+                    style={thirdSelectedEnemyMonster === activeMonster ? activeTextStyle : unactiveTextStyle}
                 />
             </Container>
         )}
@@ -200,6 +217,11 @@ const Sprites: React.FC = () => {
             isOpenFirstEnemyMonster={isOpenFirstEnemyMonster}
             isOpenSecondEnemyMonster={isOpenSecondEnemyMonster}
             isOpenThirdEnemyMonster={isOpenThirdEnemyMonster}
+        />
+        <Text 
+                    text={`${activeMonster.name}`}
+                    x={200}
+                    y={300}
         />
     </>)
 }

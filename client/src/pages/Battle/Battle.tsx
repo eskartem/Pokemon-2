@@ -5,33 +5,37 @@ import { stageContext } from '../../assets/context/stage';
 import Buttons from '../../components/ButtonsPvp/Buttons';
 import HpBars from '../../components/Graphics/hpBars/hpBars';
 import Sprites from '../../components/Graphics/sprite/Sprite';
-import Texts from '../../components/Graphics/text';
 import FinalScreen from '../../components/finalScreen/finalScreen';
-import Button from '../../components/Button/Button';
 import BattleTimer from '../../components/Graphics/battleTimer/battleTimer';
-//import Animation from '../../components/Graphics/animation/animation';
-import { easyBot } from '../../assets/Bots/bots';
 import MathPvp from '../../services/MathPvp/MathPvp';
 import { ServerContext, StoreContext } from '../../App';
-import { TMonster, TGamerBattle, TInventory, TUpdateBattleResponse, TUpdateSceneResponse } from '../../services/server/types';
+import { TMonster, TUpdateBattleResponse, TPlayers, TUserInfo, TBattle } from '../../services/server/types';
 import './Battle.scss';
 
 const Battle: React.FC<IBasePage> = (props: IBasePage) => {
+
+  const { setPage } = props;
   const server = useContext(ServerContext);
   const store = useContext(StoreContext);
+
+  const mathPvp = new MathPvp();
 
   const [firstSelectedMonster, setFirstSelectedMonster] = useState<TMonster>({} as TMonster);
   const [secondSelectedMonster, setSecondSelectedMonster] = useState<TMonster>({} as TMonster);
   const [thirdSelectedMonster, setThirdSelectedMonster] = useState<TMonster>({} as TMonster);
   const [firstSelectedEnemyMonster, setFirstSelectedEnemyMonster] = useState<TMonster>({} as TMonster);
   const [secondSelectedEnemyMonster, setSecondSelectedEnemyMonster] = useState<TMonster>({} as TMonster);
-  const [thirdSelectedEnemyMonster, setThirdSelectedEnemyMonster] = useState<TMonster>({} as TMonster);
+  const [thirdSelectedEnemyMonster, setThirdSelectedEnemyMonster] = useState<TMonster>({} as TMonster)
+  const [fightId, setFightId] = useState<number>(6)
+  const [user, setUser] = useState<TUserInfo | null>(null)
+  
+  const [time, setTime] = useState<number>(200)
 
-  const mathPvp = new MathPvp();
-  const { setPage } = props;
+  const [monster, setMonster] = useState<number[]>([]);
+  const [oppMonster, setOppMonster] = useState<number[]>([]);
 
-  const [sQueue, setSQueue] = useState<TMonster[]>([]);
-  const [activeMonster, setActiveMonster] = useState<TMonster>({} as TMonster);
+  let [sQueue, setSQueue] = useState<TMonster[]>([]);
+  let [activeMonster, setActiveMonster] = useState<TMonster>({} as TMonster);
 
   const [hpBarFirstMonster, setHpBarFirstMonster] = useState<number>(0);
   const [hpBarSecondMonster, setHpBarSecondMonster] = useState<number>(0);
@@ -39,9 +43,20 @@ const Battle: React.FC<IBasePage> = (props: IBasePage) => {
   const [hpBarFirstEnemyMonster, setHpBarFirstEnemyMonster] = useState<number>(0);
   const [hpBarSecondEnemyMonster, setHpBarSecondEnemyMonster] = useState<number>(0);
   const [hpBarThirdEnemyMonster, setHpBarThirdEnemyMonster] = useState<number>(0);
+  const [maxHpBarFirstMonster, setMaxHpBarFirstMonster] = useState<number>(0);
+  const [maxHpBarSecondMonster, setMaxHpBarSecondMonster] = useState<number>(0);
+  const [maxHpBarThirdMonster, setMaxHpBarThirdMonster] = useState<number>(0);
+  const [maxHpBarFirstEnemyMonster, setMaxHpBarFirstEnemyMonster] = useState<number>(0);
+  const [maxHpBarSecondEnemyMonster, setMaxHpBarSecondEnemyMonster] = useState<number>(0);
+  const [maxHpBarThirdEnemyMonster, setMaxHpBarThirdEnemyMonster] = useState<number>(0);
 
   const [width, setWidth] = useState(window.innerWidth);
   const [height, setHeight] = useState(window.innerHeight);
+
+  const [allMonsterSelected, setAllMonsterSelected] = useState<boolean>(false)
+  const [maxHp, setMaxHp] = useState<boolean>(false)
+  const [buttonClicked, setButtonClicked] = useState<boolean>(false)
+  const [loading, SetLoading] = useState<boolean>(true)
 
   const [stageProps, setStageProps] = useState({
     width: width * 0.7,
@@ -50,6 +65,13 @@ const Battle: React.FC<IBasePage> = (props: IBasePage) => {
       backgroundAlpha: 0,
     },
   });
+
+  const setQueue = async (fightId: number, sQueue: TMonster[]) => {
+    try {
+      const queue: number[] = sQueue.map(obj => obj.id);
+      const squeue = await server.getQueue(fightId, JSON.stringify(queue))
+    } catch (error) {}
+  }
 
   const [stage, setStage] = useState({
     stageProps,
@@ -67,6 +89,8 @@ const Battle: React.FC<IBasePage> = (props: IBasePage) => {
     thirdSelectedEnemyMonster,
     sQueue,
     activeMonster,
+    monster,
+    oppMonster,
     setSQueue,
     setActiveMonster,
     setHpBarFirstEnemyMonster,
@@ -75,78 +99,115 @@ const Battle: React.FC<IBasePage> = (props: IBasePage) => {
     setHpBarSecondMonster,
     setHpBarThirdEnemyMonster,
     setHpBarThirdMonster,
+    maxHpBarFirstMonster,
+    maxHpBarSecondMonster,
+    maxHpBarThirdMonster,
+    maxHpBarFirstEnemyMonster,
+    maxHpBarSecondEnemyMonster,
+    maxHpBarThirdEnemyMonster,
+    buttonClicked,
+    setTime,
+    setButtonClicked,
+    setQueue,
+    fightId
   });
+
+  useEffect(() => {
+    setActiveMonster(sQueue[0])
+  }, [sQueue])
+
+  const getMonsterInfo = async (monsterIds: number[], opp_monsterIds: number[]) => {
+    try {
+      const firstMonsterInfo = await server.getMonsterInfo(monsterIds[0]);
+      const secondMonsterInfo = await server.getMonsterInfo(monsterIds[1]);
+      const thirdMonsterInfo = await server.getMonsterInfo(monsterIds[2]);
+      const firstEnemyMonsterInfo = await server.getMonsterInfo(opp_monsterIds[0]);
+      const secondEnemyMonsterInfo = await server.getMonsterInfo(opp_monsterIds[1]);
+      const thirdEnemyMonsterInfo = await server.getMonsterInfo(opp_monsterIds[2]);
+      if (firstMonsterInfo && secondMonsterInfo && thirdMonsterInfo && firstEnemyMonsterInfo && secondEnemyMonsterInfo && thirdEnemyMonsterInfo) {
+        setFirstSelectedMonster(firstMonsterInfo);
+        setSecondSelectedMonster(secondMonsterInfo);
+        setThirdSelectedMonster(thirdMonsterInfo);
+        setFirstSelectedEnemyMonster(firstEnemyMonsterInfo);
+        setSecondSelectedEnemyMonster(secondEnemyMonsterInfo);
+        setThirdSelectedEnemyMonster(thirdEnemyMonsterInfo);
+        setAllMonsterSelected(true)
+        setMaxHp(true) 
+        setButtonClicked(false)
+      }
+    } catch (error) {}
+  };
+
+  //const getFightId = async () => {
+  //  try {
+  //    const Id: TBattle | null = await server.startBattle()
+  //    setFightId(Id?.fightId)
+  //  } catch (error){}
+  //}
 
   const backClickHandler = () => setPage(PAGES.GAME);
 
-  const handleResize = () => {
-    setWidth(window.innerWidth);
-    setHeight(window.innerHeight);
-  };
-
-  const getMonsterInfo = async (monsterId: number) => {
-    const monsterInfo = await server.getMonsterInfo(monsterId);
-    console.log(monsterInfo)
-  };
   useEffect(() => {
-    getMonsterInfo(1)
-  }, [server])
+    const sortedQueue = mathPvp.sortQueuesByLevel(
+      firstSelectedMonster,
+      secondSelectedMonster,
+      thirdSelectedMonster,
+      firstSelectedEnemyMonster,
+      secondSelectedEnemyMonster,
+      thirdSelectedEnemyMonster
+    );
+    setSQueue(sQueue = sortedQueue);
+  }, [allMonsterSelected])
+
+  useEffect(() => {
+    setMaxHpBarFirstMonster(firstSelectedMonster.hp);
+    setMaxHpBarSecondMonster(secondSelectedMonster.hp);
+    setMaxHpBarThirdMonster(thirdSelectedMonster.hp);
+    setMaxHpBarFirstEnemyMonster(firstSelectedEnemyMonster.hp);
+    setMaxHpBarSecondEnemyMonster(secondSelectedEnemyMonster.hp);
+    setMaxHpBarThirdEnemyMonster(thirdSelectedEnemyMonster.hp);
+  }, [maxHp])
 
   useEffect(() => {
     const updateBattleHandler = async (result: TUpdateBattleResponse) => {
       if (!result.gamers) return;
-      let player = result.gamers;
-
-      let opp_monster = splitString(player[0].monster_opp);
-      let monster = splitString(player[0].monsters);
-
-      //const firstMonsterInfo = await getMonsterInfo(monster[0]);
-      //if (firstMonsterInfo) {
-      //  setFirstSelectedMonster(firstMonsterInfo);
-      //}
-      // const secondMonsterInfo = await getMonsterInfo(monster[1]);
-      // if (secondMonsterInfo) {
-      //   setSecondSelectedMonster(secondMonsterInfo);
-      // }
-      // const thirdMonsterInfo = await getMonsterInfo(monster[2]);
-      // if (thirdMonsterInfo) {
-      //   setThirdSelectedMonster(thirdMonsterInfo);
-      // }
-      //const firstEnemyMonsterInfo = await getMonsterInfo(opp_monster[0]);
-      //if (firstEnemyMonsterInfo) {
-      //  setFirstSelectedEnemyMonster(firstEnemyMonsterInfo);
-      //}
-      // const secondEnemyMonsterInfo = await getMonsterInfo(opp_monster[1]);
-      // if (secondEnemyMonsterInfo) {
-      //   setSecondSelectedEnemyMonster(secondEnemyMonsterInfo);
-      // }
-      // const thirdEnemyMonsterInfo = await getMonsterInfo(opp_monster[2]);
-      // if (thirdEnemyMonsterInfo) {
-      //   setThirdSelectedEnemyMonster(thirdEnemyMonsterInfo);
-      // }
+      let firstPlayer: TPlayers = result.gamers[0];
+      if(!firstPlayer) return;
+      let secondPlayer: TPlayers = result.gamers[1];
+      if(!secondPlayer) return;
+      setMonster(firstPlayer.monsters);
+      setOppMonster(secondPlayer.monsters);
+      if(!monster || monster.length !== 3) return
+      if(!oppMonster || oppMonster.length !== 3) return
+      getMonsterInfo(monster, oppMonster);
+      if(monster && oppMonster) {
+        setTime(30000)
+        SetLoading(false)
+      }
     };
 
     if (true) {
-      server.startBattleUpdate(updateBattleHandler);
+      server.startBattleUpdate(updateBattleHandler, time);
     }
     return () => {
       server.stopBattleUpdate();
     };
-  }, [server, store]);
+  }, [server, store, monster, oppMonster, buttonClicked]);
+
+  const getUser = async () => {
+    try {
+      const token: TUserInfo | null  = await server.getUserInfo()
+      setUser(token)
+    } catch (error) {}
+  }
+
+  useEffect(() => {
+    getUser()
+  },[server])
 
   useEffect(() => {
     if (firstSelectedMonster && secondSelectedMonster && thirdSelectedMonster &&
         firstSelectedEnemyMonster && secondSelectedEnemyMonster && thirdSelectedEnemyMonster) {
-      const sortedQueue = mathPvp.sortQueuesByLevel(
-        firstSelectedMonster,
-        secondSelectedMonster,
-        thirdSelectedMonster,
-        firstSelectedEnemyMonster,
-        secondSelectedEnemyMonster,
-        thirdSelectedEnemyMonster
-      );
-      setSQueue(sortedQueue);
-      setActiveMonster(sortedQueue[0]);
       setHpBarFirstMonster(firstSelectedMonster.hp);
       setHpBarSecondMonster(secondSelectedMonster.hp);
       setHpBarThirdMonster(thirdSelectedMonster.hp);
@@ -156,14 +217,7 @@ const Battle: React.FC<IBasePage> = (props: IBasePage) => {
     }
   }, [firstSelectedMonster, secondSelectedMonster, thirdSelectedMonster,
       firstSelectedEnemyMonster, secondSelectedEnemyMonster, thirdSelectedEnemyMonster]);
-
-  useEffect(() => {
-    window.addEventListener('resize', handleResize);
-    return () => {
-      window.removeEventListener('resize', handleResize);
-    };
-  }, []);
-
+  
   useEffect(() => {
     setStage({
       stageProps,
@@ -173,6 +227,12 @@ const Battle: React.FC<IBasePage> = (props: IBasePage) => {
       hpBarSecondMonster,
       hpBarThirdEnemyMonster,
       hpBarThirdMonster,
+      maxHpBarFirstMonster,
+      maxHpBarSecondMonster,
+      maxHpBarThirdMonster,
+      maxHpBarFirstEnemyMonster,
+      maxHpBarSecondEnemyMonster,
+      maxHpBarThirdEnemyMonster,
       firstSelectedMonster,
       secondSelectedMonster,
       thirdSelectedMonster,
@@ -181,6 +241,9 @@ const Battle: React.FC<IBasePage> = (props: IBasePage) => {
       thirdSelectedEnemyMonster,
       sQueue,
       activeMonster,
+      oppMonster,
+      monster,
+      buttonClicked,
       setSQueue,
       setActiveMonster,
       setHpBarFirstEnemyMonster,
@@ -189,14 +252,23 @@ const Battle: React.FC<IBasePage> = (props: IBasePage) => {
       setHpBarSecondMonster,
       setHpBarThirdEnemyMonster,
       setHpBarThirdMonster,
+      setButtonClicked,
+      setTime,
+      setQueue,
+      fightId
     });
   }, [stageProps, hpBarFirstEnemyMonster, hpBarFirstMonster, hpBarSecondEnemyMonster, hpBarSecondMonster, hpBarThirdEnemyMonster, hpBarThirdMonster,
       firstSelectedMonster, secondSelectedMonster, thirdSelectedMonster, firstSelectedEnemyMonster, secondSelectedEnemyMonster, thirdSelectedEnemyMonster,
-      sQueue, activeMonster]);
+      sQueue, activeMonster, monster, oppMonster, maxHpBarFirstEnemyMonster, maxHpBarFirstMonster, maxHpBarSecondEnemyMonster, maxHpBarSecondMonster,
+      maxHpBarThirdEnemyMonster, maxHpBarThirdMonster, buttonClicked]);
 
-  function splitString(inputString: string) {
-    return inputString.split(',').map(Number);
-  }
+    if (loading) {
+      return (
+          <div>
+              <p> Ждите, работа сложная...... </p>
+          </div>
+      )
+    }
 
   return (
     <>
@@ -204,16 +276,13 @@ const Battle: React.FC<IBasePage> = (props: IBasePage) => {
         <stageContext.Provider value={stage}>
           <Sprites />
           <HpBars />
-          <Texts />
           <BattleTimer />
-          {/*<Animation animation={animation} attackedPosition={attackedPosition} />*/}
         </stageContext.Provider>
       </Stage>
       <stageContext.Provider value={stage}>
         <Buttons />
         <FinalScreen />
       </stageContext.Provider>
-      <Button onClick={backClickHandler} text='назад' />
     </>
   );
 };

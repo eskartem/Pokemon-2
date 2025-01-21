@@ -1,4 +1,3 @@
-import { TStats } from "../../services/server/types"
 
 interface baseParam {
     baseAttack: number,
@@ -24,28 +23,8 @@ export type Monsters = {
     side: string
 }
 
-
-//class Monster {
-//    baseParam: baseParam = {
-//        baseAttack: 1,
-//        baseHealthPoint: 1,
-//        baseDefense: 1
-//    }
-//    name: string = '';
-//    attack: number = 100;
-//    healthPoint: number = 150;
-//    defense: number = 100;
-//    element: string = '';
-//    level: number = 1;
-//    skill: skill = {
-//        name: '',
-//        scale: 1
-//    };
-//    side: string = '';
-//    isAlive: boolean = true;
-//}
-
 class Monster {
+    id = 0;
     typeId = 1
     name = ''
     elementId = 1

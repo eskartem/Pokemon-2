@@ -44,9 +44,8 @@ const CONFIG = {
     nickFontSize: 16, // размер ника на карте в пикеслях
 
     CHAT_TIMESTAMP: 200, //ms
-    SCENE_TIMESTAMP: 100, //ms
+    SCENE_TIMESTAMP: 200, //ms
     MARKET_TIMESTAMP: 400, // ms
-    BATTLE_TIMESTAMP: 2000
 
 };
 

@@ -267,7 +267,7 @@ class MathPvp {
         return arr
     }
 
-    nextMove = (arr: TMonster[], attacked: TMonster, attacking: TMonster, action: string) => {
+    nextMove = (arr: TMonster[]) => {
         //if ((attacking.skill.name === "Тектонический удар" && action === "skill") && this.randomForTectonicImpact() === true) {
         //    return arr;
         //} else if ((attacking.skill.name === "Ледяной шквал" && action === "skill") && this.randomForIceSquall() === true) {

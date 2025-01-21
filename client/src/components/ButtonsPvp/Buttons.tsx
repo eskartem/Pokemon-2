@@ -3,9 +3,9 @@ import  {useEffect, useRef, useContext} from "react"
 import './Buttons.css'
 import MathPvp from "../../services/MathPvp/MathPvp";
 
-import { Monsters } from "../../assets/Monsters/Monster";
 import { stageContext } from "../../assets/context/stage";
 import { TMonster } from "../../services/server/types";
+import { ServerContext } from "../../App";
 
 interface buttonsProps {
         //enemyType: string
@@ -18,12 +18,7 @@ interface buttonsProps {
 const Buttons: React.FC<buttonsProps> = (props: buttonsProps) => {
     const mathPvp = new MathPvp();
 
-    let {//enemyType,
-        //animation,
-        //setAnimation,
-        //attackedPosition,
-        //setAttackedPosition,
-    } = props;
+    const server = useContext(ServerContext)
 
     let {activeMonster, 
         firstSelectedMonster,
@@ -41,20 +36,19 @@ const Buttons: React.FC<buttonsProps> = (props: buttonsProps) => {
         hpBarFirstEnemyMonster,
         hpBarSecondEnemyMonster,
         hpBarThirdEnemyMonster,
-        setHpBarFirstEnemyMonster,
-        setHpBarFirstMonster,
-        setHpBarSecondEnemyMonster,
-        setHpBarSecondMonster,
-        setHpBarThirdEnemyMonster,
-        setHpBarThirdMonster,
+        oppMonster,
+        monster,
+        setButtonClicked,
+        setTime
     } = useContext(stageContext)
 
 
     let action: string = '';
-    let values = [firstSelectedMonster, secondSelectedMonster, thirdSelectedMonster]
 
     const firstPlayerButton = useRef<HTMLDivElement>(null);
     const yourChoose = useRef<HTMLDivElement>(null);
+    const secondPlayerButton = useRef<HTMLDivElement>(null);
+    const enemyChoose = useRef<HTMLDivElement>(null);
 
     const hideOrShowButonns = (props: any) => {
         if (props.current.classList.contains('showButton')) {
@@ -66,19 +60,65 @@ const Buttons: React.FC<buttonsProps> = (props: buttonsProps) => {
         }
     }
 
-    const setNewSQueue = (attacked: TMonster) => {
-        setSQueue(sQueue = mathPvp.nextMove(sQueue, attacked, activeMonster, action))
-        setActiveMonster(sQueue[0])
+
+    useEffect(() => {
         ActiveButtonMenu()
+    }, [activeMonster])
+
+    const setSkill = (monsterId: number) => {
+        switch (monsterId) {
+            case 1:
+                return 'Ледяной шквал'
+            case 2:
+                return 'Каскад'
+            case 3:
+                return 'Волна разрушений'
+            case 4: 
+                return 'Испепелящий удар'
+            case 5:
+                return 'Пепельный взрыв'
+            case 6:
+                return 'Огненная буря'
+            case 7:
+                return 'Гравитационная волна'
+            case 8:
+                return 'Земной импульс'
+            case 9:
+                return 'Тектонический удар'
+            case 10:
+                return 'Штормовой порыв'
+            case 11:
+                return 'Воздушный клинок'
+            case 12:
+                return 'Циклон разрушений'
+        }
+    }
+
+    const activeMonsterInfo = (activeMonster: TMonster) => {
+        switch(activeMonster) {
+            case firstSelectedMonster:
+                return monster[0]
+            case secondSelectedMonster:
+                return monster[1]
+            case thirdSelectedMonster:
+                return monster[2]
+            case firstSelectedEnemyMonster:
+                return oppMonster[0]
+            case secondSelectedEnemyMonster:
+                return oppMonster[1]
+            case thirdSelectedEnemyMonster:
+                return oppMonster[2]
+            default:
+                return 0
+        }
     }
     
     const ActiveButtonMenu = () => {
-        {/**activeMonster.side === 'yourSide' */}
-        if(true) {
+        if(activeMonster === firstSelectedMonster || activeMonster === secondSelectedMonster || activeMonster === thirdSelectedMonster) {
             return (<>
                 <div ref={firstPlayerButton} className='showButton buttons'>
                 <button id="test-battle-button-yourBaseAttack" onClick={() => {
-                        action = 'baseAttack'
+                        action = 'attack'
                         hideOrShowButonns(firstPlayerButton)
                         hideOrShowButonns(yourChoose)
                     }}>Атака</button>
@@ -86,71 +126,38 @@ const Buttons: React.FC<buttonsProps> = (props: buttonsProps) => {
                         action = 'skill'
                         hideOrShowButonns(firstPlayerButton)
                         hideOrShowButonns(yourChoose)
-                    }}>{'бобик'}</button>
-                    <button id="test-battle-button-yourRetreat">Отступить</button>
+                    }}>{setSkill(activeMonster.typeId)}</button>
+                    <button id="test-battle-button-yourRetreat" onClick={() => {
+                        action='escape'
+                        server.actionUser(activeMonsterInfo(activeMonster), oppMonster[0], action)
+                    }}>Отступить</button>
                 </div>
                 <div ref={yourChoose} className='hideButton buttons'>
                     {hpBarFirstEnemyMonster > 0 && (
                         <button id="test-battle-button-attackFirstEnemyMonster" onClick={() => {
-                            const healthPoint = mathPvp.dealingDamage(
-                                hpBarFirstEnemyMonster, 
-                                hpBarSecondEnemyMonster,
-                                hpBarThirdEnemyMonster,
-                                firstSelectedEnemyMonster,
-                                secondSelectedEnemyMonster,
-                                thirdSelectedEnemyMonster,
-                                activeMonster,
-                                action,
-                                firstSelectedEnemyMonster
-                            )
-                            //setAnimation(animation = mathPvp.animation(action))
-                            setHpBarFirstEnemyMonster(hpBarFirstEnemyMonster = healthPoint[0])
-                            setHpBarSecondEnemyMonster(hpBarSecondEnemyMonster = healthPoint[1])
-                            setHpBarThirdEnemyMonster(hpBarThirdEnemyMonster = healthPoint[2])
-                            setNewSQueue(firstSelectedEnemyMonster)
-                            //setAttackedPosition(attackedPosition = 'firstEnemy')
+                            server.actionUser(activeMonsterInfo(activeMonster), oppMonster[0], action)
+                            server.stopBattleUpdate()
+                            setTime(100)
+                            setButtonClicked(true)
+                            setSQueue(sQueue = mathPvp.nextMove(sQueue))
                         }}>Ударить {firstSelectedEnemyMonster.name}</button>
                     )}
                     {hpBarSecondEnemyMonster > 0 && (
                         <button id="test-battle-button-attackSecondEnemyMonster" onClick={() => {
-                            const healthPoint = mathPvp.dealingDamage(
-                                hpBarFirstEnemyMonster, 
-                                hpBarSecondEnemyMonster,
-                                hpBarThirdEnemyMonster,
-                                firstSelectedEnemyMonster,
-                                secondSelectedEnemyMonster,
-                                thirdSelectedEnemyMonster,
-                                activeMonster, 
-                                action,
-                                secondSelectedEnemyMonster
-                            )
-                            //setAnimation(animation = mathPvp.animation(action))
-                            setHpBarFirstEnemyMonster(hpBarFirstEnemyMonster = healthPoint[0])
-                            setHpBarSecondEnemyMonster(hpBarSecondEnemyMonster = healthPoint[1])
-                            setHpBarThirdEnemyMonster(hpBarThirdEnemyMonster = healthPoint[2])
-                            setNewSQueue(secondSelectedEnemyMonster)
-                            //setAttackedPosition(attackedPosition = 'secondEnemy')
+                            server.actionUser(activeMonsterInfo(activeMonster), oppMonster[1], action)
+                            server.stopBattleUpdate()
+                            setTime(100)
+                            setButtonClicked(true)
+                            setSQueue(sQueue = mathPvp.nextMove(sQueue))
                         }}>Ударить {secondSelectedEnemyMonster.name}</button>
                     )}
                     {hpBarThirdEnemyMonster > 0 &&(
                         <button id="test-battle-button-attackThirdEnemyMonster" onClick={() => {
-                            const healthPoint = mathPvp.dealingDamage(
-                                hpBarFirstEnemyMonster, 
-                                hpBarSecondEnemyMonster,
-                                hpBarThirdEnemyMonster,
-                                firstSelectedEnemyMonster,
-                                secondSelectedEnemyMonster,
-                                thirdSelectedEnemyMonster,
-                                activeMonster, 
-                                action,
-                                thirdSelectedEnemyMonster
-                            )
-                            //setAnimation(animation = mathPvp.animation(action))
-                            setHpBarFirstEnemyMonster(hpBarFirstEnemyMonster = healthPoint[0])
-                            setHpBarSecondEnemyMonster(hpBarSecondEnemyMonster = healthPoint[1])
-                            setHpBarThirdEnemyMonster(hpBarThirdEnemyMonster = healthPoint[2])
-                            setNewSQueue(thirdSelectedEnemyMonster)
-                            //setAttackedPosition(attackedPosition = 'thirdEnemy')
+                            server.actionUser(activeMonsterInfo(activeMonster), oppMonster[2], action)
+                            server.stopBattleUpdate()
+                            setTime(100)
+                            setButtonClicked(true)
+                            setSQueue(sQueue = mathPvp.nextMove(sQueue))
                         }}>Ударить {thirdSelectedEnemyMonster.name}</button>
                     )}
                     <button id="test-battle-button-backToFirstCombatMenu" onClick={() => {
@@ -159,91 +166,62 @@ const Buttons: React.FC<buttonsProps> = (props: buttonsProps) => {
                     }}>Назад </button>
                 </div>
             </>)
+        }else if(activeMonster === firstSelectedEnemyMonster || activeMonster === secondSelectedEnemyMonster || activeMonster === thirdSelectedEnemyMonster){
+            return (<>
+                <div ref={secondPlayerButton} className='showButton buttons'>
+                <button id="test-battle-button-enemyBaseAttack" onClick={() => {
+                        action = 'attack'
+                        hideOrShowButonns(secondPlayerButton)
+                        hideOrShowButonns(enemyChoose)
+                    }}>Атака</button>
+                    <button id="test-battle-button-enemySkill" onClick={() => {
+                        action = 'skill'
+                        hideOrShowButonns(secondPlayerButton)
+                        hideOrShowButonns(enemyChoose)
+                    }}>{setSkill(activeMonster.typeId)}</button>
+                    <button id="test-battle-button-enemyRetreat" onClick={() => {
+                        action='escape'
+                        server.actionUser(activeMonsterInfo(activeMonster), monster[0], action)
+                    }}>Отступить</button>
+                </div>
+                <div ref={enemyChoose} className='hideButton buttons'>
+                    {hpBarFirstMonster > 0 && (
+                        <button id="test-battle-button-attackFirstMonster" onClick={() => {
+                            server.actionUser(activeMonsterInfo(activeMonster), monster[0], action)
+                            server.stopBattleUpdate()
+                            setTime(100)
+                            setButtonClicked(true)
+                            setSQueue(sQueue = mathPvp.nextMove(sQueue))
+                        }}>Ударить {firstSelectedMonster.name}</button>
+                    )}
+                    {hpBarSecondMonster > 0 && (
+                        <button id="test-battle-button-attackSecondMonster" onClick={() => {
+                            server.actionUser(activeMonsterInfo(activeMonster), monster[1], action)
+                            server.stopBattleUpdate()
+                            setTime(100)
+                            setButtonClicked(true)
+                            setSQueue(sQueue = mathPvp.nextMove(sQueue))
+                        }}>Ударить {secondSelectedMonster.name}</button>
+                    )}
+                    {hpBarThirdMonster > 0 &&(
+                        <button id="test-battle-button-attackThirdMonster" onClick={() => {
+                            server.actionUser(activeMonsterInfo(activeMonster), monster[2], action)
+                            server.stopBattleUpdate()
+                            setTime(100)
+                            setButtonClicked(true)
+                            setSQueue(sQueue = mathPvp.nextMove(sQueue))
+                        }}>Ударить {thirdSelectedMonster.name}</button>
+                    )}
+                    <button id="test-battle-button-backToSecondCombatMenu" onClick={() => {
+                        hideOrShowButonns(enemyChoose)
+                        hideOrShowButonns(secondPlayerButton)
+                    }}>Назад </button>
+                </div>
+            </>)
         } else {
             return(<></>)
         }
     }
-    {/* 
-        useEffect(() => {
-            setHpBarFirstMonster(mathPvp.isDead(hpBarFirstMonster))
-            setHpBarSecondMonster(mathPvp.isDead(hpBarSecondMonster))
-            setHpBarThirdMonster(mathPvp.isDead(hpBarThirdMonster))
-            setHpBarFirstEnemyMonster(mathPvp.isDead(hpBarFirstEnemyMonster))
-            setHpBarSecondEnemyMonster(mathPvp.isDead(hpBarSecondEnemyMonster))
-            setHpBarThirdEnemyMonster(mathPvp.isDead(hpBarThirdEnemyMonster))
-        }, [hpBarFirstMonster, hpBarSecondMonster, hpBarThirdMonster, hpBarFirstEnemyMonster, hpBarSecondEnemyMonster, hpBarThirdEnemyMonster])
-
-        useEffect(() => {
-            if(hpBarFirstMonster <= 0) {
-                setSQueue(sQueue = mathPvp.deathScan(sQueue, firstSelectedMonster))
-                values = mathPvp.deathScan(values, firstSelectedMonster)
-            }
-            values = values;
-        }, [hpBarFirstMonster])
-
-        useEffect(() => {
-            if(hpBarSecondMonster <= 0) {
-                setSQueue(sQueue = mathPvp.deathScan(sQueue, secondSelectedMonster))
-                values = mathPvp.deathScan(values, secondSelectedMonster)
-            }
-            values = values;
-        }, [hpBarSecondMonster])
-
-        useEffect(() => {
-            if(hpBarThirdMonster <= 0) {
-                setSQueue(sQueue = mathPvp.deathScan(sQueue, thirdSelectedMonster)) 
-                values = mathPvp.deathScan(values, thirdSelectedMonster)
-            }
-            values = values;
-        }, [hpBarThirdMonster])
-
-        useEffect(() => {
-            if(hpBarFirstEnemyMonster <= 0) {
-                setSQueue(sQueue = mathPvp.deathScan(sQueue, firstSelectedEnemyMonster))
-            }
-            values = values;
-        }, [hpBarFirstEnemyMonster])
-
-        useEffect(() => {
-            if(hpBarSecondEnemyMonster <= 0) {
-                setSQueue(sQueue = mathPvp.deathScan(sQueue, secondSelectedEnemyMonster))
-            }
-            values = values;
-        }, [hpBarSecondEnemyMonster])
-
-        useEffect(() => {
-            if(hpBarThirdEnemyMonster <= 0) {
-                setSQueue(sQueue = mathPvp.deathScan(sQueue, thirdSelectedEnemyMonster)) 
-            }
-            values = values;
-        }, [hpBarThirdEnemyMonster])
-
-        BotGame
-        useEffect(() => {
-            if(activeMonster.side === 'enemySide' && enemyType === 'bot') {
-                let setAction: string = Math.random() < 1 ? 'baseAttack' : 'skill' ;
-                const randomValue = values[Math.floor(Math.random() * values.length)];
-                setTimeout(() => {
-                    const healthPoint = mathPvp.dealingDamage(
-                        hpBarFirstMonster, 
-                        hpBarSecondMonster,
-                        hpBarThirdMonster,
-                        firstSelectedMonster,
-                        secondSelectedMonster,
-                        thirdSelectedMonster,
-                        activeMonster, 
-                        setAction,
-                        randomValue
-                    )
-                    setHpBarFirstMonster(hpBarFirstMonster = healthPoint[0])
-                    setHpBarSecondMonster(hpBarSecondMonster = healthPoint[1])
-                    setHpBarThirdMonster(hpBarThirdMonster = healthPoint[2])
-                    setNewSQueue(randomValue)
-                    ActiveButtonMenu()
-                }, 3000)
-            }
-        }, [activeMonster])
-    */}
     return (<>
         <div className='buttonMenu'>
             <ActiveButtonMenu />

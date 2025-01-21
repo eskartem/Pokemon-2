@@ -46,11 +46,12 @@ export type TUpdateBattleResponse = {
 export type TPlayers = {
     user_id: number,
     opponent_id: number
-    monsters: string,
-    monster_opp: string,
+    monsters: number[],
+    monster_opp: number[],
 }
 
 export type TMonster = {
+    id: number
     typeId: number
     name: string
     elementId: number
@@ -59,6 +60,19 @@ export type TMonster = {
     hp: number
     attack: number
     defense: number
+}
+
+export type TBattleInfo = {
+    monsterId1: string
+    damage1: number
+    monsterId2: string
+    damage2: number
+    monsterId3: string
+    damage3: number
+    monsterId: string
+    damage: number
+    lostMonye: number
+    lostCrystal: number
 }
 
 export type TMessages = TMessage[];
@@ -265,6 +279,18 @@ export type THatchedResponse = {
     eggConsumed: boolean;
     eggs: number;
 }
+
+export type TBattle = {
+    user1: number,
+    user2: number,
+    fightId: number
+}
+
+export type TEBattle = {
+    id: string,
+    name: string
+}
+
 
 
 

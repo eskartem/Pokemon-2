@@ -12,6 +12,12 @@ const HpBars: React.FC = () => {
     hpBarFirstEnemyMonster, 
     hpBarSecondEnemyMonster, 
     hpBarThirdEnemyMonster,
+    maxHpBarFirstMonster,
+    maxHpBarSecondMonster,
+    maxHpBarThirdMonster,
+    maxHpBarFirstEnemyMonster,
+    maxHpBarSecondEnemyMonster,
+    maxHpBarThirdEnemyMonster,
     stageProps, 
     firstSelectedMonster,
     secondSelectedMonster,
@@ -40,7 +46,7 @@ const HpBars: React.FC = () => {
     g.endFill();
     
     g.beginFill(0x00ff00);
-    g.drawRect(stageProps.width * 0.01 + 5, stageProps.height * 0.02 + 5, hpBarLength(hpBarFirstMonster, firstSelectedMonster.hp), 20);
+    g.drawRect(stageProps.width * 0.01 + 5, stageProps.height * 0.02 + 5, hpBarLength(hpBarFirstMonster, maxHpBarFirstMonster), 20);
     g.endFill();
 
     //SecondPoke
@@ -49,7 +55,7 @@ const HpBars: React.FC = () => {
     g.endFill();
 
     g.beginFill(0x00ff00);
-    g.drawRect(stageProps.width * 0.01 + 5, stageProps.height * 0.1 + 5, hpBarLength(hpBarSecondMonster, secondSelectedMonster.hp), 20);
+    g.drawRect(stageProps.width * 0.01 + 5, stageProps.height * 0.1 + 5, hpBarLength(hpBarSecondMonster, maxHpBarSecondMonster), 20);
     g.endFill();
     //ThirdPoke
     g.beginFill(0x000000);
@@ -57,7 +63,7 @@ const HpBars: React.FC = () => {
     g.endFill();
 
     g.beginFill(0x00ff00);
-    g.drawRect(stageProps.width * 0.01 + 5, stageProps.height * 0.18 + 5, hpBarLength(hpBarThirdMonster, thirdSelectedMonster.hp), 20);
+    g.drawRect(stageProps.width * 0.01 + 5, stageProps.height * 0.18 + 5, hpBarLength(hpBarThirdMonster, maxHpBarThirdMonster), 20);
     g.endFill();
   }, [hpBarFirstMonster, hpBarSecondMonster, hpBarThirdMonster, stageProps.height, stageProps.width])
 
@@ -69,7 +75,7 @@ const HpBars: React.FC = () => {
     g.endFill();
     
     g.beginFill(0x00ff00);
-    g.drawRect(stageProps.width * 0.80 + 5, stageProps.height * 0.02 + 5, hpBarLength(hpBarFirstEnemyMonster, firstSelectedEnemyMonster.hp), 20);
+    g.drawRect(stageProps.width * 0.80 + 5, stageProps.height * 0.02 + 5, hpBarLength(hpBarFirstEnemyMonster, maxHpBarFirstEnemyMonster), 20);
     g.endFill();
 
     //fivethPoke
@@ -78,7 +84,7 @@ const HpBars: React.FC = () => {
     g.endFill();
 
     g.beginFill(0x00ff00);
-    g.drawRect(stageProps.width * 0.80 + 5, stageProps.height * 0.1 + 5, hpBarLength(hpBarSecondEnemyMonster, secondSelectedEnemyMonster.hp), 20);
+    g.drawRect(stageProps.width * 0.80 + 5, stageProps.height * 0.1 + 5, hpBarLength(hpBarSecondEnemyMonster, maxHpBarSecondEnemyMonster), 20);
     g.endFill();
     //sixthPoke
     g.beginFill(0x000000);
@@ -86,7 +92,7 @@ const HpBars: React.FC = () => {
     g.endFill();
 
     g.beginFill(0x00ff00);
-    g.drawRect(stageProps.width * 0.80 + 5, stageProps.height * 0.18 + 5, hpBarLength(hpBarThirdEnemyMonster, thirdSelectedEnemyMonster.hp), 20);
+    g.drawRect(stageProps.width * 0.80 + 5, stageProps.height * 0.18 + 5, hpBarLength(hpBarThirdEnemyMonster, maxHpBarThirdEnemyMonster), 20);
     g.endFill();
   }, [hpBarFirstEnemyMonster, hpBarSecondEnemyMonster, hpBarThirdEnemyMonster, stageProps.height, stageProps.width]);
  
