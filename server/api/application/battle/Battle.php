@@ -149,8 +149,9 @@ class Battle {
         ];
     } 
 
-    public function endBattle($battle){
+    public function endBattle($fightId){
         //return ['test' => $battle];
+        $battle = $this->db->getFight($fightId);
         //первый игрок
         $user1 = $battle->user1_id;
         $allDead1 = true;
