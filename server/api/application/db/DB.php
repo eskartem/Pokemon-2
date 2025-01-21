@@ -369,8 +369,8 @@ class DB {
         return (int)$this->pdo->lastInsertId();
     }
 
-    public function addResultFight($userId1, $userId2, $result){
-        $this->execute('UPDATE fight SET status = "close", turn = 1, result = ? WHERE user1_id = ? AND user2_id = ? AND turn = 0', [$result, $userId1, $userId2]);
+    public function addResultFight($fightId, $result){
+        $this->execute('UPDATE fight SET status = "close", turn = 1, result = ? WHERE id = ? AND turn = 0', [$result, $fightId]);
     }
 
     //element

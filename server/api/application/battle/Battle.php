@@ -146,16 +146,18 @@ class Battle {
         ];
     } 
 
-    public function endBattle($token1, $token2){
+    public function endBattle($fightId){
         //первый игрок
-        $user1 = $this->db->getUserByToken($token1);
+        $fight = $this->db->getFight ($fightId);
+
+        $user1 = $fight->user1_id;
         $allDead1 = true;
-        $monsters1 = $this->db->getMonstersByUser($user1->id, 'in team');
+        $monsters1 = $this->db->getMonstersByUser($user1, 'in team');
         
         //второй игрок
-        $user2 = $this->db->getUserByToken($token2);
+        $user2 = $fight->user2_id;
         $allDead2 = true;
-        $monsters2 = $this->db->getMonstersByUser($user2->id, 'in team');
+        $monsters2 = $this->db->getMonstersByUser($user2, 'in team');
 
         foreach ($monsters1 as $monster1) {
             if ($monster1['hp'] > 0) {
@@ -173,21 +175,22 @@ class Battle {
         }
 
         if ($allDead1) {
-            $this->updateResourcesOnVictoryAndLoss($user2->id, $user1->id);
-            $this->db->addResultFight($user1->id, $user2->id, $user2->id);
+            $this->updateResourcesOnVictoryAndLoss($user2, $user1);
+            $this->db->addResultFight($fightId, $user2);
             foreach ($monsters1 as $monster1){
                 $this->restoreHp($monster1['id']);
+                
             }
             foreach ($monsters2 as $monster2){
                 $this->restoreHp($monster2['id']);
             }
             return [
-                'tokenWinner' => $token2,
-                'tokenLoser' => $token1
+                'WinnerId' => $user2,
+                'LoserId' => $user1
             ];
         }elseif($allDead2) {
-            $this->updateResourcesOnVictoryAndLoss($user1->id, $user2->id);
-            $this->db->addResultFight($user1->id, $user2->id, $user1->id);
+            $this->updateResourcesOnVictoryAndLoss($user1, $user2);
+            $this->db->addResultFight($fightId, $user1);
             foreach ($monsters1 as $monster1){
                 $this->restoreHp($monster1['id']);
             }
@@ -195,8 +198,8 @@ class Battle {
                 $this->restoreHp($monster2['id']);
             }
             return [
-                'tokenWinner' => $token1,
-                'tokenLoser' => $token2
+                'WinnerId' => $user1,
+                'LoserId' => $user2
             ];
         }else {
             return [false];

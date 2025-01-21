@@ -315,13 +315,13 @@ class Application {
     }
     
     public function endBattle($params) {
-        if ($params['token1']&& $params['token2']) {
-            $user1 = $this->user->getUser($params['token1']);
-            $user2 = $this->user->getUser($params['token2']);
-            if ($user1 && $user2) {
-                return $this->battle->endBattle($params['token1'],$params['token2'] );
+        if ($params['fightId']) {
+            $fight = $this->battle->getFight($params['fightId']);
+            
+            if ($fight){
+                return $this->battle->endBattle($params['fightId']);
             }
-            return ['error' => 705];
+            return['error' => 4003];
         }
         return ['error' => 404];
     }
