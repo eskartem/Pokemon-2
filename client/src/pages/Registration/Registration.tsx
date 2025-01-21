@@ -12,7 +12,7 @@ const Registration: React.FC<IBasePage> = (props: IBasePage) => {
     const passwordRef = useRef<HTMLInputElement>(null);
 
     const isValidPassword = (password: string) => {
-        const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!"№;%:?*()_+=\-`{}"?><.])(?=.*\S).{8,}$/;
+        const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!"№;%:?*()_+=\-`{}"?><.])(?=.*\S).{8,15}$/;
         return passwordRegex.test(password);
     };
 

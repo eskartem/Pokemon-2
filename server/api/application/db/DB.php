@@ -320,7 +320,9 @@ class DB {
     //battle
     //?
     public function getPlayersInBattle() {
-        return $this->queryAll('SELECT u.id AS user_id,
+        // Выполняем запрос
+        $result = $this->queryAll('SELECT 
+                                    u.id AS user_id,
                                     GROUP_CONCAT(DISTINCT m.id) AS monsters,
                                     CASE 
                                         WHEN u.id = f.user1_id THEN f.user2_id  
@@ -333,12 +335,29 @@ class DB {
                                         LEFT JOIN monsters AS m_opp ON u_opp.id = m_opp.user_id AND m_opp.status = "in team"
                                         WHERE (u_opp.id = f.user1_id OR u_opp.id = f.user2_id) AND u_opp.id != u.id
                                     ) AS monster_opp
-                                FROM users AS u
-                                LEFT JOIN monsters AS m ON u.id = m.user_id AND m.status = "in team"
-                                LEFT JOIN fight AS f ON (u.id = f.user1_id OR u.id = f.user2_id) AND f.status = "open"
-                                WHERE u.status = "fight"
-                                GROUP BY u.id, f.user1_id, f.user2_id;'
-        );
+                                    FROM users AS u
+                                    LEFT JOIN monsters AS m ON u.id = m.user_id AND m.status = "in team"
+                                    LEFT JOIN fight AS f ON (u.id = f.user1_id OR u.id = f.user2_id) AND f.status = "open"
+                                    WHERE u.status = "fight"
+                                    GROUP BY u.id, f.user1_id, f.user2_id;'
+                                );
+    
+        // Преобразуем строки с идентификаторами монстров в массивы чисел
+        foreach ($result as &$row) {
+            if (!empty($row['monsters'])) {
+                $row['monsters'] = array_map('intval', explode(',', $row['monsters']));
+            } else {
+                $row['monsters'] = [];
+            }
+    
+            if (!empty($row['monster_opp'])) {
+                $row['monster_opp'] = array_map('intval', explode(',', $row['monster_opp']));
+            } else {
+                $row['monster_opp'] = [];
+            }
+        }
+    
+        return $result;
     }
 
     public function getPlayersScout() {
@@ -347,6 +366,7 @@ class DB {
     
     public function addFight($userId1, $userId2){
         $this->execute('INSERT INTO fight (user1_id, user2_id, turn, status, result) VALUES (?,?, 0, "open", 0)', [$userId1, $userId2]);
+        return (int)$this->pdo->lastInsertId();
     }
 
     public function addResultFight($userId1, $userId2, $result){
@@ -354,8 +374,8 @@ class DB {
     }
 
     //element
-    public function getIdByElement($element){//узнаем id стихии
-        return $this->query('SELECT id FROM elements WHERE name = ?', [$element]);
+    public function getElement($elementId){//узнаем id стихии
+        return $this->query('SELECT name FROM elements WHERE id = ?', [$elementId]);
     }
     
     public function makeBet($userId, $lotId, $newBet) {
@@ -434,4 +454,17 @@ class DB {
     public function getMonsterTypes(){
         return $this->queryAll('SELECT * from monster_types');
     }
+
+    public function getSkillById($skillId) { //id скилла совпадают с id типом монстра
+        return $this->query('SELECT * FROM skills WHERE id=?', [$skillId]);
+    }
+
+    public function getFight ($fightId){
+        return $this->query('SELECT * FROM fight WHERE id=?', [$fightId]);
+    }
+
+    public function updateQueue($fightId,$queue1, $queue2, $queue3, $queue4, $queue5, $queue6){
+        $this->execute('UPDATE fight SET queue1 = ?, queue2 = ?, queue3 = ?, queue4 = ?, queue5 = ?, queue6 = ? WHERE id = ?', [$queue1, $queue2, $queue3, $queue4, $queue5, $queue6, $fightId]);
+    }
+    
 }

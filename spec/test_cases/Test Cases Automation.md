@@ -81,12 +81,12 @@
 - [x] BC_006.2.8 - Selenium
 - [x] BC_006.2.9 - Selenium
 - [x] BC_006.2.10 - Selenium
-- [x] BC_006.3.1 - Selenium
-- [x] BC_006.3.2 - Selenium
-- [x] BC_006.3.3 - Selenium
-- [x] BC_006.3.4 - Selenium
-- [x] BC_006.3.5 - Selenium
-- [x] BC_006.3.6 - Selenium
+- [ ] BC_006.3.1 
+- [ ] BC_006.3.2 
+- [ ] BC_006.3.3 
+- [ ] BC_006.3.4 
+- [ ] BC_006.3.5 
+- [ ] BC_006.3.6 
 - [x] BC_006.4.1 - Selenium
 - [x] BC_006.4.2 - Selenium
 - [x] BC_006.4.3 - Selenium
@@ -114,13 +114,22 @@
 - [x] MT_006.15 - Postman  
 - [x] MT_006.16 - Postman
 
+## combatSystem
+- [ ] FR_003.1 
+- [ ] FR_003.2 
+- [ ] FR_003.3 
+- [ ] FR_003.4 
+- [ ] FR_003.5 
+- [ ] FR_003.6 
+
 ## startBattleMethod
-- [x] BM_001.1 - Postman  
-- [x] BM_001.2 - Postman  
-- [x] BM_001.3 - Postman  
-- [x] BM_001.4 - Postman
-- [x] BM_001.4.1 - Postman  
-- [x] BM_001.5 - Postman  
+- [ ] BM_001.1   
+- [ ] BM_001.2  
+- [ ] BM_001.3  
+- [ ] BM_001.4 
+- [ ] BM_001.4.1   
+- [ ] BM_001.5 
+- [ ] BM_002.6  
   
 ## endBattle
 - [x] BM_002.1 - Postman  
@@ -129,3 +138,4 @@
 - [x] BM_002.4 - Postman
 - [x] BM_002.4.1 - Postman   
 - [x] BM_002.5 - Postman
+- [x] BM_002.6 - Postman

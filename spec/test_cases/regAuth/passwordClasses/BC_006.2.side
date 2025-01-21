@@ -114,7 +114,7 @@
       "id": "d231b778-0297-47b3-9b3d-039ce457ab17",
       "comment": "",
       "command": "click",
-      "target": "css=.button",
+      "target": "id=test-registration-button_auth",
       "targets": [
         ["css=.button", "css:finder"],
         ["xpath=//div[@id='test-registration-page']/div[2]/div[2]/button", "xpath:idRelative"],
@@ -241,7 +241,7 @@
       "id": "c585d45e-ae5b-4844-a17c-a2670183668d",
       "comment": "",
       "command": "click",
-      "target": "css=.button",
+      "target": "id=test-registration-button_auth",
       "targets": [
         ["css=.button", "css:finder"],
         ["xpath=//div[@id='test-registration-page']/div[2]/div[2]/button", "xpath:idRelative"],
@@ -361,7 +361,7 @@
       "id": "97ffeac9-7f56-49d4-b1e6-511b1a6391f5",
       "comment": "",
       "command": "click",
-      "target": "css=.button",
+      "target": "id=test-registration-button_auth",
       "targets": [
         ["css=.button", "css:finder"],
         ["xpath=//div[@id='test-registration-page']/div[2]/div[2]/button", "xpath:idRelative"],
@@ -481,7 +481,7 @@
       "id": "b102a14f-bda6-46e5-ae46-4393f7b448e8",
       "comment": "",
       "command": "click",
-      "target": "css=.button",
+      "target": "id=test-registration-button_auth",
       "targets": [
         ["css=.button", "css:finder"],
         ["xpath=//div[@id='test-registration-page']/div[2]/div[2]/button", "xpath:idRelative"],
@@ -608,7 +608,7 @@
       "id": "7e616d3d-93aa-4621-a219-8868118fc89b",
       "comment": "",
       "command": "click",
-      "target": "css=.button",
+      "target": "id=test-registration-button_auth",
       "targets": [
         ["css=.button", "css:finder"],
         ["xpath=//div[@id='test-registration-page']/div[2]/div[2]/button", "xpath:idRelative"],
@@ -631,7 +631,7 @@
       "id": "c929ced0-2988-49a3-a3a6-1db7e53a42d5",
       "comment": "",
       "command": "open",
-      "target": "http://localhost:3000/",
+      "target": "id=test-registration-button_auth",
       "targets": [],
       "value": ""
     }, {
@@ -735,7 +735,7 @@
       "id": "06c62cd8-421f-459b-a979-f1f336a742b4",
       "comment": "",
       "command": "click",
-      "target": "css=.button",
+      "target": "id=test-registration-button_auth",
       "targets": [
         ["css=.button", "css:finder"],
         ["xpath=//div[@id='test-registration-page']/div[2]/div[2]/button", "xpath:idRelative"],
@@ -862,7 +862,7 @@
       "id": "42705609-1be7-4ec5-b12d-2f7ddef9fa87",
       "comment": "",
       "command": "click",
-      "target": "css=.button",
+      "target": "id=test-registration-button_auth",
       "targets": [
         ["css=.button", "css:finder"],
         ["xpath=//div[@id='test-registration-page']/div[2]/div[2]/button", "xpath:idRelative"],
@@ -989,7 +989,7 @@
       "id": "aa4481f6-3bb6-4bb4-94f5-9cf1c9401648",
       "comment": "",
       "command": "click",
-      "target": "css=.button",
+      "target": "id=test-registration-button_auth",
       "targets": [
         ["css=.button", "css:finder"],
         ["xpath=//div[@id='test-registration-page']/div[2]/div[2]/button", "xpath:idRelative"],
@@ -1116,7 +1116,7 @@
       "id": "27a65bd0-6980-408e-96ba-a7192a21ac82",
       "comment": "",
       "command": "click",
-      "target": "css=.button",
+      "target": "id=test-registration-button_auth",
       "targets": [
         ["css=.button", "css:finder"],
         ["xpath=//div[@id='test-registration-page']/div[2]/div[2]/button", "xpath:idRelative"],
@@ -1243,7 +1243,7 @@
       "id": "6264e25f-de59-49e3-813a-ad90cfcad05c",
       "comment": "",
       "command": "click",
-      "target": "css=.button",
+      "target": "id=test-registration-button_auth",
       "targets": [
         ["css=.button", "css:finder"],
         ["xpath=//div[@id='test-registration-page']/div[2]/div[2]/button", "xpath:idRelative"],
