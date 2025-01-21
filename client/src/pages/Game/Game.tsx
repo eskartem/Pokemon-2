@@ -119,7 +119,7 @@ const Game: React.FC<IBasePage> = (props: IBasePage) => {
             )}
             <img className='chat-button' onClick={toggleChatVisibility} src={isChatVisible ? ChatCloseImg : ChatImg } />
 
-            <div className="map-container" style={{ paddingTop: panelHeight }}>
+            <div className="map-container">
                 <Map setIsUserInTown={setIsUserInTown}/>
             </div>
         </div>
