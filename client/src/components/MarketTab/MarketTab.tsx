@@ -32,7 +32,7 @@ const MarketTab: React.FC = () => {
     const [isMakeLot, setMakeLot] = useState<boolean>(false);
     const [inventory, setInventory] = useState<TInventory | null>(null);
     const [isItemList, setIsItemList] = useState<boolean>(true);
-    const [sellingItem, setSellingItem] = useState<TCr | TResources | null>(null);
+    const [sellingItem, setSellingItem] = useState<TCr | null>(null);
     const [sellingType, setSellingType] = useState<ETypeLot | null>(null);
     const selectRef = useRef<HTMLSelectElement>(null);
     const startCost = useRef<HTMLInputElement>(null);
@@ -55,14 +55,6 @@ const MarketTab: React.FC = () => {
         setMakeLot(false);
         setIsItemList(true);
         server.makeLot(sellingType, sellingItem.id, cost, step, null);
-    };
-
-    const handleOpenInfoModal = () => {
-        setIsInfoModalOpen(true);
-    };
-
-    const handleCloseInfoModal = () => {
-        setIsInfoModalOpen(false);
     };
 
     useEffect(() => {
@@ -114,13 +106,13 @@ const MarketTab: React.FC = () => {
         return imageMap[normalizedPath] || undefined;
     };
 
-    const pickMonster = (item: TCr | TResources) => {
+    const pickMonster = (item: TCr) => {
         setSellingItem(item);
         setSellingType(ETypeLot.monster);
         setIsItemList(false);
     };
 
-    if (!catalog) {
+    if (!catalog) { // заплашка для незагруженного рынка
         return (
             <div className='market-tab'>
                 <div className='filter-market'>
@@ -166,7 +158,7 @@ const MarketTab: React.FC = () => {
         );
     }
 
-    return (
+    return ( // версия загруженного рынка
         <div className='market-tab'>
             <div className='filter-market'>
                 <h1>Лоты:</h1>
@@ -204,7 +196,7 @@ const MarketTab: React.FC = () => {
                                 на ресурсы: зависят от спроса и предложения, расчеты в разработке.
                             </div>
                         }
-                    />
+            />
             <div className='lots'>
                 {catalog.map((lot, index) => (
                     <Lot key={index} lot={lot} index={index} />
@@ -217,24 +209,36 @@ const MarketTab: React.FC = () => {
                     <div className='make_lot-content'>
                         {isItemList && (
                             <div className='monster-list'>
-                                {inventory?.monsters.map((monster, index) => {
-                                    if (monster.status === EMonsterStatus.inTeam) return null;
-                                    return (
-                                        <div key={index} className='make_lot-selling_item'>
-                                            <img src={getMonsterImage(monster.asset)} alt='monster' />
-                                            <h1>{monster.name}</h1>
-                                            <h1>LVL: {monster.level}</h1>
-                                            <h1>HP: {monster.max_HP}</h1>
-                                            <h1>ATK: {monster.ATK}</h1>
-                                            <h1>DEF: {monster.DEF}</h1>
-                                            <Button onClick={() => pickMonster(monster)} text='Выбрать' />
-                                        </div>
-                                    );
-                                })}
-                                {!inventory?.monsters.sort((monster) => (monster.status === EMonsterStatus.inPocket)? 1: 0) && 
-                                <h1> нет доступных монстров для продажи </h1>}
+                                {inventory?.monsters.filter(monster => monster.status !== EMonsterStatus.inTeam).length === 0 ? (
+                                    <h1>Нет доступных монстров для продажи</h1>
+                                ) : (
+                                    inventory?.monsters.map((monster, index) => {
+                                        if (monster.status === EMonsterStatus.inTeam) return null;
+                                        return (
+                                            <div key={index} className="make_lot-selling_item">
+                                                <img src={getMonsterImage(monster.asset)} alt="monster" />
+                                                <h1>{monster.name}</h1>
+                                                <h1>LVL: {monster.level}</h1>
+                                                <h1>HP: {monster.max_HP}</h1>
+                                                <h1>ATK: {monster.ATK}</h1>
+                                                <h1>DEF: {monster.DEF}</h1>
+                                                <Button onClick={() => pickMonster(monster)} text="Выбрать" />
+                                            </div>
+                                        );
+                                    })
+                                )}
                             </div>
                         )}
+                        {!isItemList && sellingItem && 
+                            <div className="make_lot-selling_item">
+                                <img src={getMonsterImage(sellingItem.asset)} alt="monster" />
+                                <h1>{sellingItem.name}</h1>
+                                <h1>LVL: {sellingItem.level}</h1>
+                                <h1>HP: {sellingItem.max_HP}</h1>
+                                <h1>ATK: {sellingItem.ATK}</h1>
+                                <h1>DEF: {sellingItem.DEF}</h1>
+                            </div>
+                        }
                         <label htmlFor='test-market-make_lot-start_price'>Начальная цена:</label>
                         <input 
                             type='number' 
