@@ -31,6 +31,7 @@ class Battle {
         $defense = $defense + $defense_param;
 
         return [
+            'id' => $monsterId,
             'typeId' => $monster_type_id,
             'name' => $monster_data -> name,
             'elementId' => $elementId,
@@ -472,7 +473,7 @@ public function actionUser($monsterId1, $monsterId2, $action){
         }
     }
 
-    public function getQueue($fightId, array $queue){
+    public function getQueue($fightId, $queue){
 
         $fight = $this->db->getFight($fightId);
         if ($fight->status === 'close'){
