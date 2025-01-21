@@ -1,20 +1,12 @@
 @use '../../scss/variables.scss' as *;
 
-.market {
-    //position: relative;
-    //text-align: center;
-    //background-color: $main-theme;
-//
-    //padding: 30px;
-    //margin: 10px;
-    //border: solid $button-border-color 3px;
-    //border-radius: 10px;
+#market {
     position: relative;
-//
+
     display: flex;
     text-align: center;
     background-color: $main-theme;
-//
+
     padding: 30px;
     margin: 10px;
     border: solid $button-border-color 3px;
@@ -24,8 +16,10 @@
     align-content: center;
     justify-content: center;
     align-items: center;
+    height: 100vh; 
     overflow: auto; 
-    background-color: $main-theme;
+    background-color: #f0f0f0; 
+    padding: 20px;
 }
 
 .market_tab-wrapper {
@@ -35,14 +29,10 @@
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     max-width: 1200px;
-    margin: 20px auto;
+    margin: 0 auto;
 }
 
 .user-resources {
-    background-color: $main-theme;
-    padding: 12px;
-    border-radius: 7px;
-
     display: flex;
     align-items: center;
     font-size: 24px;
@@ -90,8 +80,8 @@
 }
 
 .market-button {
-    max-height: 35px;
-    margin-top: 40px;
+    max-height: 50px;
+    margin-top: 30px;
     cursor: pointer;
 }
 
@@ -106,5 +96,5 @@
 .button-panel {
     display: flex;
     align-items: center;
-    gap: 30px;
+    gap: 15px;
 }

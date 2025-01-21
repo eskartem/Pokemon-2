@@ -13,7 +13,6 @@ import eggImage from '../../assets/img/egg_new.png';
 import eggShellImage from '../../assets/img/egg_shell.png';
 import inventImage from '../../assets/img/inventImg.png';
 import marketImage from '../../assets/img/marketImg.png';
-import buttonHoverImage from '../../assets/img/buttonHoverImage.jpg';
 import { TInventory } from '../../services/server/types';
 
 import './Game.scss';
@@ -57,10 +56,6 @@ const Game: React.FC<IBasePage> = (props: IBasePage) => {
         setIsChatVisible(prevState => !prevState); // Переключаем состояние видимости
     };
 
-    // Наведение на изображение
-    const [isInventHovered, setIsInventHovered] = useState(false);
-    const [isMarketHovered, setIsMarketHovered] = useState(false);
-
     //Кнопки
     const inventoryClickHandler = () => setPage(PAGES.INVENTORY);
     const marketClickHandler = () => setPage(PAGES.MARKET);
@@ -80,7 +75,7 @@ const Game: React.FC<IBasePage> = (props: IBasePage) => {
             <div className="button-panel-test">
                 <div className='button-panel-test-left'>
                     <h1 id='test-game-h1-name' className='user-panel-nick'> {user?.name} | </h1>
-                    <div className='user-resource'>
+                    <div className='user-resources'>
                         <div className='moneyMenu'>
                             <img src={moneyImage} alt="" />
                             <h1 >
@@ -108,22 +103,8 @@ const Game: React.FC<IBasePage> = (props: IBasePage) => {
                     </div>
                 </div>
                 <div className='button-panel-test-centre'>
-                    <img
-                        src={isInventHovered ? buttonHoverImage : inventImage}
-                        alt=""
-                        onClick={inventoryClickHandler}
-                        className='imageButton'
-                        onMouseEnter={() => setIsInventHovered(true)}
-                        onMouseLeave={() => setIsInventHovered(false)}
-                    />
-                    {isUserInTown && <img
-                        src={isMarketHovered ? buttonHoverImage : marketImage}
-                        alt=""
-                        onClick={inventoryClickHandler}
-                        className='imageButton'
-                        onMouseEnter={() => setIsMarketHovered(true)}
-                        onMouseLeave={() => setIsMarketHovered(false)}
-                    /> }
+                    <img src={inventImage} alt="" onClick={inventoryClickHandler} className='imageButton' />
+                    {isUserInTown && <img src={marketImage} alt="" onClick={marketClickHandler} className='imageButton' /> }
 
                     <Button id='test-game-button-battle' onClick={battleClickHandler} text='Битва' />
                 </div>
