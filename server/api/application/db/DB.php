@@ -454,7 +454,7 @@ class DB {
         return $this->queryAll('SELECT * from monster_types');
     }
 
-    public function getFight($fightId){
+    public function getFight ($fightId){
         return $this->query('SELECT * FROM fight WHERE id=?', [$fightId]);
     }
 
@@ -465,8 +465,4 @@ class DB {
     public function getSkillById($skillId) { //id скилла совпадают с id типом монстра
         return $this->query('SELECT * FROM skills WHERE id=?', [$skillId]);
     }
-
-    public function getUserById($userId) {
-        return $this->query('SELECT * FROM users WHERE id = ?', [$userId]);
-    } 
 }

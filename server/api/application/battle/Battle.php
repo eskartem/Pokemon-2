@@ -147,11 +147,7 @@ class Battle {
             'gamers' => $playersInBattle,
             'hash' => $currentHash->battle_hash
         ];
-    }
-
-    public function getFight($fightId){
-        return $this->query('SELECT * FROM fight WHERE id=?', [$fightId]);
-    }
+    } 
 
     public function endBattle($fightId){
         //return ['test' => $battle];
