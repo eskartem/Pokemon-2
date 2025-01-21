@@ -24,6 +24,7 @@ const Game: React.FC<IBasePage> = (props: IBasePage) => {
 
     const [isChatVisible, setIsChatVisible] = useState(false); // Состояние для управления видимостью чата
     const [isUserInTown, setIsUserInTown] = useState(false); // Для отображения кнопки рынка, когда пользователь в городе 
+    const [isCanBattle, setCanBattle] = useState(false); 
 
     const toggleChatVisibility = () => {
         setIsChatVisible(prevState => !prevState); // Переключаем состояние видимости
@@ -31,7 +32,6 @@ const Game: React.FC<IBasePage> = (props: IBasePage) => {
 
     const inventoryClickHandler = () => setPage(PAGES.INVENTORY);
     const marketClickHandler = () => setPage(PAGES.MARKET);
-    const battleClickHandler = () => setPage(PAGES.BATTLE);
     const logoutClickHandler = async () => {
         if (await server.logout()) {
             setPage(PAGES.LOGIN);
@@ -59,7 +59,7 @@ const Game: React.FC<IBasePage> = (props: IBasePage) => {
                 <div className='button-panel-test-centre'>
                     <Button id='test-game-button-inventory' onClick={inventoryClickHandler} text='Инвентарь' />
                     {isUserInTown && <Button id='test-game-button-market' onClick={marketClickHandler} text='Рынок' /> }
-                    <Button id='test-game-button-battle' onClick={battleClickHandler} text='Битва' />
+                    {isCanBattle && <Button id='test-game-button-battle' onClick={() => {}} text='Битва' />}
                 </div>
                 <div className='button-panel-test-right'>
                     <img id='test-game-img-mute' className='img-volume' src={VolumeImg} alt='VolumeImg' onClick={muteButtonHandler} />
@@ -73,7 +73,7 @@ const Game: React.FC<IBasePage> = (props: IBasePage) => {
             )}
             <img className='chat-button' onClick={toggleChatVisibility} src={isChatVisible ? ChatCloseImg : ChatImg } />
             <div className="map-container" style={{ paddingTop: panelHeight }}>
-                <Map setIsUserInTown={setIsUserInTown}/>
+                <Map setIsUserInTown={setIsUserInTown} setCanBattle={setCanBattle}/>
             </div>
         </div>
     );

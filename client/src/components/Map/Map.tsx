@@ -14,10 +14,11 @@ import './Map.scss';
 
 interface IMap {
     setIsUserInTown: (name: boolean) => void
+    setCanBattle: (name: boolean) => void
 }
 
 const Map: React.FC<IMap> = (props: IMap) => {
-    const {setIsUserInTown} = props;
+    const {setIsUserInTown, setCanBattle} = props;
     const { WINV, tileSize, fovDistance } = CONFIG;
     const server = useContext(ServerContext);
     const store = useContext(StoreContext);
@@ -156,7 +157,9 @@ const Map: React.FC<IMap> = (props: IMap) => {
             const userHimself = gamers.find(item => item.id === user?.id);
             if (!userHimself) return;
             setUserOnMap(userHimself);
+            setCanBattle(false);
             const gamersAround = gamers.filter(gamer => { // выбираю пользователей только в поле зрения
+                if (gamer.x === userHimself.x && userHimself.y === gamer.y && user.id != gamer.id) setCanBattle(true);
                 return ( 
                     (Math.abs(userHimself.x - gamer.x) < (fovDistance+1)) && 
                     (Math.abs(userHimself.y - gamer.y) < (fovDistance+1)) &&
