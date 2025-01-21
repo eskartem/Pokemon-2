@@ -453,4 +453,8 @@ class DB {
     public function getMonsterTypes(){
         return $this->queryAll('SELECT * from monster_types');
     }
+
+    public function getFight($fightId){
+        return $this->query('SELECT * from fight WHERE id=?',[$fightId] );
+    }
 }
