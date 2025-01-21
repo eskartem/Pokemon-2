@@ -478,12 +478,12 @@ public function actionUser($monsterId1, $monsterId2, $action){
 
         return[
             'queue' =>
-            [$queue1,
+            array($queue1,
             $queue2,
             $queue3,
             $queue4,
             $queue5,
-            $queue6]
+            $queue6)
         ];
     }
 }
