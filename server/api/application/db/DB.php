@@ -366,7 +366,7 @@ class DB {
     
     public function addFight($userId1, $userId2){
         $this->execute('INSERT INTO fight (user1_id, user2_id, turn, status, result) VALUES (?,?, 0, "open", 0)', [$userId1, $userId2]);
-        return $this->pdo->lastInsertId();
+        return (int)$this->pdo->lastInsertId();
     }
 
     public function addResultFight($userId1, $userId2, $result){

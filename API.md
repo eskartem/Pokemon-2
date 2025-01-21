@@ -677,6 +677,7 @@ Elements: {
 **Успешный ответ**
 ```
     Answer<{
+        fightId: number; - id боя
         user1: number; - id первого игрока в бою
         user2: number; - id второго игрока в бою
     }>
