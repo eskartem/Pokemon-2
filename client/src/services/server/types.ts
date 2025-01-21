@@ -148,7 +148,8 @@ export enum EZones {
 
 export type TMakeBet = {
     ableToMakeBet: boolean,
-    ableToTakeMoney: boolean
+    ableToTakeMoney: boolean,
+    error: string
 }
 
 export type TMakeLot = {
