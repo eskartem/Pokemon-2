@@ -28,6 +28,7 @@ const ExchangerTab: React.FC = () => {
     const [eggs, setEggs] = useState(0);
     const [isInfoModalOpen, setIsInfoModalOpen] = useState(false);
     const [isHatchModalOpen, setIsHatchModalOpen] = useState(false);
+    const [isConfirmExchangeModalOpen, setIsConfirmExchangeModalOpen] = useState(false);
     const [hatchedPokemon, setHatchedPokemon] = useState<THatchedResponse | null>(null);
 
     const fetchResources = async () => {
@@ -75,6 +76,14 @@ const ExchangerTab: React.FC = () => {
         setIsInfoModalOpen(false);
     };
 
+    const handleOpenConfirmExchangeModal = () => {
+        setIsConfirmExchangeModalOpen(true);
+    };
+
+    const handleCloseConfirmExchangeModal = () => {
+        setIsConfirmExchangeModalOpen(false);
+    };
+
     const handleHatchEgg = async () => {
         if (!hasSufficientEggs) {
             setError('');
@@ -85,7 +94,7 @@ const ExchangerTab: React.FC = () => {
             if (result) {
                 setHatchedPokemon(result);
                 setIsHatchModalOpen(true);
-                fetchResources(); 
+                fetchResources();
             }
         } catch (error) {
             setError('Произошла ошибка при вылуплении покемона');
@@ -156,10 +165,34 @@ const ExchangerTab: React.FC = () => {
                         ? 'Обменять на яйцо'
                         : 'Пошел отсюда, бомж. Приходи, когда соберешь необходимое количество кусков яиц!'
                 }
-                onClick={handleExchange}
+                onClick={handleOpenConfirmExchangeModal}
                 className="exchange-button"
                 isDisabled={!hasSufficientResources}
                 id={hasSufficientResources ? "test-exchange-button" : "test-exchange-button-disabled"}
+            />
+            <InfoModal
+                isOpen={isConfirmExchangeModalOpen}
+                onClose={handleCloseConfirmExchangeModal}
+                title="Подтверждение обмена"
+                content={
+                    <div>
+                        <p>Вы уверены, что хотите обменять 50 кусков яиц на одно яйцо?</p>
+                        <Button
+                            text="Да"
+                            onClick={() => {
+                                handleCloseConfirmExchangeModal();
+                                handleExchange();
+                            }}
+                            id="test-confirm-exchange-button"
+                        />
+                        <Button
+                            text="Нет"
+                            onClick={handleCloseConfirmExchangeModal}
+                            id="test-cancel-exchange-button"
+                        />
+                    </div>
+                }
+                id="test-confirm-exchange-modal"
             />
             <Button
                 text="Получить покемона"
