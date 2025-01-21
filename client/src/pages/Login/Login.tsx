@@ -24,8 +24,8 @@ const Login: React.FC<IBasePage> = (props: IBasePage) => {
     const registerClickHandler = () => setPage(PAGES.REGISTRATION);
 
     return (<div className='login' id='test-login-page'>
-        <div>Логин</div>
-        <div className='login-wrapper'>
+        <div className='textLogin'>ВХОД</div>
+            <div className='login-wrapper'>
             <div className='login-inputs'>
                 <input ref={loginRef} 
                 id='test-login-input_login'

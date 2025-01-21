@@ -20,18 +20,13 @@ function result($params) {
             // chat
             case 'sendMessage': return $app->sendMessage($params);//loop
             case 'getMessages': return $app->getMessages($params);
-            //gamer info
-
-             case 'userInfo': return $app-> userInfo($params);
-        
+            case 'userInfo': return $app-> userInfo($params);
             //inventory
             case 'getInventory': return $app->getInventory($params);
             case 'addToTeam': return $app->addToTeam($params);
             case 'upgradePokemon': return $app->upgradePokemon($params); 
             case 'getInfoAboutUpgrade': return $app->getInfoAboutUpgrade($params);
             case 'hatchEgg': return $app->hatchEgg($params);
-
-            
             //battle
             case 'getInfoMonster': return $app->getInfoMonster($params);
             case 'startBattle': return $app->startBattle();
@@ -42,12 +37,8 @@ function result($params) {
             
             //map
             case 'getMap': return $app->getMap($params);
-            //case 'startGame': return $app-> startGame($params);
-            //case 'endGame': return $app-> endGame($params);
-
             case 'updateScene': return $app->updateScene($params);
             case 'moveUser': return $app->moveUser($params);
-
             //market                   
             case 'makeBet': return $app->makeBet($params);
             case 'getCatalog': return $app->getCatalog($params); // для торговца
@@ -55,10 +46,9 @@ function result($params) {
             case 'cancelLot': return $app->cancelLot($params);
             case 'makeLot': return $app->makeLot($params);
             case 'sell': return $app->sell($params);
-            
+
             default: return ['error' => 102];
         }
-        
     }
     return ['error' => 101];
 }

@@ -12,7 +12,12 @@ import boatImage from '../../assets/img/boat.png';
 
 import './Map.scss';
 
-const Map: React.FC = () => {
+interface IMap {
+    setIsUserInTown: (name: boolean) => void
+}
+
+const Map: React.FC<IMap> = (props: IMap) => {
+    const {setIsUserInTown} = props;
     const { WINV, tileSize, fovDistance } = CONFIG;
     const server = useContext(ServerContext);
     const store = useContext(StoreContext);
@@ -34,6 +39,7 @@ const Map: React.FC = () => {
 
     const getCurrentZone = (currenGamer: TGamer) => {
         if (!userOnMap) return ;
+        setIsUserInTown(false);
         for (let i=0; i <= mapZones.length; i++) {
             const zone = mapZones[i];
             const result = (currenGamer.x >= zone.x && currenGamer.y >= zone.y
@@ -41,6 +47,7 @@ const Map: React.FC = () => {
                 && currenGamer.y < (zone.y + zone.height)
             );
             if (zone.type === EZones.town && result) {
+                setIsUserInTown(true);
                 return zone.name;
             }
             if (zone.type === EZones.chillzone && result) {
@@ -186,7 +193,12 @@ const Map: React.FC = () => {
     }, [server, store, user]);
 
     if (!user || !userOnMap || !map) {
-        return (<>Карта не загружена. Что-то пошло не так.</>)
+        store.clearAllHashes()
+        return (
+            <div>
+                <p> Карта не загружена. Что-то пошло не так. </p>
+            </div>
+        )
     }
 
     return (
@@ -338,7 +350,7 @@ const Map: React.FC = () => {
                     y={tileSize/2}
                     style={
                         new TextStyle({
-                            fontSize: 20,
+                            fontSize: 30,
                             strokeThickness: 1,
                             fill: ['#000000'], 
                         })

@@ -53,6 +53,7 @@ class Market {
             $zalog = 5; 
         }
 
+        $this->db->updateMarketHash(md5(rand()));
         return $this->db->makeLotMonster($user->id, $sellingItemId, $startCost, $stepCost, $zalog);
     }
 
@@ -67,7 +68,8 @@ class Market {
         if ($zalog < 5){
             $zalog = 5; 
         }
-
+        
+        $this->db->updateMarketHash(md5(rand()));
         return $this->db->makeLotItem($user->id, $sellingItemId, $startCost, $stepCost, $amount, $zalog);
     }
 
