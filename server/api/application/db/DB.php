@@ -454,7 +454,11 @@ class DB {
         return $this->queryAll('SELECT * from monster_types');
     }
 
-    public function getFight($fightId){
-        return $this->query('SELECT * from fight WHERE id=?',[$fightId] );
+    public function getFight ($fightId){
+        return $this->query('SELECT * FROM fight WHERE id=?', [$fightId]);
+    }
+
+    public function updateQueue($fightId,$queue1, $queue2, $queue3, $queue4, $queue5, $queue6){
+        $this->execute('UPDATE fight SET queue1 = ?, queue2 = ?, queue3 = ?, queue4 = ?, queue5 = ?, queue6 = ? WHERE id = ?', [$queue1, $queue2, $queue3, $queue4, $queue5, $queue6, $fightId]);
     }
 }
