@@ -25,8 +25,7 @@ const Sprites: React.FC = () => {
         firstSelectedEnemyMonster,
         secondSelectedEnemyMonster,
         thirdSelectedEnemyMonster,
-        activeMonster,
-        Queues
+        activeMonster 
         } = useContext(stageContext)
 
     const unactiveTextStyle = new TextStyle({

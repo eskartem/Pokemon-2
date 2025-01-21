@@ -461,8 +461,4 @@ class DB {
     public function updateQueue($fightId,$queue1, $queue2, $queue3, $queue4, $queue5, $queue6){
         $this->execute('UPDATE fight SET queue1 = ?, queue2 = ?, queue3 = ?, queue4 = ?, queue5 = ?, queue6 = ? WHERE id = ?', [$queue1, $queue2, $queue3, $queue4, $queue5, $queue6, $fightId]);
     }
-
-    public function getSkillById($skillId) { //id скилла совпадают с id типом монстра
-        return $this->query('SELECT * FROM skills WHERE id=?', [$skillId]);
-    }
 }

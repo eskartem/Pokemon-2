@@ -2,7 +2,7 @@ import { createContext } from "react"
 
 import Monster from "../Monsters/Monster"
 
-import { TMonster, TPlayers } from "../../services/server/types"
+import { TMonster } from "../../services/server/types"
 
 interface stageContext{
     hpBarFirstMonster: number,
@@ -44,10 +44,7 @@ interface stageContext{
     setActiveMonster: (activeMonster: TMonster) => void,
     setQueue: (fightId: number, squeue: number[]) => void,
     fightId: number,
-    Queues: number[],
-    firstPlayer: TPlayers,
-    secondPlayer: TPlayers
-
+    Queues: number[]
   }
   
   export const stageContext = createContext<stageContext>({
@@ -90,15 +87,5 @@ interface stageContext{
     setActiveMonster: () => {},
     setQueue: () => {},
     fightId: 0,
-    Queues: [],
-    firstPlayer: {user_id: 0,
-                  opponent_id: 0,
-                  monsters: [],
-                  monster_opp: []
-    },
-    secondPlayer: {user_id: 0,
-                  opponent_id: 0,
-                  monsters: [],
-                  monster_opp: []
-    }
+    Queues: []
   })

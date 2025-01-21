@@ -42,9 +42,7 @@ const Buttons: React.FC<buttonsProps> = (props: buttonsProps) => {
         setTime,
         setQueue,
         fightId,
-        Queues,
-        firstPlayer,
-        secondPlayer
+        Queues
     } = useContext(stageContext)
 
 
@@ -132,21 +130,16 @@ const Buttons: React.FC<buttonsProps> = (props: buttonsProps) => {
                         hideOrShowButonns(firstPlayerButton)
                         hideOrShowButonns(yourChoose)
                     }}>{setSkill(activeMonster.typeId)}</button>
-                    <button id="test-battle-button-yourRetreat" onClick={async () => {
+                    <button id="test-battle-button-yourRetreat" onClick={() => {
                         action='escape'
-                        const result = await server.actionUser(activeMonsterInfo(activeMonster), oppMonster[0], action)
-                        if(result?.result === false) {
-                            return
-                        } else {
-                            
-                        }
+                        server.actionUser(activeMonsterInfo(activeMonster), oppMonster[0], action)
                     }}>Отступить</button>
                 </div>
                 <div ref={yourChoose} className='hideButton buttons'>
                     {hpBarFirstEnemyMonster > 0 && (
-                        <button id="test-battle-button-attackFirstEnemyMonster" onClick={async () => {
-                            await server.actionUser(Queues[0], oppMonster[0], action)
-                            await server.stopBattleUpdate()
+                        <button id="test-battle-button-attackFirstEnemyMonster" onClick={() => {
+                            server.actionUser(Queues[0], oppMonster[0], action)
+                            server.stopBattleUpdate()
                             setTime(100)
                             setButtonClicked(true)
                             setQueue(fightId, Queues)
@@ -154,7 +147,7 @@ const Buttons: React.FC<buttonsProps> = (props: buttonsProps) => {
                     )}
                     {hpBarSecondEnemyMonster > 0 && (
                         <button id="test-battle-button-attackSecondEnemyMonster" onClick={() => {
-                            server.actionUser(Queues[0], oppMonster[1], action)
+                            server.actionUser(activeMonsterInfo(activeMonster), oppMonster[1], action)
                             server.stopBattleUpdate()
                             setTime(100)
                             setButtonClicked(true)
@@ -163,7 +156,7 @@ const Buttons: React.FC<buttonsProps> = (props: buttonsProps) => {
                     )}
                     {hpBarThirdEnemyMonster > 0 &&(
                         <button id="test-battle-button-attackThirdEnemyMonster" onClick={() => {
-                            server.actionUser(Queues[0], oppMonster[2], action)
+                            server.actionUser(activeMonsterInfo(activeMonster), oppMonster[2], action)
                             server.stopBattleUpdate()
                             setTime(100)
                             setButtonClicked(true)
@@ -191,13 +184,13 @@ const Buttons: React.FC<buttonsProps> = (props: buttonsProps) => {
                     }}>{setSkill(activeMonster.typeId)}</button>
                     <button id="test-battle-button-enemyRetreat" onClick={() => {
                         action='escape'
-                        server.actionUser(Queues[0], monster[0], action)
+                        server.actionUser(activeMonsterInfo(activeMonster), monster[0], action)
                     }}>Отступить</button>
                 </div>
                 <div ref={enemyChoose} className='hideButton buttons'>
                     {hpBarFirstMonster > 0 && (
                         <button id="test-battle-button-attackFirstMonster" onClick={() => {
-                            server.actionUser(Queues[0], monster[0], action)
+                            server.actionUser(activeMonsterInfo(activeMonster), monster[0], action)
                             server.stopBattleUpdate()
                             setTime(100)
                             setButtonClicked(true)
@@ -206,7 +199,7 @@ const Buttons: React.FC<buttonsProps> = (props: buttonsProps) => {
                     )}
                     {hpBarSecondMonster > 0 && (
                         <button id="test-battle-button-attackSecondMonster" onClick={() => {
-                            server.actionUser(Queues[0], monster[1], action)
+                            server.actionUser(activeMonsterInfo(activeMonster), monster[1], action)
                             server.stopBattleUpdate()
                             setTime(100)
                             setButtonClicked(true)

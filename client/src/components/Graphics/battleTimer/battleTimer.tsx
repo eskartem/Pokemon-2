@@ -13,32 +13,33 @@ const BattleTimer: React.FC = () => {
             setSQueue,
             sQueue,
             setActiveMonster,
-            Queues,
-            setQueue,
-            fightId
         } = useContext(stageContext)
 
         let [timer, setTimer] = useState<number>(30);
         let [Monster, setMonster] = useState<TMonster>(activeMonster)
-        let timerId: NodeJS.Timeout;
 
         const mathPvp = new MathPvp();
 
-        useEffect(() => {  
-            if(timer > 0) {
-                timerId = setInterval(() => {
-                    setTimer(prevCount => prevCount - 1); 
-                }, 1000); 
-            } else {
-                setSQueue(sQueue = mathPvp.timeIsOut(sQueue))
-                setActiveMonster(activeMonster = sQueue[0])
-                setMonster(Monster = activeMonster)
-                clearInterval(timerId); 
+        useEffect(() => {
+            let timerId: NodeJS.Timeout;
+            if(Monster !== activeMonster){
                 setTimer(30)
-                setQueue(fightId, Queues)
-            }
-            return () => clearInterval(timerId); 
-        }, [Queues, timer]); 
+                setMonster(Monster = activeMonster)     
+            } else {
+                if(timer > 0) {
+                    timerId = setInterval(() => {
+                        setTimer(prevCount => prevCount - 1); 
+                    }, 1000); 
+                } else {
+                    setSQueue(sQueue = mathPvp.timeIsOut(sQueue))
+                    setActiveMonster(activeMonster = sQueue[0])
+                    setMonster(Monster = activeMonster)
+                    setTimer(30)
+                }
+                return () => clearInterval(timerId); 
+            } 
+        
+        }, [timer, activeMonster, Monster]); 
 
         return (
           <Container x={stageProps.width * 0.5 - 50} y={20} name={"test-battle-pixi-Timer"}>
