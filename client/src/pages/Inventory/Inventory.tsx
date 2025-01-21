@@ -15,7 +15,7 @@ import InfoModal from '../../components/InfoModal/InfoModal';
 import question from '../../assets/img/question.png';
 import bear_air from '../../assets/characters/bear_air.png';
 import crystalImage from '../../assets/img/crystal.png';
-import eggImage from '../../assets/img/Egg.png'; 
+import eggImage from '../../assets/img/egg_new.png'; 
 import eggShellImage from '../../assets/img/egg_shell.png';
 import butterflyWaterImage from '../../assets/characters/butterfly_water.png';
 import { ServerContext } from '../../App';
