@@ -7,6 +7,10 @@ class Battle {
         $this->db = $db;
     }
 
+    public function getFight($fightId){
+        return $this->db->getFight($fightId);
+    }
+
     public function getInfoMonster($monsterId){
         $monster = $this->db->getMonsterById($monsterId);
 
@@ -442,12 +446,14 @@ public function actionUser($monsterId1, $monsterId2, $action){
         }
     }
 
-    public function getQueue($token1, $token2, $queue){
-        $user1 = $this->db->getUserByToken($token1);
-        $user2 = $this->db->getUserByToken($token2);
+    public function getQueue($fightId, $queue){
+
+        $fight = $this->db->getFight($fightId);
+        if ($fight->status === 'close'){
+            return['error' => 4002];
+        }
 
         //$queue = [1,2,3,4,5,6];
-        $fight = $this->db->getFight($user1->id, $user2->id);
 
         for ($i = 0; $i <= 5; $i++){
             $monster = $this->db->getMonsterById($queue[$i]);
@@ -456,7 +462,7 @@ public function actionUser($monsterId1, $monsterId2, $action){
                     $queue[$i] = 0;
                 }
             } else{
-                return ['error' => '702'];
+                return ['error' => 702];
             }
         }
 
@@ -470,12 +476,13 @@ public function actionUser($monsterId1, $monsterId2, $action){
         $this->db->updateQueue($fight->id, $queue1, $queue2, $queue3, $queue4, $queue5, $queue6);
 
         return[
-            $queue1,
+            'queue' =>
+            [$queue1,
             $queue2,
             $queue3,
             $queue4,
             $queue5,
-            $queue6
+            $queue6]
         ];
     }
 }
