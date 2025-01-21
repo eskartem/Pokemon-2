@@ -884,7 +884,7 @@ Answer<false>
 ```
 {
     fightId: number; - id баттла
-    queue: array; - массив очереди из id монстров
+    queue: string; - строка очереди из id монстров (через запятую, без пробелов)
 }
 ```
 

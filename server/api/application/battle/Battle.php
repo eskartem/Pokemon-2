@@ -478,8 +478,9 @@ public function actionUser($monsterId1, $monsterId2, $action){
         if ($fight->status === 'close'){
             return['error' => 4002];
         }
-
         //$queue = [1,2,3,4,5,6];
+        $queue = explode(',', $queue);
+        $queue = array_map('intval', $queue);
 
         for ($i = 0; $i <= 5; $i++){
             $monster = $this->db->getMonsterById($queue[$i]);
