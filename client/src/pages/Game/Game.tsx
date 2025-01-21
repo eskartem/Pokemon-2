@@ -104,10 +104,9 @@ const Game: React.FC<IBasePage> = (props: IBasePage) => {
                     </div>
                 </div>
                 <div className='button-panel-test-centre'>
-                    <img src={inventImage} alt="" onClick={inventoryClickHandler} className='imageButton' />
-                    {isUserInTown && <img src={marketImage} alt="" onClick={marketClickHandler} className='imageButton' /> }
-
-                    <Button id='test-game-button-battle' onClick={battleClickHandler} text='Битва' />
+                    <img src={inventImage} alt="" onClick={inventoryClickHandler} className='imageButton' /> {/* инвентарь */}
+                    {isUserInTown && <img src={marketImage} alt="" onClick={marketClickHandler} className='imageButton' /> } {/* рынок */}
+                    {isCanBattle && <Button id='test-game-button-battle' onClick={battleClickHandler} text='Битва' />} {/* битва */}
                 </div>
                 <div className='button-panel-test-right'>
                     <img id='test-game-img-logout' className='img-logout' src={ExitImg} alt="ExitImg" onClick={logoutClickHandler} />

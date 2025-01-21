@@ -212,7 +212,6 @@ const MarketTab: React.FC = () => {
                 {catalog.length === 0 && <h1>Похоже на рынке нет активных лотов...</h1>}
             </div>
             <Button onClick={() => setMakeLot(true)} text='Создать лот' />
-
             {isMakeLot && (
                 <div className='make_lot-tab'>
                     <div className='make_lot-content'>
@@ -232,6 +231,8 @@ const MarketTab: React.FC = () => {
                                         </div>
                                     );
                                 })}
+                                {!inventory?.monsters.sort((monster) => (monster.status === EMonsterStatus.inPocket)? 1: 0) && 
+                                <h1> нет доступных монстров для продажи </h1>}
                             </div>
                         )}
                         <label htmlFor='test-market-make_lot-start_price'>Начальная цена:</label>

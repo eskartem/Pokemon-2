@@ -21,6 +21,7 @@ export type TGamer = {
     status: EUserStatus;
     x: number;
     y: number;
+    zone: EZones;
 }
 
 export type TUser = TGamer & {
@@ -75,8 +76,8 @@ export enum ELotStatus {
 }
 
 export enum EMonsterStatus {
-    inPocket = 'inPocket',
-    inTeam = 'inTeam'
+    inPocket = 'in pocket',
+    inTeam = 'in team'
 }
 
 export type TLot = {
@@ -131,8 +132,7 @@ export type TMapZone = {
     y: number,
     width: number,
     height: number,
-    type: string,
-    element_id: number // надо название с помощью сложного запроса выдавать, а не само id, наругать бэкендеров.
+    type: string
 }
 
 export type TMapInfo = {
