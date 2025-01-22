@@ -14,7 +14,9 @@ const FinalScreen: React.FC = () => {
         hpBarFirstEnemyMonster,
         hpBarSecondEnemyMonster,
         hpBarThirdEnemyMonster,
-        fightId
+        fightId,
+        firstPlayer,
+        secondPlayer
     } = useContext(stageContext)
 
     const server = useContext(ServerContext)
@@ -45,11 +47,13 @@ const FinalScreen: React.FC = () => {
         {battleCaput && (
             <div className="popup-overlay">
                 <div className="popup">
-                        <h2>победил {results?.WinnerId}</h2>
+                    {results && (<>
+                        <h2>победил {results.WinnerId === firstPlayer.user_id ? 'победил первый игрок' : 'победил второй игрок'}</h2>
                         <br></br>
                         <h3>Изменение ресурсов</h3>
                         <h3>{results?.WinnerId} Получил {results?.crystal} кристалов, {results?.eggsFragm} скорлупы, {results?.money} золота</h3>
                         <h3>{results?.LoserId} Проебал {results?.crystal} кристалов, {results?.eggsFragm} скорлупы, {results?.money} золота</h3>
+                        </>)}
                 </div>
             </div>
         )}

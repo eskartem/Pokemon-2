@@ -120,8 +120,6 @@ class Battle {
             }            
         }
 
-        
-
         if (!is_null($playerToFight)){
             $this->db->updateUserStatus($user->id, 'fight');
             $this->db->updateUserStatus($playerToFight['id'], 'fight');
@@ -196,8 +194,6 @@ class Battle {
             foreach ($monsters2 as $monster2){
                 $this->restoreHp($monster2['id']);
             }
-            $winner = $this->db->getUserById($user2);
-            $loser = $this->db->getUserById($user1);
 
             return [
                 'WinnerId' => $user2,
@@ -220,8 +216,6 @@ class Battle {
             foreach ($monsters2 as $monster2){
                 $this->restoreHp($monster2['id']);
             }
-            $winner = $this->db->getUserById($user1);
-            $loser = $this->db->getUserById($user2);
 
             return [
                 'WinnerId' => $user1,
