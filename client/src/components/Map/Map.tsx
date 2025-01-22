@@ -1,4 +1,4 @@
-import React, { MouseEvent, useContext, useEffect, useState } from 'react';
+import React, { MouseEvent, TouchEvent, useContext, useEffect, useState } from 'react';
 import { Sprite, Stage, Graphics, Text, Container } from '@pixi/react';
 import { TextStyle } from 'pixi.js';
 import { TMap, TMapZone, TUpdateSceneResponse, TGamer, EZones, EUserStatus } from '../../services/server/types';
@@ -61,7 +61,7 @@ const Map: React.FC<IMap> = (props: IMap) => {
     const goToUser = () => {
 
         if (!userOnMap || !map) return;
-        
+
         let x = -(userOnMap.x - WINV.WIDTH / 2) * tileSize;
         let y = -(userOnMap.y - WINV.HEIGHT / 2) * tileSize;
 
@@ -87,7 +87,7 @@ const Map: React.FC<IMap> = (props: IMap) => {
                 moveUser(EDIRECTION.DOWN);
                 break;
             case 'ArrowLeft':
-                moveUser(EDIRECTION.LEFT);    
+                moveUser(EDIRECTION.LEFT);
                 break;
             case 'ArrowRight':
                 moveUser(EDIRECTION.RIGHT);
@@ -99,7 +99,7 @@ const Map: React.FC<IMap> = (props: IMap) => {
                 moveUser(EDIRECTION.DOWN);
                 break;
             case 'a':
-                moveUser(EDIRECTION.LEFT);    
+                moveUser(EDIRECTION.LEFT);
                 break;
             case 'd':
                 moveUser(EDIRECTION.RIGHT);
@@ -130,21 +130,54 @@ const Map: React.FC<IMap> = (props: IMap) => {
         setMapPosition(prevPosition => {
             const newX = prevPosition.x + deltaX;
             const newY = prevPosition.y + deltaY;
-        
+
             // Ограничение по горизонтали
             const maxX = 0;
             const minX = canvasWidth - map.WIDTH * tileSize;
-        
+
             // Ограничение по вертикали
             const maxY = 0;
             const minY = canvasHeight - map.HEIGHT * tileSize;
-        
+
             return {
                 x: Math.max(minX, Math.min(maxX, newX)),
                 y: Math.max(minY, Math.min(maxY, newY))
                 };
             });
         setLastMousePosition({ x: event.clientX, y: event.clientY });
+    }
+
+    const touchstart = (event: TouchEvent) => {
+        setCanMove(true);
+        setLastMousePosition({ x: event.touches[0].clientX, y: event.touches[0].clientY });
+    }
+
+    const touchend = () => setCanMove(false);
+
+    const touchmove = (event: TouchEvent) => {
+        if (!isCanMove || !map) return;
+
+        const deltaX = event.touches[0].clientX - lastMousePosition.x;
+        const deltaY = event.touches[0].clientY - lastMousePosition.y;
+
+        setMapPosition(prevPosition => {
+            const newX = prevPosition.x + deltaX;
+            const newY = prevPosition.y + deltaY;
+
+            // Ограничение по горизонтали
+            const maxX = 0;
+            const minX = canvasWidth - map.WIDTH * tileSize;
+
+            // Ограничение по вертикали
+            const maxY = 0;
+            const minY = canvasHeight - map.HEIGHT * tileSize;
+
+            return {
+                x: Math.max(minX, Math.min(maxX, newX)),
+                y: Math.max(minY, Math.min(maxY, newY))
+                };
+            });
+        setLastMousePosition({ x: event.touches[0].clientX, y: event.touches[0].clientY });
     }
 
     useEffect(() => {
@@ -157,8 +190,8 @@ const Map: React.FC<IMap> = (props: IMap) => {
             if (!userHimself) return;
             setUserOnMap(userHimself);
             const gamersAround = gamers.filter(gamer => { // выбираю пользователей только в поле зрения
-                return ( 
-                    (Math.abs(userHimself.x - gamer.x) < (fovDistance+1)) && 
+                return (
+                    (Math.abs(userHimself.x - gamer.x) < (fovDistance+1)) &&
                     (Math.abs(userHimself.y - gamer.y) < (fovDistance+1)) &&
                     (user.id != gamer.id)
                 )
@@ -178,18 +211,18 @@ const Map: React.FC<IMap> = (props: IMap) => {
         };
 
         if (!mapInfo) getMap();
-        
+
         if (user) {
             server.startSceneUpdate(updateSceneHandler);
         }
 
         window.addEventListener('keydown', keyDown);
-        
+
         return () => {
             server.stopSceneUpdate();
             window.removeEventListener('keydown', keyDown);
         }
-        
+
     }, [server, store, user]);
 
     if (!user || !userOnMap || !map) {
@@ -211,6 +244,9 @@ const Map: React.FC<IMap> = (props: IMap) => {
                 onMouseDown={mousedown}
                 onMouseUp={mouseup}
                 onMouseLeave={mouseleave}
+                onTouchStart={touchstart}
+                onTouchEnd={touchend}
+                onTouchMove={touchmove}
             >
                 <Sprite // карта
                     image={mapImage}
@@ -276,7 +312,7 @@ const Map: React.FC<IMap> = (props: IMap) => {
                             y={mapPosition.y + gamer.y * tileSize}
                             />
                             { (getCurrentZone(gamer) === 'озеро' && // лодка, если пользователь в озере
-                                <Sprite 
+                                <Sprite
                                     image={boatImage}
                                     width={tileSize*1.5}
                                     height={tileSize}
@@ -284,7 +320,7 @@ const Map: React.FC<IMap> = (props: IMap) => {
                                     y={mapPosition.y + gamer.y * tileSize + tileSize/2}
                                 />
                             ) }
-                            <Text // ник 
+                            <Text // ник
                                 text={gamer.name}
                                 x={mapPosition.x + gamer.x * tileSize - (gamer.name.length * tileSize/11.42)}
                                 y={mapPosition.y + gamer.y * tileSize - tileSize/2}
@@ -322,7 +358,7 @@ const Map: React.FC<IMap> = (props: IMap) => {
                         y={mapPosition.y + userOnMap.y * tileSize}
                     />
                     { (getCurrentZone(userOnMap) === 'озеро' && // лодка, если пользователь в озере
-                    <Sprite 
+                    <Sprite
                         image={boatImage}
                         width={tileSize*1.5}
                         height={tileSize}
@@ -336,9 +372,9 @@ const Map: React.FC<IMap> = (props: IMap) => {
                         y={mapPosition.y + userOnMap.y * tileSize - tileSize/2}
                         style={
                             new TextStyle({
-                                fontSize: 16, 
-                                fill: ['#00ff00'], 
-                                stroke: 1, 
+                                fontSize: 16,
+                                fill: ['#00ff00'],
+                                stroke: 1,
                                 strokeThickness: 3
                             })
                         }
@@ -352,21 +388,21 @@ const Map: React.FC<IMap> = (props: IMap) => {
                         new TextStyle({
                             fontSize: 30,
                             strokeThickness: 1,
-                            fill: ['#000000'], 
+                            fill: ['#000000'],
                         })
                     }
                 />
             </Stage>
             <div className="control-panel">
-                <Button id='test-game-button-arrowleft' className="move-button" 
+                <Button id='test-game-button-arrowleft' className="move-button"
                 onClick={() => moveUser(EDIRECTION.LEFT)} text={'←'} />
                 <div className='vertical-move-buttons'>
-                    <Button id='test-game-button-arrowup' className="move-button" 
+                    <Button id='test-game-button-arrowup' className="move-button"
                     onClick={() => moveUser(EDIRECTION.UP)} text={'↑'} />
-                    <Button id='test-game-button-arrowdown' className="move-button" 
+                    <Button id='test-game-button-arrowdown' className="move-button"
                     onClick={() => moveUser(EDIRECTION.DOWN)} text={'↓'} />
                 </div>
-                <Button id='test-game-button-arrowright' className="move-button" 
+                <Button id='test-game-button-arrowright' className="move-button"
                 onClick={() => moveUser(EDIRECTION.RIGHT)} text={'→'} />
                 <div >
                     <Button className='' onClick={goToUser} text={"к себе"}/>
