@@ -343,17 +343,7 @@ class Application {
             }
             return['error' => 4003];
         }
-    
-        $battle = $this->battle->getBattleById($params['battleId']);
-        if (!$battle) {
-            return ['error' => 4005];
-        }
-    
-        if ($battle->status == 'close') {
-            return ['error' => 4005];
-        }
-    
-        return $this->battle->endBattle($battle);
+        return ['error' => 404];
     }
     
 
