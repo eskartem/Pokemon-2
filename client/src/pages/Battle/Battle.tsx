@@ -152,7 +152,6 @@ const Battle: React.FC<IBasePage> = (props: IBasePage) => {
         setThirdSelectedEnemyMonster(thirdEnemyMonsterInfo);
         setAllMonsterSelected(true)
         setMaxHp(true) 
-        setButtonClicked(false)
       }
     } catch (error) {}
   };
@@ -199,8 +198,8 @@ const Battle: React.FC<IBasePage> = (props: IBasePage) => {
       if(!oppMonster || oppMonster.length !== 3) return
       getMonsterInfo(monster, oppMonster);
       if(monster && oppMonster) {
-        setTime(30000)
-        SetLoading(false)
+          setTime(1000)
+          SetLoading(false)
       }
     };
     

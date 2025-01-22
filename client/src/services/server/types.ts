@@ -292,6 +292,12 @@ export type TEBattle = {
     name: string
 }
 
+export enum EActions {
+    attack = 'attack',
+    skill = 'skill',
+    escape = 'escape'
+} 
+
 
 
 
