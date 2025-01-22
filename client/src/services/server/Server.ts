@@ -267,7 +267,7 @@ class Server {
     async hatchEgg(): Promise<THatchedResponse | null> {
         const result = await this.request<THatchedResponse>('hatchEgg');
         return result;
-    }    
+    }
 
     startBattleUpdate(cb: (result: TUpdateBattleResponse) => void, TIMESTAMP: number): void {
         this.battleInterval = setInterval(async () => {
