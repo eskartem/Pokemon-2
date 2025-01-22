@@ -335,8 +335,13 @@ class Application {
     }
     
     public function endBattle($params) {
-        if (!isset($params['battleId'])) {
-            return ['error' => 242];
+        if ($params['fightId']) {
+            $fight = $this->battle->getFight($params['fightId']);
+            
+            if ($fight){
+                return $this->battle->endBattle($params['fightId']);
+            }
+            return['error' => 4003];
         }
     
         $battle = $this->battle->getBattleById($params['battleId']);

@@ -368,8 +368,8 @@ class DB {
         $this->execute('INSERT INTO fight (user1_id, user2_id, turn, status, result) VALUES (?,?, 0, "open", 0)', [$userId1, $userId2]);
     }
 
-    public function addResultFight($userId1, $userId2, $result){
-        $this->execute('UPDATE fight SET status = "close", turn = 1, result = ? WHERE user1_id = ? AND user2_id = ? AND turn = 0', [$result, $userId1, $userId2]);
+    public function addResultFight($fightId, $result){
+        $this->execute('UPDATE fight SET status = "close", turn = 1, result = ? WHERE id = ? AND turn = 0', [$result, $fightId]);
     }
 
     //element
