@@ -13,9 +13,7 @@ import { TAnswer, TError, TMessagesResponse, TUser, TMap, TMapZone,
     TBattleInfo,
     TBalance,
     TBattle,
-    TEBattle,
-    EActions
-} from "./types";
+    TEBattle} from "./types";
 
 const { CHAT_TIMESTAMP, SCENE_TIMESTAMP, MARKET_TIMESTAMP, HOST} = CONFIG;
 
@@ -302,7 +300,7 @@ class Server {
         return await this.request<TMonster>('getInfoMonster', {monsterId: monsterId.toString()});
     } 
 
-    async actionUser(monsterId1: number, monsterId2: number, action: EActions): Promise<TBattleInfo | null> {
+    async actionUser(monsterId1: number, monsterId2: number, action: string): Promise<TBattleInfo | null> {
         return await this.request<TBattleInfo>('actionUser', {monsterId1: monsterId1.toString(), monsterId2: monsterId2.toString(), action});
     }
 

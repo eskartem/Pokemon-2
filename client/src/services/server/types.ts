@@ -295,12 +295,6 @@ export type TEBattle = {
     crystal: number
 }
 
-export enum EActions {
-    attack = 'attack',
-    skill = 'skill',
-    escape = 'escape'
-} 
-
 
 
 
