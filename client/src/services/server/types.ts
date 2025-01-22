@@ -26,6 +26,10 @@ export type TGamer = {
     zone: EZones;
 }
 
+export type TGamerBattle =  {
+    id: number
+}
+
 export type TUser = TGamer & {
     token: string;
     coins: number;
@@ -35,6 +39,44 @@ export type TMessage = {
     message: string;
     author: string;
     created: string;
+}
+
+export type TUpdateBattleResponse = {
+    gamers: TPlayers[]
+    hash: string
+}
+
+export type TPlayers = {
+    user_id: number,
+    opponent_id: number
+    monsters: number[],
+    monster_opp: number[],
+}
+
+export type TMonster = {
+    id: number
+    typeId: number
+    name: string
+    elementId: number
+    element: string
+    level: number
+    hp: number
+    attack: number
+    defense: number
+}
+
+export type TBattleInfo = {
+    monsterId1: string
+    damage1: number
+    monsterId2: string
+    damage2: number
+    monsterId3: string
+    damage3: number
+    monsterId: string
+    damage: number
+    lostMonye: number
+    lostCrystal: number
+    result: boolean
 }
 
 export type TMessages = TMessage[];
@@ -241,6 +283,21 @@ export type THatchedResponse = {
     eggConsumed: boolean;
     eggs: number;
 }
+
+export type TBattle = {
+    user1: number,
+    user2: number,
+    fightId: number
+}
+
+export type TEBattle = {
+    WinnerId: number,
+    LoserId: number,
+    money: number,
+    eggsFragm: number
+    crystal: number
+}
+
 
 
 

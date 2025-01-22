@@ -299,8 +299,28 @@ class Application {
 
     //Боевка
 
-    public function startBattle() {
-        return $this->battle->startBattle();
+    public function startBattle($params) {
+        if (!$params['token']) {
+            return ['error' => 242];
+        }
+    
+        $user = $this->user->getUser($params['token']);
+        if (!$user) {
+            return ['error' => 705];
+        }
+    
+        if ($user->status == 'fight') {
+            return ['error' => 4003];
+        }
+    
+        $zones = ['перекати-поле', 'куст', 'корабль', 'пещера', 'город'];
+        $zoneChecks = [];
+        
+        foreach ($zones as $zone) {
+            $zoneChecks[$zone] = $this->map->isUserInZone($user, $zone);
+        }
+    
+        return $this->battle->startBattle($user, $zoneChecks);
     }
     
     public function updateBattle($params) {
@@ -315,16 +335,27 @@ class Application {
     }
     
     public function endBattle($params) {
-        if ($params['token1']&& $params['token2']) {
-            $user1 = $this->user->getUser($params['token1']);
-            $user2 = $this->user->getUser($params['token2']);
-            if ($user1 && $user2) {
-                return $this->battle->endBattle($params['token1'],$params['token2'] );
+        if ($params['fightId']) {
+            $fight = $this->battle->getFight($params['fightId']);
+            
+            if ($fight){
+                return $this->battle->endBattle($params['fightId']);
             }
-            return ['error' => 705];
+            return['error' => 4003];
         }
-        return ['error' => 404];
+    
+        $battle = $this->battle->getBattleById($params['battleId']);
+        if (!$battle) {
+            return ['error' => 4005];
+        }
+    
+        if ($battle->status == 'close') {
+            return ['error' => 4005];
+        }
+    
+        return $this->battle->endBattle($battle);
     }
+    
 
     public function actionUser($params){
         if ($params['monsterId1'] && $params['monsterId2'] && $params['action']){

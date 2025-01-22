@@ -6,9 +6,16 @@ import { TAnswer, TError, TMessagesResponse, TUser, TMap, TMapZone,
     TCr, TUpdateMarketResponse, TMakeBet, ETypeLot, TMakeLot,
     TCancelLot,
     TUserInfo,
-    TMapInfo, THatchedResponse} from "./types";
+    TMapInfo,
+    TGamerBattle,
+    TUpdateBattleResponse,
+    TMonster, THatchedResponse,
+    TBattleInfo,
+    TBalance,
+    TBattle,
+    TEBattle} from "./types";
 
-const { CHAT_TIMESTAMP, SCENE_TIMESTAMP, MARKET_TIMESTAMP, HOST } = CONFIG;
+const { CHAT_TIMESTAMP, SCENE_TIMESTAMP, MARKET_TIMESTAMP, HOST} = CONFIG;
 
 class Server {
     HOST = HOST;
@@ -17,6 +24,7 @@ class Server {
     sceneInterval: NodeJS.Timer | null = null;
     marketInterval: NodeJS.Timer | null = null;
     inventoryInterval: NodeJS.Timer | null = null; // Добавляем интервал для инвентаря
+    battleInterval: NodeJS.Timer | null = null; 
     showErrorCb: (error: TError) => void = () => {};
 
     constructor(store: Store) {
@@ -261,6 +269,55 @@ class Server {
         return result;
     }
 
+    startBattleUpdate(cb: (result: TUpdateBattleResponse) => void, TIMESTAMP: number): void {
+        this.battleInterval = setInterval(async () => {
+            const result = await this.updateBattle();
+            if (result) {
+                cb(result);
+            }
+        }, TIMESTAMP);
+    }
+
+    async updateBattle(): Promise<TUpdateBattleResponse | null> {
+        const hash = this.store.getBattleHash();
+        const result = await this.request<TUpdateBattleResponse>('updateBattle', { hash });
+        if (result) {
+            this.store.setSceneHash(result.hash);
+            return result;
+        }
+        return null;
+    }
+
+    stopBattleUpdate(): void {
+        if (this.battleInterval) {
+            clearInterval(this.battleInterval);
+            this.battleInterval = null;
+            this.store.clearAllHashes();
+        }
+    }   
+
+    async getMonsterInfo(monsterId: number): Promise<TMonster | null> {
+        return await this.request<TMonster>('getInfoMonster', {monsterId: monsterId.toString()});
+    } 
+
+    async actionUser(monsterId1: number, monsterId2: number, action: string): Promise<TBattleInfo | null> {
+        return await this.request<TBattleInfo>('actionUser', {monsterId1: monsterId1.toString(), monsterId2: monsterId2.toString(), action});
+    }
+
+    async startBattle(): Promise<TBattle | null> {
+        const result = await this.request<TBattle>('startBattle');
+        return result;
+    }
+
+    async getQueue(fightId: number, sortQueue: string): Promise<number[] | null> {
+        return await this.request<number[]>('getQueue', {fightId: fightId.toString(), queue: sortQueue});
+    }
+
+    async endBattle(fightId: number): Promise<TEBattle | null> {
+        return await this.request<TEBattle>('endBattle', {fightId: fightId.toString()});
+    }
+
+    
 }
 
 export default Server;

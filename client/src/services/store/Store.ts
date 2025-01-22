@@ -12,6 +12,7 @@ class Store {
     sceneHash: string = 'empty_scene_hash';
     marketHash: string = 'empty_market_hash';
     inventoryHash: string = 'empty_inventory_hash';
+    battleHash: string = 'empty_battle_hash'
 
     clearAllHashes() {
         this.chatHash = 'empty_chat_hash';
@@ -99,6 +100,14 @@ class Store {
 
     getMapInfo(): TMapInfo | null {
         return this.mapInfo;
+    }
+
+    getBattleHash(): string {
+        return this.battleHash;
+    }
+
+    setBattleHash(hash: string): void {
+        this.battleHash = hash;
     }
 
 }

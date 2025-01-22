@@ -1,50 +1,45 @@
-import { useEffect, useState } from "react"
-import { Sprite, Text} from "@pixi/react"
-import {firstAnemoMoster, secondAnemoMonster, thirdAnemoMonster, fourthAnemoMonster,
-    firstGeoMonster, secondGeoMonster, thirdGeoMonster, fourthGeoMonster,
-    firstHydroMonster, secondHydroMonster, thirdHydroMonster, fourthHydroMonster,
-    firstPyroMonster, secondPyroMonster, thirdPyroMonster, fourthPyroMonster, empty
-} from '../../../assets/img_monster/AllSprites';
-
-import { Monsters } from "../../../assets/Monsters/Monster"
+import { useContext, useEffect, useState } from "react"
+import { Sprite, Text, Container} from "@pixi/react"
+import { TextStyle } from "pixi.js";
+import {bear_air, bee_earth, blob_fish_water, butterfly_water, 
+    cat_lit_energy_air, elephant_air, emoboy_fire, 
+    frog_water, lizard_fire, meatboy_fire, mushroom_earth, worm_earth, empty} from '../../../assets/characters/allSprites'
 
 import StatsPanel from "./statsPanels";
+import { stageContext } from "../../../assets/context/stage";
+import { TMonster } from "../../../services/server/types";
 
-interface spritesProps {
-    stageProps: {
-        width: number,
-        height: number,
-    },
-    firstSelectedMonster: Monsters,
-    secondSelectedMonster: Monsters,
-    thirdSelectedMonster: Monsters,
-    firstSelectedEnemyMonster: Monsters,
-    secondSelectedEnemyMonster: Monsters,
-    thirdSelectedEnemyMonster: Monsters,
-    hpBarFirstMonster: number,
-    hpBarSecondMonster: number,
-    hpBarThirdMonster: number,
-    hpBarFirstEnemyMonster: number,
-    hpBarSecondEnemyMonster: number,
-    hpBarThirdEnemyMonster: number,
-}
 
-const Sprites: React.FC<spritesProps> = (props: spritesProps) => {
-    const {
-        stageProps,
+const Sprites: React.FC = () => {
+
+    const {hpBarFirstMonster, 
+        hpBarSecondMonster, 
+        hpBarThirdMonster, 
+        hpBarFirstEnemyMonster, 
+        hpBarSecondEnemyMonster, 
+        hpBarThirdEnemyMonster,
+        stageProps, 
         firstSelectedMonster,
         secondSelectedMonster,
         thirdSelectedMonster,
         firstSelectedEnemyMonster,
         secondSelectedEnemyMonster,
         thirdSelectedEnemyMonster,
-        hpBarFirstMonster,
-        hpBarSecondMonster,
-        hpBarThirdMonster,
-        hpBarFirstEnemyMonster,
-        hpBarSecondEnemyMonster,
-        hpBarThirdEnemyMonster
-    } = props
+        activeMonster,
+        Queues
+        } = useContext(stageContext)
+
+    const unactiveTextStyle = new TextStyle({
+        fill: '#ffffff', // Цвет текста
+        stroke: '#000000', // Цвет обводки
+        strokeThickness: 2,
+    });
+
+    const activeTextStyle = new TextStyle({
+        fill: '#4feb34', // Цвет текста
+        stroke: '#000000', // Цвет обводки
+        strokeThickness: 2,
+    });
 
     let [firstSelectedSprite, setFirstSelectedSprite] = useState('');
     let [secondSelectedSprite, setSecondSelectedSprite] = useState('');
@@ -60,56 +55,44 @@ const Sprites: React.FC<spritesProps> = (props: spritesProps) => {
     let [isOpenSecondEnemyMonster, setIsOpenSecondEnemyMonster] = useState(false);
     let [isOpenThirdEnemyMonster, setIsOpenThirdEnemyMonster] = useState(false);
 
-    const selectSprite = (activeMonster: Monsters, thisSprite: string) => {
+    const selectSprite = (activeMonster: TMonster, thisSprite: string) => {
         let thisMonster: string
         switch (activeMonster.name) {
-            case 'Pidgey':
-                thisMonster = firstAnemoMoster;
+            case 'Кот Лит Энерджи':
+                thisMonster = cat_lit_energy_air;
                 return thisSprite = thisMonster;
-            case 'Butterfree':
-                thisMonster = secondAnemoMonster;
+            case 'Медведь':
+                thisMonster = bear_air;
                 return thisSprite = thisMonster;
-            case 'Zubat':
-                thisMonster = thirdAnemoMonster;
+            case 'Слон':
+                thisMonster = elephant_air;
                 return thisSprite = thisMonster;
-            case "Farfetch'd":
-                thisMonster = fourthAnemoMonster;
+            case 'Червь':
+                thisMonster = worm_earth;
                 return thisSprite = thisMonster;
-            case 'Bulbasaur':
-                thisMonster = firstGeoMonster;
+            case 'Гриб':
+                thisMonster = mushroom_earth;
                 return thisSprite = thisMonster;
-            case 'Ratata':
-                thisMonster = secondGeoMonster;
+            case 'Пчела':
+                thisMonster = bee_earth;
                 return thisSprite = thisMonster;
-            case 'Sandshrew':
-                thisMonster = thirdGeoMonster;
+            case 'Лягушка':
+                thisMonster = frog_water;
                 return thisSprite = thisMonster;
-            case 'Dugtrio':
-                thisMonster = fourthGeoMonster;
+            case 'Мотылек':
+                thisMonster = butterfly_water;
                 return thisSprite = thisMonster;
-            case 'Magikarp':
-                thisMonster = firstHydroMonster;
+            case 'Рыба капля':
+                thisMonster = blob_fish_water;
                 return thisSprite = thisMonster;
-            case 'Omanyte':
-                thisMonster = secondHydroMonster;
+            case 'Митбой':
+                thisMonster = meatboy_fire;
                 return thisSprite = thisMonster;
-            case 'Poliwhirl':
-                thisMonster = thirdHydroMonster;
+            case 'Ящерица':
+                thisMonster = lizard_fire;
                 return thisSprite = thisMonster;
-            case 'Squirtle':
-                thisMonster = fourthHydroMonster;
-                return thisSprite = thisMonster;
-            case 'Flareon':
-                thisMonster = firstPyroMonster;
-                return thisSprite = thisMonster;
-            case 'Charmander':
-                thisMonster = secondPyroMonster;
-                return thisSprite = thisMonster;
-            case 'Ponyta':
-                thisMonster = thirdPyroMonster;
-                return thisSprite = thisMonster;
-            case 'Growlithe':
-                thisMonster = fourthPyroMonster;
+            case 'Эмобой':
+                thisMonster = emoboy_fire;
                 return thisSprite = thisMonster;
             default: 
                 thisMonster = empty;
@@ -130,84 +113,116 @@ const Sprites: React.FC<spritesProps> = (props: spritesProps) => {
 
     return(<>
         {hpBarFirstMonster > 0 && (
-            <Sprite image={firstSelectedMonster.isAlive ? firstSelectedSprite || empty : empty} 
-                x={stageProps.width * 0.15} 
-                y={stageProps.height * 0.3} scale={[-1.5, 1.5]} 
-                interactive
-                onclick={() => {setIsOpenFirstMonster(isOpenFirstMonster === false ? true : false)}} 
-                name={"test-battle-pixi-yourFirstSprite"}
-            />
+            <Container x={stageProps.width * 0.05} y={stageProps.height * 0.3}>
+                <Sprite image={firstSelectedMonster.hp > 0 ? firstSelectedSprite || empty : empty} 
+                    scale={[0.1, 0.1]} 
+                    interactive
+                    onclick={() => {setIsOpenFirstMonster(isOpenFirstMonster === false ? true : false)}} 
+                    name={"test-battle-pixi-yourFirstSprite"}
+                />
+                <Text
+                text={`${firstSelectedMonster.name}`}
+                x={20}
+                y={-30}
+                style={firstSelectedMonster === activeMonster ? activeTextStyle : unactiveTextStyle}
+                />
+            </Container>
         )}
         {hpBarSecondMonster > 0 && (
-            <Sprite image={secondSelectedMonster.isAlive ? secondSelectedSprite || empty : empty} 
-                x={stageProps.width * 0.15} 
-                y={stageProps.height * 0.5} 
-                scale={[-1.5, 1.5]} 
-                interactive
-                onclick={() => {setIsOpenSecondMonster(isOpenSecondMonster === false ? true : false)}}
-                name={"test-battle-pixi-yourSecondSprite"}
-            />
+            <Container x={stageProps.width * 0.05} y={stageProps.height * 0.51}>
+                <Sprite image={secondSelectedMonster.hp > 0 ? secondSelectedSprite || empty : empty} 
+                    scale={[0.1, 0.1]} 
+                    interactive
+                    onclick={() => {setIsOpenSecondMonster(isOpenSecondMonster === false ? true : false)}}
+                    name={"test-battle-pixi-yourSecondSprite"}
+                />
+                <Text 
+                    text={`${secondSelectedMonster.name}`}
+                    x={20}
+                    y={-30}
+                    style={secondSelectedMonster === activeMonster ? activeTextStyle : unactiveTextStyle}
+                />
+            </Container>
         )}
         {hpBarThirdMonster > 0 && (
-            <Sprite image={thirdSelectedMonster.isAlive ? thirdSelectedSprite || empty : empty} 
-                x={stageProps.width * 0.15} 
-                y={stageProps.height * 0.7} 
-                scale={[-1.5, 1.5]} 
-                interactive
-                onclick={() => {setIsOpenThirdMonster(isOpenThirdMonster === false ? true : false)}}
-                name={"test-battle-pixi-yourThirdSprite"}
-            />
+            <Container x={stageProps.width * 0.05} y={stageProps.height * 0.72}>
+                <Sprite image={thirdSelectedMonster.hp > 0 ? thirdSelectedSprite || empty : empty} 
+                    scale={[0.1, 0.1]} 
+                    interactive
+                    onclick={() => {setIsOpenThirdMonster(isOpenThirdMonster === false ? true : false)}}
+                    name={"test-battle-pixi-yourThirdSprite"}
+                />
+                <Text 
+                    text={`${thirdSelectedMonster.name}`}
+                    x={20}
+                    y={-30}
+                    style={thirdSelectedMonster === activeMonster ? activeTextStyle : unactiveTextStyle}
+                />
+            </Container>
         )}
         {hpBarFirstEnemyMonster > 0 && (
-            <Sprite image={firstSelectedEnemyMonster.isAlive ? firstSelectedEnemySprite || empty : empty} 
-                x={stageProps.width * 0.85} 
-                y={stageProps.height * 0.3} 
-                scale={[1.5, 1.5]} 
-                interactive
-                onclick={() => {setIsOpenFirstEnemyMonster(isOpenFirstEnemyMonster === false ? true : false)}}
-                name={"test-battle-pixi-enemyFirstSprite"}
-            />
+            <Container x={stageProps.width * 0.85} y={stageProps.height * 0.3}>
+                <Sprite image={firstSelectedEnemyMonster.hp > 0 ? firstSelectedEnemySprite || empty : empty} 
+                    x={120}
+                    scale={[-0.1, 0.1]} 
+                    interactive
+                    onclick={() => {setIsOpenFirstEnemyMonster(isOpenFirstEnemyMonster === false ? true : false)}}
+                    name={"test-battle-pixi-enemyFirstSprite"}
+                />
+                <Text 
+                    text={`${firstSelectedEnemyMonster.name}`}
+                    x={-20}
+                    y={-30}
+                    style={firstSelectedEnemyMonster === activeMonster ? activeTextStyle : unactiveTextStyle}
+                />
+        </Container>
         )}
         {hpBarSecondEnemyMonster > 0 && (
-            <Sprite image={secondSelectedEnemyMonster.isAlive ? secondSelectedEnemySprite || empty : empty} 
-                x={stageProps.width * 0.85} 
-                y={stageProps.height * 0.5} 
-                scale={[1.5, 1.5]} 
-                interactive
-                onclick={() => {setIsOpenSecondEnemyMonster(isOpenSecondEnemyMonster === false ? true : false)}}
-                name={"test-battle-pixi-enemySecondSprite"}
-            />
+            <Container x={stageProps.width * 0.85} y={stageProps.height * 0.51}>
+                <Sprite image={secondSelectedEnemyMonster.hp > 0 ? secondSelectedEnemySprite || empty : empty} 
+                    x={120}
+                    scale={[-0.1, 0.1]} 
+                    interactive
+                    onclick={() => {setIsOpenSecondEnemyMonster(isOpenSecondEnemyMonster === false ? true : false)}}
+                    name={"test-battle-pixi-enemySecondSprite"}
+                />
+                <Text 
+                    text={`${secondSelectedEnemyMonster.name}`}
+                    x={-20}
+                    y={-30}
+                    style={secondSelectedEnemyMonster === activeMonster ? activeTextStyle : unactiveTextStyle}
+                />
+            </Container>
         )}
         {hpBarThirdEnemyMonster > 0 && (
-            <Sprite image={thirdSelectedEnemyMonster.isAlive ? thirdSelectedEnemySprite || empty : empty} 
-                x={stageProps.width * 0.85} 
-                y={stageProps.height * 0.7} 
-                scale={[1.5, 1.5]} 
-                interactive
-                onclick={() => {setIsOpenThirdEnemyMonster(isOpenThirdEnemyMonster === false ? true : false)}}
-                name={"test-battle-pixi-enemyThirdSprite"}
-            />
+            <Container x={stageProps.width * 0.85} y={stageProps.height * 0.72}>
+                <Sprite image={thirdSelectedEnemyMonster.hp > 0 ? thirdSelectedEnemySprite || empty : empty} 
+                    x={120}
+                    scale={[-0.1, 0.1]} 
+                    interactive
+                    onclick={() => {setIsOpenThirdEnemyMonster(isOpenThirdEnemyMonster === false ? true : false)}}
+                    name={"test-battle-pixi-enemyThirdSprite"}
+                />
+                <Text 
+                    text={`${thirdSelectedEnemyMonster.name}`}
+                    x={-20}
+                    y={-30}
+                    style={thirdSelectedEnemyMonster === activeMonster ? activeTextStyle : unactiveTextStyle}
+                />
+            </Container>
         )}
         <StatsPanel 
-            stageProps={stageProps}
             isOpenFirstMonster={isOpenFirstMonster}
             isOpenSecondMonster={isOpenSecondMonster}
             isOpenThirdMonster={isOpenThirdMonster}
             isOpenFirstEnemyMonster={isOpenFirstEnemyMonster}
             isOpenSecondEnemyMonster={isOpenSecondEnemyMonster}
             isOpenThirdEnemyMonster={isOpenThirdEnemyMonster}
-            firstSelectedMonster={firstSelectedMonster}
-            secondSelectedMonster={secondSelectedMonster}
-            thirdSelectedMonster={thirdSelectedMonster}
-            firstSelectedEnemyMonster={firstSelectedEnemyMonster}
-            secondSelectedEnemyMonster={secondSelectedEnemyMonster}
-            thirdSelectedEnemyMonster={thirdSelectedEnemyMonster}
-            hpBarFirstMonster={hpBarFirstMonster}
-            hpBarSecondMonster={hpBarSecondMonster}
-            hpBarThirdMonster={hpBarThirdMonster}
-            hpBarFirstEnemyMonster={hpBarFirstEnemyMonster}
-            hpBarSecondEnemyMonster={hpBarSecondEnemyMonster}
-            hpBarThirdEnemyMonster={hpBarThirdEnemyMonster}
+        />
+        <Text 
+                    text={`${activeMonster.name}`}
+                    x={200}
+                    y={300}
         />
     </>)
 }

@@ -164,7 +164,7 @@ class DB {
     }
         
     public function updateUserStatus($userId, $status){
-        $this->execute('UPDATE users SET status = ? WHERE id =?', [$status, $userId]);
+        return $this->execute('UPDATE users SET status = ? WHERE id =?', [$status, $userId]);
     }
 
     //map
@@ -361,16 +361,15 @@ class DB {
     }
 
     public function getPlayersScout() {
-        return $this->queryAll('SELECT id, name, x, y FROM users WHERE status = "scout"');
+        return $this->queryAll('SELECT id, name, x, y, rating FROM users WHERE status = "scout"');
     }
     
     public function addFight($userId1, $userId2){
         $this->execute('INSERT INTO fight (user1_id, user2_id, turn, status, result) VALUES (?,?, 0, "open", 0)', [$userId1, $userId2]);
-        return (int)$this->pdo->lastInsertId();
     }
 
-    public function addResultFight($userId1, $userId2, $result){
-        $this->execute('UPDATE fight SET status = "close", turn = 1, result = ? WHERE user1_id = ? AND user2_id = ? AND turn = 0', [$result, $userId1, $userId2]);
+    public function addResultFight($fightId, $result){
+        $this->execute('UPDATE fight SET status = "close", turn = 1, result = ? WHERE id = ? AND turn = 0', [$result, $fightId]);
     }
 
     //element
@@ -455,10 +454,6 @@ class DB {
         return $this->queryAll('SELECT * from monster_types');
     }
 
-    public function getSkillById($skillId) { //id скилла совпадают с id типом монстра
-        return $this->query('SELECT * FROM skills WHERE id=?', [$skillId]);
-    }
-
     public function getFight ($fightId){
         return $this->query('SELECT * FROM fight WHERE id=?', [$fightId]);
     }
@@ -466,5 +461,8 @@ class DB {
     public function updateQueue($fightId,$queue1, $queue2, $queue3, $queue4, $queue5, $queue6){
         $this->execute('UPDATE fight SET queue1 = ?, queue2 = ?, queue3 = ?, queue4 = ?, queue5 = ?, queue6 = ? WHERE id = ?', [$queue1, $queue2, $queue3, $queue4, $queue5, $queue6, $fightId]);
     }
-    
+
+    public function getSkillById($skillId) { //id скилла совпадают с id типом монстра
+        return $this->query('SELECT * FROM skills WHERE id=?', [$skillId]);
+    }
 }

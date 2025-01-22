@@ -1,38 +1,17 @@
-import  {useEffect, useRef, useState} from "react"
+import  {useEffect, useRef, useContext, useMemo, useState} from "react"
 
 import './Buttons.css'
 import MathPvp from "../../services/MathPvp/MathPvp";
 
-import { Monsters } from "../../assets/Monsters/Monster";
+import { stageContext } from "../../assets/context/stage";
+import { TMonster } from "../../services/server/types";
+import { ServerContext } from "../../App";
 
-interface buttonsProps {
-        activeMonster: Monsters, 
-        firstSelectedMonster: Monsters,
-        secondSelectedMonster: Monsters,
-        thirdSelectedMonster: Monsters,
-        firstSelectedEnemyMonster: Monsters,
-        secondSelectedEnemyMonster: Monsters,
-        thirdSelectedEnemyMonster: Monsters,
-        setSQueue: (sQueue: Monsters[]) => void,
-        sQueue: Monsters[],
-        setActiveMonster: (activeMonster: Monsters) => void,
-        hpBarFirstMonster: number,
-        hpBarSecondMonster: number,
-        hpBarThirdMonster: number,
-        hpBarFirstEnemyMonster: number,
-        hpBarSecondEnemyMonster: number,
-        hpBarThirdEnemyMonster: number,
-        setHpBarFirstEnemyMonster: (hpBarFirstMonsterumber: number) => void,
-        setHpBarFirstMonster: (hpBarSecondMonster: number) => void,
-        setHpBarSecondEnemyMonster: (hpBarThirdMonster: number) => void,
-        setHpBarSecondMonster: (hpBarFirstEnemyMonster: number) => void,
-        setHpBarThirdEnemyMonster: (hpBarSecondEnemyMonster: number) => void,
-        setHpBarThirdMonster: (hpBarThirdEnemyMonster: number) => void
-}
-
-const Buttons: React.FC<buttonsProps> = (props: buttonsProps) => {
-
+const Buttons: React.FC = () => {
     const mathPvp = new MathPvp();
+
+    const server = useContext(ServerContext)
+
     let {activeMonster, 
         firstSelectedMonster,
         secondSelectedMonster,
@@ -49,21 +28,20 @@ const Buttons: React.FC<buttonsProps> = (props: buttonsProps) => {
         hpBarFirstEnemyMonster,
         hpBarSecondEnemyMonster,
         hpBarThirdEnemyMonster,
-        setHpBarFirstEnemyMonster,
-        setHpBarFirstMonster,
-        setHpBarSecondEnemyMonster,
-        setHpBarSecondMonster,
-        setHpBarThirdEnemyMonster,
-        setHpBarThirdMonster
-    } = props;
-
-    let action: string = ''
+        oppMonster,
+        monster,
+        setButtonClicked,
+        setTime,
+        setQueue,
+        fightId,
+        Queues,
+        firstPlayer,
+        secondPlayer
+    } = useContext(stageContext)
 
     const firstPlayerButton = useRef<HTMLDivElement>(null);
-    const firstCombatMenuButton = useRef<HTMLDivElement>(null);
     const yourChoose = useRef<HTMLDivElement>(null);
     const secondPlayerButton = useRef<HTMLDivElement>(null);
-    const secondCombatMenuButton = useRef<HTMLDivElement>(null);
     const enemyChoose = useRef<HTMLDivElement>(null);
 
     const hideOrShowButonns = (props: any) => {
@@ -76,149 +54,132 @@ const Buttons: React.FC<buttonsProps> = (props: buttonsProps) => {
         }
     }
 
-    const setNewSQueue = (attacked: Monsters, healPoint: number) => {
-        setSQueue(mathPvp.nextMove(sQueue, attacked, healPoint))
-        setActiveMonster(sQueue[0])
-    }
+    const [action, setAction] = useState<string>('')
 
-    const ActiveButtonMenu = () => {
-        if(activeMonster.name === firstSelectedMonster.name || 
-            activeMonster.name === secondSelectedMonster.name || 
-            activeMonster.name === thirdSelectedMonster.name) 
-        {
-            return (<>
-                <div ref={firstPlayerButton} className='showButton buttons'>
-                <button id="test-battle-button-yourSkill's" onClick={() => {
-                    hideOrShowButonns(firstPlayerButton)
-                    hideOrShowButonns(firstCombatMenuButton)
-                }}>Скилы</button>
-                <button id="test-battle-button-yourRetreat">Отступить</button>
-            </div>
-            <div ref={firstCombatMenuButton} className='hideButton buttons'>
-                <button id="test-battle-button-yourBaseAttack" onClick={() => {
-                    action = 'baseAttack'
-                    hideOrShowButonns(firstCombatMenuButton)
-                    hideOrShowButonns(yourChoose)
-                }}>Толчок</button>
-                <button id="test-battle-button-yourSkill" onClick={() => {
-                    action = 'skill'
-                    hideOrShowButonns(firstCombatMenuButton)
-                    hideOrShowButonns(yourChoose)
-                }}>Скилл</button>
-                <button id="test-battle-button-backToYourMainMenu" onClick={() => {
-                    hideOrShowButonns(firstCombatMenuButton)
-                    hideOrShowButonns(firstPlayerButton)
-                }}>Назад</button>
-            </div>
-            <div ref={yourChoose} className='hideButton buttons'>
-            {hpBarFirstEnemyMonster > 0 && (
-                <button id="test-battle-button-attackFirstEnemyMonster" onClick={() => {
-                    setHpBarFirstEnemyMonster(hpBarFirstEnemyMonster = mathPvp.dealingDamage(hpBarFirstEnemyMonster, activeMonster, action, firstSelectedEnemyMonster))
-                    setNewSQueue(firstSelectedEnemyMonster, hpBarFirstEnemyMonster)
-                    hideOrShowButonns(yourChoose)
-                    ActiveButtonMenu()
-                }}>Ударить {firstSelectedEnemyMonster.name}</button>
-            )}
-            {hpBarSecondEnemyMonster > 0 && (
-                <button id="test-battle-button-attackSecondEnemyMonster" onClick={() => {
-                    setHpBarSecondEnemyMonster(hpBarSecondEnemyMonster = mathPvp.dealingDamage(hpBarSecondEnemyMonster, activeMonster, action, secondSelectedEnemyMonster))
-                    setNewSQueue(secondSelectedEnemyMonster, hpBarSecondEnemyMonster)
-                    hideOrShowButonns(yourChoose)
-                    ActiveButtonMenu()
-                }}>Ударить {secondSelectedEnemyMonster.name}</button>
-            )}
-            {hpBarThirdEnemyMonster > 0 &&(
-                <button id="test-battle-button-attackThirdEnemyMonster" onClick={() => {
-                    setHpBarThirdEnemyMonster(hpBarThirdEnemyMonster = mathPvp.dealingDamage(hpBarThirdEnemyMonster, activeMonster, action, thirdSelectedEnemyMonster))
-                    setNewSQueue(thirdSelectedEnemyMonster, hpBarThirdEnemyMonster)
-                    hideOrShowButonns(yourChoose)
-                    ActiveButtonMenu()
-                }}>Ударить {thirdSelectedEnemyMonster.name}</button>
-            )}
-                <button id="test-battle-button-backToFirstCombatMenu" onClick={() => {
-                    hideOrShowButonns(yourChoose)
-                    hideOrShowButonns(firstCombatMenuButton)
-                }}>Назад </button>
-            </div>
-            </>)
-        } else if(activeMonster.name === firstSelectedEnemyMonster.name || 
-            activeMonster.name === secondSelectedEnemyMonster.name || 
-            activeMonster.name === thirdSelectedEnemyMonster.name) 
-        {
-            return (<>
-            <div ref={secondPlayerButton} className='showButton buttons'>
-                <button id="test-battle-button-enemySkill's" onClick={() => {
-                    hideOrShowButonns(secondPlayerButton)
-                    hideOrShowButonns(secondCombatMenuButton)
-                }}>Скилы</button>
-                <button id="test-battle-button-enemyRetreat">Отступить</button>
-            </div>
-
-            <div ref={secondCombatMenuButton} className='hideButton buttons'>
-                <button id="test-battle-button-enemyBaseAttack" onClick={() => {
-                    action = 'baseAttack'
-                    hideOrShowButonns(secondCombatMenuButton)
-                    hideOrShowButonns(enemyChoose)
-                }}>Толчок</button>
-                <button id="test-battle-button-enemySkill" onClick={() => {
-                    action = 'skill'
-                    hideOrShowButonns(secondCombatMenuButton)
-                    hideOrShowButonns(enemyChoose)
-                }}>Скилл</button>
-                <button id="test-battle-button-backToEnemyMainMenu" onClick={() => {
-                    hideOrShowButonns(secondCombatMenuButton)
-                    hideOrShowButonns(secondPlayerButton)
-                }}>Назад</button>
-            </div>
-
-            <div ref={enemyChoose} className='hideButton buttons'>
-            {hpBarFirstMonster > 0 && (
-                <button id="test-battle-button-attackFirstMonster" onClick={() => {
-                    setHpBarFirstMonster(hpBarFirstMonster = mathPvp.dealingDamage(hpBarFirstMonster, activeMonster, action, firstSelectedMonster))
-                    setNewSQueue(firstSelectedMonster, hpBarFirstMonster)
-                    hideOrShowButonns(enemyChoose)
-                    ActiveButtonMenu()
-                }}>Ударить {firstSelectedMonster.name}</button>
-            )}
-            {hpBarSecondMonster > 0 && (
-                <button id="test-battle-button-attackSecondMonster" onClick={() => {
-                    setHpBarSecondMonster(hpBarSecondMonster = mathPvp.dealingDamage(hpBarSecondMonster, activeMonster, action, secondSelectedMonster))
-                    setNewSQueue(secondSelectedMonster, hpBarSecondMonster)
-                    hideOrShowButonns(enemyChoose)
-                    ActiveButtonMenu()
-                }}>Ударить {secondSelectedMonster.name}</button>
-            )}
-            {hpBarThirdMonster > 0 && (
-                <button id="test-battle-button-attackThirdMonster" onClick={() => {
-                    setHpBarThirdMonster(hpBarThirdMonster = mathPvp.dealingDamage(hpBarThirdMonster, activeMonster, action, thirdSelectedMonster))
-                    setNewSQueue(thirdSelectedMonster, hpBarThirdMonster)
-                    hideOrShowButonns(enemyChoose)
-                    ActiveButtonMenu()
-                }}>Ударить {thirdSelectedMonster.name}</button>
-            )}
-                <button id="test-battle-button-backToEnemyCombatMenu"onClick={() => {
-                    hideOrShowButonns(enemyChoose)
-                    hideOrShowButonns(secondCombatMenuButton)
-                }}>Назад </button>
-            </div>
-            </>)
-        } else {
-            return(<></>)
+    const setSkill = (monsterId: number) => {
+        switch (monsterId) {
+            case 1:
+                return 'Ледяной шквал'
+            case 2:
+                return 'Каскад'
+            case 3:
+                return 'Волна разрушений'
+            case 4: 
+                return 'Испепелящий удар'
+            case 5:
+                return 'Пепельный взрыв'
+            case 6:
+                return 'Огненная буря'
+            case 7:
+                return 'Гравитационная волна'
+            case 8:
+                return 'Земной импульс'
+            case 9:
+                return 'Тектонический удар'
+            case 10:
+                return 'Штормовой порыв'
+            case 11:
+                return 'Воздушный клинок'
+            case 12:
+                return 'Циклон разрушений'
         }
     }
 
-    useEffect(() => {
-        setHpBarFirstMonster(mathPvp.isDead(hpBarFirstMonster))
-        setHpBarSecondMonster(mathPvp.isDead(hpBarSecondMonster))
-        setHpBarThirdMonster(mathPvp.isDead(hpBarThirdMonster))
-        setHpBarFirstEnemyMonster(mathPvp.isDead(hpBarFirstEnemyMonster))
-        setHpBarSecondEnemyMonster(mathPvp.isDead(hpBarSecondEnemyMonster))
-        setHpBarThirdEnemyMonster(mathPvp.isDead(hpBarThirdEnemyMonster))
-    }, [hpBarFirstMonster, hpBarSecondMonster, hpBarThirdMonster, hpBarFirstEnemyMonster, hpBarSecondEnemyMonster, hpBarThirdEnemyMonster])
+    const activeMonsterInfo = (activeMonster: TMonster) => {
+        switch(activeMonster) {
+            case firstSelectedMonster:
+                return monster[0]
+            case secondSelectedMonster:
+                return monster[1]
+            case thirdSelectedMonster:
+                return monster[2]
+            case firstSelectedEnemyMonster:
+                return oppMonster[0]
+            case secondSelectedEnemyMonster:
+                return oppMonster[1]
+            case thirdSelectedEnemyMonster:
+                return oppMonster[2]
+            default:
+                return 0
+        }
+    }
+
+
+        const ActiveButtonMenu = useMemo(() => <>
+                <div ref={firstPlayerButton} className='showButton buttons'>
+                <button id="test-battle-button-yourBaseAttack" onClick={() => {
+                        setAction('attack')
+                        hideOrShowButonns(firstPlayerButton)
+                        hideOrShowButonns(yourChoose)
+                    }}>Атака</button>
+                    <button id="test-battle-button-yourSkill" onClick={() => {
+                        setAction('skill')
+                        hideOrShowButonns(firstPlayerButton)
+                        hideOrShowButonns(yourChoose)
+                    }}>{setSkill(activeMonster.typeId)}</button>
+                    <button id="test-battle-button-yourRetreat" onClick={async () => {
+                        setAction('escape')
+                        const result = await server.actionUser(activeMonsterInfo(activeMonster), oppMonster[0], action)
+                        if(result?.result === false) {
+                            return
+                        } else {
+                            
+                        }
+                    }}>Отступить</button>
+                </div>
+                <div ref={yourChoose} className='hideButton buttons'>
+                    {hpBarFirstEnemyMonster > 0 && (
+                        <button id="test-battle-button-attackFirstEnemyMonster" onClick={() => {
+                            if (action) {
+                                server.actionUser(Queues[0], oppMonster[0], action)
+                            }
+                            setButtonClicked(true)
+                            setQueue(fightId, Queues)
+                            hideOrShowButonns(yourChoose)
+                            hideOrShowButonns(firstPlayerButton)
+                        }}>Ударить {firstSelectedEnemyMonster.name}</button>
+                    )}
+                    {hpBarSecondEnemyMonster > 0 && (
+                        <button id="test-battle-button-attackSecondEnemyMonster" onClick={() => {
+                            if (action) {
+                                server.actionUser(Queues[0], oppMonster[1], action)
+                            }
+                            setButtonClicked(true)
+                            setQueue(fightId, Queues)
+                            hideOrShowButonns(yourChoose)
+                            hideOrShowButonns(firstPlayerButton)
+                        }}>Ударить {secondSelectedEnemyMonster.name}</button>
+                    )}
+                    {hpBarThirdEnemyMonster > 0 &&(
+                        <button id="test-battle-button-attackThirdEnemyMonster" onClick={() => {
+                            if (action) {
+                                server.actionUser(Queues[0], oppMonster[2], action)
+                            }
+                            setButtonClicked(true)
+                            setQueue(fightId, Queues)
+                            hideOrShowButonns(yourChoose)
+                            hideOrShowButonns(firstPlayerButton)
+                        }}>Ударить {thirdSelectedEnemyMonster.name}</button>
+                    )}
+                    <button id="test-battle-button-backToFirstCombatMenu" onClick={() => {
+                        hideOrShowButonns(yourChoose)
+                        hideOrShowButonns(firstPlayerButton)
+                    }}>Назад </button>
+                </div>
+            </>, [
+                activeMonster,
+                Queues,
+                hpBarFirstEnemyMonster,
+                hpBarSecondEnemyMonster,
+                hpBarThirdEnemyMonster,
+                monster,
+                oppMonster,
+                action
+            ])
     
     return (<>
         <div className='buttonMenu'>
-            <ActiveButtonMenu />
+            {ActiveButtonMenu }
         </div>
     </>)
 }
