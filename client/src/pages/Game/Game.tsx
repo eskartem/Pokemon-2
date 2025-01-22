@@ -67,7 +67,7 @@ const Game: React.FC<IBasePage> = (props: IBasePage) => {
     //Кнопки
     const inventoryClickHandler = () => setPage(PAGES.INVENTORY);
     const marketClickHandler = () => setPage(PAGES.MARKET);
-    const battleClickHandler = () => setPage(PAGES.BATTLE);
+    // const battleClickHandler = () => setPage(PAGES.BATTLE);
     const logoutClickHandler = async () => {
         if (await server.logout()) {
             setPage(PAGES.LOGIN);
@@ -129,7 +129,7 @@ const Game: React.FC<IBasePage> = (props: IBasePage) => {
                     /> }
 
                     {/*Конпка Битвы*/}
-                    <Button id='test-game-button-battle' onClick={battleClickHandler} text='Битва' />
+                    {/* <Button id='test-game-button-battle' onClick={battleClickHandler} text='Битва' /> */}
                 </div>
 
                 
@@ -155,7 +155,7 @@ const Game: React.FC<IBasePage> = (props: IBasePage) => {
             <img className='chat-button' onClick={toggleChatVisibility} src={isChatVisible ? ChatCloseImg : ChatImg } />
 
             <div className="map-container">
-                <Map setIsUserInTown={setIsUserInTown}/>
+                <Map setIsUserInTown={setIsUserInTown} setPage={setPage} />
             </div>
         </div>
     );
