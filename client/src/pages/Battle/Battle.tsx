@@ -30,7 +30,7 @@ const Battle: React.FC<IBasePage> = (props: IBasePage) => {
   const [fightId, setFightId] = useState<number>(6)
   const [user, setUser] = useState<TUserInfo | null>(null)
   const [Queues, setHuinya] = useState<number[]>([])
-  
+
   const [time, setTime] = useState<number>(200)
 
   const [monster, setMonster] = useState<number[]>([]);
@@ -122,18 +122,16 @@ const Battle: React.FC<IBasePage> = (props: IBasePage) => {
   });
 
   const getMonsterById = async (queue: number[]) => {
-    try { 
-      const monster = await server.getMonsterInfo(queue[0])  
-      if (monster) {
+    try {
+      const monster = await server.getMonsterInfo(queue[0])
+      if (queue[0] === 0) {
+        setQueue(fightId, Queues)
+      } else if(monster) {
         setActiveMonster(monster)
-        
       }
-    } catch (error) {}
+    } catch (error) {
+    }
   }
-
-  useEffect(() => {
-    getMonsterById(Queues)     
-  }, [Queues])
 
   const getMonsterInfo = async (monsterIds: number[], opp_monsterIds: number[]) => {
     try {
@@ -151,9 +149,11 @@ const Battle: React.FC<IBasePage> = (props: IBasePage) => {
         setSecondSelectedEnemyMonster(secondEnemyMonsterInfo);
         setThirdSelectedEnemyMonster(thirdEnemyMonsterInfo);
         setAllMonsterSelected(true)
-        setMaxHp(true) 
+        setMaxHp(true)
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error('Error in getMonsterInfo:', error);
+    }
   };
 
   const backClickHandler = () => setPage(PAGES.GAME);
@@ -161,7 +161,6 @@ const Battle: React.FC<IBasePage> = (props: IBasePage) => {
   useEffect(() => {
     setActiveMonster(sQueue[0])
   }, [sQueue])
-
 
   useEffect(() => {
     const sortedQueue = mathPvp.sortQueuesByLevel(
@@ -197,19 +196,20 @@ const Battle: React.FC<IBasePage> = (props: IBasePage) => {
       if(!monster || monster.length !== 3) return
       if(!oppMonster || oppMonster.length !== 3) return
       getMonsterInfo(monster, oppMonster);
+      getMonsterById(Queues)
       if(monster && oppMonster) {
-          setTime(1000)
+          setTime(400)
           SetLoading(false)
       }
     };
-    
+
     if (true) {
       server.startBattleUpdate(updateBattleHandler, time);
     }
     return () => {
       server.stopBattleUpdate();
     };
-  }, [server, store, monster, oppMonster, buttonClicked, firstPlayer, secondPlayer]);
+  }, [server, store, monster, oppMonster, buttonClicked, firstPlayer, secondPlayer, Queues]);
 
   const getUser = async () => {
     try {
@@ -246,7 +246,7 @@ const Battle: React.FC<IBasePage> = (props: IBasePage) => {
     );
     setSQueue(sQueue = sortedQueue);
   }, [allMonsterSelected])
-  
+
   useEffect(() => {
     setMaxHpBarFirstMonster(firstSelectedMonster.hp);
     setMaxHpBarSecondMonster(secondSelectedMonster.hp);
@@ -255,7 +255,7 @@ const Battle: React.FC<IBasePage> = (props: IBasePage) => {
     setMaxHpBarSecondEnemyMonster(secondSelectedEnemyMonster.hp);
     setMaxHpBarThirdEnemyMonster(thirdSelectedEnemyMonster.hp);
   }, [maxHp])
-  
+
   useEffect(() => {
     setStage({
       stageProps,

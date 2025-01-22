@@ -2,6 +2,8 @@ import { useState, useEffect, useContext } from "react";
 
 import './finalScreen.css'
 import { stageContext } from "../../assets/context/stage";
+import { ServerContext } from "../../App";
+import { TEBattle } from "../../services/server/types";
 
 
 const FinalScreen: React.FC = () => {
@@ -11,38 +13,43 @@ const FinalScreen: React.FC = () => {
         hpBarThirdMonster,
         hpBarFirstEnemyMonster,
         hpBarSecondEnemyMonster,
-        hpBarThirdEnemyMonster
+        hpBarThirdEnemyMonster,
+        fightId
     } = useContext(stageContext)
 
-    let [firstPlayerWin, setFirstPlayerWin] = useState(false);
-    let [secondPlayerWin, setSecondPlayerWin] = useState(false);
+    const server = useContext(ServerContext)
 
-    const updateScene = () => {
-        window.location.reload();
+    const [results, SetResults] = useState<TEBattle>()
+    const [battleCaput, setBattleCaput] = useState<boolean>(false)
+
+    const endBattle = async (fightId: number) => {
+        try {
+            const result = await server.endBattle(fightId)
+            console.log(result);
+            if(result) {SetResults(result)}
+        } catch (error) {
+            
+        }
     }
 
     useEffect(() => {
-        if(hpBarFirstMonster <= 0 && hpBarSecondMonster <= 0 && hpBarThirdMonster <= 0) {
-            setSecondPlayerWin(true)
-        } else if (hpBarFirstEnemyMonster <= 0 && hpBarSecondEnemyMonster <= 0 && hpBarThirdEnemyMonster <= 0) {
-            setFirstPlayerWin(true)
+        if((hpBarFirstMonster <= 0 && hpBarSecondMonster <= 0 && hpBarThirdMonster <= 0) || 
+            (hpBarFirstEnemyMonster <= 0 && hpBarSecondEnemyMonster<= 0 && hpBarThirdEnemyMonster<= 0)) {
+                endBattle(fightId)  
+                if (!results) endBattle(fightId)
+                setBattleCaput(true)
         }
     }, [hpBarFirstMonster, hpBarSecondMonster, hpBarThirdMonster, hpBarFirstEnemyMonster, hpBarSecondEnemyMonster, hpBarThirdEnemyMonster])
 
     return (<>
-        {firstPlayerWin && (
+        {battleCaput && (
             <div className="popup-overlay">
                 <div className="popup">
-                    <h2>Вы Победили</h2>
-                    <button id="test-battle-button-yourReplayBattle" onClick={() => {updateScene()}}>Начать заново</button>
-                </div>
-            </div>
-        )}
-        {secondPlayerWin && (
-            <div className="popup-overlay">
-                <div className="popup">
-                    <h2>Вы Проиграли</h2>
-                    <button id="test-battle-button-enemyReplayBattle" onClick={() => {updateScene()}}>Начать заново</button>
+                        <h2>победил {results?.WinnerId}</h2>
+                        <br></br>
+                        <h3>Изменение ресурсов</h3>
+                        <h3>{results?.WinnerId} Получил {results?.crystal} кристалов, {results?.eggsFragm} скорлупы, {results?.money} золота</h3>
+                        <h3>{results?.LoserId} Проебал {results?.crystal} кристалов, {results?.eggsFragm} скорлупы, {results?.money} золота</h3>
                 </div>
             </div>
         )}

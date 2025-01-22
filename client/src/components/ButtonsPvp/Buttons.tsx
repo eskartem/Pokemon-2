@@ -114,8 +114,9 @@ const Buttons: React.FC<buttonsProps> = (props: buttonsProps) => {
                 return 0
         }
     }
-    
-    const ActiveButtonMenu = useMemo(() => <>
+
+
+        const ActiveButtonMenu = useMemo(() => <>
                 <div ref={firstPlayerButton} className='showButton buttons'>
                 <button id="test-battle-button-yourBaseAttack" onClick={() => {
                         setAction(EActions.attack)
@@ -131,15 +132,14 @@ const Buttons: React.FC<buttonsProps> = (props: buttonsProps) => {
                 </div>
                 <div ref={yourChoose} className='hideButton buttons'>
                     {hpBarFirstEnemyMonster > 0 && (
-                        <button id="test-battle-button-attackFirstEnemyMonster" onClick={async () => {
+                        <button id="test-battle-button-attackFirstEnemyMonster" onClick={() => {
                             if (action) {
-                                await server.actionUser(Queues[0], oppMonster[0], action)
+                                server.actionUser(Queues[0], oppMonster[0], action)
                             }
-                            server.stopBattleUpdate()
-                            setTime(100)
                             setButtonClicked(true)
                             setQueue(fightId, Queues)
-
+                            hideOrShowButonns(yourChoose)
+                            hideOrShowButonns(firstPlayerButton)
                         }}>Ударить {firstSelectedEnemyMonster.name}</button>
                     )}
                     {hpBarSecondEnemyMonster > 0 && (
@@ -147,10 +147,10 @@ const Buttons: React.FC<buttonsProps> = (props: buttonsProps) => {
                             if (action) {
                                 server.actionUser(Queues[0], oppMonster[1], action)
                             }
-                            server.stopBattleUpdate()
-                            setTime(100)
                             setButtonClicked(true)
-                            setSQueue(sQueue = mathPvp.nextMove(sQueue))
+                            setQueue(fightId, Queues)
+                            hideOrShowButonns(yourChoose)
+                            hideOrShowButonns(firstPlayerButton)
                         }}>Ударить {secondSelectedEnemyMonster.name}</button>
                     )}
                     {hpBarThirdEnemyMonster > 0 &&(
@@ -158,10 +158,10 @@ const Buttons: React.FC<buttonsProps> = (props: buttonsProps) => {
                             if (action) {
                                 server.actionUser(Queues[0], oppMonster[2], action)
                             }
-                            server.stopBattleUpdate()
-                            setTime(100)
                             setButtonClicked(true)
-                            setSQueue(sQueue = mathPvp.nextMove(sQueue))
+                            setQueue(fightId, Queues)
+                            hideOrShowButonns(yourChoose)
+                            hideOrShowButonns(firstPlayerButton)
                         }}>Ударить {thirdSelectedEnemyMonster.name}</button>
                     )}
                     <button id="test-battle-button-backToFirstCombatMenu" onClick={() => {

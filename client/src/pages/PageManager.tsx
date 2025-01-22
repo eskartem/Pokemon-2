@@ -26,7 +26,6 @@ export interface IBasePage {
 
 const PageManager: React.FC = () => {
     const [page, setPage] = useState<PAGES>(PAGES.BATTLE);
-
     return (
         <>
             {page === PAGES.PRELOADER && <Preloader setPage={setPage} />}

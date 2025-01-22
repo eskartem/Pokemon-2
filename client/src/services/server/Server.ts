@@ -314,8 +314,8 @@ class Server {
         return await this.request<number[]>('getQueue', {fightId: fightId.toString(), queue: sortQueue});
     }
 
-    async endBattle(fightId: number): Promise<TEBattle[] | null> {
-        return await this.request<TEBattle[]>('endBattle', {fightId: fightId.toString()});
+    async endBattle(fightId: number): Promise<TEBattle | null> {
+        return await this.request<TEBattle>('endBattle', {fightId: fightId.toString()});
     }
 
     

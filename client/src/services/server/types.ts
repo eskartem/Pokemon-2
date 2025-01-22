@@ -288,8 +288,11 @@ export type TBattle = {
 }
 
 export type TEBattle = {
-    id: string,
-    name: string
+    WinnerId: number,
+    LoserId: number,
+    money: number,
+    eggsFragm: number
+    crystal: number
 }
 
 export enum EActions {
