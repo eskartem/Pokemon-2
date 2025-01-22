@@ -178,6 +178,7 @@ class Battle {
         foreach ($monsters2 as $monster2) {
             if ($monster2['hp'] > 0) {
                 $allDead2 = false;
+            }
         }
 
         if ($allDead1) {
