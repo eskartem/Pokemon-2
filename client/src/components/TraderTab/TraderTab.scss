@@ -119,3 +119,86 @@ button:disabled {
 .sell-modal button {
     margin: 5px;
 }
+
+/* Медиа-запросы для адаптивности */
+@media (max-width: 820px) {
+    .trader-tab {
+        padding: 15px;
+        max-width: 90%;
+
+        h1 {
+            font-size: 20px;
+        }
+
+        .trader-resources {
+            gap: 15px;
+        }
+
+        .trader-resource {
+            padding: 10px;
+
+            h3 {
+                font-size: 16px;
+            }
+
+            p {
+                font-size: 12px;
+            }
+        }
+
+        .sell-modal {
+            padding: 15px;
+
+            h2 {
+                font-size: 18px;
+            }
+
+            input[type="number"] {
+                font-size: 12px;
+                padding: 8px;
+            }
+        }
+    }
+}
+
+@media (max-width: 428px) {
+    .trader-tab {
+        padding: 10px;
+        max-width: 100%;
+
+        h1 {
+            font-size: 18px;
+        }
+
+        .trader-resources {
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .trader-resource {
+            width: 100%;
+            padding: 8px;
+
+            h3 {
+                font-size: 14px;
+            }
+
+            p {
+                font-size: 10px;
+            }
+        }
+
+        .sell-modal {
+            padding: 10px;
+
+            h2 {
+                font-size: 16px;
+            }
+
+            input[type="number"] {
+                font-size: 10px;
+                padding: 6px;
+            }
+        }
+    }
+}

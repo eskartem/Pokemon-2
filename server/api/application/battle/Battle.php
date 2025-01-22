@@ -7,6 +7,10 @@ class Battle {
         $this->db = $db;
     }
 
+    public function getFight($fightId){
+        return $this->db->getFight($fightId);
+    }
+
     public function getInfoMonster($monsterId){
         $monster = $this->db->getMonsterById($monsterId);
 
@@ -27,6 +31,7 @@ class Battle {
         $defense = $defense + $defense_param;
 
         return [
+            'id' => $monsterId,
             'typeId' => $monster_type_id,
             'name' => $monster_data -> name,
             'elementId' => $elementId,
@@ -114,9 +119,10 @@ class Battle {
                     $user1['y'] <= 43 || $user1['y'] >= 51 ){
                         $this->db->updateUserStatus($user1['id'], 'fight');
                         $this->db->updateUserStatus($user2['id'], 'fight');
-                        $this->db->addFight($user1['id'], $user2['id']); 
+                        $fightId = $this->db->addFight($user1['id'], $user2['id']); 
                         $this->db->updateBattleHash(md5(rand()));
                         return [
+                            'fightId' => $fightId,
                             'user1' => $user1['id'],
                             'user2' => $user2['id']
                         ];
@@ -440,5 +446,45 @@ public function actionUser($monsterId1, $monsterId2, $action){
                 return [false];
             }
         }
+    }
+
+    public function getQueue($fightId, $queue){
+
+        $fight = $this->db->getFight($fightId);
+        if ($fight->status === 'close'){
+            return['error' => 4002];
+        }
+        //$queue = [1,2,3,4,5,6];
+        $queue = explode(',', $queue);
+        $queue = array_map('intval', $queue);
+
+        for ($i = 0; $i <= 5; $i++){
+            $monster = $this->db->getMonsterById($queue[$i]);
+            if ($monster || $queue[$i] === 0){
+                if($monster->hp === 0){
+                    $queue[$i] = 0;
+                }
+            } else{
+                return ['error' => 702];
+            }
+        }
+
+        $queue1 = $queue[1];
+        $queue2 = $queue[2];
+        $queue3 = $queue[3];
+        $queue4 = $queue[4];
+        $queue5 = $queue[5];
+        $queue6 = $queue[0];
+
+        $this->db->updateQueue($fight->id, $queue1, $queue2, $queue3, $queue4, $queue5, $queue6);
+
+        return
+            array($queue1,
+            $queue2,
+            $queue3,
+            $queue4,
+            $queue5,
+            $queue6)
+        ;
     }
 }

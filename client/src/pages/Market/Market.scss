@@ -1,12 +1,20 @@
 @use '../../scss/variables.scss' as *;
 
-#market {
+.market {
+    //position: relative;
+    //text-align: center;
+    //background-color: $main-theme;
+//
+    //padding: 30px;
+    //margin: 10px;
+    //border: solid $button-border-color 3px;
+    //border-radius: 10px;
     position: relative;
-
+//
     display: flex;
     text-align: center;
     background-color: $main-theme;
-
+//
     padding: 30px;
     margin: 10px;
     border: solid $button-border-color 3px;
@@ -16,10 +24,8 @@
     align-content: center;
     justify-content: center;
     align-items: center;
-    height: 100vh; 
     overflow: auto; 
-    background-color: #f0f0f0; 
-    padding: 20px;
+    background-color: $main-theme;
 }
 
 .market_tab-wrapper {
@@ -29,10 +35,14 @@
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     max-width: 1200px;
-    margin: 0 auto;
+    margin: 20px auto;
 }
 
 .user-resources {
+    background-color: $main-theme;
+    padding: 12px;
+    border-radius: 7px;
+
     display: flex;
     align-items: center;
     font-size: 24px;
@@ -80,8 +90,8 @@
 }
 
 .market-button {
-    max-height: 50px;
-    margin-top: 30px;
+    max-height: 35px;
+    margin-top: 40px;
     cursor: pointer;
 }
 
@@ -96,5 +106,115 @@
 .button-panel {
     display: flex;
     align-items: center;
-    gap: 15px;
+    gap: 30px;
+}
+
+
+@media (max-width: 988px) {
+    .user-resources {
+        font-size: 16px;
+    }
+
+    .market_tab-wrapper {
+        max-width: 700px;
+    }
+}
+
+@media (max-width: 794px) {
+    .user-resources {
+        font-size: 12px;
+        
+        img {
+            width: 40px;
+            height: 40px;
+            margin: 0 7px;
+        }
+    }
+
+    .market_tab-wrapper {
+        max-width: 500px;
+    }
+
+    .market-button {
+        max-height: 30px;
+    }
+}
+
+@media (max-width: 677px) {
+    .user-resources {
+        font-size: 12px;
+        
+        img {
+            width: 20px;
+            height: 20px;
+            margin: 0 7px;
+        }
+    }
+
+    .market-button {
+        max-height: 25px;
+    }
+}
+
+@media (max-width: 461px) {
+    .user-resources {
+        font-size: 10px;
+        gap: 7px;
+        
+        img {
+            width: 12px;
+            height: 12px;
+            margin: 0 3px;
+        }
+    }
+
+    .button-panel {
+        gap: 25px;
+        
+        .market-button {
+            max-height: 20px;
+        }
+    }
+}
+
+@media (max-width: 375px) {
+    .user-resources {
+        font-size: 10px;
+        gap: 7px;
+        
+        img {
+            width: 12px;
+            height: 12px;
+            margin: 0 3px;
+        }
+    }
+
+    .button-panel {
+        gap: 25px;
+        
+        .market-button {
+            max-height: 16px;
+        }
+    }
+}
+
+@media (max-width: 320px) {
+    .user-resources {
+        font-size: 7px;
+        gap: 7px;
+        
+        img {
+            width: 10px;
+            height: 10px;
+            margin: 0 3px;
+        }
+    }
+
+    .button-panel {
+        gap: 15px;
+        
+        .market-button {
+            max-height: 17px;
+        }
+    }
 }

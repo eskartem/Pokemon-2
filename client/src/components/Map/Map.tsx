@@ -5,7 +5,7 @@ import { TMap, TMapZone, TUpdateSceneResponse, TGamer, EZones, EUserStatus } fro
 import { StoreContext, ServerContext } from '../../App';
 import CONFIG, { EDIRECTION, TPoint } from '../../config';
 import Button from '../Button/Button';
-import mapImage from '../../assets/img/map_tined.png';
+import mapImage from '../../assets/img/map.jpg';
 import playerImage from '../../assets/img/player_map_icon.png';
 import characterImage from '../../assets/img/player.png';
 import boatImage from '../../assets/img/boat.png';
