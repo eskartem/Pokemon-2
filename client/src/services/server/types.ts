@@ -239,6 +239,12 @@ export type THatchedResponse = {
     eggs: number;
 }
 
+export type TStartBattle = {
+    fightId: number;
+    user1: number;
+    user2: number;
+}
+
 
 
 

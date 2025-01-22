@@ -6,7 +6,8 @@ import { TAnswer, TError, TMessagesResponse, TUser, TMap, TMapZone,
     TCr, TUpdateMarketResponse, TMakeBet, ETypeLot, TMakeLot,
     TCancelLot,
     TUserInfo,
-    TMapInfo, THatchedResponse} from "./types";
+    TMapInfo, THatchedResponse,
+    TStartBattle} from "./types";
 
 const { CHAT_TIMESTAMP, SCENE_TIMESTAMP, MARKET_TIMESTAMP, HOST } = CONFIG;
 
@@ -259,7 +260,12 @@ class Server {
     async hatchEgg(): Promise<THatchedResponse | null> {
         const result = await this.request<THatchedResponse>('hatchEgg');
         return result;
-    }    
+    }
+
+    async startBattle(): Promise<TStartBattle | null> {
+        const result = await this.request<TStartBattle>('startBattle');
+        return result;
+    }
 
 }
 

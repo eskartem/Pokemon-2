@@ -144,7 +144,7 @@ const Pvp: React.FC<IBasePage> = (props: IBasePage) => {
         hpBarSecondEnemyMonster={hpBarSecondEnemyMonster}
         hpBarThirdEnemyMonster={hpBarThirdEnemyMonster}
       />
-      <Button onClick={backClickHandler} text='назад' />
+      {/* <Button onClick={backClickHandler} text='назад' /> */}
     </div>
   </>)
 };

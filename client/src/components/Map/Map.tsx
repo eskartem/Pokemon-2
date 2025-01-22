@@ -5,6 +5,7 @@ import { TMap, TMapZone, TUpdateSceneResponse, TGamer, EZones, EUserStatus } fro
 import { StoreContext, ServerContext } from '../../App';
 import CONFIG, { EDIRECTION, TPoint } from '../../config';
 import Button from '../Button/Button';
+import { PAGES } from '../../pages/PageManager';
 import mapImage from '../../assets/img/map.jpg';
 import playerImage from '../../assets/img/player_map_icon.png';
 import characterImage from '../../assets/img/player.png';
@@ -13,11 +14,12 @@ import boatImage from '../../assets/img/boat.png';
 import './Map.scss';
 
 interface IMap {
-    setIsUserInTown: (name: boolean) => void
+    setPage: (name: PAGES) => void,
+    setIsUserInTown: (name: boolean) => void,
 }
 
 const Map: React.FC<IMap> = (props: IMap) => {
-    const {setIsUserInTown} = props;
+    const {setIsUserInTown, setPage} = props;
     const { WINV, tileSize, fovDistance } = CONFIG;
     const server = useContext(ServerContext);
     const store = useContext(StoreContext);
@@ -92,18 +94,18 @@ const Map: React.FC<IMap> = (props: IMap) => {
             case 'ArrowRight':
                 moveUser(EDIRECTION.RIGHT);
                 break;
-            case 'w':
-                moveUser(EDIRECTION.UP);
-                break;
-            case 's':
-                moveUser(EDIRECTION.DOWN);
-                break;
-            case 'a':
-                moveUser(EDIRECTION.LEFT);
-                break;
-            case 'd':
-                moveUser(EDIRECTION.RIGHT);
-                break;
+            // case 'w':
+            //     moveUser(EDIRECTION.UP);
+            //     break;
+            // case 's':
+            //     moveUser(EDIRECTION.DOWN);
+            //     break;
+            // case 'a':
+            //     moveUser(EDIRECTION.LEFT);
+            //     break;
+            // case 'd':
+            //     moveUser(EDIRECTION.RIGHT);
+            //     break;
             default:
                 break;
         }
@@ -189,6 +191,7 @@ const Map: React.FC<IMap> = (props: IMap) => {
             const userHimself = gamers.find(item => item.id === user?.id);
             if (!userHimself) return;
             setUserOnMap(userHimself);
+            if (userHimself.status === EUserStatus.fight) {setPage(PAGES.BATTLE)}
             const gamersAround = gamers.filter(gamer => { // выбираю пользователей только в поле зрения
                 return (
                     (Math.abs(userHimself.x - gamer.x) < (fovDistance+1)) &&
@@ -196,6 +199,21 @@ const Map: React.FC<IMap> = (props: IMap) => {
                     (user.id != gamer.id)
                 )
             });
+            gamersAround.forEach(async (gamer) => {
+                console.log();
+                if (gamer.x === userHimself.x && gamer.y === userHimself.y && 
+                    gamer.status != EUserStatus.fight && (
+                        getCurrentZone(userHimself) != 'город' ||
+                        getCurrentZone(userHimself) != 'корабль' ||
+                        getCurrentZone(userHimself) != 'пещера' ||
+                        getCurrentZone(userHimself) != 'куст' ||
+                        getCurrentZone(userHimself) != 'перекати-поле')
+                    ) {
+                    if (await server.startBattle()) {
+                        setPage(PAGES.BATTLE);
+                    }
+                }
+            })
             setGamers(gamersAround);
         }
 
