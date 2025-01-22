@@ -1,3 +1,5 @@
+import { TPoint } from "../../config";
+
 export type TError = {
     code: number;
     text: string;
@@ -137,7 +139,8 @@ export type TMapZone = {
 
 export type TMapInfo = {
     MAP: TMap,
-    mapZones: TMapZone[]
+    mapZones: TMapZone[],
+    mapPosition: TPoint,
 }
 
 export enum EZones {
