@@ -12,8 +12,6 @@ interface InfoModalProps {
 }
 
 const InfoModal: React.FC<InfoModalProps> = ({ isOpen, onClose, title, content }) => {
-    const server = useContext(ServerContext);
-
     if (!isOpen) return null;
 
     return (

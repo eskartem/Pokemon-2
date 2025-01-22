@@ -379,7 +379,7 @@ class DB {
     }
     
     public function makeBet($userId, $lotId, $newBet) {
-        return ['ableToMakeBet' =>  $this->execute('UPDATE lots SET buyer_id = ?, timestamp_cost = UNIX_TIMESTAMP(), current_cost = ? WHERE id = ?', 
+        return ['ableToMakeBet' =>  $this->execute('UPDATE lots SET buyer_id = ?, current_cost = ? WHERE id = ?', 
                                     [$userId, $newBet, $lotId]),
                 'ableToTakeMoney' => $this->execute('UPDATE users SET money=money-? WHERE id=?',
                                     [$newBet, $userId])

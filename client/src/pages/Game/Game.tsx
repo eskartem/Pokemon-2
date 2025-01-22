@@ -54,6 +54,7 @@ const Game: React.FC<IBasePage> = (props: IBasePage) => {
     //Чат
     const [isChatVisible, setIsChatVisible] = useState(false); // Состояние для управления видимостью чата
     const [isUserInTown, setIsUserInTown] = useState(false); // Для отображения кнопки рынка, когда пользователь в городе 
+    const [isCanBattle, setCanBattle] = useState(false); 
 
     const toggleChatVisibility = () => {
         setIsChatVisible(prevState => !prevState); // Переключаем состояние видимости
@@ -155,7 +156,7 @@ const Game: React.FC<IBasePage> = (props: IBasePage) => {
             <img className='chat-button' onClick={toggleChatVisibility} src={isChatVisible ? ChatCloseImg : ChatImg } />
 
             <div className="map-container">
-                <Map setIsUserInTown={setIsUserInTown}/>
+                <Map setIsUserInTown={setIsUserInTown} setCanBattle={setCanBattle}/>
             </div>
         </div>
     );

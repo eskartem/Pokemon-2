@@ -14,10 +14,11 @@ import './Map.scss';
 
 interface IMap {
     setIsUserInTown: (name: boolean) => void
+    setCanBattle: (name: boolean) => void
 }
 
 const Map: React.FC<IMap> = (props: IMap) => {
-    const {setIsUserInTown} = props;
+    const {setIsUserInTown, setCanBattle} = props;
     const { WINV, tileSize, fovDistance } = CONFIG;
     const server = useContext(ServerContext);
     const store = useContext(StoreContext);
@@ -28,7 +29,7 @@ const Map: React.FC<IMap> = (props: IMap) => {
     const [gamers, setGamers] = useState<TGamer[]>([]);
     const [map, setMap] = useState<TMap | null>(mapInfo?.MAP || null);
     const [mapZones, setMapZones] = useState<TMapZone[]>(mapInfo?.mapZones || []);
-    const [mapPosition, setMapPosition] = useState<TPoint>({ x: 0, y: 0 });
+    const [mapPosition, setMapPosition] = useState<TPoint>(mapInfo?.mapPosition || {x: 0, y: 0});
     const [isCanMove, setCanMove] = useState<boolean>(false);
     const [lastMousePosition, setLastMousePosition] = useState<TPoint>({ x: 0, y: 0 });
 
@@ -156,7 +157,9 @@ const Map: React.FC<IMap> = (props: IMap) => {
             const userHimself = gamers.find(item => item.id === user?.id);
             if (!userHimself) return;
             setUserOnMap(userHimself);
+            setCanBattle(false);
             const gamersAround = gamers.filter(gamer => { // выбираю пользователей только в поле зрения
+                if (gamer.x === userHimself.x && userHimself.y === gamer.y && user.id != gamer.id) setCanBattle(true);
                 return ( 
                     (Math.abs(userHimself.x - gamer.x) < (fovDistance+1)) && 
                     (Math.abs(userHimself.y - gamer.y) < (fovDistance+1)) &&
@@ -169,7 +172,7 @@ const Map: React.FC<IMap> = (props: IMap) => {
         const getMap = async () => { // получаем карту, зоны и центрируем ее
             const result = await server.getMap();
             if (result) {
-                store.setMapInfo(result);
+                
                 const { MAP: mapParams, mapZones: zones } = result;
                 setMap(mapParams);
                 setMapZones(zones);
@@ -188,6 +191,8 @@ const Map: React.FC<IMap> = (props: IMap) => {
         return () => {
             server.stopSceneUpdate();
             window.removeEventListener('keydown', keyDown);
+            if (!map) return;
+            store.setMapInfo({MAP: map, mapZones, mapPosition});
         }
         
     }, [server, store, user]);
