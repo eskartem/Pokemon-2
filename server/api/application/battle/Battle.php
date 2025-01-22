@@ -51,22 +51,22 @@ class Battle {
         /*20% кристаллов стихий*/
         $amountCrystal1 = $this->db->getAmountCrystalByUser($loserId);
         $amountCrystal1 = isset($amountCrystal1->resource_amount) ? intval($amountCrystal1->resource_amount) : 0;
-        $amountCrystal = $amountCrystal1 * 0.2;
+        $amountCrystal = round($amountCrystal1 * 0.2);
         $this->db->clearUserResource($loserId, 1, $amountCrystal);
 
         /*10% покемонов (забираются имеющиеся куски яиц покемонов */
         $amountEggsFragm1 = $this->db->getAmountEggsFragmentByUser($loserId);
         $amountEggsFragm1 = isset($amountEggsFragm1->resource_amount) ? intval($amountEggsFragm1->resource_amount) : 0;
-        $amountEggsFragm = $amountEggsFragm1 * 0.1;
+        $amountEggsFragm = round($amountEggsFragm1 * 0.1);
         $this->db->clearUserResource($loserId, 3, $amountEggsFragm);
         
         /*30% монет*/
         $money1 = $this->db->getMoneyByUser($loserId);
         $money1 = isset($money1->money) ? intval($money1->money) : 0;
-        $money = $money1 * 0.3;
+        $money = round($money1 * 0.3);
         $this->db->updateMoneyByUser($loserId, $money1 - $money); 
                     
-        $this->db->updateUserStatus($loserId, 'scout');
+        
         
         //winner
         $this->db->clearUserResource($winnerId, 1, -$amountCrystal);
@@ -75,7 +75,13 @@ class Battle {
         $money2 = isset($money2->money) ? intval($money2->money) : 0;
 
         $this->db->updateMoneyByUser($winnerId, $money2 + $money);
-        $this->db->updateUserStatus($winnerId, 'scout');
+        
+
+        return [
+            'money' => $money,
+            'eggsFragm' => $amountEggsFragm,
+            'crystal' => $amountCrystal
+        ];
     }
 
     public function restoreHp($monsterId){
@@ -146,9 +152,14 @@ class Battle {
         ];
     } 
 
+    
     public function endBattle($fightId){
         //первый игрок
         $fight = $this->db->getFight ($fightId);
+
+        if ($fight->status === 'close'){
+            return['error' => 4002];
+        }
 
         $user1 = $fight->user1_id;
         $allDead1 = true;
@@ -167,33 +178,34 @@ class Battle {
         foreach ($monsters2 as $monster2) {
             if ($monster2['hp'] > 0) {
                 $allDead2 = false;
-            }
         }
 
         if ($allDead1) {
-            $this->updateResourcesOnVictoryAndLoss($user2, $user1);
+            $lost = $this->updateResourcesOnVictoryAndLoss($user2, $user1);
             $this->db->addResultFight($fightId, $user2);
-
             $this->db->updateUserStatus($user1, 'scout');
             $this->db->updateUserStatus($user2, 'scout');
-
             foreach ($monsters1 as $monster1){
                 $this->restoreHp($monster1['id']);
+                
             }
             foreach ($monsters2 as $monster2){
                 $this->restoreHp($monster2['id']);
             }
             return [
                 'WinnerId' => $user2,
-                'LoserId' => $user1
+                'LoserId' => $user1,
+                'money' => $lost['money'],
+                'eggsFragm' => $lost['eggsFragm'],
+                'crystal' => $lost['crystal']
+
             ];
         }elseif($allDead2) {
-            $this->updateResourcesOnVictoryAndLoss($user1, $user2);
+            $lost = $this->updateResourcesOnVictoryAndLoss($user1, $user2);
             $this->db->addResultFight($fightId, $user1);
 
             $this->db->updateUserStatus($user1, 'scout');
             $this->db->updateUserStatus($user2, 'scout');
-
             foreach ($monsters1 as $monster1){
                 $this->restoreHp($monster1['id']);
             }
@@ -202,7 +214,10 @@ class Battle {
             }
             return [
                 'WinnerId' => $user1,
-                'LoserId' => $user2
+                'LoserId' => $user2,
+                'money' => $lost['money'],
+                'eggsFragm' => $lost['eggsFragm'],
+                'crystal' => $lost['crystal']
             ];
         }else {
             return [false];
