@@ -305,7 +305,8 @@ class Server {
     }
 
     async startBattle(): Promise<TBattle | null> {
-        return await this.request<TBattle>('startBattle');
+        const result = await this.request<TBattle>('startBattle');
+        return result;
     }
 
     async getQueue(fightId: number, sortQueue: string): Promise<number[] | null> {
