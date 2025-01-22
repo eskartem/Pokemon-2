@@ -10,26 +10,12 @@
     padding: 10px;
     margin: 7px;
     border-radius: 10px;
-
-    @media (max-width: 1080px) {
-        min-width: 100%;
-        max-height: 300px;
-        gap: 10px;
-        padding: 5px;
-        margin: 5px;
-    }
 }
 
 .filter-market {
     display: flex;
     flex-direction: row;
     align-items: flex-start;
-
-    @media (max-width: 1080px) {
-        flex-direction: column;
-        align-items: center;
-        gap: 10px;
-    }
 }
 
 .market-tab {
@@ -46,12 +32,6 @@
     justify-content: center;
     justify-items: center;
     position: relative;
-
-    @media (max-width: 1080px) {
-        padding: 10px;
-        margin: 20px auto;
-        max-width: 100%;
-    }
 }
 
 .info-icon { 
@@ -66,11 +46,6 @@
     &:hover {
         opacity: 0.8; 
     }
-
-    @media (max-width: 1080px) {
-        top: 10px;
-        right: 10px;
-    }
 }
 
 .market-tab h1 {
@@ -78,18 +53,10 @@
     color: #414141;
     margin-bottom: 5px;
     font-size: 24px;
-
-    @media (max-width: 1080px) {
-        font-size: 20px;
-    }
 }
 
 .bet-input {
     background-color: #ffffff;
-
-    @media (max-width: 1080px) {
-        width: 100%;
-    }
 }
 
 .lot-filter {
@@ -113,11 +80,6 @@
     background-size: 10px 6px;
     font-size: 16px;
     color: #333;
-
-    @media (max-width: 1080px) {
-        font-size: 14px;
-        padding: 8px;
-    }
 }
 
 /* Стили для стрелки */
@@ -140,10 +102,6 @@
     padding: 10px;
     font-size: 16px;
     color: #333;
-
-    @media (max-width: 1080px) {
-        font-size: 14px;
-    }
 }
 
 .make_lot-tab {
@@ -168,11 +126,6 @@
         width: 100%;
         text-align: center;
         position: relative;
-
-        @media (max-width: 1080px) {
-            max-width: 90%;
-            padding: 10px;
-        }
     }
 
     .monster-list {
@@ -193,12 +146,6 @@
         max-width: 1200px;
         margin: 0 auto;
 
-        @media (max-width: 1080px) {
-            max-height: 200px;
-            gap: 10px;
-            padding: 10px;
-        }
-
         pokemon-card {
            cursor: pointer;
            transition: background-color 0.3s ease;
@@ -212,10 +159,6 @@
         background-color: #fff;
         border: 1px solid #ddd;
         border-radius: 8px;
-
-        @media (max-width: 1080px) {
-            padding: 10px;
-        }
     }
         
 
@@ -240,9 +183,102 @@
     p {
         margin-bottom: 20px;
     }
+}
 
-    @media (max-width: 1080px) {
+/* Медиа-запросы для адаптивности */
+@media (max-width: 820px) {
+    .market-tab {
+        padding: 15px;
         max-width: 90%;
+    }
+
+    .lots {
+        min-width: 100%;
+        max-height: 300px;
+        gap: 15px;
+        padding: 8px;
+        margin: 5px;
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    }
+
+    .filter-market {
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .info-icon {
+        top: 15px;
+        right: 15px;
+    }
+
+    .market-tab h1 {
+        font-size: 20px;
+    }
+
+    .lot-filter {
+        font-size: 14px;
+        padding: 8px;
+    }
+
+    .make_lot-tab {
+        .make_lot-content {
+            max-width: 90%;
+            padding: 15px;
+        }
+
+        .monster-list {
+            max-height: 300px;
+            gap: 15px;
+            padding: 10px;
+        }
+    }
+}
+
+@media (max-width: 428px) {
+    .market-tab {
         padding: 10px;
+        max-width: 100%;
+    }
+
+    .lots {
+        max-height: 250px;
+        gap: 10px;
+        padding: 5px;
+        margin: 3px;
+        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    }
+
+    .filter-market {
+        gap: 5px;
+    }
+
+    .info-icon {
+        top: 10px;
+        right: 10px;
+        width: 20px;
+        height: 20px;
+    }
+
+    .market-tab h1 {
+        font-size: 18px;
+    }
+
+    .lot-filter {
+        font-size: 12px;
+        padding: 6px;
+    }
+
+    .make_lot-tab {
+        .make_lot-content {
+            max-width: 95%;
+            padding: 10px;
+        }
+
+        .monster-list {
+            max-height: 200px;
+            gap: 10px;
+            padding: 5px;
+        }
     }
 }

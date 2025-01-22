@@ -106,4 +106,95 @@
           }
       }
     }
-  }
+}
+
+/* Медиа-запросы для адаптивности */
+@media (max-width: 820px) {
+    .exchanger-container {
+        padding: 15px;
+        max-width: 90%;
+
+        .exchanger-image {
+            max-width: 60%;
+        }
+
+        .info-icon {
+            top: 15px;
+            right: 15px;
+        }
+
+        .exchange-status {
+            font-size: 16px;
+        }
+
+        .fragments-status {
+            font-size: 14px;
+        }
+
+        .exchange-button {
+            font-size: 14px;
+            padding: 8px;
+        }
+
+        .hatched-pokemon-modal {
+            max-width: 90%;
+            padding: 15px;
+
+            img {
+                width: 60px;
+                height: 60px;
+            }
+
+            .modal-close-button {
+                font-size: 14px;
+                padding: 8px 16px;
+            }
+        }
+    }
+}
+
+@media (max-width: 428px) {
+    .exchanger-container {
+        padding: 10px;
+        max-width: 100%;
+
+        .exchanger-image {
+            max-width: 80%;
+        }
+
+        .info-icon {
+            top: 10px;
+            right: 10px;
+            width: 20px;
+            height: 20px;
+        }
+
+        .exchange-status {
+            font-size: 14px;
+        }
+
+        .fragments-status {
+            font-size: 12px;
+        }
+
+        .exchange-button {
+            font-size: 12px;
+            padding: 6px;
+        }
+
+        .hatched-pokemon-modal {
+            max-width: 95%;
+            padding: 10px;
+
+            img {
+                width: 50px;
+                height: 50px;
+            }
+
+            .modal-close-button {
+                font-size: 12px;
+                padding: 6px 12px;
+            }
+        }
+    }
+}
