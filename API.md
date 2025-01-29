@@ -462,7 +462,7 @@ Elements: {
 **Успешный ответ**
 ```
     Answer<{
-        gamers: User['id', 'name', 'status', 'x', 'y']; - список игроков в игре
+        gamers: User['id', 'name', 'status', 'x', 'y', 'fight_id']; - список игроков в игре
         hash: string; - обновленный хэш
     }>
 ```
@@ -655,38 +655,59 @@ Elements: {
 
 **Параметры**
 ```
-{
-    token: string; - токен
+{   
+    fight_id: number;
     hash: string; - хэш боя
+    skill_id: number;
+    target_id: number; // цель скила, проверять я хз как, это зависит от принципа выдачи монстров во фронт
+    attacker_id: number; // атакующий монстр
 }
 ```
 **Успешный ответ**
 ```
     Answer<{
-        PlayerInBattle: PlayerInBattle[]; - список игроков в бою
+        active_id: number; // id чей ход активный
+        attacker: {
+            name: string;
+            monster1: {
+                name: string;
+                max_hp: number;
+                curr_hp: number;
+                atk: number;
+                def: number;
+                skill: {
+                    name:string;
+                    description: string;
+                    dmg1: number;
+                    dmg2: number;
+                    dmg3: number;
+                }
+            },
+            monster2: { ... },
+            monster3: { ... }
+        };
+        defender: { ... };
+        last_action: { // в первый раз, пока никто не сходил, возвращается null
+            skill_id: number;
+            target_id: number;
+            attacker_id: number;
+        } || null;
         hash: string; - обновленный хэш
     }>
 ```
 **Ошибки**
 
-*`705` - невалидный токен. Пользователь не авторизован
+*`705` - невалидный токен. Пользователь не авторизован.
 
 ### 4.19. startBattle
 Начало боя
 
 **Успешный ответ**
 ```
-    Answer<{
-        fightId: number; - id боя
-        user1: number; - id первого игрока в бою
-        user2: number; - id второго игрока в бою
-    }>
+    Answer< true >
 
 ```
-**Примечание:** в случаи, если никто из игроков не вступает в бой
- (то есть ни у кого координты не совпадают)
-```
-Answer<false>
+*`4006` - не в одной клетке челы.
 ```
 ### 4.20. endBattle
 Завершение боя

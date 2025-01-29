@@ -124,19 +124,10 @@ class Battle {
             $this->db->updateUserStatus($user->id, 'fight');
             $this->db->updateUserStatus($playerToFight['id'], 'fight');
             $this->db->updateBattleHash(md5(rand()));
-            $battle = $this->db->addFight($user->id, $playerToFight['id']);
-            return [
-                'attackerId' => $user->id,
-                'attackerName' => $user->name,
-                'attackerRating' => $user->rating,
-                'defenderId' => $playerToFight['id'],
-                'defenderName' => $playerToFight['name'],
-                'defenderRating' => $playerToFight['rating'],
-                'battleId' => $battle
-            ];
+            $this->db->addFight($user->id, $playerToFight['id']);
+            return [true];
         }
-
-        return ['message' => 'на данной клетке нет игрока для старта боя'];
+        return ['error' => 4006];
     }
     
     public function updateBattle($hash){// loop //получаю данные по всем игрокам

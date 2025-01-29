@@ -60,6 +60,7 @@ class Answer {
         '4003' => 'this user is already in battle',
         '4004' => 'battle not found',
         '4005' => 'battle already ended',
+        '4006' => 'users are not in the same tile',
         '9000' => 'unknown error'
     );
 

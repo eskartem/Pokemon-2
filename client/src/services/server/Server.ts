@@ -15,7 +15,7 @@ import { TAnswer, TError, TMessagesResponse, TUser, TMap, TMapZone,
     TBattle,
     TEBattle} from "./types";
 
-const { CHAT_TIMESTAMP, SCENE_TIMESTAMP, MARKET_TIMESTAMP, HOST} = CONFIG;
+const { CHAT_TIMESTAMP, SCENE_TIMESTAMP, MARKET_TIMESTAMP, BATTLE_TIMESTAMP, HOST} = CONFIG;
 
 class Server {
     HOST = HOST;
@@ -269,15 +269,6 @@ class Server {
         return result;
     }
 
-    startBattleUpdate(cb: (result: TUpdateBattleResponse) => void, TIMESTAMP: number): void {
-        this.battleInterval = setInterval(async () => {
-            const result = await this.updateBattle();
-            if (result) {
-                cb(result);
-            }
-        }, TIMESTAMP);
-    }
-
     async updateBattle(): Promise<TUpdateBattleResponse | null> {
         const hash = this.store.getBattleHash();
         const result = await this.request<TUpdateBattleResponse>('updateBattle', { hash });
@@ -286,6 +277,15 @@ class Server {
             return result;
         }
         return null;
+    }
+
+    startBattleUpdate(cb: (result: TUpdateBattleResponse) => void): void {
+        this.battleInterval = setInterval(async () => {
+            const result = await this.updateBattle();
+            if (result) {
+                cb(result);
+            }
+        }, BATTLE_TIMESTAMP);
     }
 
     stopBattleUpdate(): void {
