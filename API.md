@@ -678,8 +678,9 @@ Elements: {
 ```
     Answer<{
         fightId: number; - id боя
-        user1: number; - id первого игрока в бою
-        user2: number; - id второго игрока в бою
+        hash: string; - хэш боя
+        attacker_id: number; - id атакующего игрока в бою
+        defender_id: number; - id защищающего игрока в бою
     }>
 
 ```

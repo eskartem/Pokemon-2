@@ -364,8 +364,8 @@ class DB {
         return $this->queryAll('SELECT id, name, x, y FROM users WHERE status = "scout"');
     }
     
-    public function addFight($userId1, $userId2){
-        $this->execute('INSERT INTO fight (user1_id, user2_id, turn, status, result) VALUES (?,?, 0, "open", 0)', [$userId1, $userId2]);
+    public function addFight($userId1, $userId2, $hash){ //добавлять хэш
+        $this->execute('INSERT INTO fight (hash, attacker_id, defender_id, turn, status, result) VALUES (?, ?, ?, 0, "open", 0)', [$hash, $userId1, $userId2]);
         return (int)$this->pdo->lastInsertId();
     }
 

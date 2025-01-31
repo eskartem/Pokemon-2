@@ -107,7 +107,7 @@ class Battle {
     public function skills($monster_type_id){}
 
 
-    public function startBattle() {
+    public function startBattle() { //чтото сделать с хешем
         $players = $this->db->getPlayersScout(); // все игроки со статусом скаут
         if (count($players) === 1){
             return [false];
@@ -125,12 +125,14 @@ class Battle {
                     $user1['y'] <= 43 || $user1['y'] >= 51 ){
                         $this->db->updateUserStatus($user1['id'], 'fight');
                         $this->db->updateUserStatus($user2['id'], 'fight');
-                        $fightId = $this->db->addFight($user1['id'], $user2['id']); 
-                        $this->db->updateBattleHash(md5(rand()));
+                        $hash = md5(rand());
+                        $fightId = $this->db->addFight($user1['id'], $user2['id'], $hash); 
+                        $this->db->updateBattleHash($hash);
                         return [
                             'fightId' => $fightId,
-                            'user1' => $user1['id'],
-                            'user2' => $user2['id']
+                            'hash' => $hash,
+                            'attacker_id' => $user1['id'],
+                            'defender_id' => $user2['id']
                         ];
                     }   
                 }
@@ -402,12 +404,13 @@ public function actionUser($monsterId1, $monsterId2, $action){
                 }
             }
             return[
-                'monsterId1' => $main_mon['id'],
-                'damage1' => $getDamage1,
-                'monsterId2' => $monster_2['id'],
-                'damage2' => $getDamage2,
-                'monsterId3' => $monster_3['id'],
-                'damage3' => $getDamage3
+                true
+                //'monsterId1' => $main_mon['id'],
+                //'damage1' => $getDamage1,
+                //'monsterId2' => $monster_2['id'],
+                //'damage2' => $getDamage2,
+                //'monsterId3' => $monster_3['id'],
+                //'damage3' => $getDamage3
             ];
             
             //skill id = 4-5 эффект горения
@@ -440,8 +443,9 @@ public function actionUser($monsterId1, $monsterId2, $action){
             }
 
             return [
-                'monsterId' => $monsterId2,
-                'damage' => $damageDone
+                true
+                //'monsterId' => $monsterId2,
+                //'damage' => $damageDone
             ];
 
         }elseif($action === 'escape'){
@@ -461,8 +465,9 @@ public function actionUser($monsterId1, $monsterId2, $action){
                 $this->db->clearUserResource($userId1, 1, $amountCrystal);
                 $this->db->updateUserStatus($userId1, 'scout');
                 return [
-                    'lostMonye'=> $money,
-                    'lostCrystal' => $amountCrystal
+                    true
+                    //'lostMonye'=> $money,
+                    //'lostCrystal' => $amountCrystal
                 ];
             }else{
                 return [false];
