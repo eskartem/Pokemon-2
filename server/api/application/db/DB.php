@@ -63,6 +63,10 @@ class DB {
         // return $this->user;
     }
 
+    public function getUserById($userId) {
+        return $this->query("SELECT * FROM users WHERE id=?", [$userId]);     
+   }
+
     public function getUsersByStatus($status) {
         return $this->queryAll("SELECT id, login, name, x, y FROM users WHERE status=?", [$status]);
     }

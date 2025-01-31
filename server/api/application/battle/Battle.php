@@ -6,10 +6,10 @@ class Battle {
     function __construct($db) {
         $this->db = $db;
     }
-
     public function getFight($fightId){
         return $this->db->getFight($fightId);
     }
+
 
     public function getInfoMonster($monsterId){
         $monster = $this->db->getMonsterById($monsterId);
@@ -30,21 +30,23 @@ class Battle {
         $defense = $monster_data->defense;
         $defense = $defense + $defense_param;
 
+        $max_hp = $this->restoreHp($monsterId);
+        $skill = $this->db->getSkillById($monster_type_id); 
         return [
-            'id' => $monsterId,
             'typeId' => $monster_type_id,
             'name' => $monster_data -> name,
-            'elementId' => $elementId,
             'element' => $element->name,
             'level' => $level,
+            'max_hp' => $max_hp, 
             'hp' => $monster->hp,
             'attack' => $attack,
-            'defense' => $defense
+            'defense' => $defense,
+            'skill' => $skill
         ];
     }
 
 
-    public function updateResourcesOnVictoryAndLoss($winnerId, $loserId){
+    public function updateResourcesOnVictoryAndLoss($winnerId, $loserId){ //вспомогательная 
         //loser
         $this->db->updateUserLocation($loserId, 80, 45);
 
@@ -84,11 +86,12 @@ class Battle {
         ];
     }
 
-    public function restoreHp($monsterId){
+    public function restoreHp($monsterId){ //вспомогательная 
         $monster = $this->db->getMonsterById($monsterId);
         if ($monster->hp != 0){
             $this->db->upgradeHpMonstersByUser($monsterId, -$monster->hp); 
         }
+
         $monster_type_id = $monster->monster_type_id;
         $monster_type = $this->db->getMonsterTypeById($monster_type_id);
         $hp = $monster_type->hp;
@@ -101,13 +104,12 @@ class Battle {
         }
     
         $this->db->upgradeHpMonstersByUser($monsterId, $hp); 
+        return $hp;
         
     }
 
-    public function skills($monster_type_id){}
 
-
-    public function startBattle() { //чтото сделать с хешем
+    public function startBattle() { //готово
         $players = $this->db->getPlayersScout(); // все игроки со статусом скаут
         if (count($players) === 1){
             return [false];
@@ -127,7 +129,7 @@ class Battle {
                         $this->db->updateUserStatus($user2['id'], 'fight');
                         $hash = md5(rand());
                         $fightId = $this->db->addFight($user1['id'], $user2['id'], $hash); 
-                        $this->db->updateBattleHash($hash);
+                        //$this->db->updateBattleHash($hash);
                         return [
                             'fightId' => $fightId,
                             'hash' => $hash,
@@ -140,25 +142,42 @@ class Battle {
         }return [false];
     }
     
-    public function updateBattle($hash){// loop //получаю данные по всем игрокам
+    public function updateBattle($fightId, $hash){// loop //получаю данные по всем игрокам
+        $fight = $this->db->getFight ($fightId);
+        $attacker = $this->db->getUserById($fight->attacker_id);
+        $defender = $this->db->getUserById($fight->defender_id);
+
+        $att_monster = $this->db->getMonstersByUser($fight->attacker_id, 'in team');
+        $def_monster = $this->db->getMonstersByUser($fight->defender_id, 'in team');
+
         $currentHash = $this->db->getHash();
         if ($hash === $currentHash->battle_hash) {
             return [
                 'hash' => $hash
             ];
         }
-        $playersInBattle = $this->db->getPlayersInBattle();
         return [
-            'gamers' => $playersInBattle,
-            'hash' => $currentHash->battle_hash
+            'attacker'=> [
+                'name' => $attacker->name,
+                'monster1' => $this->getInfoMonster($att_monster[0]['id']),
+                'monster2' => $this->getInfoMonster($att_monster[1]['id']),
+                'monster3' => $this->getInfoMonster($att_monster[2]['id']),
+            ],
+            'defender' => [
+                'name' => $defender->name,
+                'monster1' => $this->getInfoMonster($def_monster[0]['id']),
+                'monster2' => $this->getInfoMonster($def_monster[1]['id']),
+                'monster3' => $this->getInfoMonster($def_monster[2]['id']),
+            ], 
+            //'gamers' => $playersInBattle,
+            'hash' => $currentHash->battle_hash,
+            'attacker_id' => $fight->attacker_id
         ];
     } 
 
-    
     public function endBattle($fightId){
         //первый игрок
         $fight = $this->db->getFight ($fightId);
-
         if ($fight->status === 'close'){
             return['error' => 4002];
         }
@@ -175,12 +194,13 @@ class Battle {
         foreach ($monsters1 as $monster1) {
             if ($monster1['hp'] > 0) {
                 $allDead1 = false; // Если хотя бы один жив, устанавливаем в false
-            }
+            } 
         }
         foreach ($monsters2 as $monster2) {
             if ($monster2['hp'] > 0) {
                 $allDead2 = false;
-            }
+            } 
+            
         }
 
         if ($allDead1) {
@@ -474,17 +494,20 @@ public function actionUser($monsterId1, $monsterId2, $action){
             }
         }
     }
-
+    //server/api/index.php?method=getQueue&fight=2&queue=1
+    
     public function getQueue($fightId, $queue){
 
         $fight = $this->db->getFight($fightId);
         if ($fight->status === 'close'){
             return['error' => 4002];
         }
-        //$queue = [1,2,3,4,5,6];
+
+        //$queue = '1,2,3,4,5,6';
         $queue = explode(',', $queue);
         $queue = array_map('intval', $queue);
 
+        
         for ($i = 0; $i <= 5; $i++){
             $monster = $this->db->getMonsterById($queue[$i]);
             if ($monster || $queue[$i] === 0){
@@ -492,7 +515,7 @@ public function actionUser($monsterId1, $monsterId2, $action){
                     $queue[$i] = 0;
                 }
             } else{
-                return ['error' => 702];
+                return ['error' => '702'];
             }
         }
 
@@ -505,13 +528,11 @@ public function actionUser($monsterId1, $monsterId2, $action){
 
         $this->db->updateQueue($fight->id, $queue1, $queue2, $queue3, $queue4, $queue5, $queue6);
 
-        return
-            array($queue1,
+        return array($queue1,
             $queue2,
             $queue3,
             $queue4,
             $queue5,
-            $queue6)
-        ;
+            $queue6);
     }
 }

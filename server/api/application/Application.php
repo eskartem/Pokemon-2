@@ -304,10 +304,10 @@ class Application {
     }
     
     public function updateBattle($params) {
-        if ($params['token'] && $params['hash']) {
-            $user = $this->user->getUser($params['token']);
-            if ($user) {
-                return $this->battle->updateBattle($params['hash']);
+        if ($params['fightId'] && $params['hash']) {
+            $fight = $this->battle->getFight($params['fightId']);
+            if ($fight) {
+                return $this->battle->updateBattle($params['fightId'], $params['hash']);
             }
             return ['error' => 705];
         }
