@@ -63,6 +63,10 @@ class DB {
         // return $this->user;
     }
 
+    public function getUserById($userId) {
+        return $this->query("SELECT * FROM users WHERE id=?", [$userId]);     
+   }
+
     public function getUsersByStatus($status) {
         return $this->queryAll("SELECT id, login, name, x, y FROM users WHERE status=?", [$status]);
     }
@@ -364,8 +368,9 @@ class DB {
         return $this->queryAll('SELECT id, name, x, y, rating FROM users WHERE status = "scout"');
     }
     
-    public function addFight($userId1, $userId2){
-        $this->execute('INSERT INTO fight (user1_id, user2_id, turn, status, result) VALUES (?,?, 0, "open", 0)', [$userId1, $userId2]);
+    public function addFight($userId1, $userId2, $hash){ //добавлять хэш
+        $this->execute('INSERT INTO fight (hash, attacker_id, defender_id, turn, status, result) VALUES (?, ?, ?, 0, "open", 0)', [$hash, $userId1, $userId2]);
+        return (int)$this->pdo->lastInsertId();
     }
 
     public function addResultFight($fightId, $result){
@@ -457,12 +462,5 @@ class DB {
     public function getFight ($fightId){
         return $this->query('SELECT * FROM fight WHERE id=?', [$fightId]);
     }
-
-    public function updateQueue($fightId,$queue1, $queue2, $queue3, $queue4, $queue5, $queue6){
-        $this->execute('UPDATE fight SET queue1 = ?, queue2 = ?, queue3 = ?, queue4 = ?, queue5 = ?, queue6 = ? WHERE id = ?', [$queue1, $queue2, $queue3, $queue4, $queue5, $queue6, $fightId]);
-    }
-
-    public function getSkillById($skillId) { //id скилла совпадают с id типом монстра
-        return $this->query('SELECT * FROM skills WHERE id=?', [$skillId]);
-    }
+    
 }
