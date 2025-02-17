@@ -299,7 +299,7 @@ class Battle {
         }
 
         if ($action === 'skill'){
-            //получаем скилл атакующего монстра 
+            //получаем скилл атакующего монстра
             $skill = $this->db->getSkillById($monster1_type_id);
             $damage_multiplier = $skill->damage_multiplier;
             $damage_multiplier2 = $skill->damage_multiplier2;
