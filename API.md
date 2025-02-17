@@ -658,6 +658,9 @@ Elements: {
 {   
     fight_id: number;
     hash: string; - хэш боя
+    skill_id: number;
+    target_id: number; // цель скила, проверять я хз как, это зависит от принципа выдачи монстров во фронт
+    attacker_id: number; // атакующий монстр
 }
 ```
 **Успешный ответ**
@@ -686,8 +689,8 @@ Elements: {
         defender: { ... };
         last_action: { // в первый раз, пока никто не сходил, возвращается null
             skill_id: number;
-            target_id: number || null; // null если побег
-            attacker_id: number || null; // null если побег
+            target_id: number;
+            attacker_id: number;
         } || null;
         hash: string; - обновленный хэш
     }>
